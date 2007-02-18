@@ -24,7 +24,7 @@
   $ su
   # mysqladmin create <b>cameralife</b>
   # mysql
-  mysql> grant all privileges on <b>cameralife</b>.* to <b>cameralifeuser</b>@<b>localhost</b> identified by '<b>password</b>';
+  mysql&lt; grant all privileges on <b>cameralife</b>.* to <b>cameralifeuser</b>@<b>localhost</b> identified by '<b>password</b>';
   </pre>
 
   <p>Using cPanel:</p>
@@ -63,7 +63,7 @@
     }
 ?>
   <center>
-    <input class="pagelink" type="image" src="images/continue.jpg" value="Go for it">
+    <input class="pagelink" type="submit" value="Continue --&gt;">
   </center>
   </form>
 
@@ -93,7 +93,7 @@
     $result = mysql_query('SHOW TABLES FROM '.$_POST['name'],$setup_link);
     if (mysql_fetch_array($result))
       die ("The database ".$_POST['name']." has tables in it. The installer will not change
-            the existing tables! To upgrade, consult the UPGRADE file");
+            the existing tables! To upgrade, consult the <a href='../UPGRADE'>UPGRADE</a> file");
   ?>
 
   I am able to login with those credentials.
@@ -113,7 +113,7 @@
         PRIMARY KEY  (`id`)
       ) TYPE=MyISAM COMMENT='Sections of pictures';";
     mysql_query($SQL)
-      or die(mysql_error());
+      or die(mysql_error() . ' ' . __LINE__);
 
     $SQL = "
       CREATE TABLE `${prefix}photos` (
@@ -124,10 +124,10 @@
         `keywords` varchar(255) NOT NULL default '',
         `username` varchar(30) default NULL,
         `status` int(11) NOT NULL default '0',
-        `width` int(11) NOT NULL default '0',
-        `height` int(11) NOT NULL default '0',
-        `tn_width` int(11) NOT NULL default '0',
-        `tn_height` int(11) NOT NULL default '0',
+        `width` int(11) default '0',
+        `height` int(11) default '0',
+        `tn_width` int(11) default '0',
+        `tn_height` int(11) default '0',
         `hits` bigint(20) NOT NULL default '0',
         `created` date default NULL,
         `fsize` bigint(20) NOT NULL default '0',
@@ -137,7 +137,36 @@
         UNIQUE KEY `id` (`id`)
       ) TYPE=MyISAM COMMENT='Photos and their descriptions';";
     mysql_query($SQL)
-      or die(mysql_error());
+      or die(mysql_error() . ' ' . __LINE__);
+
+    $SQL = "
+      CREATE TABLE `${prefix}ratings` (
+        `id` int(11) NOT NULL,
+        `username` varchar(30) default NULL,
+        `user_ip` varchar(16) NOT NULL,
+        `rating` int(11) NOT NULL,
+        `date` datetime NOT NULL,
+        UNIQUE KEY `id_3` (`id`,`username`,`user_ip`),
+        KEY `id` (`id`),
+        KEY `id_2` (`id`,`username`,`user_ip`),
+        KEY `id_4` (`id`)
+      ) TYPE=MyISAM COMMENT='Photo Ratings';";
+    mysql_query($SQL)
+      or die(mysql_error() . ' ' . __LINE__);
+
+    $SQL = "
+      CREATE TABLE `${prefix}comments` (
+        `id` int(11) NOT NULL auto_increment,
+        `photo_id` int(11) NOT NULL,
+        `username` varchar(30) NOT NULL,
+        `user_ip` varchar(16) NOT NULL,
+        `comment` varchar(255) NOT NULL,
+        `date` datetime NOT NULL,
+        PRIMARY KEY  (`id`),
+        KEY `id` (`photo_id`)
+      ) TYPE=MyISAM COMMENT='Photo comments';";
+    mysql_query($SQL)
+      or die(mysql_error() . ' ' . __LINE__);
 
     $SQL = "
       CREATE TABLE `${prefix}preferences` (
@@ -148,34 +177,59 @@
         PRIMARY KEY  (`prefmodule`,`prefkey`)
       ) TYPE=MyISAM COMMENT='Customizable site options';";
     mysql_query($SQL)
-      or die(mysql_error());
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','sitename','My Photos','My Photos')");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','siteabbr','Home','Home')");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','owner_email','none@none.none','none@none.none')");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','sitedate',NOW(),'2000-01-01')");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','photo_dir','image/photos','image/photos')");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','scaled_dir','image/scaled','image/scaled')");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','thumbnail_dir','image/thumbnail','image/thumbnail')");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','modified_dir','image/modified','image/modified')");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','upload_dir','image/upload','image/upload')");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','deleted_dir','image/deleted','image/deleted')");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_thumbnails',1,1)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_thumbnails_n',4,4)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_topics',2,2)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_topics_n',3,3)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_folders',1,1)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_folders_n',5,5)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','theme','sidebar','sidebar')");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','checkpoint',0,0)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultseurity','auth_photo_rename',0,0)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultseurity','auth_photo_delete',0,0)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultseurity','auth_photo_modify',3,3)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultseurity','auth_admin_albums',4,4)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultseurity','auth_photo_upload',1,1)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultseurity','auth_admin_file',4,4)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultseurity','auth_admin_theme',4,4)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultseurity','auth_admin_customize',5,5)");
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultseurity','auth_cookie','cameralifeauth','cameralifeauth')");
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','sitename','My Photos','My Photos')")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','siteabbr','Home','Home')")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT INTO `${prefix}preferences` VALUES('core','sitedate',NOW(),NOW())")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','owner_email','none@none.none','none@none.none')")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','photo_dir','images/photos','image/photos')")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','cache_dir','images/cache','image/cache')")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','upload_dir','images/upload','image/upload')")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','deleted_dir','images/deleted','image/deleted')")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_thumbnails',1,1)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_thumbnails_n',4,4)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_topics',2,2)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_topics_n',3,3)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_folders',1,1)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_folders_n',5,5)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','theme','sidebar','sidebar')")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','iconset','cartoonic','cartoonic')")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('core','checkpoint',0,0)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_photo_rename',0,0)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_photo_delete',0,0)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_photo_modify',3,3)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_admin_albums',4,4)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_photo_upload',1,1)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_admin_file',4,4)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_admin_theme',4,4)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_admin_customize',5,5)")
+      or die(mysql_error() . ' ' . __LINE__);
+    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_cookie','cameralifeauth','cameralifeauth')")
+      or die(mysql_error() . ' ' . __LINE__);
 
     $SQL = "
       CREATE TABLE `${prefix}users` (
@@ -190,7 +244,7 @@
         UNIQUE KEY `username` (`username`)
       ) TYPE=MyISAM COMMENT='Users of the system';";
     mysql_query($SQL)
-      or die(mysql_error());
+      or die(mysql_error() . ' ' . __LINE__);
 
     $SQL = "
       CREATE TABLE `${prefix}logs` (
@@ -206,20 +260,15 @@
         PRIMARY KEY  (`id`)
       ) TYPE=MyISAM COMMENT='Logs modifications to the system';";
     mysql_query($SQL)
-      or die(mysql_error());
+      or die(mysql_error() . ' ' . __LINE__);
 
     echo "Done creating tables<br>";
-
-    mysql_query("INSERT INTO ${prefix}preferences (sitedate) VALUES (NOW())")
-      or die(mysql_error());
-
-    echo "Done setting default preferences<br>";
 
     $salted_password = crypt($_POST['sitepass'],'admin');
     $SQL = "INSERT INTO ${prefix}users (username, password, auth, cookie, last_online)
             VALUES ('admin','$salted_password',5,'".$HTTP_SERVER_VARS['REMOTE_ADDR']."',NOW())";
     mysql_query($SQL)
-      or die(mysql_error());
+      or die(mysql_error() . ' ' . __LINE__);
 
     echo "Done creating admin account<br>";
 
@@ -249,9 +298,10 @@
     else
     {
       echo "I cannot write your config file modules/database/mysql/config.inc ";
-      echo "Please copy this information to the file:<br>";
+      echo "Please copy this information to the file:<pre class='code'>";
       foreach ($config as $line)
-        echo htmlentities($line) . "<br>";
+        echo htmlentities($line) . "\n";
+      echo "</pre>";
     }
 
     if (file_exists('../notinstalled.txt'))
@@ -262,7 +312,7 @@
   ?>
 
   <p align=center>
-  <a class="pagelink" href="index3.php"><img src="images/continue.jpg" alt="continue"></a>
+  <a class="pagelink" href="index3.php">Continue --&gt;</a>
   </p>
 
 <?php } ?>

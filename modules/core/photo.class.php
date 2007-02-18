@@ -31,9 +31,9 @@ class Photo
     }
     elseif(is_array($original)) # A new image, given by an array
     {
-      $fullpath = $cameralife->preferences['photo_dir'].'/'.$original['path'].'/'.$original['filename'];
+      $fullpath = $cameralife->preferences['core']['photo_dir'].'/'.$original['path'].'/'.$original['filename'];
       if (!file_exists($fullpath))
-        $cameralife->Error('New photo does not exist.', __FILE__. __LINE__);
+        $cameralife->Error("New photo does not exist: $fullpath", __FILE__. __LINE__);
 
       $this->record['description'] = 'unnamed';
       $this->record['status'] = '0';
@@ -41,7 +41,8 @@ class Photo
 
       $this->record['fsize'] = filesize($fullpath);
       $this->record['created'] = date('Y-m-d', filemtime($fullpath));
-      $this->LoadImage(); // Sets mtime, and checks it
+      // Set mtime and make sure image is valid
+      //$this->LoadImage(); // Sets mtime, and checks it
 
       $this->record['id'] = $cameralife->Database->Insert('photos', $this->record);
       // Generate the thumbnail later, when requested
@@ -73,9 +74,15 @@ class Photo
     global $cameralife;
 
     if ($this->record['modified'])
-      $origphotopath = $cameralife->preferences['modified_dir'].'/'.$this->record['id'].'.jpg';
+      $origphotopath = $cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.jpg';
     else
-      $origphotopath = $cameralife->preferences['photo_dir'].'/'.$this->record['path'].$this->record['filename'];
+      $origphotopath = $cameralife->preferences['core']['photo_dir'].'/'.$this->record['path'].$this->record['filename'];
+
+    // upgrade hack
+    if ($this->record['modified'] && !file_exists($origphotopath))
+      if(file_exists('images/modified/'.$this->record['id'].'.jpg'))
+        $origphotopath = 'images/modified/'.$this->record['id'].'.jpg';
+
     $this->record['mtime'] = filemtime($origphotopath);
 
     if (isset($this->image)) return;
@@ -90,8 +97,8 @@ class Photo
 
     $this->LoadImage();
     $imagesize = $this->image->GetSize();
-    $this->image->Resize($cameralife->preferences['scaled_dir'].'/'.$this->record['id'].'.jpg', 600);
-    $thumbsize = $this->image->Resize($cameralife->preferences['thumbnail_dir'].'/'.$this->record['id'].'.jpg', 150);
+    $this->image->Resize($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_600.jpg', 600);
+    $thumbsize = $this->image->Resize($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_150.jpg', 150);
 
     $this->record['width'] = $imagesize[0];
     $this->record['height'] = $imagesize[1];
@@ -105,8 +112,8 @@ class Photo
   {
     global $cameralife;
 
-    if (!file_exists($cameralife->preferences['scaled_dir'].'/'.$this->record['id'].'.jpg') ||
-        !file_exists($cameralife->preferences['thumbnail_dir'].'/'.$this->record['id'].'.jpg'))
+    if (!file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_600.jpg') ||
+        !file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_150.jpg'))
     {
         $this->GenerateThumbnail();
         return 1;
@@ -122,7 +129,7 @@ class Photo
     $this->LoadImage();
     $this->image->Rotate($angle);
 
-    $this->image->Save($cameralife->preferences['modified_dir'].'/'.$this->record['id'].'.jpg');
+    $this->image->Save($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.jpg');
     $this->record['modified'] = 1;
 
     $this->GenerateThumbnail();
@@ -134,7 +141,7 @@ class Photo
 
     if ($this->record['modified'] == 1)
     {
-      unlink($cameralife->preferences['modified_dir'].'/'.$this->record['id'].'.jpg');
+      unlink($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.jpg');
       $this->record['modified'] = 0;
     }
     $this->GenerateThumbnail();
@@ -148,9 +155,9 @@ class Photo
     rename ($cameralife->preferences['core']['photo_dir'].'/'.$this->record['path'].$this->record['filename'],
             $cameralife->preferences['core']['deleted_dir'].'/'.$this->record['filename']);
     if ($this->record['modified'] == 1)
-      unlink($cameralife->preferences['modified_dir'].'/'.$this->record['id'].'.jpg');
-    unlink ($cameralife->preferences['core']['scaled_dir'].'/'.$this->record['id'].'.jpg');
-    unlink ($cameralife->preferences['core']['thumbnail_dir'].'/'.$this->record['id'].'.jpg');
+      unlink($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.jpg');
+    unlink ($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_150.jpg');
+    unlink ($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_600.jpg');
     $cameralife->Database->Delete('photos','id='.$this->record['id']);
     $cameralife->Database->Delete('logs',"record_type='photo' AND record_id=".$this->record['id']);
   }

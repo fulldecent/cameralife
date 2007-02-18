@@ -20,14 +20,14 @@
   if ($format == 'photo')
   {
     if ($photo->Get('modified'))
-      $file = $cameralife->preferences['core']['modified_dir'] .'/'. $photo->Get('id').'.jpg';
+      $file = $cameralife->preferences['core']['cache_dir'] .'/'. $photo->Get('id').'_mod.jpg';
     else
       $file = $cameralife->preferences['core']['photo_dir'] .'/'. $photo->Get('path').$photo->Get('filename');
   }
   elseif ($format == 'scaled')
-    $file = $cameralife->preferences['core']['scaled_dir'].'/'.$photo->Get('id').'.jpg';
+    $file = $cameralife->preferences['core']['cache_dir'].'/'.$photo->Get('id').'_600.jpg';
   elseif ($format == 'thumbnail')
-    $file = $cameralife->preferences['core']['thumbnail_dir'].'/'.$photo->Get('id').'.jpg';
+    $file = $cameralife->preferences['core']['cache_dir'].'/'.$photo->Get('id').'_150.jpg';
   else
     $cameralife->Error('Bad format parameter');
 

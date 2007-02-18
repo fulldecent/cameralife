@@ -7,6 +7,12 @@
 
 <h1>Post-install configuration</h1>
 
+<?php
+    if (file_exists('../notinstalled.txt'))
+    {
+      echo "<p class='important'>Delete the file notinstalled.txt, so your site will go live.</p>";
+    }
+?>
 <h2>Get your photos ready</h2>
 
 Collect some photos that you would like to use with the site. Now, either:

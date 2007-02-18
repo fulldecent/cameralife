@@ -5,7 +5,7 @@
   // Is this the first run?
   if (file_exists('notinstalled.txt'))
   {
-    header('Location: http://'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF']).'/setup/');
+    header('Location: http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']),'/').'/setup/');
     die('Redirecting to installer...');
   }
 
@@ -83,7 +83,7 @@
       $result = $query->FetchAssoc()
         or $this->Error('No site preferences can be found!');
 
-      if ($result['sitename']) // old preferences db
+      if ($result['sitename']) // upgrade hack
       {
         foreach($result as $key => $value)
         {
@@ -97,12 +97,10 @@
         while ($result)
         {
           $this->preferences[$result['prefmodule']][$result['prefkey']] = $result['prefvalue'];
-          $this->preferences[$result['prefkey']] = $result['prefvalue'];
           $result = $query->FetchAssoc();
         }
       }
 
-      $this->preferences['auth_cookie'] = 'cameralifeauth'; //TODO hmm
       $this->preferences['defaultsecurity']['auth_cookie'] = 'cameralifeauth'; //TODO hmm
     }
 

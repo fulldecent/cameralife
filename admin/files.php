@@ -118,6 +118,7 @@
     echo '</select></p>';
 
     $search = new Search('');
+//TODO wow...
     // You know code is a hack when you use a SQL injection attack against yourself.
     $search->mySearchPhotoCondition = "status=$target_status OR 0";
     $photos = $search->GetPhotos();
@@ -206,6 +207,7 @@
       echo "<li>$filename was deleted from filesystem\n";
       $photoObj = new Photo($photo['id']);
       $photoObj->Erase();
+
       flush();
     }
 
@@ -251,7 +253,7 @@
     }
     echo "</ol>\n<p>Updating complete :-)";
     if ($num_new > 0)
-      echo "<p>You can <a href=\"../search.php?q=unnamed\">name your new files here</body></html>";
+      echo "<p>You can <a href=\"../search.php?q=unnamed\">name your new files here</a>";
     echo "<p>To optimize thumbnails, <a href='thumbnails.php'>click here</a>.";
   }
 ?>

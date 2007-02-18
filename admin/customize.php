@@ -78,10 +78,8 @@
 
   if ($_GET['page'] == 'setup') { 
     check_dir($cameralife->preferences['core']['photo_dir']);
-    check_dir($cameralife->preferences['core']['scaled_dir']);
-    check_dir($cameralife->preferences['core']['thumbnail_dir']);
+    check_dir($cameralife->preferences['core']['cache_dir']);
     check_dir($cameralife->preferences['core']['deleted_dir']);
-    check_dir($cameralife->preferences['core']['modified_dir']);
 ?>
   <table align="center" cellspacing="2" border=1 width="100%">
     <tr>
@@ -121,20 +119,8 @@
       <td>
         Automatically cached photos
       <td>
-        <input type=text name="scaled_dir" size=30
-                value="<?= $cameralife->preferences['core']['scaled_dir'] ?>">
-    <tr>
-      <td>
-        Automatically generated thumbnails
-      <td>
-        <input type=text name="thumbnail_dir" size=30
-                value="<?= $cameralife->preferences['core']['thumbnail_dir'] ?>">
-    <tr>
-      <td>
-        Modified photos where to put images when we change them
-      <td>
-        <input type=text name="modified_dir" size=30
-                value="<?= $cameralife->preferences['core']['modified_dir'] ?>">
+        <input type=text name="cache_dir" size=30
+                value="<?= $cameralife->preferences['core']['cache_dir'] ?>">
     <tr>
       <td>
         Deleted photos (...where they go when you "erase" them)

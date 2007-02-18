@@ -136,7 +136,7 @@
       $auth_name = "auth_$auth_name";
 
       if (!isset ($preferences['defaultsecurity'][$auth_name]))
-        die ("The privilege $auth_name does not exist.");
+        $cameralife->Error("The privilege $auth_name does not exist.", __FILE__, __LINE__);
 
       if ($this->curuser['auth'] < $preferences['defaultsecurity'][$auth_name] && $required)
       {

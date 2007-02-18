@@ -44,4 +44,8 @@ Extra notes:
   alter table photos change tn_height tn_height int(11);
   alter table photos change width width int(11);
   alter table photos change tn_width tn_width int(11);
+
+  insert into preferences VALUES('core','cache_dir','images/cache','images/cache');
+  mkdir images/cache
+  chmod 777 images/cache
   

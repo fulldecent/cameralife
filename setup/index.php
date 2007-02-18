@@ -2,7 +2,6 @@
   $version = '2.6.0b3';
   $continue = true;
 ?>
-
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="common.css">
@@ -10,15 +9,15 @@
 </head>
 <body>
 
-<img src="images/fdcl.jpg" alt='logo'>
+<img src="images/cameralife.jpg">
 
 <h1>Welcome to Camera Life</h1>
 
-Thank you for choosing to install Camera Life. I hope you will find this project is easy to use and fun. This project is released under the terms of the GNU General Public License, version 2. If you need help, look in:
+Thank you for choosing to install Camera Life. We hope you will find this project is easy to use and fun. This project is released under the terms of the GNU General Public License, version 2. If you need help, look in:
 <ul>
 <li><a href="../README">The README</a>
 <li><a href="http://fdcl.sourceforge.net">The project webpage</a>
-<li>Hit me up: <a href="mailto:cameralife@phor.net">cameralife@phor.net</a>
+<li>Hit us up: <a href="mailto:cameralife@phor.net">cameralife@phor.net</a>
 </ul>
 If you are upgrading from a previous version of Camera Life, stop and read the file <a href="../UPGRADE">UPGADE</a>.
 
@@ -129,7 +128,7 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
           echo "<p class='important'>The prerequisites have not been met. Fix them, and reload this page.</p>";
         }else{
           echo '<p align=center>
-                <a class="pagelink" href="index2.php"><img src="images/continue.jpg" alt="continue"></a>
+                <a class="pagelink" href="index2.php">Continue --&gt;</a>
                 </p>';
         }
 ?>

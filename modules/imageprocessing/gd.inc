@@ -21,6 +21,10 @@
 
     function GDImageProcessingImage($filename)
     {
+      global $cameralife;
+
+      if (!file_exists($filename))
+        $cameralife->Error('Trying to process non-existant image: '.$filename, __FILE__, __LINE__);
       $this->original_image = imagecreatefromjpeg($filename);
       $this->width = imagesx($this->original_image);
       $this->height = imagesy($this->original_image);
@@ -55,6 +59,7 @@
       ** now, we can scale from it. This is much faster than
       ** scaling the original, larger, image again. 
       */
+      global $cameralife;
 
       $base_image = $this->original_image;
       $base_size = $this->size;
@@ -82,7 +87,7 @@
                          $base_width, $base_height);
  
       @imagejpeg($new_image, $filename, $quality)
-        or die ("Could not write the file $filename is the directory writable?");
+        or $cameralife->Error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
       $this->scaled_image[$newSize] = $new_image;
 
       return array($new_width, $new_height);
