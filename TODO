@@ -1,0 +1,64 @@
+!=need to do, *=todo, ?=waste of time
+
+
+== Now stuff / Fun stuff ==
+mv setup -> modules
+
+* rss for comments
+
+-- Showstoppers (before you release) --
+* grep -r TODO .
+! edit setup/install.mysql
+* database changes into setup
+* Increment version in main.inc
+
+
+-- Change theme engine --
+! Make admin/*.php not use the Theme API
+  - a nice css file
+* Separate all form and content
+? Combine GetIcon and GetSmallIcon?
+? Use XML to represent passing of HTML?
+* Don't use $_GET except at the top of each user-facing page
+
+
+-- Things that will break the API --
+* Change photos.mtime to photos.filter
+  - This will use a modification string like in picasa.ini
+* Add a photo modification optimization engine to photo.class.php
+  - It takes the existing photo and filter
+  - Considers the new filter
+  - Deletes stale caches
+  - Acts in the best possible way
+    . Rotate existing photo
+    . Or start from scratch
+    . Chooses to work off original or scaled image
+  - Result: editing a photo will not require modifying the full sized image (takes forever) unless the user loads that full size image, in which case it is cached.
+  - Admin may update these cache at their whim via the Update Database in Files in Admin
+* Save all photo caches in a caches folder, not scaled, modified, ...
+  - remove preferences, only keep photo_cache_dir
+  - in photo.class.php, suffix each asset: 23496_480.jpg, 28762_150.jpg photoid_scalesize.jpg
+* use posix-compliant pathname and a way to upgrade you db
+ - benefits?
+
+? logs.value_old is techically unnecessary
+* Enumerate the photos.status
+
+-- The big picture --
+! Integrate with CMS's like Phpnuke!?
+
+-- Features --
+* Admin->* "Changes Saved" should produce a message like Gmail
+* Admin->User createuser, changepasswd
+
+-- Design Considerations --
+? A module API that allows announcing modules, loading, unloading
+
+-- UI (themes) --
+* theme -> more obvious tabs
+? Make Theme->AssetURL work if content negotiation is off
+
+-- Modules --
+* Make a legacy-GD module
+    imagecreatetruecolor -> imagecreate
+

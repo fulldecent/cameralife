@@ -1,0 +1,47 @@
+*
+* Camera Life
+* Version 2.6.0 - 2006-01-10
+* http://fdcl.sourceforge.net
+*
+* Copyright (C) 2001-2006 Will Entriken "Full Decent" <cameralife@phor.net>
+*
+* UPGRADING Camera Life from any version
+*
+
+Upgrading from an older version of Camera Life requires working knowledge of MySQL.
+Basically, it goes like this:
+
+  * Look at your database structure
+  * Look at the new database structure (in setup/install.mysql)
+  * Update your tables to the new format.
+  * Paste this into modules/database/mysql/config.inc, making changes as necessary:
+
+    <?php
+    $db_host = 'localhost';
+    $db_name = 'cameralife';
+    $db_user = 'cameralife';
+    $db_pass = '5b887nj';
+    $db_prefix = '';
+    ?>
+
+  * Paste the new source files on top of the old ones
+
+  * Now enter the site:
+  * Register an account named "admin"
+  * UPDATE users SET auth=5 WHERE username='admin'
+  * Point your browser to install/index3.php
+
+Extra notes:
+
+  In some recent versions, there was a unique key on photos.filename, but we
+  finally got rid of that.
+
+  In some older versions admin/.htaccess was used for security, that is no
+  longer necessary.
+
+  Image sizes can now be null (lazy thumbnailing):)
+  alter table photos change height height int(11);
+  alter table photos change tn_height tn_height int(11);
+  alter table photos change width width int(11);
+  alter table photos change tn_width tn_width int(11);
+  

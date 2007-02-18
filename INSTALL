@@ -1,0 +1,60 @@
+*
+* Camera Life
+* http://fdcl.sourceforge.net
+*
+* Install guide
+*
+* This file will help you install Camera Life, if you are upgrading, read 
+* the file UPGRADE.
+*
+
+ A. Pre-requesites
+
+   Camera Life requires: PHP with MySQL support and GD with JPEG support.
+   The server needs to support Content Negotiation (see the .htaccess file).
+
+ B. Auto install
+
+   Untar the package and point your browser to the created folder.
+
+ C. The hard way - if auto install fails
+
+   If using tablename prefixes: edit setup/install.mysql and add the 
+   prefix to each table in each INSERT and CREATE statement
+
+   Using linux:
+
+     $ su
+     # mysqladmin create cameralife
+     # mysql cameralife
+     mysql> grant all privileges on cameralife.* to USER identified by 'PASS';
+     mysql> quit
+     # mysql cameralife < setup/install.mysql
+
+   Using cPanel X - click MySQL Databases
+
+     Add Db: cameralife
+     Add User: USER PASS
+     Add user to Db
+
+     Click phpMyAdmin
+     Choose the database on the left
+     Click SQL on the top
+     Browse for setup/install.mysql
+
+   Now edit modules/database/mysql/config.inc with the credentials you chose.
+   Delete or move notinstalled.txt
+
+   Point your web broswer to the site and register an account.
+
+   Run the SQL command: UPDATE users SET auth=5;
+     * prefix users with your tablename prefix if necessary
+
+   View http://YOURSITE/setup/install3.php
+
+
+ D. Trouble
+
+   I would love to improve the program by hearing your feedback. Mail me 
+   at cameralife-bugs@phor.net (start subject with "CAMERALIFE-BUGS:")
+

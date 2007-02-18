@@ -1,0 +1,94 @@
+*
+* Camera Life
+* Version 2.6.0 - 2006-08-01
+* http://fdcl.sourceforge.net
+*
+* Copyright (C) 2001-2006 Will Entriken "Full Decent" <cameralife@phor.net>
+*
+* Camera Life is released under the terms of the GNU General Public 
+* License as published by the Free Software Foundation; either version 2 
+* of the License, or (at your option) any later version. See the 
+* file LICENSE for more information
+*
+
+I INTRODUCTION
+
+  Camera Life is a system for cataloging your photo collection. It gives 
+  users the ability to search or browse your archive in intuitive ways, with
+  an attention to powerful administrative functions.
+
+
+II FEATURES
+
+ A Self Updating
+
+   Camera Life will cache and thumbnail photos it finds in your photo 
+   directory automatically. Photos are automatically assorted into Albums based 
+   on their descriptions. You can allow anyone to update your site without 
+   fear of defacement.
+
+ B Photo Albums
+
+   In addition to viewing photos by file system hierarchy (files in folders), 
+   users may browse your site by Albums. An Album is a collection of like 
+   photos. Since the system knows which photos are related, it can suggest 
+   photos that a user may be interested in while they are browsing.
+
+ C Security
+
+   Users sign up for accounts from the main page. An Admin can then grant 
+   privileges to users (Administer:User Manager:Users). You can also integrate
+   Camera Life into your own authentication system by creating a module.
+
+ D Non-destructive
+
+   Changes that users can make to your site are all logged and undoable. If 
+   you would like to use an open access policy where anyone can contribute 
+   photo descriptions, you can easily rollback changes in the event of 
+   defacement. (Administer::Log Viewer)
+
+ E Themes
+
+   You can easily change the look of the entire site by choosing a different
+   theme (Administer:Customize:Themes). Additional themes can be downlaoded 
+   from http://fdcl.sourceforge.net
+
+ F Modules
+
+   Most of the features are in modules, which can be replaced to easily 
+   intregrate with your own site or CMS, also new functionality can be 
+   dropped in.
+
+
+III INSTALLATION
+
+ A Install
+
+   See the file INSTALL
+
+ B Upgrade
+
+   See the file UPGRADE
+
+
+IV MAITENANCE
+
+ A Administer
+
+   Regularly click Administer at the top of the main page. Items that require
+   attention will be noted in red.
+
+ B Add Albums
+
+   To create new Albums, login and choose Create Album from the front page.
+
+
+V QUIRKS, BUGS
+
+ A Bugs
+
+    Mail 'em to me cameralife AT phor.net (start subject with "CAMERALIFE-BUGS:")
+
+
+Thank you for choosing Camera Life for your photo displaying needs!
+
