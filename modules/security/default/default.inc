@@ -1,0 +1,163 @@
+<?php
+  /*
+    Standard security implementaion. 
+    Uses a password to authenticate.
+    Uses a cookie to handle "sessions"
+    Uses groups to determine permissions
+    Uses the database to store all this
+  */
+
+  class DefaultSecurity extends SecurityModule
+  {
+    var $curuser;
+    var $authcookie;
+
+    function DefaultSecurity()
+    { 
+      global $_COOKIE, $cameralife;
+    
+      $cookiename = $cameralife->preferences['defaultsecurity']['auth_cookie'];
+      $authcookie = $_COOKIE[$cookiename];
+
+      if ($authcookie)
+      {
+        $result = $cameralife->Database->Select('users','*',"cookie='$authcookie'");
+        $this->curuser = $result->FetchAssoc()
+          or $this->curuser = array('auth'=>'0');
+      }
+      else
+      {
+        $this->curuser = array('auth'=>'0');
+      }
+    }
+  
+    /* Return TRUE or a string that is an error message */
+    function Login ($username, $password)
+    {
+      global $cameralife;
+
+      $username = strtolower($username);
+      $username = eregi_replace('[^0-9a-z_]','',$username);
+      $password = crypt($password,$username);
+
+      $result = $cameralife->Database->Select('users','*',"username='$username' AND password='$password'");
+
+      if ($user = $result->FetchAssoc()) // Login legal
+      {
+        $cookie = rand(0,999999);
+        $values['cookie'] = $cookie;
+        $values['last_online'] = date('Y-m-d');
+        $values['last_ip'] =  $HTTP_SERVER_VARS["REMOTE_ADDR"];
+        $cameralife->Database->Update('users',$values,"username='$username'");
+        setcookie($cameralife->preferences['defaultsecurity']['auth_cookie'],$cookie,time()+30000000,'/');
+        $_COOKIE[$cameralife->preferences['defaultsecurity']['auth_cookie']] = $cookie;
+        return true;
+      }
+      else // Login illegal
+        return "Invalid login";
+    }
+
+    /* Return TRUE + cookie or a string that is an error message */
+    function Register ($username, $password, $email = '')
+    {
+      global $cameralife;
+
+      $username = strtolower($username);
+      $username = eregi_replace('[^0-9a-z_]','',$username);
+      $result = $cameralife->Database->Select('users','*',"username='$username'");
+      $password = crypt($password,$username);
+      $cookie = rand(0,999999);
+
+      if ($user = $result->FetchAssoc())
+        return 'Username already taken';
+
+      if ($username == '')
+        return 'Username empty';
+
+      $values['username'] = $username;
+      $values['password'] = $password;
+      $values['auth'] = 1;
+      $values['cookie'] = $cookie;
+      $values['last_online'] = date('Y-m-d');
+      $values['last_ip'] = $HTTP_SERVER_VARS["REMOTE_ADDR"];
+      $values['email'] = $email;
+      $cameralife->Database->Insert('users',$values);
+      setcookie($cameralife->preferences['defaultsecurity']['auth_cookie'],$cookie,time()+30000000,'/');
+      return true;
+    }
+
+    /* Logs the user out. Returns true  or and exit url if you really want to */
+    function Logout ()
+    {
+      global $cameralife;
+      setcookie($cameralife->preferences['defaultsecurity']['auth_cookie'],'',time(),'/');
+      return true;
+    }
+
+    /* Provides a URL, relative to $cameralife->base_url that the user can
+    ** go to, to administer users and permissions. Or returns FALSE, if the 
+    ** user is not allowed to administer.
+    */
+    function AdministerURL () 
+    { 
+//TODO fix this
+      global $base_url;
+      if ($this->authorize('admin_file') ||
+          $this->authorize('admin_theme') ||
+          $this->authorize('admin_customize'))
+      return "$base_url/modules/security/default/administer.php";
+      return FALSE;
+    }
+
+    /* Returns the current user's name or the empty string if not logged in */
+    function GetName () 
+    { 
+      return $this->curuser['username'];
+    }
+
+/* This is subject to change... is this necessary??? LMK */
+    /* Returns the current user's IP address */
+    function GetAddr () 
+    {
+      global $_SERVER;
+      return $_SERVER['REMOTE_ADDR'];
+    }
+
+    /* Determines if the user is authoried to performed the named action,
+    ** if REQUIRED is set, nonauthorization is a fatal error.
+    ** This function must at least support the actions named in the README
+    ** file, of the directory of the file you are currently reading at this
+    ** time.
+    */
+    function Authorize ($auth_name, $required=false) 
+    {
+      global $cameralife, $base_url;
+      $preferences = $cameralife->preferences;
+      $auth_name = "auth_$auth_name";
+
+      if (!isset ($preferences['defaultsecurity'][$auth_name]))
+        die ("The privilege $auth_name does not exist.");
+
+      if ($this->curuser['auth'] < $preferences['defaultsecurity'][$auth_name] && $required)
+      {
+        $error = "<span style='font-size:x-large'>You are not authorized to view this page</span>\n";
+        $error.= "<p>To view this page, you must have the <strong>$auth_name</strong> privilege.<br>\n";
+        $error.="This is given to all users of authorization level at least <strong>".$preferences['defaultsecurity'][$auth_name]."</strong>.</p>\n";
+        if ($this->curuser['username'])
+        {
+          $error.= "<p>You are logged in as <strong>".$this->curuser['username']."</strong> with authorization level <strong>".$this->curuser['auth']."</strong>.</p>\n";
+          $error.= "<p>Either ask an administrator to increase your authorization level, or stop trying to hack into the system.</p>\n";
+        }
+        else
+        {
+          $error.= "<p>You are not logged in.</p>\n";
+          $error.= "<p>You may attempt to <a href='$base_url/login.php'>log in here,</a>\n";
+          $error.= "<p>Do you have cookies disabled?</p>\n";
+        }
+        $cameralife->Error($error);
+      }
+      return ($this->curuser['auth'] >= $preferences['defaultsecurity'][$auth_name]);
+    }
+  }
+
+?>

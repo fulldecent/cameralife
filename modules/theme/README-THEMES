@@ -1,0 +1,14 @@
+#
+# How to make themes - Camera Life 2.3.2+
+#
+
+To create your own theme, simply copy any existing theme to a 
+new folder. Select this theme from your admin interface on the site.
+
+Change the CSS PHP and images to create your own unique look. The only
+restriction is that you must not change the function parameters of the
+PHP functions. And your functions must work for all documented combinations
+of parameters (e.x. passing NULL or "").
+
+When complete, visit http://fdcl.sourceforge.net "themes" page and submit.
+
