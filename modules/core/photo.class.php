@@ -114,7 +114,9 @@ class Photo
     global $cameralife;
 
     if (!file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_600.jpg') ||
-        !file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_150.jpg'))
+        !file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_150.jpg') ||
+        $this->record['modified'] && !file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.jpg'))
+    // the last a && b is part of the upgrade hack
     {
         $this->GenerateThumbnail();
         return 1;
