@@ -9,19 +9,14 @@
 
     function cssURL()
     {
-      global $base_url;
-      return "$base_url/modules/theme/".$this->name."/theme.css";
+      global $cameralife;
+      return $cameralife->base_url."/modules/theme/".$this->name."/theme.css";
     }
 
     function ImageURL($name) 
     {
       global $cameralife;
-
-//TODO: a cameralife method to get a base url
-//todo error checking
-      global $base_url;
-
-      return "$base_url/modules/iconset/".$cameralife->preferences['core']['iconset']."/$name";
+      return $cameralife->base_url."/modules/iconset/".$cameralife->preferences['core']['iconset']."/$name";
     }
 
     function Image($name, $extra=array()) 
