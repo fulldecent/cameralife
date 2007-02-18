@@ -11,7 +11,6 @@ class Topic extends Search
 
     $this->name = $name;
 
-//TODO: is this right?
     Search::Search('');
     $this->mySearchAlbumCondition = "topic = '".$this->name."'";
   }

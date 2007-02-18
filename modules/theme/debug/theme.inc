@@ -4,8 +4,9 @@
   {
     function DebugTheme() 
     {
+      global $cameralife;
 //TODO better way to reference here?!
-      $this->cssURL = "$base_url/modules/theme/debug/theme.css";
+      $this->cssURL = $cameralife->base_url."/modules/theme/debug/theme.css";
     }
 
     /**

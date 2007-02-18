@@ -161,6 +161,7 @@
         echo "  <div style=\"background: #eee; padding: 1em;\">Error at: <i>$file</i></div>";
       if ($line)
         echo "  <div style=\"background: #eee; padding: 1em;\">Line: <i>$line</i></div>";
+      echo '</div></div>';
       exit(1);
     }
   }

@@ -5,6 +5,7 @@
 mv setup -> modules
 
 * rss for comments
+* Interface instead of classes where appropriate, (requires PHP5)
 
 -- Showstoppers (before you release) --
 * grep -r TODO .

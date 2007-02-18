@@ -101,11 +101,11 @@
     function AdministerURL () 
     { 
 //TODO fix this
-      global $base_url;
+      global $cameralife;
       if ($this->authorize('admin_file') ||
           $this->authorize('admin_theme') ||
           $this->authorize('admin_customize'))
-      return "$base_url/modules/security/default/administer.php";
+      return $cameralife->base_url."/modules/security/default/administer.php";
       return FALSE;
     }
 
@@ -115,7 +115,7 @@
       return $this->curuser['username'];
     }
 
-/* This is subject to change... is this necessary??? LMK */
+//TODO is this mecessary?
     /* Returns the current user's IP address */
     function GetAddr () 
     {

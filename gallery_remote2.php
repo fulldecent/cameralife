@@ -100,7 +100,7 @@ $fd = fopen('tmp','w+');
 fwrite($fd, $r);
 fclose($fd);*/
     global $cameralife;
-//todo, require permission
+
     if (!$cameralife->Security->Authorize('admin_file'))
     {
       echo "status=401\n"; #close
