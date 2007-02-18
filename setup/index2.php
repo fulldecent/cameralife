@@ -53,7 +53,7 @@
   <tr><td>Database pass:<td> <input type="password" name="pass" value="">
   <tr><td>Database table name prefix (optional):<td> <input type="text" name="prefix" value="">
   <tr><td>&nbsp;
-  <tr><td>Camera Life admin password:<td> <input type="password" name="fdclpass" value="">
+  <tr><td>Camera Life admin password:<td> <input type="password" name="sitepass" value="">
   </table>
 
 <?php
@@ -80,7 +80,7 @@
       die ("You didn't specify a username, <a href=\"index2.php\">go back</a> and try again");
     if (!$_POST['pass'])
       die ("You didn't specify a password, <a href=\"index2.php\">go back</a> and try again");
-    if (!$_POST['fdclpass'])
+    if (!$_POST['sitepass'])
       die ("You didn't specify a site password, <a href=\"index2.php\">go back</a> and try again");
     $prefix = $_POST['prefix'];
 
@@ -215,7 +215,7 @@
 
     echo "Done setting default preferences<br>";
 
-    $salted_password = crypt($_POST['fdclpass'],'admin');
+    $salted_password = crypt($_POST['sitepass'],'admin');
     $SQL = "INSERT INTO ${prefix}users (username, password, auth, cookie, last_online)
             VALUES ('admin','$salted_password',5,'".$HTTP_SERVER_VARS['REMOTE_ADDR']."',NOW())";
     mysql_query($SQL)
