@@ -11,7 +11,10 @@
 
   $lastdone = $_GET['lastdone'] 
     or $lastdone = -1;
-
+  $starttime = $_GET['starttime']
+    or $starttime = time();
+  $numdone = $_GET['numdone']
+    or $numdone = 0;
 ?>
 <html>
 <head>
@@ -43,9 +46,10 @@
   $total = $cameralife->Database->SelectOne('photos', 'count(*)');
   $done = $cameralife->Database->SelectOne('photos', 'count(*)', "id <= $lastdone");
   $todo = $cameralife->Database->SelectOne('photos', 'count(*)', "id > $lastdone");
+  $timeleft = round((time()-$starttime) * $todo / ($numdone + $done/500 + 1) / 60, 0);
 
   echo 'We are now optimizing thumbnails. If a user tries to view a photo whos thumbnail is not optimized, there will be a small delay. You do not need to do this process if you are impatient.';
-  echo "<h3>Progress: $done of $total done</h3>\n";
+  echo "<h3>Progress: $done of $total done (about $timeleft minutes left)</h3>\n";
   echo "<div style='width: 500px; background: #fff; border: 1px solid black; padding: 2px; margin:2em'>";
   echo "<div style='height: 25px; background: #347; width:".($done/$total*100)."%'></div>";
   echo "</div>\n";
@@ -67,9 +71,10 @@
     $lastdone = $next['id'];
   }
 
+  $numdone += $fixed;
   echo "Fixed: $fixed photos.<br>\n";
   echo "Continue: <a href='?lastdone=$lastdone'>Continue</a><br>\n";
-  echo "<script language='javascript'>window.location='?lastdone=$lastdone'</script>" ;
+  echo "<script language='javascript'>window.location='thumbnails.php?lastdone=$lastdone&starttime=$starttime&numdone=$numdone'</script>" ;
 
 
 ?>

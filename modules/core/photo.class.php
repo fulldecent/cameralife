@@ -79,9 +79,10 @@ class Photo
       $origphotopath = $cameralife->preferences['core']['photo_dir'].'/'.$this->record['path'].$this->record['filename'];
 
     // upgrade hack
-    if ($this->record['modified'] && !file_exists($origphotopath))
-      if(file_exists('images/modified/'.$this->record['id'].'.jpg'))
-        $origphotopath = 'images/modified/'.$this->record['id'].'.jpg';
+    if ($this->record['modified'] && !file_exists($origphotopath) && file_exists('images/modified/'.$this->record['id'].'.jpg'))
+    {
+      rename('images/modified/'.$this->record['id'].'.jpg',$origphotopath);
+    }
 
     $this->record['mtime'] = filemtime($origphotopath);
 
