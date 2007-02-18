@@ -1,0 +1,48 @@
+2.6.0  Will Entriken <cameralife@phor.net>
+* Support for Gallery Remote API (upload from iPhoto, DigiKam, ...)
+* Microformats, RSS feeds
+* Allow multiple photos with same file name!
+* Photo keywords with delicious-like keyword editor!
+* Checkpoints allow you to review and approve changes to the site
+* Comments and ratings
+
+* Photos may be in a directory not accessible from the web
+* More fun stats
+* Huge changes under the hood (V4 -> V8 engine)
+* Code is now in SVN
+* Photo thumbnails are not generated until needed
+
+2.5.5  Will Entriken <cameralife@phor.net>
+* Cleaned up administrative tasks
+* Ask constructive users to create an account (photo.php)
+
+2.5.4  Will Entriken <cameralife@phor.net>
+* Safer printing of photo descriptions
+* Better documentation of basic functions
+* Simpler explanation of albums
+* Better error messages
+* Viewing a photo finds other photos you may be interested in
+
+2.5.3  Will Entriken <cameralife@phor.net>
+* Simpler install instructions, with help for cPanel users
+* Sugar coated album creation and editing
+* Themes no longer require menu-bullet
+* Bugfix: users.php with db_prefix now works (thanks Brian)
+
+2.5.2  Will Entriken <cameralife@phor.net>
+* Upload multiple photos in a zip (OMG finally!!?)
+  - Requires unzip command line utility
+* Main index allows sort by Newset Folders (thanks Kevin)
+* Photos display "added by AUTHOR" if it was uploaded
+* Seperated config.php out of common.php (easier install)
+* Filedone.wav is played when upload is done
+* Supports a table name prefix (thanks Kevin)
+* Bugfix: photo descriptions with " in them
+
+2004-10-05  Will Entriken <cameralife@phor.net>
+* Fixed that folder problem...
+* Upload to individual folders
+* New default theme: clean
+* Better SQL queries for logs (doesn't need mysql 4.1)
+* Create albums on the fly
+* Bugfix: Deletes logs while erasing photos

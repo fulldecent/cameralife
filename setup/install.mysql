@@ -1,0 +1,160 @@
+-- MySQL dump 10.10
+--
+-- Host: localhost    Database: fdcl
+-- ------------------------------------------------------
+-- Server version	5.0.22-Debian_0ubuntu6.06.2-log
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `albums`
+--
+
+DROP TABLE IF EXISTS `albums`;
+CREATE TABLE `albums` (
+  `id` int(11) NOT NULL auto_increment,
+  `topic` varchar(20) NOT NULL default '',
+  `name` varchar(25) NOT NULL default '',
+  `term` varchar(20) NOT NULL default '',
+  `poster_id` int(11) NOT NULL default '0',
+  `hits` bigint(20) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Sections of pictures';
+
+--
+-- Table structure for table `comments`
+--
+
+DROP TABLE IF EXISTS `comments`;
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL auto_increment,
+  `photo_id` int(11) NOT NULL,
+  `username` varchar(30) NOT NULL,
+  `user_ip` varchar(16) NOT NULL,
+  `comment` varchar(255) NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `id` (`photo_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `logs`
+--
+
+DROP TABLE IF EXISTS `logs`;
+CREATE TABLE `logs` (
+  `id` int(11) NOT NULL auto_increment,
+  `record_type` enum('album','photo','preference','user') NOT NULL default 'album',
+  `record_id` int(11) NOT NULL default '0',
+  `value_field` varchar(40) NOT NULL default '',
+  `value_old` text NOT NULL,
+  `value_new` text NOT NULL,
+  `user_name` varchar(30) NOT NULL default '',
+  `user_ip` varchar(16) NOT NULL default '',
+  `user_date` date NOT NULL default '0000-00-00',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Logs modifications to the system';
+
+--
+-- Table structure for table `photos`
+--
+
+DROP TABLE IF EXISTS `photos`;
+CREATE TABLE `photos` (
+  `id` int(11) NOT NULL auto_increment,
+  `filename` varchar(255) NOT NULL,
+  `path` varchar(255) NOT NULL default '',
+  `description` varchar(255) NOT NULL default '',
+  `username` varchar(30) default NULL,
+  `status` int(11) NOT NULL default '0',
+  `flag` enum('indecent','photography','subject','bracketing') default NULL,
+  `width` int(11) NOT NULL default '0',
+  `height` int(11) NOT NULL default '0',
+  `tn_width` int(11) NOT NULL default '0',
+  `tn_height` int(11) NOT NULL default '0',
+  `hits` bigint(20) NOT NULL default '0',
+  `created` date default NULL,
+  `fsize` int(11) NOT NULL default '0',
+  `modified` int(1) default NULL,
+  `mtime` int(11) default NULL,
+  `keywords` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  KEY `fingerprint` (`filename`,`fsize`),
+  FULLTEXT KEY `description` (`description`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Photos and their descriptions';
+
+--
+-- Table structure for table `preferences`
+--
+
+DROP TABLE IF EXISTS `preferences`;
+CREATE TABLE `preferences` (
+  `prefmodule` varchar(64) NOT NULL default 'core',
+  `prefkey` varchar(64) NOT NULL default '',
+  `prefvalue` varchar(255) NOT NULL default '',
+  `prefdefault` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`prefmodule`,`prefkey`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `ratings`
+--
+
+DROP TABLE IF EXISTS `ratings`;
+CREATE TABLE `ratings` (
+  `id` int(11) NOT NULL,
+  `username` varchar(30) default NULL,
+  `user_ip` varchar(16) NOT NULL,
+  `rating` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  UNIQUE KEY `id_3` (`id`,`username`,`user_ip`),
+  KEY `id` (`id`),
+  KEY `id_2` (`id`,`username`,`user_ip`),
+  KEY `id_4` (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `test`
+--
+
+DROP TABLE IF EXISTS `test`;
+CREATE TABLE `test` (
+  `id` int(11) NOT NULL default '0',
+  `rec` int(11) NOT NULL default '0'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `username` varchar(30) NOT NULL default '',
+  `password` varchar(64) NOT NULL default '',
+  `auth` int(11) NOT NULL default '0',
+  `cookie` varchar(64) NOT NULL default '',
+  `last_online` date NOT NULL default '0000-00-00',
+  `last_ip` varchar(20) default NULL,
+  `email` varchar(80) default NULL,
+  PRIMARY KEY  (`username`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Users of the system';
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+

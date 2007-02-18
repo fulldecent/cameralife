@@ -1,0 +1,27 @@
+body {width: 700px; margin-left: auto; margin-right: auto}
+
+h1 { border: 2px solid black; background: #eeeeee; }
+
+h2 { border: 1px solid black; background: #eeeeee; }
+
+.pagelink img { border: 2px solid #777; }
+
+.pagelink:hover img { border: 2px solid black; }
+
+pre.code
+{
+  margin: 1em 6em 1em 6em;
+  border: 1px solid #888888;
+  background: $dddddd;
+  font-size: small;
+}
+
+p.important
+{
+  border: 1px solid gray;
+  background: yellow;
+  color: black;
+  font-weight: bold;
+  padding: 1em;
+  text-align: center;
+}
