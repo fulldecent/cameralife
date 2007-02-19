@@ -38,7 +38,7 @@
 
   $cameralife->Theme->TitleBar($album->Get('name'),
                                'album',
-                               '('.$counts['photos'].') total photos)',
+                               '('.$counts['photos'].' total photos)',
                                $menu);
 
   if ($_GET['edit'] && $cameralife->Security->authorize('admin_albums'))
