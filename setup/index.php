@@ -107,7 +107,7 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
                 is not writable by the webserver. If you fix this, setup will be faster, otherwise, 
                 you will need to edit this file manually later.";
         }
-        elseif(file_exists('../.htaccess'))
+        elseif(!file_exists('../.htaccess'))
         {
           echo "<font color=orange>Error</font>
                 <tr><td colspan=2><p class='important'>You are missing the file <b>.htaccess</b> from the
