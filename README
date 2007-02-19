@@ -1,9 +1,9 @@
 *
 * Camera Life
-* Version 2.6.0 - 2006-08-01
+* Version 2.6.0 - 2007-02-08
 * http://fdcl.sourceforge.net
 *
-* Copyright (C) 2001-2006 Will Entriken "Full Decent" <cameralife@phor.net>
+* Copyright (C) 2001-2007 Will Entriken "Full Decent" <cameralife@phor.net>
 *
 * Camera Life is released under the terms of the GNU General Public 
 * License as published by the Free Software Foundation; either version 2 
@@ -47,17 +47,15 @@ II FEATURES
    photo descriptions, you can easily rollback changes in the event of 
    defacement. (Administer::Log Viewer)
 
- E Themes
+ E Extensible
 
-   You can easily change the look of the entire site by choosing a different
-   theme (Administer:Customize:Themes). Additional themes can be downlaoded 
-   from http://fdcl.sourceforge.net
+   You can easily add themes or iconset to your site, or integrate with your
+   existing CMS or template system.
 
- F Modules
+ F Web 2.0
 
-   Most of the features are in modules, which can be replaced to easily 
-   intregrate with your own site or CMS, also new functionality can be 
-   dropped in.
+   Camera Life supports microformats and rss and some of the interface is
+   done with AJAX.
 
 
 III INSTALLATION
@@ -75,19 +73,20 @@ IV MAITENANCE
 
  A Administer
 
-   Regularly click Administer at the top of the main page. Items that require
-   attention will be noted in red.
+   Regularly login as admin and click Administer at the top of the main page. 
+   Items that require attention will be noted in red.
 
  B Add Albums
 
    To create new Albums, login and choose Create Album from the front page.
 
 
-V QUIRKS, BUGS
+V BUGS
 
  A Bugs
 
-    Mail 'em to me cameralife AT phor.net (start subject with "CAMERALIFE-BUGS:")
+    Mail 'em to us at cameralife@phor.net. Please begin your subject with:
+    "CAMERALIFE-BUGS:".
 
 
 Thank you for choosing Camera Life for your photo displaying needs!
