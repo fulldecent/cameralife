@@ -3,7 +3,7 @@
 
   $features=array('database','theme','security');
   require "../../../main.inc";
-  $base_url = dirname(dirname(dirname($base_url)));
+  $cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
 
   $cameralife->Security->authorize('admin_customize', 1); //require
 
@@ -71,11 +71,9 @@
 
 <?php
   $menu = array();
-  $menu[] = array("name"=>$cameralife->preferences['core']['siteabbr'],
-                  "href"=>"$base_url/index.php",
-                  'image'=>'small-main');
+  $menu[] = $cameralife->GetSmallIcon();
   $menu[] = array("name"=>"Administration",
-                  "href"=>"$base_url/admin/index.php",
+                  "href"=>$cameralife->base_url.'/admin/index.php',
                   'image'=>'small-admin');
 
   $cameralife->Theme->TitleBar("User Manager",
