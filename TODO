@@ -7,6 +7,7 @@ mv setup -> modules
 * rss for comments
 * Interface instead of classes where appropriate, (requires PHP5)
 * Move Update Database functionality into Path.class.inc
+  - automatic updates
 * grep upgrade hack
 
 -- Showstoppers (before you release) --

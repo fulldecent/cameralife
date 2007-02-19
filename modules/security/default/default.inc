@@ -151,7 +151,7 @@
         else
         {
           $error.= "<p>You are not logged in.</p>\n";
-          $error.= "<p>You may attempt to <a href='$base_url/login.php'>log in here,</a>\n";
+          $error.= "<p>You may attempt to <a href='".$cameralife->base_url."/login.php'>log in here,</a>\n";
           $error.= "<p>Do you have cookies disabled?</p>\n";
         }
         $cameralife->Error($error);
