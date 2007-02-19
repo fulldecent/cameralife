@@ -28,7 +28,7 @@ div.context         { padding: 0 0 0 1em }
 div.context2        { padding: 0 0 0.5em 1em; font-style: italic}
 
 /* used in TitleBar */
-div#titlebar        { position:absolute; left:0; top: 0; width:20%; height:100%; background: #ddd}
+div#titlebar        { position:fixed; left:0; top: 0; width:20%; height:100%; background: #ddd; }
 h1#title         { font-size: x-large; border-bottom: 1px solid #778; font-variant: small-caps}
 font#titlebar-caption { font-size: x-small; }
 div#titlebar ul      { font-size: small; padding:0; text-align: left; margin:0}
