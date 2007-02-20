@@ -52,7 +52,7 @@ class Stats
     if (empty($this->counts))
       $this->GetCounts();
 
-    $funfacts[] = 'If these photos were taken with a film camera, they would have used '.(round($this->counts['photos'] / 24), 0).' rolls of film.';
+    $funfacts[] = 'If these photos were taken with a film camera, they would have used '.(round($this->counts['photos'] / 24, 0)).' rolls of film.';
     $funfacts[] = 'If the photos were layed on a football field, they would go up to the '.
                   '<b>'.(round($this->counts['pixels'] / 358318080,2)).'</b> yard line.';
                   # 358318080 = 160ft * 1 yd * 3ft/yd * 144 in^2/ft^2 * 5184 px^2/in^2
