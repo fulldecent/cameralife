@@ -64,7 +64,7 @@
       {
         $percent = $album->Get('hits') * 100 / $popular_albums[0]->Get('hits');
         echo "<li><div class='bar' style='width: ${percent}px; margin-right:".(20+100-$percent)."px'></div>";
-        echo "<a href=\"photo.php&#63;id=".$album->Get('id').'">&quot;'.$album->Get('name')."&quot;</a>\n";
+        echo "<a href=\"album.php&#63;id=".$album->Get('id').'">&quot;'.$album->Get('name')."&quot;</a>\n";
         echo "<font size=\"-2\">(".$album->Get('hits').")</font>\n";
       }
   }
