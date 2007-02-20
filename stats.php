@@ -77,7 +77,7 @@
 
 <?php $cameralife->Theme->Section('Fun Facts (reload for more)'); ?>
   <ul>
-    <li><?= $cameralife->preferences['core']['sitename'] ?> has been online since <?= $cameralife->preferences['core']['sitedate'] ?> (<b><?= $counts['daysonline'] ?> days</b>)
+    <li><?= $cameralife->preferences['core']['sitename'] ?> has been online since <?= $cameralife->preferences['core']['sitedate'] ?> (<b><?= $counts['daysonline'] ?> days</b>).
   </ul>
   <ul>
 <?php
