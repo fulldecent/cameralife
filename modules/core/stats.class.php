@@ -52,7 +52,8 @@ class Stats
     if (empty($this->counts))
       $this->GetCounts();
 
-    $funfacts[] = 'If these photos were taken with a film camera, they would have used <strong>'.(round($this->counts['photos'] / 24, 0)).'</strong> rolls of film.';
+    $funfacts[] = 'If these photos were taken with a film camera, they would have used <strong>'.
+                  (round($this->counts['photos'] / 24, 0)).'</strong> rolls of film.';
     $funfacts[] = 'If the photos were layed on a football field, they would go up to the '.
                   '<strong>'.(round($this->counts['pixels'] / 358318080,2)).'</strong> yard line.';
                   # 358318080 = 160ft * 1 yd * 3ft/yd * 144 in^2/ft^2 * 5184 px^2/in^2
@@ -79,7 +80,6 @@ class Stats
                   # Model General Electric GTS18FBSWW
     $funfacts[] = 'Postage for mailing a photo here to each of your friends (like you have that many) will cost '.
                   '<strong>$'.(round ($this->counts['photos'] * 0.39, 2)).'</strong>.';
-                  # Model General Electric GTS18FBSWW
     return $funfacts;
   }
 }
