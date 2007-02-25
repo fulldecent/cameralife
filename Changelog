@@ -1,6 +1,6 @@
 2.6.0  Will Entriken <cameralife AT phor.net>
 * Support for Gallery Remote API (upload from iPhoto, DigiKam, ...)
-* Microformats, RSS feeds
+* Microformats, RSS feeds, Sitemaps
 * Allow multiple photos with same file name!
 * Photo keywords with delicious-like keyword editor!
 * Checkpoints allow you to review and approve changes to the site
