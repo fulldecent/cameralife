@@ -9,6 +9,7 @@ mv setup -> modules
 * Move Update Database functionality into Path.class.inc
   - automatic updates
 * grep upgrade hack
+* reply with HTTP/1.0 410 Gone if appropriate
 
 -- Showstoppers (before you release) --
 * grep -r TODO .

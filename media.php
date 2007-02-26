@@ -39,7 +39,7 @@
   }
 
   header('Content-type: image/jpeg');
-  header('Content-Disposition: inline; filename='.htmlentities($photo->Get('description')).'.jpg');
+  header('Content-Disposition: inline; filename="'.htmlentities($photo->Get('description')).'.jpg";');
 # header('Cache-Control: '.($photo['status'] > 0) ? 'private' : 'public');
   header('Content-Length: '.filesize($file));
 #  header('Date: '.filemtime($file));
