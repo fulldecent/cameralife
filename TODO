@@ -45,6 +45,8 @@ mv setup -> modules
   - in photo.class.php, suffix each asset: 23496_480.jpg, 28762_150.jpg photoid_scalesize.jpg
 * use posix-compliant pathname and a way to upgrade you db
  - benefits?
+* Move theme preferences our of ['core']
+
 
 ? logs.value_old is techically unnecessary
 * Enumerate the photos.status

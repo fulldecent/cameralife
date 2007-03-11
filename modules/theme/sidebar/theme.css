@@ -22,7 +22,7 @@ a:hover             { text-decoration: underline}
 
 /* Used throughout */
 .alert              { color: red; }
-.administrative     { border: 2px solid rgb(200,0,0); margin: 5px  }
+.administrative     { border: 2px solid rgb(200,0,0); margin: 0.5em; padding: 0.5em;  }
 .info               { font-style: italic; } /* Used to provide help */
 div.context         { padding: 0 0 0 1em }
 div.context2        { padding: 0 0 0.5em 1em; font-style: italic}

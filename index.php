@@ -20,6 +20,7 @@
   } ?>
   <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
   <link rel="alternate" type="application/rss+xml" title="RSS feed of <?= $cameralife->preferences['core']['sitename'] ?>" href="rss.php&#63;q="/>
+  <link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml" title="<?= $cameralife->preferences['core']['sitename'] ?> search" />
 </head>
 <body>
 <?php
@@ -63,6 +64,11 @@
                                FALSE,
                                $menu);
 
+  $search = new Search('');
+  $counts = $search->GetCounts();
+  if ($counts['photos'] == 0) 
+    echo '<div class="administrative">Camera Life has been successfully installed on this site. There are currently no photos on this site. For more information on setting up this site and adding photos, see <a href="setup/index3.php"><strong>the Setup page</strong></a>.</div>';
+
   if ($cameralife->preferences['core']['main_thumbnails']) 
   {
     $sections[] = array('name'=>'Random Photos',
@@ -82,7 +88,6 @@
 
     list($sort,$type) = explode('-', $_GET['page']);
 
-    $search = new Search('');
     $search->SetPage(0, $cameralife->preferences['core']['main_thumbnails_n']);
     $search->SetSort($sort);
 
