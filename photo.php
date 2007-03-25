@@ -225,7 +225,7 @@
     <div style="<?=($_GET['action'] == 'modify')?'':'display:none'?>"class="administrative" align=center id="modify">
       <form action="photo_controller.php" method="POST">
       Rotate: <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-      <input type="hidden" name="target" value="<?= $cameralife->base_url.'/'.$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'] ?>" />
+      <input type="hidden" name="target" value="<?= $cameralife->base_url.'/'.basename($_SERVER['PHP_SELF']).'?'.$_SERVER['QUERY_STRING'] ?>" />
       <input type="hidden" name="action" value="rotate" />
         <input type="submit" name="param1" value="Rotate Counter-Clockwise">
         <input type="submit" name="param1" value="Rotate Clockwise">
@@ -233,14 +233,14 @@
 
       <form action="photo_controller.php" method="POST">
       Revert: <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-      <input type="hidden" name="target" value="<?= $cameralife->base_url.'/'.$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'] ?>" />
+      <input type="hidden" name="target" value="<?= $cameralife->base_url.'/'.basename($_SERVER['PHP_SELF']).'?'.$_SERVER['QUERY_STRING'] ?>" />
       <input type="hidden" name="action" value="revert" />
         <input type="submit" name="param1" value="Revert">
       </form>
 
       <form action="photo_controller.php" method="POST">
       Regenerate Thumbnail: <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-      <input type="hidden" name="target" value="<?= $cameralife->base_url.'/'.$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'] ?>" />
+      <input type="hidden" name="target" value="<?= $cameralife->base_url.'/'.basename($_SERVER['PHP_SELF']).'?'.$_SERVER['QUERY_STRING'] ?>" />
       <input type="hidden" name="action" value="rethumb" />
         <input type="submit" name="param1" value="Regenerate Thumbnail">
       </form>
@@ -321,7 +321,7 @@
     <td width="49%">
     <form action="photo_controller.php" method=POST name="form">
     <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
-    <input type="hidden" name="target" value="<?= $cameralife->bae_url.'/'.$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'] ?>">
+    <input type="hidden" name="target" value="<?= $cameralife->base_url.'/'.basename($_SERVER['PHP_SELF']).'?'.$_SERVER['QUERY_STRING'] ?>">
     <input type="hidden" name="action" value="rate">
       <?php 
         $cameralife->Theme->Section('Feedback'); 
@@ -329,7 +329,6 @@
   echo "My rating:\n";
   $unlit = $cameralife->Theme->ImageUrl('unlit');
   $lit = $cameralife->Theme->ImageUrl('lit');
-
 
   echo "<span id=\"rating\">";
   for ($i=1;$i<=5;$i++)
@@ -340,7 +339,6 @@
     $img = "<img id=\"rate$i\" src=\"$imgsrc\" alt=\"star\">";
  
     echo "<button name=\"param1\" value=\"$i\" type=\"submit\" onmouseover=\"overstar($i)\" onmouseout=\"nostar()\" $style>$img</button>";
-
   }
   if ($rating == 5)
     echo "(saved in my favorite photos)";
@@ -358,7 +356,7 @@ echo "<strong>".$comment['username']."</strong> <em>" . $comment['date']."</em><
 
 <form action="photo_controller.php" method=POST name="form">
 <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
-<input type="hidden" name="target" value="<?= $cameralife->base_url.'/'.$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'] ?>">
+<input type="hidden" name="target" value="<?= $cameralife->base_url.'/'.basename($_SERVER['PHP_SELF']).'?'.$_SERVER['QUERY_STRING'] ?>">
 <input type="hidden" name="action" value="comment">
 <input name="param1">
 <input type="submit" value="Post comment">

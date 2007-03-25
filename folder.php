@@ -32,9 +32,10 @@ $menu = array();
   $menu[] = array('name'=>$cameralife->preferences['core']['siteabbr'],
                   'href'=>'index.php',
                   'image'=>'small-main');
-  $menu[] = array('name'=>'Search for '.basename($_GET['path']),
-                  'href'=>'search.php&#63;q='.basename($_GET['path']),
-                  'image'=>'small-search');
+  if ($folder->Path())
+    $menu[] = array('name'=>'Search for '.basename($folder->Path()),
+                    'href'=>'search.php&#63;q='.basename($folder->Path()),
+                    'image'=>'small-search');
   if (strlen(dirname($_GET['path'])) > 1)
   {
     foreach (explode("/",dirname($_GET["path"])) as $dir)
@@ -49,12 +50,11 @@ $menu = array();
   }
   if ($cameralife->Security->Authorize('admin_file'))
     $menu[] = array('name'=>'Upload photo here',
-                    'href'=>'upload.php&#63;path='.$_GET['path'],
+                    'href'=>'upload.php&#63;path='.$folder->Path(),
                     'image'=>'small-main');
   
-  $folder_name = basename($_GET['path']);
-  if (strlen($folder_name) == 0)
-    $folder_name="(Top Level)";
+  $folder_name = basename($folder->Path) 
+    or $folder_name = '(Top Level)';
   $cameralife->Theme->TitleBar($folder_name,
                                'folder',
                                FALSE,
@@ -100,5 +100,3 @@ $menu = array();
 </form>
 </body>
 </html>
-
-

@@ -80,9 +80,7 @@ class Photo
 
     // upgrade hack
     if ($this->record['modified'] && !file_exists($origphotopath) && file_exists('images/modified/'.$this->record['id'].'.jpg'))
-    {
       rename('images/modified/'.$this->record['id'].'.jpg',$origphotopath);
-    }
 
     $this->record['mtime'] = filemtime($origphotopath);
 
@@ -116,7 +114,7 @@ class Photo
     if (!file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_600.jpg') ||
         !file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_150.jpg') ||
         $this->record['modified'] && !file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.jpg'))
-    // the last a && b is part of the upgrade hack
+    // the last a && b is part of the upgrade hack, since the modified files moved
     {
         $this->GenerateThumbnail();
         return 1;
@@ -134,7 +132,7 @@ class Photo
 
     $this->image->Save($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.jpg');
     $this->record['modified'] = 1;
-
+//TODO is this necessary?
     $this->GenerateThumbnail();
   }
 
@@ -147,9 +145,20 @@ class Photo
       unlink($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.jpg');
       $this->record['modified'] = 0;
     }
-    $this->GenerateThumbnail();
-  }
 
+    if (file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_600.jpg'))
+      unlink($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_600.jpg');
+    if (file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_150.jpg'))
+      unlink($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_150.jpg');
+
+    $this->record['width'] = '';
+    $this->record['height'] = '';
+    $this->record['tn_width'] = '';
+    $this->record['tn_height'] = '';
+
+    $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
+  }
+ 
   function Erase()
   {
     global $cameralife;

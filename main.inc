@@ -1,5 +1,5 @@
 <?php
-#if ($_SERVER['REMOTE_ADDR'] != '71.225.133.122')
+#if (strpos($_SERVER['REMOTE_ADDR'], '192.168') === false)
 #die('site down 4 maintenance');
 
   // Is this the first run?
