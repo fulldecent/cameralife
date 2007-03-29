@@ -25,9 +25,7 @@
 
 <?php
   $menu = array();
-  $menu[] = array("name"=>$cameralife->preferences['core']['siteabbr'],
-                  "href"=>"../index.php",
-                  'image'=>'small-main');
+  $menu[] = $cameralife->GetSmallIcon();
   $menu[] = array("name"=>"Stats",
                   "href"=>"../stats.php",
                   'image'=>'small-main');

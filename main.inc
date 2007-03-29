@@ -144,7 +144,7 @@
     function GetSmallIcon()
     {
       return array("name"=>$this->preferences['core']['siteabbr'],
-                   "href"=>'index.php',
+                   "href"=>$this->base_url.'/index.php',
                    'image'=>'small-main',
                    'rel'=>'home');
     }

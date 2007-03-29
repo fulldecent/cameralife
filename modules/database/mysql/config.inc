@@ -1,7 +1,7 @@
 <?php
 $db_host = 'localhost';
-$db_name = 'cameralife';
-$db_user = 'root';
-$db_pass = 'root';
+$db_name = 'fdcl';
+$db_user = 'cameralifeuser';
+$db_pass = 'password';
 $db_prefix = '';
 ?>
