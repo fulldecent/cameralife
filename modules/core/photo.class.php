@@ -172,6 +172,8 @@ class Photo
     unlink ($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_600.jpg');
     $cameralife->Database->Delete('photos','id='.$this->record['id']);
     $cameralife->Database->Delete('logs',"record_type='photo' AND record_id=".$this->record['id']);
+    $cameralife->Database->Delete('rating',"id=".$this->record['id']);
+    $cameralife->Database->Delete('comments',"photo_id=".$this->record['id']);
   }
 
   function Destroy()

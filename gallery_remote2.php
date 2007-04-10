@@ -15,6 +15,11 @@
     exit(0);
   }
 
+  function mkdir_p($path)
+  {
+    return is_dir($path) || mkdir_p(dirname($path)) && mkdir($path);
+  }
+
   # hoping noone uses that string normally
   function escapeforgr($string)
   {
@@ -233,9 +238,8 @@ fclose($fd);*/
 
       if (!file_exists($cameralife->preferences['core']['photo_dir'].'/'.$path))
       {
-//todo use a mkdir_p
-        mkdir($cameralife->preferences['core']['photo_dir'].'/'.$path)
-            or $error = "The selected upload directory doesn't exist and could not be created.";
+        mkdir_p($cameralife->preferences['core']['photo_dir'].'/'.$path)
+          or $error = "The selected upload directory doesn't exist and could not be created.";
       }
 
       if (!is_writable($cameralife->preferences['core']['photo_dir'].'/'.$path))
