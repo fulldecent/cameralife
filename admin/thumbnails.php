@@ -48,7 +48,7 @@
   $todo = $cameralife->Database->SelectOne('photos', 'count(*)', "id > $lastdone");
   $timeleft = round((time()-$starttime) * $todo / ($numdone + $done/500 + 1) / 60, 0);
 
-  echo 'We are now optimizing thumbnails. If a user tries to view a photo whos thumbnail is not optimized, there will be a small delay. You do not need to do this process if you are impatient.';
+  echo 'We are now caching thumbnails. Thumbnails are also cached the first time any user views a photo. Caching ithem now avoids that small delay for the user. This process is not necessary if you are impatient.';
   echo "<h3>Progress: $done of $total done (about $timeleft minutes left)</h3>\n";
   echo "<div style='width: 500px; background: #fff; border: 1px solid black; padding: 2px; margin:2em'>";
   echo "<div style='height: 25px; background: #347 url(".$cameralife->Theme->ImageURL('progress').") repeat-x; width:".($done/$total*100)."%'></div>";
@@ -64,7 +64,7 @@
     flush();
     if ($curphoto->CheckThumbnail())
     {
-      echo "Upating #".$next['id']."<br>\n";
+      echo "Updating #".$next['id']."<br>\n";
       $fixed++;
     }
     $curphoto->Destroy();
@@ -72,9 +72,8 @@
   }
 
   $numdone += $fixed;
-  echo "Fixed: $fixed photos.<br>\n";
-  echo "Continue: <a href='?lastdone=$lastdone'>Continue</a><br>\n";
+  //echo "Fixed: $fixed photos.<br>\n";
+  //echo "Continue: <a href='?lastdone=$lastdone'>Continue</a><br>\n";
   echo "<script language='javascript'>window.location='thumbnails.php?lastdone=$lastdone&starttime=$starttime&numdone=$numdone'</script>" ;
-
 
 ?>

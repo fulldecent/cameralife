@@ -82,6 +82,12 @@ class Photo
     if ($this->record['modified'] && !file_exists($origphotopath) && file_exists('images/modified/'.$this->record['id'].'.jpg'))
       rename('images/modified/'.$this->record['id'].'.jpg',$origphotopath);
 
+    if ($this->record['modified'] && !file_exists($origphotopath))
+    {
+      $this->Revert();
+      $origphotopath = $cameralife->preferences['core']['photo_dir'].'/'.$this->record['path'].$this->record['filename'];
+    }
+
     $this->record['mtime'] = filemtime($origphotopath);
 
     if (isset($this->image)) return;
@@ -142,7 +148,8 @@ class Photo
 
     if ($this->record['modified'] == 1)
     {
-      unlink($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.jpg');
+      if (file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.jpg'));
+        unlink($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.jpg');
       $this->record['modified'] = 0;
     }
 
@@ -164,16 +171,25 @@ class Photo
     global $cameralife;
 
     $this->Destroy();
-    rename ($cameralife->preferences['core']['photo_dir'].'/'.$this->record['path'].$this->record['filename'],
-            $cameralife->preferences['core']['deleted_dir'].'/'.$this->record['filename']);
-    if ($this->record['modified'] == 1)
+    if (file_exists($cameralife->preferences['core']['photo_dir'].'/'.$this->record['path'].$this->record['filename']))
+      rename ($cameralife->preferences['core']['photo_dir'].'/'.$this->record['path'].$this->record['filename'],
+              $cameralife->preferences['core']['deleted_dir'].'/'.$this->record['filename']);
+    if (file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.jpg'))
       unlink($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.jpg');
-    unlink ($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_150.jpg');
-    unlink ($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_600.jpg');
+    if (file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_150.jpg'))
+      unlink ($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_150.jpg');
+    if (file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_600.jpg'))
+      unlink ($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_600.jpg');
     $cameralife->Database->Delete('photos','id='.$this->record['id']);
     $cameralife->Database->Delete('logs',"record_type='photo' AND record_id=".$this->record['id']);
-    $cameralife->Database->Delete('rating',"id=".$this->record['id']);
+    $cameralife->Database->Delete('ratings',"id=".$this->record['id']);
     $cameralife->Database->Delete('comments',"photo_id=".$this->record['id']);
+
+    # Bonus code
+    $fh = fopen($cameralife->preferences['core']['deleted_dir'].'/deleted.log', 'a')
+      or $cameralife->Error("Can't open ".$cameralife->preferences['core']['deleted_dir'].'deleted.log');
+    fwrite($fh, date('Y-m-d H:i:s')."\t".$this->record['path'].$this->record['filename']."\n");
+    fclose($fh);
   }
 
   function Destroy()
