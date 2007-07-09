@@ -2,11 +2,12 @@
 * Support for Gallery Remote API (upload from iPhoto, DigiKam, ...)
 * Microformats, Sitemaps, OpenSearch
 * RSS feeds, supports iPhoto photocasting
-* Allow multiple photos with same file name!
 * Photo keywords with delicious-like keyword editor!
 * Checkpoints allow you to review and approve changes to the site
 * Comments and ratings
+* Order prints online
 
+* Allow multiple photos with same file name!
 * Photos may be in a directory not accessible from the web
 * More fun stats
 * Huge changes under the hood (V4 -> V8 engine)

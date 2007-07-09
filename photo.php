@@ -67,6 +67,15 @@
                     'image'=>'small-album',
                     'section'=>'Tasks');
   }
+  if ($photo->Get('status') == 0)
+  {
+    $menu[] = array('name'=>'Order prints',
+                    'href'=>$_SERVER['PHP_SELF']."&#63;id=".$photo->Get('id')."&amp;referer=".urlencode($_SERVER['HTTP_REFERER'])."&amp;action=print",
+                    'image'=>'small-admin',
+                    'section'=>'Tasks',
+                    'onclick'=>"document.getElementById('print').style.display='';return false");
+  }
+
 
   $context = $photo->GetRelated();
   foreach ($context as $icon)
@@ -257,6 +266,30 @@
       Thank you for your contributions to <?= $cameralife->preferences['core']['sitename'] ?>, please consider
       <?php $cameralife->Theme->Image('small-login',array('align'=>'middle')) ?>
       <b><a href="login.php">registering or logging in</a></b>.
+    </div>
+<?php
+  }
+  if ($photo->Get('status') == 0 && $_GET['action'] == 'print')
+  {
+?>
+    <div class="administrative" align=center>
+    <form action="http://www.digibug.com/dapi/order.php" method="post">
+    <p>You can order prints of this photo from the Camera Life store.</p>
+      <input type="hidden" name="digibug_api_version" value="100">
+      <input type="hidden" name="company_id" value="1941">
+      <input type="hidden" name="event_id" value="5755">
+      <input type="hidden" name="cmd" value="addimg">
+      <input type="hidden" name="return_url" value="<?= $cameralife->base_url.'/photo.php&#63;id='.$photo->Get('id')."&amp;referer=".urlencode($_SERVER['HTTP_REFERER']) ?>">
+      <input type="hidden" name="num_images" value="2">
+      <input type="hidden" name="image_1" value="<?= $cameralife->base_url.'/'.$photo->GetMedia('photo') ?>">
+      <input type="hidden" name="image_height_1" value="<?= $photo->Get('height') ?>">
+      <input type="hidden" name="image_width_1" value="<?= $photo->Get('width') ?>">
+      <input type="hidden" name="thumb_1" value="<?= $cameralife->base_url.'/'.$photo->GetMedia() ?>">
+      <input type="hidden" name="thumb_height_1" value="<?= $photo->Get('tn_height') ?>">
+      <input type="hidden" name="thumb_width_1" value="<?= $photo->Get('tn_width') ?>">
+      <input type="hidden" name="title_1" value="<?= $photo->Get('description') ?>">
+      <input type="submit" value="Order">
+    </form>
     </div>
 <?php
   }

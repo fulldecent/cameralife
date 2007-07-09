@@ -45,7 +45,7 @@
       if (strlen($condition) == 0) $condition = '1';
 
       $sql = "SELECT $selection FROM ".$this->myPrefix."$table WHERE $condition $extra";
-    
+
       $query = mysql_query($sql, $this->myConnection)
         or die (mysql_error().' SQL: '.$sql);
       return mysql_result($query, 0);
