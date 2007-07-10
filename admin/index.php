@@ -43,6 +43,20 @@
     echo "<tr><td>&nbsp;\n<tr>\n<td colspan=2>";
     $cameralife->Theme->Section('Customize','customize.php','admin-item');
     echo "Customize the theme and choose paths\n";
+
+    # Upgrade hack
+    if (is_dir($cameralife->base_dir."/images/scaled/")) 
+    {
+      echo "<br><font class=\"alert\">Note: images/scaled is no longer used, scaled photos now go in your \"Automatically cached photos\" folder.</font>";
+    }
+    if (is_dir($cameralife->base_dir."/images/thumbnail/")) 
+    {
+      echo "<br><font class=\"alert\">Note: images/thumbnail is no longer used, thumbnails now go in your \"Automatically cached photos\" folder.</font>";
+    }
+    if (is_dir($cameralife->base_dir."/images/modified/")) 
+    {
+      echo "<br><font class=\"alert\">Note: images/modified is no longer used, modified photos now go in your \"Automatically cached photos\" folder. Make sure you Update Your Database first (in File Manager), so your modified files are copied over.</font>";
+    }
   }
 
   if ($cameralife->Security->authorize('admin_customize') && $cameralife->Security->AdministerURL())

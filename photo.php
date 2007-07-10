@@ -72,8 +72,7 @@
     $menu[] = array('name'=>'Order prints',
                     'href'=>$_SERVER['PHP_SELF']."&#63;id=".$photo->Get('id')."&amp;referer=".urlencode($_SERVER['HTTP_REFERER'])."&amp;action=print",
                     'image'=>'small-admin',
-                    'section'=>'Tasks',
-                    'onclick'=>"document.getElementById('print').style.display='';return false");
+                    'section'=>'Tasks');
   }
 
 
