@@ -71,9 +71,7 @@
 <?php
   $menu = array();
 
-  $icon = $cameralife->GetSmallIcon();
-  $icon['href'] = '../' . $icon['href'];
-  $menu[] = $icon;
+  $menu[] = $icon = $cameralife->GetSmallIcon();
 
   $menu[] = array("name"=>"Administration",
                   "href"=>"index.php",
