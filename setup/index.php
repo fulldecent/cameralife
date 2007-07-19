@@ -105,7 +105,7 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
           echo "<font color=orange>Warning</font>
                 <tr><td colspan=2><p class='important'>The file modules/database/mysql/config.inc 
                 is not writable by the webserver. If you fix this, setup will be faster, otherwise, 
-                you will need to edit this file manually later.";
+                you will need to edit this file manually later. <a href =\"index.php\">Check again</a>";
         }
         elseif(!file_exists('../.htaccess'))
         {
