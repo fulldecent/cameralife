@@ -38,6 +38,27 @@
                                FALSE,
                                $menu);
 
+  if (file_exists('../.svn'))
+  {
+    $svn = exec('svnversion '.$cameralife->base_dir);
+    if ($svn != 'not versioned')
+    {
+      echo "<p>You are running version <b>$svn</b> from svn.</p>";
+
+      if (!$_GET['svn'])
+      {
+        echo "<p><a href=\"?svn=yes\">Check for latest version</a>.</p>";
+      } 
+      else 
+      {
+        $newest = file_get_contents('http://fdcl.svn.sourceforge.net/svnroot/fdcl/');
+        ereg('Revision ([0-9]+):', $newest, $regs);
+        echo "<p>Latest is <b>".$regs[1]."</b>.</p>";
+      }
+    }
+  }
+
+
   if ($cameralife->Security->authorize('admin_customize'))
   {
     echo "<tr><td>&nbsp;\n<tr>\n<td colspan=2>";
