@@ -1,6 +1,6 @@
 <?php
   $required_images =
-    array('main','','topic','small-topic','album','small-album',
+    array('main','small-main','topic','small-topic','album','small-album',
           'photo','small-photo','folder','small-folder',
           'login','small-login','admin','small-admin','stats','',
           'admin-item','search','icon-folder');
@@ -18,7 +18,7 @@
   {
     $theme = $_GET['theme'];
 
-    $fd_image = opendir("$theme/images");
+    $fd_image = opendir("$theme");
     while ($image = readdir($fd_image))
     {
       if ($image[0] == '.' || strstr($image,'~'))
@@ -43,7 +43,7 @@
         sort($images[$image]);
 
         foreach($images[$image] as $suffix)
-          echo "$suffix<img src=\"$theme/images/$image.$suffix\"
+          echo "$suffix<img src=\"$theme/$image.$suffix\"
                 align=middle>&nbsp;&nbsp;&nbsp;";
       }
       else
@@ -71,7 +71,7 @@
         sort($images[$image]);
 
         foreach($images[$image] as $suffix)
-          echo "$suffix<img src=\"$theme/images/$image.$suffix\"
+          echo "$suffix<img src=\"$theme/$image.$suffix\"
                 align=middle>&nbsp;&nbsp;&nbsp;";
       }
     }

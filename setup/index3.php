@@ -8,9 +8,9 @@
 <h1>Post-install configuration</h1>
 
 <?php
-    if (file_exists('../notinstalled.txt'))
+    if (!file_exists('../modules/config.inc'))
     {
-      echo "<p class='important'>Delete the file notinstalled.txt, so your site will go live.</p>";
+      echo "<p class='important'>I can't find the file modules/config.inc, things are really gonna be messed up.</p>";
     }
 ?>
 <h2>Get your photos ready</h2>

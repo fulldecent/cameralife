@@ -3,8 +3,10 @@
 #die('site down 4 maintenance');
 
   // Is this the first run?
-  if (file_exists('notinstalled.txt'))
+  if (file_exists(dirname(__FILE__).'/modules/config.inc'))
   {
+    require(dirname(__FILE__).'/modules/config.inc');
+  } else {
     header('Location: http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']),'/').'/setup/');
     die('Redirecting to installer...');
   }
@@ -24,7 +26,7 @@
       $this->base_dir = dirname(__FILE__);
       $this->base_url = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']),'/');
 
-      $this->version = '2.6.0b3';
+      $this->version = '2.6.0';
       $this->RelativeInclude('modules/module.inc',1);
 
       // Load preferences
@@ -106,6 +108,7 @@
 
     function SavePreferences()
     {
+      // Upgrade hack
       if ($this->preferences['olddb'] == TRUE)
       {
         $sql = 'DROP TABLE `'.$this->Database->myPrefix.'preferences`';

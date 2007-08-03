@@ -37,7 +37,7 @@
   Add user to Db
   </pre>
 
-  <p>Note: If you setup Camera Life on a different system, please tell me about it at cameralife@phor.net</p>
+  <p>Note: If you setup Camera Life on a different system, please tell us about it at cameralife@phor.net</p>
 
   <h2>Initialize database</h2>
 
@@ -57,9 +57,9 @@
   </table>
 
 <?php
-    if (!is_writable('../modules/database/mysql/config.inc'))
+    if (!is_writable('../modules'))
     {
-      echo "<p class='important'>If you make the file modules/database/mysql/config.inc writable by your webserver, I can setup that file for you, otherwise you'll need to edit it later.</p>";
+      echo "<p class='important'>If you make the folder modules/ writable by your webserver, I can set up your configuration file for you, otherwise you'll need to edit it later.</p>";
     }
 ?>
   <center>
@@ -285,10 +285,10 @@
     $config[] = "\$db_prefix = '".$_POST['prefix']."';\n";
     $config[] = "?>\n";
 
-    if (is_writable('../modules/database/mysql/config.inc'))
+    if (is_writable('../modules'))
     {
-      $fd = fopen('../modules/database/mysql/config.inc','w')
-        or die('Cannot open common.php for writing');
+      $fd = fopen('../modules/config.inc','x')
+        or die('Cannot open ../modules/config.inc for writing');
       foreach ($config as $line)
         fwrite ($fd, $line);
       fclose($fd);
@@ -297,18 +297,12 @@
     }
     else
     {
-      echo "I cannot write your config file modules/database/mysql/config.inc ";
-      echo "Please copy this information to the file:<pre class='code'>";
+      echo "I cannot write your config file modules/config.inc ";
+      echo "Please create this file and paste in the following:<pre class='code'>";
       foreach ($config as $line)
         echo htmlentities($line) . "\n";
       echo "</pre>";
     }
-
-    if (file_exists('../notinstalled.txt'))
-    {
-      echo "<p class='important'>Delete the file notinstalled.txt, so your site will go live.</p>";
-    }
-
   ?>
 
   <p align=center>

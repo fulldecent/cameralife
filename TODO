@@ -1,6 +1,12 @@
 !=need to do, *=todo, ?=waste of time
 
-== Now stuff / Fun stuff ==
+== TODO for 2.6 final ==
+* grep -r TODO .
+! edit setup/install.mysql
+* database changes into setup
+* Increment version in main.inc
+
+-- Now stuff / Fun stuff --
 mv setup -> modules
 
 * rss for comments
@@ -11,11 +17,6 @@ mv setup -> modules
 * reply with HTTP/1.0 410 Gone if appropriate
 
 -- Showstoppers (before you release) --
-* grep -r TODO .
-! edit setup/install.mysql
-* database changes into setup
-* Increment version in main.inc
-
 
 -- Change theme engine --
 ! Make admin/*.php not use the Theme API

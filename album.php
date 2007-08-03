@@ -92,11 +92,10 @@
     <div class="administrative" align=center>
             The album <b><?= $album->Get('name') ?></b> will be represented by this photo 
 <?php
-/*    $cameralife->Database->SelectOne('photos','COUNT(*)','id='.$_GET['poster_id'])
-      or ERROR('The selected poster photo does not exist');
-    $album['poster_id'] = $_GET['poster_id'];
-    $cameralife->Database->Update('albums',$album,'id='.$album['id']);
-*/
+    $cameralife->Database->SelectOne('photos','COUNT(*)','id='.$_GET['poster_id'])
+      or $cameralife->Error('The selected poster photo does not exist', __FILE__, __LINE__);
+    $album->Set('poster_id', $_GET['poster_id']);
+
     echo '<img src="'.$album->GetPoster()->GetMedia().'" alt="Poster photo">';
     echo '</div>';
   }

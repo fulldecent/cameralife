@@ -117,7 +117,7 @@
                 value="<?= $cameralife->preferences['core']['photo_dir'] ?>">
     <tr>
       <td>
-        Automatically cached photos
+        Camera Life data directory
       <td>
         <input type=text name="cache_dir" size=30
                 value="<?= $cameralife->preferences['core']['cache_dir'] ?>">

@@ -42,8 +42,7 @@
      Click SQL on the top
      Browse for setup/install.mysql
 
-   Now edit modules/database/mysql/config.inc with the credentials you chose.
-   Delete or move notinstalled.txt
+   Now edit modules/config.inc with the credentials you chose.
 
    Point your web broswer to the site and register an account.
 
@@ -55,6 +54,6 @@
 
  D. Trouble
 
-   I would love to improve the program by hearing your feedback. Mail me 
+   We would love to improve the program by hearing your feedback. Mail us 
    at cameralife AT phor.net (start subject with "CAMERALIFE-BUGS:")
 

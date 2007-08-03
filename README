@@ -1,6 +1,6 @@
 *
 * Camera Life
-* Version 2.6.0 - 2007-02-08
+* Version 2.6.0 - 2007-07-07
 * http://fdcl.sourceforge.net
 *
 * Copyright (C) 2001-2007 Will Entriken "Full Decent" <cameralife AT phor.net>
@@ -22,17 +22,16 @@ II FEATURES
 
  A Self Updating
 
-   Camera Life will cache and thumbnail photos it finds in your photo 
-   directory automatically. Photos are automatically assorted into Albums based 
-   on their descriptions. You can allow anyone to update your site without 
-   fear of defacement.
+   Camera Life will automatically cache and thumbnail photos it finds in your
+   system. Photos are automatically assorted into Albums based on their
+   descriptions.
 
  B Photo Albums
 
-   In addition to viewing photos by file system hierarchy (files in folders), 
-   users may browse your site by Albums. An Album is a collection of like 
-   photos. Since the system knows which photos are related, it can suggest 
-   photos that a user may be interested in while they are browsing.
+   Users can browse your photos by file system hierarchy (files in folders),
+   or by Albums. An Album is a collection of photos containing a certain word
+   in their description. Since the system knows which photos are related, it 
+   can suggest photos that a user may be interested in while they are browsing.
 
  C Security
 
@@ -42,10 +41,9 @@ II FEATURES
 
  D Non-destructive
 
-   Changes that users can make to your site are all logged and undoable. If 
-   you would like to use an open access policy where anyone can contribute 
-   photo descriptions, you can easily rollback changes in the event of 
-   defacement. (Administer::Log Viewer)
+   Changes to your site are all logged and undoable. You can allow anyone to
+   contribute photo descriptions, and then easily rollback changes in the 
+   event of defacement. (Administer::Log Viewer)
 
  E Extensible
 
@@ -55,7 +53,7 @@ II FEATURES
  F Web 2.0
 
    Camera Life supports microformats and rss and some of the interface is
-   done with AJAX.
+   done with AJAX. It supports photocasting through an RSS feed.
 
 
 III INSTALLATION

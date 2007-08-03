@@ -1,5 +1,0 @@
-Delete this file when you finish installing.
-
-===============
-
-If a file named notinstalled.txt exists, Camera Life will run in setup mode.

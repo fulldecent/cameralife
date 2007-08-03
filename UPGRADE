@@ -1,9 +1,9 @@
 *
 * Camera Life
-* Version 2.6.0 - 2006-01-10
+* Version 2.6.0 - 2007-07-07
 * http://fdcl.sourceforge.net
 *
-* Copyright (C) 2001-2006 Will Entriken "Full Decent" <cameralife AT phor.net>
+* Copyright (C) 2001-2007 Will Entriken "Full Decent" <cameralife AT phor.net>
 *
 * UPGRADING Camera Life from any version
 *
@@ -14,7 +14,7 @@ Basically, it goes like this:
   * Look at your database structure
   * Look at the new database structure (in setup/install.mysql)
   * Update your tables to the new format.
-  * Paste this into modules/database/mysql/config.inc, making changes as necessary:
+  * Paste this into modules/config.inc, making changes as necessary:
 
     <?php
     $db_host = 'localhost';
@@ -37,7 +37,7 @@ Extra notes:
   finally got rid of that.
 
   In some older versions admin/.htaccess was used for security, that is no
-  longer necessary.
+  longer necessary. But you will want the new .htaccess in your root directory.
 
   Image sizes can now be null (lazy thumbnailing):)
   alter table photos change height height int(11);

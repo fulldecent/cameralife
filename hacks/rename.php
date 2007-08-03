@@ -1,7 +1,5 @@
 <?php
   # Admin tool to batch rename unnamed photos
-#TODO, integrate delicious js
-#STATUS!
 
   $features=array('database','theme','security','imageprocessing');
   require "../main.inc";

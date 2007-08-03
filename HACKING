@@ -1,18 +1,30 @@
-This page is for users and hackers interested in the future of Camera Life. We try to release a new version of Camera Life every couple of months. Here is some insight on the long term goals of the project.
+*
+* Camera Life
+* http://fdcl.sourceforge.net
+*
+* Hacker guide
+*
+* Here is information for people looking to contribute.
+*
 
-As the project is getting more mature, we are focusing some polished type of things. We are working on making the system more secure. The installation process has been getting better and that is good, expect better instructions and even smoother time in the future. It also seems good to switch to object oriented PHP to both support additional database backends and image libraries and to invite more hackers to get involved.
+Project goals:
+ - Release often
+ - Document code
+ - Polish the install process
+
+Strategic goals:
+ - Support new databases and image libraries
+ - Integrate with CMS's
+
+Cool stuff:
+ - We'd like to integrate with Picasa and Digikam
+ - Better photo modification
 
 Feedback, hints and a couple patches are always coming, which is great. In the future we are expecting to pick up some developers and crazy patch writes once this code gets easier to work with.
 
-Something else is integration. We're looking to find other open source projects that are actively developed to integrate with. I'm thinking about CMS's like cpanel PHPnuke and the like. Also integration with desktop applications like Picasa and Digikam.
-
-A couple features that are in the long term are actually modifying photos (help needed) to fill in the placeholder, this should come from somewhere else that has it figured out.
-
-I think all these goals will provide the inspiration to take this project forward in 2007 and provide a better solution for managing photo collections online.
+These goals should provide the inspiration to take this project forward into 2008 and provide a better solution for managing photo collections online.
 
 For more details, check the TODO file.
-
-Please send me an email if you need help reading this file - I do not do documentation.
 
 ========
 
@@ -32,7 +44,8 @@ Let's start from the UI down into the details...
 
 - The database functionality is delegated as a feature through CameraLife, and it is currently implemented by the MysqlDatabase class which lives in modules/database/mysql/mysql.inc
 
-= If you do any POST request, they generally go through a photo_controller.php or other controller, in an effort to separate form and function, also this will make it easier to switch to ajax in the future.
+= If you do any POST request, they generally go through a photo_controller.php or other controller, in an effort to separate form and function
+
 
 ==========
 

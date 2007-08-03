@@ -1,6 +1,11 @@
 <?php
   $version = '2.6.0b3';
   $continue = true;
+
+  if(file_exists('../modules/config.inc'))
+  {
+    die("Camera Life already appears to be set up, because modules/config.inc exists.");
+  }
 ?>
 <html>
 <head>
@@ -100,12 +105,12 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
       Checking package permissions...
     <td>
       <?php
-        if (!is_writable('../modules/database/mysql/config.inc'))
+        if (!is_writable('../modules/'))
         {
           echo "<font color=orange>Warning</font>
-                <tr><td colspan=2><p class='important'>The file modules/database/mysql/config.inc 
+                <tr><td colspan=2><p class='important'>The directory modules/  
                 is not writable by the webserver. If you fix this, setup will be faster, otherwise, 
-                you will need to edit this file manually later. <a href =\"index.php\">Check again</a>";
+                you will need to manually paste a file in there later. <a href =\"index.php\">Check again</a>";
         }
         elseif(!file_exists('../.htaccess'))
         {

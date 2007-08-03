@@ -13,6 +13,7 @@
 * Huge changes under the hood (V4 -> V8 engine)
 * Code is now in SVN
 * Photo thumbnails are not generated until needed
+* Security fixes to avoid DOS
 
 2.5.5  Will Entriken <cameralife AT phor.net>
 * Cleaned up administrative tasks
