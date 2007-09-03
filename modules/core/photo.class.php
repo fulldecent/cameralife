@@ -162,6 +162,7 @@ class Photo
     $this->record['height'] = '';
     $this->record['tn_width'] = '';
     $this->record['tn_height'] = '';
+    $this->record['fsize'] = filesize($cameralife->preferences['core']['photo_dir'].'/'.$this->record['path'].$this->record['filename']);
 
     $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
   }
@@ -205,7 +206,7 @@ class Photo
 
   function GetFolder()
   {
-    return new Folder($this->record['path']);
+    return new Folder($this->record['path'], FALSE);
   }
 
   function GetIcon()

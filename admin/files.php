@@ -150,109 +150,17 @@
   else // Update DB
   {
     echo "</table>\n";
-    echo "<p>Detecting modified and deleted files...</p>\n<ol>\n";
+    echo "<p>Updating the database to reflect any changes to the photos directory...</p>\n<ol>\n";
     flush();
 
-    $new_files = walk_dir($cameralife->preferences['core']['photo_dir']);
-    $result = $cameralife->Database->Select('photos','id,filename,path,fsize');
+    $output = Folder::Update();
+    foreach($output as $line)
+      echo "<li>$line</li>\n";
 
-    // Verify each photo in the DB
-    while ($photo = $result->FetchAssoc())
-    {
-      $filename=$photo['filename'];
-      $fullpath = $cameralife->preferences['core']['photo_dir'].'/'.$photo['path'].$filename;
-
-      // Found in correct location
-      if ($new_files[$fullpath])
-      {
-        $actualsize = filesize($fullpath);
-
-        // Found, but changed
-        if ($actualsize != $photo['fsize'])
-        {
-          echo "<li>$fullpath was changed, updating cache\n";
-          flush();
-
-          $photoObj = new Photo($photo['id']);
-          $photoObj->Revert();
-          $photoObj->Destroy();
-        }
-        unset ($new_files[$fullpath]);
-        continue;
-      }
-
-      // Look for a photo with the same name and filesize anywhere else
-      $paths = array_keys($new_files, $filename);
-      foreach ($paths as $path)
-      {
-        if (filesize($path) == $photo['fsize'])
-        {
-          $newpath=substr(dirname($path),strlen($cameralife->preferences['core']['photo_dir'])+1).'/';
-          if ($newpath == '/')
-            $newpath = '';
-
-          $cameralife->Database->Update('photos',array('path'=>$newpath),'id='.$photo['id']);
-          echo "<li>";
-          $cameralife->Theme->Image('small-photo',array('align'=>'middle'));
-          echo "$filename moved to $newpath\n";
-          flush();
-          unset ($new_files[$path]);
-          continue 2;
-        }
-      }
-
-      // Photo not found anywhere
-      echo "<li>$filename was deleted from filesystem\n";
-      $photoObj = new Photo($photo['id']);
-      $photoObj->Erase();
-
-      flush();
-    }
-
-    echo "\n</ol>\n<p>Looking for new files to index...</p>\n<ol>\n";
-    flush();
-
-    foreach ($new_files as $new_file => $newbase)
-    {
-      $newpath=substr(dirname($new_file),strlen($cameralife->preferences['core']['photo_dir'])+1);
-      if ($newpath) $newpath .= '/';
-
-      $actualsize = filesize($new_file);
-
-      $condition = "filename='".mysql_real_escape_string($newbase)."' and fsize=$actualsize";
-      $result = $cameralife->Database->Select('photos','path',$condition);
-
-      if ($photo = $result->FetchAssoc())
-      {
-        $a = file_get_contents($cameralife->preferences['core']['photo_dir'].'/'.$photo['path'].$newbase);
-        $b = file_get_contents($new_file);
-
-        echo "<li class=alert>";
-        if ($a == $b)
-          echo "Warning: Two photos in your photo directory are identical, please delete one<br>";
-        else
-          echo "Warning: Two photos in your photo directory are suspiciously similar, please delete one<br>";
-        $cameralife->Theme->Image('small-photo',array('align'=>'middle'));
-        echo '<b>'.$photo['path']."$newbase</b> already exists in the system<br>";
-        $cameralife->Theme->Image('small-photo',array('align'=>'middle'));
-        echo "<b>$newpath$newbase</b> does not";
-        continue;
-      }
-
-      $num_new++;
-
-      echo "<li>";
-      $cameralife->Theme->Image('small-photo',array('align'=>'midle'));
-      echo " $newpath$newbase\n";
-      flush();
-
-      $photoObj = new Photo(array('filename'=>$newbase, 'path'=>$newpath));
-      $photoObj->Destroy();
-    }
-    echo "</ol>\n<p>Updating complete :-)";
-    if ($num_new > 0)
-      echo "<p>You can <a href=\"../search.php?q=unnamed\">name your new files here</a>";
-    echo "<p>To optimize thumbnails, <a href='thumbnails.php'>click here</a>.";
+    echo "</ol>\n<p>Updating complete :-) Now you can:<ul>\n";
+    echo "<li><a href=\"../search.php?q=unnamed\">Name your new files</a></li>\n";
+    echo "<li><a href='thumbnails.php'>Optimize thumbnails</a></li>\n";
+    echo "</ul>\n";
   }
 ?>
   </table>

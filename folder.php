@@ -33,27 +33,19 @@ $menu = array();
                   'href'=>'index.php',
                   'image'=>'small-main');
   if ($folder->Path())
-    $menu[] = array('name'=>'Search for '.basename($folder->Path()),
-                    'href'=>'search.php&#63;q='.basename($folder->Path()),
+    $menu[] = array('name'=>'Search for '.$folder->Basename(),
+                    'href'=>'search.php&#63;q='.$folder->Basename(),
                     'image'=>'small-search');
-  if (strlen(dirname($_GET['path'])) > 1)
-  {
-    foreach (explode("/",dirname($_GET["path"])) as $dir)
-    {
-      if (!$dir) continue;
-      $full_path=$full_path.$dir."/";
-    
-      $menu[] = array('name'=>"View parent folder $dir",
-                      'href'=>"folder.php&#63;path=$full_path",
-                      'image'=>'small-folder');
-    }
-  }
+
+  foreach($folder->GetAncestors() as $ancestor)
+    $menu[] = $ancestor->GetSmallIcon();
+
   if ($cameralife->Security->Authorize('admin_file'))
     $menu[] = array('name'=>'Upload photo here',
                     'href'=>'upload.php&#63;path='.$folder->Path(),
                     'image'=>'small-main');
   
-  $folder_name = basename($folder->Path) 
+  $folder_name = $folder->Basename()
     or $folder_name = '(Top Level)';
   $cameralife->Theme->TitleBar($folder_name,
                                'folder',

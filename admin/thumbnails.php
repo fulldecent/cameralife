@@ -48,8 +48,11 @@
   $todo = $cameralife->Database->SelectOne('photos', 'count(*)', "id > $lastdone");
   $timeleft = round((time()-$starttime) * $todo / ($numdone + $done/500 + 1) / 60, 0);
 
-  echo 'We are now caching thumbnails. Thumbnails are also cached the first time any user views a photo. Caching ithem now avoids that small delay for the user. This process is not necessary if you are impatient.';
-  echo "<h3>Progress: $done of $total done (about $timeleft minutes left)</h3>\n";
+  echo 'We are now caching thumbnails. Thumbnails are also cached the first time any user views a photo. Caching them now avoids that small delay for the user. This process is not necessary if you are impatient.';
+  echo "<h3>Progress: $done of $total done";
+  if ($done != $total)
+    echo " (about $timeleft minutes left)";
+  echo "</h3>\n";
   echo "<div style='width: 500px; background: #fff; border: 1px solid black; padding: 2px; margin:2em'>";
   echo "<div style='height: 25px; background: #347 url(".$cameralife->Theme->ImageURL('progress').") repeat-x; width:".($done/$total*100)."%'></div>";
   echo "</div>\n";

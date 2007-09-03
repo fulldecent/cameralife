@@ -5,25 +5,49 @@ class Folder extends Search
   var $path;
 
   # must construct with either a Photo or a Path
-  function Folder($original = '')
+  # choose sync to verify the Folder with whats actually on the disk
+  function Folder($original = '', $sync=TRUE)
   {
     global $cameralife;
 
     if (is_string($original)) # This a path
     {
       if (strpos($original, '..') !== false)
-        die('Fatal error: folder.class.php: detected ".."');
+        $cameralife->Error('Tried to access a path which contains  ..', __FILE__, __LINE__);
 
-      $this->path = $original;
+      $this->path = stripslashes($original);
     }
     elseif(get_class($original) == 'Photo') # Extract the path from this Photo
     {
       $this->path = $original->Get('path');
     }
 
+    if($sync && !$this->Fsck())
+      Folder::Update();
+
     Search::Search('');
     $this->mySearchPhotoCondition = "path='".addslashes($this->path)."'";
-    $this->mySearchFolderCondition = "path LIKE '".addslashes($this->path)."%/' AND path NOT LIKE '".$this->path."%/%/'";
+    $this->mySearchFolderCondition = "path LIKE '".addslashes($this->path)."%/' AND path NOT LIKE '".addslashes($this->path)."%/%/'";
+  }
+
+  # returns an array of Folders
+  function GetAncestors()
+  {
+    $retval = array();
+
+    if (strlen($this->path) > 1)
+    {
+      $retval[] = new Folder('', FALSE);
+      
+      foreach (explode("/",$this->path) as $dir)
+      {
+        if (!$dir) continue;
+        $full_path=$full_path.$dir."/";
+        if ($full_path == $this->path) continue;
+        $retval[] = new Folder($full_path, FALSE);
+      }
+    }
+    return $retval;
   }
 
   # returns COUNT random decendants, or all if count=0
@@ -36,7 +60,7 @@ class Folder extends Search
     $family = $cameralife->Database->Select('photos','DISTINCT path',$condition,"LIMIT $count");
     while ($youngin = $family->FetchAssoc())
     {
-      $result[] = new Folder($youngin['path']);
+      $result[] = new Folder($youngin['path'], FALSE);
     }
     return $result;
   }
@@ -64,7 +88,7 @@ class Folder extends Search
 
     $result = array();
     while ($youngin = $family->FetchAssoc())
-      $result[] = new Folder($this->path . $youngin['basename'] . '/');
+      $result[] = new Folder($this->path . $youngin['basename'] . '/', FALSE);
     return $result;
   }
 
@@ -75,8 +99,13 @@ class Folder extends Search
 
   function GetSmallIcon()
   {
+    if (basename($this->path))
+      $name = basename($this->path);
+    else
+      $name = '(Top level)';
+
     return array('href'=>'folder.php&#63;path='.$this->path, 
-                 'name'=>"Folder ".basename($this->path),
+                 'name'=>"Folder $name",
                  'image'=>'small-folder');
   }
 
@@ -98,117 +127,273 @@ class Folder extends Search
   // Private
   // Returns an array of files starting at $path
   // in the form 'path'=>basename(path)
-  function walk_dir($path)
+  function walk_dir($path = '')
   {
+    global $cameralife;
     $retval = array();
-    if ($dir = opendir($path)) {
+    $prefix = $cameralife->base_dir . '/' . $cameralife->preferences['core']['photo_dir'];
+    if ($dir = opendir($prefix . '/' . $path)) 
+    {
+      $children = array();
       while (false !== ($file = readdir($dir)))
       {
-        if ($file[0]==".") continue;
-        if (is_dir($path."/".$file))
-          $retval = array_merge($retval,walk_dir($path."/".$file));
-        else if (is_file($path."/".$file))
-          if (preg_match("/.jpg$/i",$file))
-            $retval[$path."/".$file] = $file;
+        if ($file[0]=='.') continue;
+        $photopath = $path.$file;
+        if (is_dir($prefix . '/' . $photopath))
+          $children[] = $photopath . '/';
+        else if (is_file($prefix . '/' . $photopath))
+          $retval[$photopath] = $file;
       }
       closedir($dir);
+      sort($children);
+      foreach($children as $child)
+      {
+        $retval += Folder::walk_dir($child);
+      }
+    }
+    else
+    {
+      $cameralife->Error('Failed to open photo directory: '.$path, __FILE__, __LINE__);
     }
     return $retval;
   }
 
-//********** always recurse
-//********** does not work on *this* folder
-  // Makes the database consistent with what is actually in this folder
-  // Returns any errors or warnings as an array of marked up html
+  // Static function to make the DB match what is actually on the filesystem
+  // Returns an array of any errors or warnings
   // Note: this does not use the pretty classes, it is optimized to
   //   edit the DB directly
-  function Update($recursive=false)
+  //
+  // This works well under many strange circumstances you can put it in
+  function Update()
   {
-    $origdir = getcwd();
-    chdir ($cameralife->base_dir);
-    $retval = array();
+    global $cameralife;
 
-    // Detecting modified and deleted files...
-    $new_files = walk_dir($cameralife->preferences['core']['photo_dir']);
-    $result = $cameralife->Database->Select('photos','id,filename,path,fsize');
+    $retval = array();
+    $photodir = $cameralife->base_dir . '/' . $cameralife->preferences['core']['photo_dir'];
+    $new_files = Folder::walk_dir();
+    $result = $cameralife->Database->Select('photos','id,filename,path,fsize','','ORDER BY path, filename');
+//print_r($new_files);
 
     // Verify each photo in the DB
     while ($photo = $result->FetchAssoc())
     {
       $filename = $photo['filename'];
-      $fullpath = $cameralife->preferences['core']['photo_dir'].'/'.$photo['path'].$filename;
+      $photopath = $photo['path'].$filename;
 
       // Found in correct location
-      if ($new_files[$fullpath])
+      if ($new_files[$photopath])
       {
-        $actualsize = filesize($fullpath);
+        $actualsize = filesize($photodir . '/' . $photopath);
 
         // Found, but changed
         if ($actualsize != $photo['fsize'])
         {
-          $retval[] = "$fullpath was changed, flushing cache";
+          $retval[] = "$photopath was changed, flushing cache";
           $photoObj = new Photo($photo['id']);
           $photoObj->Revert();
           $photoObj->Destroy();
         }
-        unset ($new_files[$fullpath]);
+        unset ($new_files[$photopath]);
         continue;
       }
 
-      // Look for a photo with the same name and filesize anywhere else
-      $paths = array_keys($new_files, $filename);
-      foreach ($paths as $path)
-      {
-        if (filesize($path) == $photo['fsize'])
+      // Look for a photo in the same place with a similar name
+//TODO: is this redundant? (see bolew)
+      if (is_dir($photodir.'/'.$photo['path']) && $fd = opendir($photodir.'/'.$photo['path']))
+      {        
+        while(false !== ($file = readdir($fd)))
         {
-          $newpath=substr(dirname($path),strlen($cameralife->preferences['core']['photo_dir'])+1).'/';
-          if ($newpath == '/')
-            $newpath = '';
+          if(strcasecmp($file, $filename) == 0)
+          {
+            $retval[] = "$photopath was renamed to ".$photo['path'].$file;
+            $cameralife->Database->Update('photos',array('filename'=>$file),'id='.$photo['id']);
+            closedir($fd);
+            unset ($new_files[$photopath]);
+            continue 2;
+          }
+        }
+        closedir($fd);
+      }
 
-          $cameralife->Database->Update('photos',array('path'=>$newpath),'id='.$photo['id']);
-          $retval[] = "$filename moved to $newpath";
-          unset ($new_files[$path]);
+      // Look for a photo with the same name and filesize anywhere else
+      $candidatephotopaths = array_keys($new_files, $filename);
+      foreach ($candidatephotopaths as $candidatephotopath)
+      {
+        if (filesize($photodir . '/' . $candidatephotopath) == $photo['fsize'])
+        {
+          $candidatedirname=dirname($candidatephotopath).'/';
+          if ($candidatedirname) $candidatedirname .= './';
+
+          $cameralife->Database->Update('photos',array('path'=>$candidatedirname),'id='.$photo['id']);
+          $retval[] = "$filename moved to $candidatedirname";
+          unset ($new_files[$photopath]);
+
+          # keep track of the number 0234 in like DSCN_0234.jpg
+          $number = preg_replace('/[^\d]/','',$filename);
+          if ($number > 1000)
+            $lastmoved = array($number, $newpath);
+          continue 2;
+        }
+      }
+
+      // If two photos with consecutive names are moved to another directory
+      // AND one of them was modified outside of Camera Life
+      // then this will find it
+      foreach ($candidatephotopaths as $candidatephotopath)
+      {
+        $number = preg_replace('/[^\d]/','',$candidatephotopath);
+        
+        if ($number > 1000 && abs($number - $lastmoved[0])<5 && $newpath == $lastmoved[1])
+        {
+          $candidatedirname=dirname($candidatephotopath).'/';
+          if ($candidatedirname) $candidatedirname .= './';
+
+          $cameralife->Database->Update('photos',array('path'=>$candidatedirname),'id='.$photo['id']);
+          $retval[] = "$photopath probably moved to $candidatedirname";
+          unset ($new_files[$photopath]);
+          $lastmoved = array($number, $candidatedirname);
+          continue 2;
+        }
+        else
+        {
+          $str = $photo['path'].$photo['filename']." is missing, and $candidatephotopath was found, ";
+          $str .= "they are not the same, I don't know what to do... ";
+          $str .= "If they are the same, move latter to former, update, then move back.";
+          $str .= "If theey are different, move latter out of the photo directory, update and then move back.";
+
+          $retval[] = $str;
+#          echo $a['DateTime'];
+#          echo $cameralife->preferences['core']['photo_dir'].'/'.$photo['path'].$filename;
+#          echo $photo['created'];
+#          die();
           continue 2;
         }
       }
 
       // Photo not found anywhere
-      $retval[] = "$filename was deleted from filesystem";
+      $retval[] = "$photopath was deleted from filesystem";
       $photoObj = new Photo($photo['id']);
       $photoObj->Erase();
     }
 
+
     // Looking for new files to index...
     foreach ($new_files as $new_file => $newbase)
     {
-      $newpath=substr(dirname($new_file),strlen($cameralife->preferences['core']['photo_dir'])+1);
+      if (!preg_match("/.jpg$/i",$newbase))
+      {
+        $retval[] = "Skipped $new_file because it is not a JPEG file";
+        continue;
+      }
+     
+      $newpath=dirname($new_file);
       if ($newpath) $newpath .= '/';
 
-      $actualsize = filesize($new_file);
-
+      $actualsize = filesize($photodir . '/' . $new_file);
       $condition = "filename='".mysql_real_escape_string($newbase)."' and fsize=$actualsize";
-      $result = $cameralife->Database->Select('photos','path',$condition);
+      $result = $cameralife->Database->Select('photos','id, filename, path',$condition);
 
+      // Is this new photo like anything we already have?
       if ($photo = $result->FetchAssoc())
       {
-        $a = file_get_contents($cameralife->preferences['core']['photo_dir'].'/'.$photo['path'].$newbase);
-        $b = file_get_contents($new_file);
+//TODO use this instead?
+        if(strcasecmp($photo['path'].$photo['filename'], $new_file) == 0)
+        {
+          $retval[] = $photo['path'].$photo['filename'].' was renamed to '.$new_file;
+          $cameralife->Database->Update('photos',array('filename'=>$newbase),'id='.$photo['id']);
+          continue;
+        }
+
+        $a = file_get_contents($photodir . '/' . $photo['path'].$photo['filename']);
+        $b = file_get_contents($photodir . '/' . $new_file);
 
         $error = '';
         if ($a == $b)
-          $error = 'Warning: Two photos in your photo directory are identical, please delete one ';
+          $error = 'Two photos in your photo directory are identical, please delete one: ';
         else
-          $error  = 'Warning: Two photos in your photo directory are suspiciously similar, please delete one ';
-        $error .= $photo['path']."$newbase already exists, $newpath$newbase does not";
+          $error  = 'Two photos in your photo directory are suspiciously similar, please delete one: ';
+        $error .= $photo['path'].$photo['filename']." is in the system, $new_file is not";
         $retval[] = $error;
         continue;
       }
 
-      $retval[] = "Added $newpath$newbase\n";
+      $deletedfile = $cameralife->base_dir.'/'.$cameralife->preferences['core']['deleted_dir'].'/'.$newbase;
+      if (file_exists($deletedfile) && filesize($deletedfile) == filesize($new_file))
+      {
+        $cameralife->base_dir . '/' . 
+        $error = "A file that was added to the photo directory $new_file is the same as ";
+        $error .= "a file that was previoulsy deleted ";
+        $error .= $cameralife->preferences['core']['deleted_dir'].'/'.$newbase;
+        $retval[] = $error;
+        continue;
+      }
+
+      $retval[] = "Added $new_file\n";
 
       $photoObj = new Photo(array('filename'=>$newbase, 'path'=>$newpath));
       $photoObj->Destroy();
     }
+    return $retval;
+  }
+
+  // Quickly checks if DB and FS are synched
+  // returns true/false 
+  function Fsck()
+  {
+    global $cameralife;
+
+    $fullpath = $cameralife->base_dir . '/' . $cameralife->preferences['core']['photo_dir'] . '/' . $this->path;
+    if ($dir = opendir($fullpath))
+    {
+      $fsphotos = $fsdirs = array();
+
+      while (false !== ($file = readdir($dir)))
+      {
+        if ($file[0]=='.') continue;
+        $photopath = $path.$file;
+        if (is_dir($fullpath.$file))
+        {
+          if (is_readable($fullpath.$file))
+            $fsdirs[] = $file;
+        }
+        else
+        {
+          if (!preg_match("/.jpg$/i",$file))
+            continue;
+          if (is_readable($fullpath.$file))
+            $fsphotos[] = $file;
+        }
+      }
+    }
+
+    $selection = "filename";
+    $condition = "path = '".addslashes($this->path)."'";
+    $result = $cameralife->Database->Select('photos', $selection, $condition);
+    while ($row = $result->FetchAssoc())
+    {
+      $key = array_search($row['filename'], $fsphotos);
+      if($key === FALSE)
+        return FALSE;
+      else
+        unset ($fsphotos[$key]);
+    }
+
+    $selection = "DISTINCT SUBSTRING_INDEX(SUBSTR(path,".(strlen($this->path)+1)."),'/',1) AS basename";
+    $condition = "path LIKE '".addslashes($this->path)."%/' AND status=0";
+    $result = $cameralife->Database->Select('photos', $selection, $condition, $extra);
+    while ($row = $result->FetchAssoc())
+    {
+      $key = array_search($row['basename'], $fsdirs);
+      if($key === FALSE)
+        return FALSE;
+      else
+        unset ($fsdirs[$key]);
+    }
+
+    if (count($fsphotos) || count($fsdirs))
+      return FALSE;
+
+    return TRUE;
   }
 }
 

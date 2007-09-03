@@ -157,7 +157,7 @@ class Search
     $query = $cameralife->Database->Select('photos', 'path', $condition, 'GROUP BY path ORDER BY '.$sort.' '.$this->myLimit);
     $folders = array();
     while ($row = $query->FetchAssoc())
-      $folders[] = new Folder($row['path']);
+      $folders[] = new Folder($row['path'], FALSE);
     return $folders;
   }
 

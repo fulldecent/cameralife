@@ -11,6 +11,8 @@
   $numreg = $cameralife->Database->SelectOne('users','COUNT(*)','auth=1');
   $numlog = $cameralife->Database->SelectOne('logs','COUNT(*)','id>'.($cameralife->preferences['core']['checkpoint']+0));
   $numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->preferences['core']['checkpointcomments']+0));
+  $numfserrors = count(Folder::Update());
+
 ?>
 
 <html>
@@ -122,7 +124,7 @@
       echo "<br><font class=\"alert\">$numdel photos have been flagged</font>";
     if ($numupl)
       echo "<br><font class=\"alert\">$numupl photos have been uploaded but not reviewed</font>";
-    echo "<br><font class=\"alert\">There may be new or deleted files</font>";
+    echo "<br><font class=\"alert\">There are $numfserrors issues with your photos directory</font>";
   }
 
   if ($cameralife->Security->authorize('admin_customize'))
