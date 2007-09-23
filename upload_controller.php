@@ -94,15 +94,15 @@
     move_uploaded_file($_FILES['userfile']['tmp_name'], $extractionpath.$basename)
       or $camerlife->Error("Could not move the zip file, is the destination writable?");
 
-    exec ("unzip -d '$extractionpath' -nj '$extractionpath$basename' '*jpg' '*JPG'", $output, $return);
+    exec ("unzip -d '$extractionpath' -nj '$extractionpath$basename' '*jpg' '*JPG' '*jpeg' '*JPEG' '*png' '*PNG'", $output, $return);
     unlink ($extractionpath.$basename);
 
     foreach ($output as $outputline)
     {
       $outputline = explode($extractionpath, $outputline);
       if (count($outputline) != 2) continue;
-      if (!eregi('\.jpg$', $outputline[1])) continue;
-       $result = add_image($path, $outputline[1], $_POST['description'], $status);
+      if (!preg_match("/.jpg$|.jpeg$|.png$/i", $outputline[1])) continue;
+        $result = add_image($path, $outputline[1], $_POST['description'], $status);
 
       if ($result)
       {

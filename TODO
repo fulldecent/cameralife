@@ -1,30 +1,27 @@
 !=need to do, *=todo, ?=waste of time
 
-== TODO for 2.6 final ==
+== TODO before a release ==
 * grep -r TODO .
 ! edit setup/install.mysql
 * database changes into setup
 * Increment version in main.inc
+! Clean up preferences
+! Update themes
 
 -- Now stuff / Fun stuff --
 mv setup -> modules
 
-* rss for comments
 * Interface instead of classes where appropriate, (requires PHP5)
-* Move Update Database functionality into Path.class.inc
-  - automatic updates
 * grep upgrade hack
 * reply with HTTP/1.0 410 Gone if appropriate
-
--- Showstoppers (before you release) --
 
 -- Change theme engine --
 ! Make admin/*.php not use the Theme API
   - a nice css file
+* Don't use $_GET except at the top of each user-facing page
 * Separate all form and content
 ? Combine GetIcon and GetSmallIcon?
 ? Use XML to represent passing of HTML?
-* Don't use $_GET except at the top of each user-facing page
 
 
 -- Things that will break the API --
@@ -40,13 +37,9 @@ mv setup -> modules
     . Chooses to work off original or scaled image
   - Result: editing a photo will not require modifying the full sized image (takes forever) unless the user loads that full size image, in which case it is cached.
   - Admin may update these cache at their whim via the Update Database in Files in Admin
-* Save all photo caches in a caches folder, not scaled, modified, ...
-  - remove preferences, only keep photo_cache_dir
-  - in photo.class.php, suffix each asset: 23496_480.jpg, 28762_150.jpg photoid_scalesize.jpg
 * use posix-compliant pathname and a way to upgrade you db
  - benefits?
-* Move theme preferences our of ['core']
-
+* Move theme preferences out of ['core']
 
 ? logs.value_old is techically unnecessary
 * Enumerate the photos.status
@@ -57,6 +50,9 @@ mv setup -> modules
 -- Features --
 * Admin->* "Changes Saved" should produce a message like Gmail
 * Admin->User createuser, changepasswd
+* A logs module that gives you a receipt for any change you make
+  - you can undo any arbitrary receipt
+
 
 -- Design Considerations --
 ? A module API that allows announcing modules, loading, unloading
@@ -68,4 +64,7 @@ mv setup -> modules
 -- Modules --
 * Make a legacy-GD module
     imagecreatetruecolor -> imagecreate
+
+
+
 

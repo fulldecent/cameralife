@@ -15,20 +15,6 @@ class Topic extends Search
     $this->mySearchAlbumCondition = "topic = '".$this->name."'";
   }
 
-  function Set($key, $value)
-  {
-    global $cameralife;
-
-    db_log('album',$record['id'],$key,$this->record[$key],$value);
-    $this->record[$key] = $value;
-    $cameralife->Database->Update('albums', array($key=>$value), 'id='.$this->record['id']);
-  }
-
-  function Get($key)
-  {
-    return $this->record[$key];
-  }
-
   function GetSmallIcon()
   {
     return array('href'=>'topic.php&#63;name='.$this->name, 

@@ -280,9 +280,9 @@ class Folder extends Search
     // Looking for new files to index...
     foreach ($new_files as $new_file => $newbase)
     {
-      if (!preg_match("/.jpg$/i",$newbase))
+      if (!preg_match("/.jpg$|.jpeg$|.png$/i",$newbase))
       {
-        $retval[] = "Skipped $new_file because it is not a JPEG file";
+        $retval[] = "Skipped $new_file because it is not a JPEG or PNG file";
         continue;
       }
      
@@ -358,7 +358,7 @@ class Folder extends Search
         }
         else
         {
-          if (!preg_match("/.jpg$/i",$file))
+          if (!preg_match("/.jpg$|.jpeg$|.png$/i",$file))
             continue;
           if (is_readable($fullpath.$file))
             $fsphotos[] = $file;

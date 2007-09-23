@@ -1,3 +1,6 @@
+SVN  Will Entriken <cameralife AT phor.net>
+* Automatically updates when the photos directory is changed 
+
 2.6.0  Will Entriken <cameralife AT phor.net>
 * Support for Gallery Remote API (upload from iPhoto, DigiKam, ...)
 * Microformats, Sitemaps, OpenSearch

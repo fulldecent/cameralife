@@ -143,9 +143,9 @@
   if ($cameralife->Security->authorize('photo_rename'))
   {
 ?>
-    <form action="photo_controller.php" method=POST name="form" id="renameform">
+    <form action="photo_controller.php" method="POST" name="form" id="renameform">
     <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
-    <input type="hidden" name="target" value="<?= $cameralife->base_url.'/photo.php&#63;'.$_SERVER['QUERY_STRING'] ?>">
+    <input type="hidden" name="target" value="<?= $cameralife->base_url.'/photo.php&#63;id='.$photo->Get('id').'&referer='.urlencode($_SERVER['HTTP_REFERER']) ?>">
     <input type="hidden" name="action" value="rename">
 
     <div style="<?=($_GET['action'] == 'rename')?'':'display:none'?>" class="administrative" align=center id="rename">
@@ -154,10 +154,10 @@
         <tr><td>Title:<td colspan=2><input id="formtitle" style="width: 100%;" type="text" name="param1" value="<?= htmlentities($photo->Get('description')) ?>">
       <?php
         $origname = ucwords($photo->Get('filename'));
-        $origname = str_replace('.jpg', '', $origname);
+        $origname = preg_replace('/.[^.]+$/', '', $origname);
 
         if (!eregi('^dscn', $origname) && !eregi('^im', $origname)) // useless filename
-          echo '<tr><td><td><input type=button onclick="javascript:set(\''.addslashes($origname).'\')" value="Set name to '.$origname.'">';
+          echo '<tr><td><td><input type="button" onclick="javascript:set(\''.addslashes($origname).'\')" value="Set name to '.$origname.'">';
       ?>
         <tr><td>Keywords:
           <td style="width:100%"><input style="width: 100%;" id="tags" name="param2" value="<?= htmlentities($photo->Get('keywords')) ?>" autocomplete="off" type="text">
@@ -292,8 +292,21 @@
     </div>
 <?php
   }
-?>
-<?php
+
+  
+  if (isset($cameralife->receipt))
+  {
+    echo '<div id="receipt" class="receipt">';
+    echo '<form action="undo_controller.php" method="post">';
+    echo '<input id="receiptid" type="hidden" name="id" value="'.$cameralife->receipt->Get('id').'" />';
+    echo '<input type="hidden" name="action" value="undo" />';
+    echo '<input type="hidden" name="target" value="'.$cameralife->base_url.'/'.basename($_SERVER['PHP_SELF']).'?'.$_SERVER['QUERY_STRING'].'" />';
+    echo $cameralife->receipt->GetDescription().' <button type="submit">Undo</button></form></div>';
+  }
+  else
+  { 
+    echo '<div id="receipt" class="receipt" style="visibility: hidden"></div>';
+  }
 
   echo "<div style=\"text-align: center\">\n";
   if($photoPrev)

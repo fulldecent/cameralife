@@ -1,5 +1,5 @@
 <?php
-  # Returns a JPEG photo, or scaled photo or thumbnail.
+  # Returns an original photo, or scaled photo or thumbnail.
   # This file makes asset security possible since the user does not directly access the photos.
   $features=array('database','security','imageprocessing');
   require "main.inc";
@@ -7,6 +7,8 @@
   $photo = new Photo($_GET['id']);
   $format = $_GET['format'];
   if ($_GET['ver'] === NULL) $cameralife->Error('Required argument ver missing!');
+  $path_parts = pathinfo($photo->Get('filename'));
+  $extension = strtolower($path_parts['extension']);
 
   if (!$cameralife->Security->authorize('admin_file'))
   {
@@ -20,14 +22,14 @@
   if ($format == 'photo')
   {
     if ($photo->Get('modified'))
-      $file = $cameralife->preferences['core']['cache_dir'] .'/'. $photo->Get('id').'_mod.jpg';
+      $file = $cameralife->preferences['core']['cache_dir'] .'/'. $photo->Get('id').'_mod.'.$extension;
     else
       $file = $cameralife->preferences['core']['photo_dir'] .'/'. $photo->Get('path').$photo->Get('filename');
   }
   elseif ($format == 'scaled')
-    $file = $cameralife->preferences['core']['cache_dir'].'/'.$photo->Get('id').'_600.jpg';
+    $file = $cameralife->preferences['core']['cache_dir'].'/'.$photo->Get('id').'_600.'.$extension;
   elseif ($format == 'thumbnail')
-    $file = $cameralife->preferences['core']['cache_dir'].'/'.$photo->Get('id').'_150.jpg';
+    $file = $cameralife->preferences['core']['cache_dir'].'/'.$photo->Get('id').'_150.'.$extension;
   else
     $cameralife->Error('Bad format parameter');
 
@@ -38,8 +40,13 @@
     $photo->GenerateThumbnail();
   }
 
-  header('Content-type: image/jpeg');
-  header('Content-Disposition: inline; filename="'.htmlentities($photo->Get('description')).'.jpg";');
+  if ($extension == 'jpg' || $extension == 'jpeg')
+    header('Content-type: image/jpeg');
+  elseif ($extension == 'png')
+    header('Content-type: image/png');
+  else
+    $cameralife->Error('Unknown file type');
+  header('Content-Disposition: inline; filename="'.htmlentities($photo->Get('description')).'.'.$extension.'";');
 # header('Cache-Control: '.($photo['status'] > 0) ? 'private' : 'public');
   header('Content-Length: '.filesize($file));
 #  header('Date: '.filemtime($file));

@@ -16,16 +16,24 @@
     var $width;
     var $height;
     var $size;
+    var $extension;
 
     var $scaled_images;
 
     function GDImageProcessingImage($filename)
     {
       global $cameralife;
-
       if (!file_exists($filename))
         $cameralife->Error('Trying to process non-existant image: '.$filename, __FILE__, __LINE__);
-      $this->original_image = imagecreatefromjpeg($filename);
+      $path_parts = pathinfo($filename);
+      $this->extension = strtolower($path_parts['extension']);
+
+      if ($this->extension=='jpeg' | $this->extension=='jpg')
+        $this->original_image = imagecreatefromjpeg($filename);
+      elseif ($this->extension=='png')
+        $this->original_image = imagecreatefrompng($filename);
+      else
+        $cameralife->Error('Trying to process image of unknown file format: '.$filename, __FILE__, __LINE__);
       $this->width = imagesx($this->original_image);
       $this->height = imagesy($this->original_image);
       $this->size = sqrt($this->width*$this->width + $this->height*$this->height);
@@ -86,8 +94,17 @@
                          $new_width, $new_height,
                          $base_width, $base_height);
  
-      @imagejpeg($new_image, $filename, $quality)
-        or $cameralife->Error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
+      if ($this->extension=='jpeg' | $this->extension=='jpg')
+      {
+        @imagejpeg($new_image, $filename, $quality)
+          or $cameralife->Error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
+      }
+      elseif ($this->extension=='png')
+      {
+        @imagepng($new_image, $filename, 9-$quality/11)
+          or $cameralife->Error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
+      }
+
       $this->scaled_image[$newSize] = $new_image;
 
       return array($new_width, $new_height);
@@ -114,8 +131,16 @@
     */
     function Save($filename, $quality = 91) 
     {
-      @imagejpeg($this->original_image, $filename, $quality)
-        or die ("Could not write the file $filename is the directory writable?");
+      if ($this->extension=='jpeg' | $this->extension=='jpg')
+      {
+        @imagejpeg($this->original_image, $filename, $quality)
+          or $cameralife->Error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
+      }
+      elseif ($this->extension=='png')
+      {
+        @imagepng($this->original_image, $filename, 9-$quality/11)
+          or $cameralife->Error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
+      }
 
       return array($new_width, $new_height);
     }

@@ -49,14 +49,18 @@
 
       if (!$_GET['svn'])
       {
-        echo "<p><a href=\"?svn=yes\">Check for latest version</a>.</p>";
+        echo "<p><a href=\"?svn=yes\">Check for latest version (this is quick)</a>.</p>";
       } 
       else 
       {
         $newest = file_get_contents('http://fdcl.svn.sourceforge.net/svnroot/fdcl/');
         ereg('Revision ([0-9]+):', $newest, $regs);
-        echo "<p>Latest is <b>".$regs[1]."</b>.</p>";
-        echo "<p><a href=\"http://fdcl.svn.sourceforge.net/viewvc/fdcl/trunk/?view=log#rev80\">View changelog</a></p>";
+        echo "<p>Latest is <b>".$regs[1]."</b>. ";
+        echo "<a href=\"http://fdcl.svn.sourceforge.net/viewvc/fdcl/trunk/?view=log#rev80\">View diffs</a>.</p>";
+
+        echo "<pre>";
+        passthru('svn log '.$cameralife->base_dir.' -r base:head');
+        echo "</pre>";
       }
     }
   }

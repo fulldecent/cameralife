@@ -20,6 +20,7 @@
     }
     else if ($_GET['page'] == 'policies')
     {
+// delegate to pref controller
       $cameralife->preferences['defaultsecurity'][$key] = $val;
     }
   }

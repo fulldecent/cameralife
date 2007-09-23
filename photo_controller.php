@@ -23,13 +23,13 @@
     if (!$_POST['param1']) $cameralife->Error('Parameter missing.');
 
     $photo->Set('flag', substr($_POST['param1'], 1,1));
-    $photo->Set('status', 1);
+    $receipt = $photo->Set('status', 1);
   }
   elseif ($_POST['action'] == 'rename')
   {
     $cameralife->Security->authorize('photo_rename',1);
 
-    $photo->Set('description', stripslashes($_POST['param1']));
+    $receipt = $photo->Set('description', stripslashes($_POST['param1']));
     $photo->Set('keywords', stripslashes($_POST['param2']));
   }
   elseif ($_POST['action'] == 'rethumb')
@@ -76,8 +76,20 @@
     $rating = $regs[1];
   }
 
+  if ($receipt && $_POST['target'] != 'ajax')
+  {
+    $_POST['target'] = $_POST['target'] . ((strpos($_POST['target'], '?')===FALSE)?'?':'&') . 'receipt='.$receipt->Get('id');
+  }
+
   if ($_POST['target'] == 'ajax')
+  {
+    if($receipt && $receipt->IsValid())
+    {
+      header('Content-type: text/xml');
+      echo '<?xml version="1.0" ?><receipt><id>'.$receipt->Get('id')."</id></receipt>\n";
+    }
     exit(0);
-  else
+  } 
+ else
     header("Location: ".$_POST['target']);
 ?>

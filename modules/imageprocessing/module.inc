@@ -1,6 +1,6 @@
 <?php
   /*
-    Do stuff with jpeg images
+    Do stuff with photos
   */
 
   class ImageProcessingModule extends CameraLifeModule

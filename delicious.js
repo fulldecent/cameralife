@@ -1,6 +1,6 @@
 /* Clearly, all this is stolen from delicious */
 
-function set(val){document.form.desc.value=val;}
+function set(val){$id('formtitle').value=val;}
 
 
 String.prototype.trim = function(){ return this.replace(/^\s+|\s+$/g,'') }

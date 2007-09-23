@@ -26,6 +26,11 @@ a:hover             { text-decoration: underline}
 .info               { font-style: italic; } /* Used to provide help */
 div.context         { padding: 0 0 0 1em }
 div.context2        { padding: 0 0 0.5em 1em; font-style: italic}
+div.receipt         { font-size: small; font-weight: bold; padding: 0pt 15px 1px; background: #FAD163; color: black; width; padding: 3px; width: 50%; margin: 4px auto; text-align: center}
+div.receipt button  { text-decoration: underline; color: blue; padding-left: 4px; border:0; background: none; font-weight: bold; font-size: small;  }
+div.receipt form    { margin: 0; padding: 0; }
+div.receipt button:active  { text-decoration: underline; color: blue; padding-left: 4px; border:0; background: none; font-weight: bold; font-size: small; margin: 0 }
+
 
 /* used in TitleBar */
 div#titlebar        { position:fixed; left:0; top: 0; width:20%; height:100%; background: #ddd; }
@@ -33,7 +38,7 @@ h1#title         { font-size: x-large; border-bottom: 1px solid #778; font-varia
 font#titlebar-caption { font-size: x-small; }
 div#titlebar ul      { font-size: small; padding:0; text-align: left; margin:0}
 div#titlebar ul li   { list-style: none; margin: 2px; border:1px solid; border-color:#ddd #aaa #aaa #ddd;}
-div#titlebar ul li a { display: block; padding: 0.25em 0.5em 0.25em 0.75em; background: #fff                       url(images/extra-titlebar.gif) 10px 50% repeat-x; color:#106;}
+div#titlebar ul li a { display: block; padding: 0.25em 0.5em 0.25em 0.75em; background: #fff; color:#106;}
 ul#titlebar li a:hover { border-left: 0.5em solid #227; background: #fff; padding: 0.25em 0.5em 0.25em 0.25em;}
 
 /* used in Grid */

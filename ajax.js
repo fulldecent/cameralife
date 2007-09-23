@@ -1,6 +1,7 @@
 
 var http_request = false;
 var callback = false;
+var response; 
 
 function makeRequest(url, formid, callme) {
 
@@ -52,7 +53,7 @@ function alertContents() {
 
   if (http_request.readyState == 4) {
     if (http_request.status == 200) {
-      //alert(http_request.responseText);
+      response = http_request.responseXML;
       setTimeout(callback,0);
     } else {
       alert('There was a problem with the request.');
@@ -67,4 +68,7 @@ function renameDone()
     var newtitle = document.getElementById('formtitle').value;
     document.getElementById('title').innerHTML=newtitle;
     document.getElementById('rename').style.display='none';
+    document.getElementById('receipt').style.visibility='visible';
+    document.getElementById('receipt').innerHTML='<form action="undo_controller.php" method="post"><input id="receiptid" type="hidden" name="id" value="'+response.firstChild.firstChild.textContent+'" /><input type="hidden" name="action" value="undo" /><input type="hidden" name="target" value="'+window.location+'" />The description has been updated. <button type="submit">Undo</button></form>';
+    
 }

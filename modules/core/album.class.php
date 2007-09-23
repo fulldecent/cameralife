@@ -37,10 +37,12 @@ class Album extends Search
   {
     global $cameralife;
 
+    $receipt = NULL;
     if ($key != 'hits')
-      db_log('album',$record['id'],$key,$this->record[$key],$value);
+      $receipt = AuditTrail::Log('album',$this->record['id'],$key,$this->record[$key],$value);
     $this->record[$key] = $value;
     $cameralife->Database->Update('albums', array($key=>$value), 'id='.$this->record['id']);
+    return $receipt;
   }
 
   function Get($key)

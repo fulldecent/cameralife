@@ -18,6 +18,7 @@
     var $version;
     var $base_dir;
     var $base_url; // like http://camera.phor.net or http://phor.net/life/camera
+    var $receipt;
 
     function CameraLife()
     {
@@ -47,8 +48,8 @@
       if ($this->loaded_features[$feature]=='loading')
         $this->Error('Circular reference in features :-(');
     
-      $this->RelativeInclude("modules/$feature/module.inc");
       $loaded_features[$feature]='loading';
+      $this->RelativeInclude("modules/$feature/module.inc");
       
       switch ($feature)
       {
@@ -132,6 +133,7 @@
           foreach($moduleprefs as $key => $value)
           {
             $values = array('prefmodule'=>$module, 'prefkey'=>$key, 'prefvalue'=>$value);
+// use cooler SQL here
             $condition = "prefmodule='$module' AND prefkey='$key'";
 
             $query = $this->Database->Select('preferences', '1', $condition);
@@ -157,12 +159,14 @@
       echo '<div style="margin: 3em; background: gray; border: 2px solid gray; padding:0.5em">';
       echo '  <div style="text-align:center; color: white; font-size:large">';
       echo '    Camera Life has encountered an error!</div>';
-      echo "  <div style=\"background: #eee; padding: 1em;\">$message</div>";
+      echo "  <div style=\"background: #eee; padding: 1em;\">$message</div>\n";
       if ($file)
-        echo "  <div style=\"background: #eee; padding: 1em;\">Error at: <i>$file</i></div>";
+        echo "  <div style=\"background: #eee; padding: 1em;\">Error at: <i>$file</i></div>\n";
       if ($line)
-        echo "  <div style=\"background: #eee; padding: 1em;\">Line: <i>$line</i></div>";
-      echo '</div></div>';
+        echo "  <div style=\"background: #eee; padding: 1em;\">Line: <i>$line</i></div>\n";
+      echo "</div></div><!--\n";
+      var_dump(debug_backtrace());
+      echo "\n-->\n";
       exit(1);
     }
   }
@@ -173,35 +177,10 @@
   foreach($features as $fcn)
     $cameralife->GetFeature($fcn);
 
-#TODO: put somewhere else
-/**
- *  db_log
- *
- *  Logs changes to the database. Information about the user is saved with information below
- *  this allows changes to be rolled back later.
- *
- *  @param $record_type - string - one of ('photo','album','preference','user')
- *  @param $record_id - int - id of the record being changed
- *  @param $value_field - string - field being changed
- *  @param $value_old - string - old field value
- *  @param $value_new - string - new field value
- *
- *  @return none
- */
-  function db_log($record_type, $record_id, $value_field, $value_old, $value_new)
+  if (is_numeric ($_GET['receipt']))
   {
-    global $user, $_SERVER, $cameralife;
-    if ($value_old==$value_new) return;
-
-    $log['record_type'] = $record_type;
-    $log['record_id'] = $record_id;
-    $log['value_field'] = $value_field;
-    $log['value_new'] = $value_new;
-    $log['value_old'] = $value_old;
-    $log['user_name'] = $cameralife->Security->GetName();
-    $log['user_ip'] = $_SERVER['REMOTE_ADDR'];
-    $log['user_date'] = date('Y-m-d');
-
-    $cameralife->Database->Insert('logs',$log);
+    $receipt = new Receipt($_GET['receipt']);
+    if ($receipt->IsValid())
+      $cameralife->receipt = $receipt;
   }
 ?>

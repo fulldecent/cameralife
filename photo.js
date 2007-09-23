@@ -38,6 +38,7 @@ function nostar(){
 
 function fadein(porig, pnext){
   document.getElementById('prevphoto').style.display='none'
+  document.getElementById('nextphoto').src=document.getElementById('nextphoto').src.replace(/thumbnail/,"scaled")
 
   a = document.getElementById('curphoto')
   b = document.getElementById('nextphoto')
