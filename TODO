@@ -8,6 +8,10 @@
 ! Clean up preferences
 ! Update themes
 
+* never link to anything with .php, always use SmallIcon to get a link
+  - then we can easily switch to use modrewrite by putting an if() in the
+  - GetSmallIcon
+
 -- Now stuff / Fun stuff --
 mv setup -> modules
 
