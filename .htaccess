@@ -9,6 +9,13 @@ Order allow,deny
 Deny from all
 </Files>
 
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteBase /
+RewriteRule photos/([^/]+)/(\d+)-(\d+)\. media.php?format=$1&id=$2&ver=$3
+</IfModule>
+
+
 #<Files ~ jpg>
 #Order allow,deny
 #Deny from All

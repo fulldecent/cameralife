@@ -127,6 +127,14 @@
       <td>
         <input type=text name="deleted_dir" size=30
                 value="<?= $cameralife->preferences['core']['deleted_dir'] ?>">
+    <tr>
+      <td>
+        Use pretty URL's (requires mod rewrite)
+      <td>
+        <select name="rewrite">
+          <option <?= $cameralife->preferences['core']['rewrite'] == 'no' ? 'selected="selected"':'' ?>>no</option>
+          <option <?= $cameralife->preferences['core']['rewrite'] == 'yes' ? 'selected="selected"':'' ?>>yes</option>
+        </select>
   </table>
 
   <p>
