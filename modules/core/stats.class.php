@@ -80,7 +80,8 @@ class Stats
                   '<strong>'.(round ($this->counts['photos'] / 64, 0)).' refrigerators</strong>.';
                   # Model General Electric GTS18FBSWW
     $funfacts[] = 'Postage for mailing a photo here to each of your friends (like you have that many) will cost '.
-                  '<strong>$'.(round ($this->counts['photos'] * 0.39, 2)).'</strong>.';
+                  '<strong>$'.(round ($this->counts['photos'] * 0.41, 2)).'</strong>.';
+                  # http://www.usps.com/prices/welcome.htm
     return $funfacts;
   }
 }

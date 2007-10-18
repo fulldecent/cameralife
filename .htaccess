@@ -11,8 +11,7 @@ Deny from all
 
 <IfModule mod_rewrite.c>
 RewriteEngine on
-RewriteBase /
-RewriteRule ^(.*)?photos/([^/]+)/(\d+)-(\d+)\. $1media.php?format=$2&id=$3&ver=$4
+RewriteRule ^(.*)photos/([^/]+)/(\d+)-(\d+)\. $1media.php?format=$2&id=$3&ver=$4
 </IfModule>
 
 
