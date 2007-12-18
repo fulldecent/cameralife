@@ -11,7 +11,7 @@
   $sort = $_COOKIE["sort"] or $sort = 'id desc';
 
   $photo = new Photo($_GET['id']);
-  if ($photo->Get['status'] != 0) 
+  if ($photo->Get('status') != 0) 
     $cameralife->Security->authorize('admin_file', 'This file has been flagged or marked private');
 
   if ($cameralife->Security->GetName())

@@ -179,8 +179,14 @@ class Photo
 
     $this->Destroy();
     if (file_exists($cameralife->preferences['core']['photo_dir'].'/'.$this->record['path'].$this->record['filename']))
+    {
+#      $dir = $cameralife->preferences['core']['deleted_dir'].'/'.$this->record['path'];
+#      while(!is_dir($dir=dirname($dirs[]=$dir)));
+#      while(mkdir(array_pop($dirs)));
+
       rename ($cameralife->preferences['core']['photo_dir'].'/'.$this->record['path'].$this->record['filename'],
               $cameralife->preferences['core']['deleted_dir'].'/'.$this->record['filename']);
+    }
     if (file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.'.$this->extension))
       unlink($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_mod.'.$this->extension);
     if (file_exists($cameralife->preferences['core']['cache_dir'].'/'.$this->record['id'].'_150.'.$this->extension))
