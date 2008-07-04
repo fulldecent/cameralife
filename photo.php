@@ -315,10 +315,10 @@
     $href = $icon['href'].'&amp;referer='.urlencode($_SERVER['HTTP_REFERER']);
     $src = $icon['image'];
     $alt = htmlentities($icon['name']);
-    echo "<a href='$href'><img id=\"prevphoto\" style=\"margin: 0 10px\" src='$src' alt=\"$alt\"></a>";
+    echo "<a href='$href'><img id=\"prevphoto\" style=\"margin: 0 10px\" src='$src' alt=\"$alt\"></a>\n\n";
   }
   $alt = htmlentities($photo->Get('description'));
-  echo "<img id=\"curphoto\" style=\"margin: 0 auto\" src=\"".$photo->GetMedia('scaled')."\" alt=\"Photo of $alt\">";
+  echo "<img id=\"curphoto\" style=\"margin: 0 auto\" src=\"".$photo->GetMedia('scaled')."\" alt=\"$alt\">\n\n";
   if($photoNext)
   {
     $icon = $photoNext->GetIcon();
@@ -327,7 +327,7 @@
     $alt = htmlentities($icon['name']);
     echo "<a href='$href'><img id=\"nextphoto\" style=\"margin: 0 10px\" src='$src' alt=\"$alt\"></a>";
   }
-  echo "</div>";
+  echo "</div>\n";
 ?>
 
 <table width="100%">

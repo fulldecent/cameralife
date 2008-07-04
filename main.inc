@@ -154,6 +154,11 @@
                    'rel'=>'home');
     }
 
+    function IconURL($name)
+    {
+      return $this->base_url."/modules/iconset/".$this->preferences['core']['iconset']."/$name";
+    }
+
     function Error($message, $file='', $line='')
     {
       echo '<div style="margin: 3em; background: gray; border: 2px solid gray; padding:0.5em">';

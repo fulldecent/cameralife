@@ -2,7 +2,7 @@
   # Part of the user manager section:
   # Log analyzer - analyze all logs
 
-  $features=array('database','theme','security');
+  $features=array('database','security');
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
 
@@ -26,22 +26,13 @@
 
       $cameralife->Database->Delete('comments',"id=$var");
     }
-  } else if ($_POST['action'] == 'Set Checkpoint') {
-    $cameralife->preferences['core']['checkpointcomments'] = $_POST['checkpoint'];
-    $cameralife->SavePreferences();
   }
 ?>
-
 <html>
 <head>
-  <title><?= $cameralife->preferences['core']['sitename'] ?> - Comment Manager</title>
-  <?php if($cameralife->Theme->cssURL()) {
-    echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
-  } ?>
-  <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
-  <STYLE type="text/css">
-    h2{font-size:medium}
-  </STYLE>
+  <title><?= $cameralife->preferences['core']['sitename'] ?></title>
+  <link rel="stylesheet" href="admin.css">
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
   <script language="javascript">
   <!--
     function toggleUsers(a,b) 
@@ -57,25 +48,17 @@
   </script>
 </head>
 <body>
-<form method="post">
 
+<div id="header">
+<h1>Site Administration &ndash; Log Viewer</h1>
 <?php
-  $menu = array();
-  $menu[] = array("name"=>$cameralife->preferences['core']['siteabbr'],
-                  "href"=>"../index.php",
-                  'image'=>'small-main');
-  $menu[] = array("name"=>"Administration",
-                  "href"=>"index.php",
-                  'image'=>'small-admin');
-  $menu[] = array("name"=>"Help with Logs",
-                  "href"=>"../setup/checkpoints.html",
-                  'image'=>'small-admin');
+  $home = $cameralife->GetSmallIcon();
+  echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
+?> |
+<a href="index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>  |
+<a href="../setup/checkpoints.html">Help with checkpoints</a>
+</div>
 
-  $cameralife->Theme->TitleBar("Comment Viewer",
-                                'admin',
-                                "View and censor comments made on the site",
-                                $menu);
-?>
   <div id="allusers" <?= ($showallusers) ? '' : 'style="display:none"' ?>>
   <h2>Show changes by anyone <a href="#" onclick="toggleUsers('someusers','allusers')">[change]</a></h2>
   </div>
@@ -88,21 +71,21 @@
           <?php if ($_POST["showme"]) echo " checked" ?>
         >
         <label for="showme">
-          <?php $cameralife->Theme->Image('small-login') ?>Me
+          <img src="<?= $cameralife->IconURL('small-login') ?>">Me
         </label>
       <td width="33%">
         <input type="checkbox" id="showreg" name="showreg"
           <?php if ($_POST["showreg"]) echo " checked" ?>
         >
         <label for="showreg">
-          <?php $cameralife->Theme->Image('small-login') ?>Other Registered Users
+          <img src="<?= $cameralife->IconURL('small-login') ?>">Other Registered Users
         </label>
       <td width="33%">
         <input type="checkbox" id="showunreg" name="showunreg"
           <?php if ($_POST["showunreg"]) echo " checked" ?>
         >
         <label for="showunreg">
-          <?php $cameralife->Theme->Image('small-login') ?>Unregistered Users
+          <img src="<?= $cameralife->IconURL('small-login') ?>">Unregistered Users
         </label>
   </table>
   </div>
@@ -117,6 +100,7 @@
   -->
   <p><input type=submit value="Query logs"></p>
 
+  <form method="post">
   <table align="center" cellspacing="2" border=1 width="100%">
     <tr>
       <th colspan=2>Results
@@ -133,7 +117,7 @@
     $checkpoint = $cameralife->Database->SelectOne('comments','MAX(id)');
     echo "<input type='hidden' name='checkpoint' value='$checkpoint'>\n";
 
-    $condition .= " AND id > ".($cameralife->preferences['core']['checkpointphotos']+0);
+    $condition .= " AND id > ".($cameralife->preferences['core']['checkpointcomments']+0);
     $extra = "GROUP BY photo_id ORDER BY id DESC";
 
     $result = $cameralife->Database->Select('comments','*, MAX(id) as maxid',$condition,$extra);
@@ -141,7 +125,7 @@
     {
       echo "<tr><td align=center>";
       echo "<a href=\"../photo.php&#63;id=".$record['photo_id']."\">";
-      $cameralife->Theme->Image('small-photo');
+      echo "<img src=\"".$cameralife->IconURL('small-photo')."\">";
       echo "</a>";
       echo "<br><i>".$record['value_field']."</i>";
       echo "<td>\n";
@@ -165,12 +149,20 @@
   <p>
         <input type=submit name="action" value="Delete Selected">
         <a href="logs.php">(Revert to last saved)</a><br>
-        <input type=submit name="action" value="Set Checkpoint">
-        (do this after committing any changes)
   </p>
   </form>
+
+<h2>Update checkpoint</h2>
+<form method="post" action="controller_prefs.php">
+<p>
+  All of these logs will be hidden when you visit this page later<br>
+  <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] ?>" />
+  <input type="hidden" name="module1" value="core" />
+  <input type="hidden" name="param1" value="checkpointcomments" />
+  <input type="hidden" name="value1" value="<?= $checkpoint ?>">
+  <input type="submit" value="Update checkpoint">
+</p>
+</form>
 </body>
 </html>
-
-
 

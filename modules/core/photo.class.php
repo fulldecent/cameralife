@@ -216,7 +216,7 @@ class Photo
     global $cameralife;
 
     if ($cameralife->preferences['core']['rewrite'] == 'yes')
-      return "photos/$type/".$this->record['id'].'-'.$this->record['mtime'].'.'.$this->extension;
+      return "photos/$type/".$this->record['id'].'.'.$this->extension.'?0'.$this->record['mtime'];
     else
       return 'media.php&#63;format='.$type.'&amp;id='.$this->record['id'].'&amp;ver='.$this->record['mtime'];
 

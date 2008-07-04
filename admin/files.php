@@ -47,14 +47,11 @@
     return $retval;
   }
 ?>
-
 <html>
 <head>
-  <title><?= $cameralife->preferences['core']['sitename'] ?> - File Manager</title>
-  <?php if($cameralife->Theme->cssURL()) {
-    echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
-  } ?>
-  <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
+  <title><?= $cameralife->preferences['core']['sitename'] ?></title>
+  <link rel="stylesheet" href="admin.css">
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
   <script language="javascript">
     function changeall() {
       val = document.getElementById('status').value;
@@ -66,30 +63,24 @@
   </script>
 </head>
 <body>
-<form method="post" action="http://<?= $_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'] ?>&#63;page=<?= $_GET['page']?>">
 
+<div id="header">
+<h1>Site Administration &ndash; File Manager</h1>
 <?php
-  $menu = array();
+  $home = $cameralife->GetSmallIcon();
+  echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
+?> |
+<a href="index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a> 
+</div>
 
-  $menu[] = $icon = $cameralife->GetSmallIcon();
-
-  $menu[] = array("name"=>"Administration",
-                  "href"=>"index.php",
-                  'image'=>'small-admin');
-
-  $cameralife->Theme->TitleBar('File Manager', 
-                               'admin',
-                               'Manage flagged and hidden photos',
-                               $menu);
-
-  $sections[] = array('name'=>'Flagged Photos','page_name'=>'flagged');
-  if ($cameralife->Database->SelectOne('photos','COUNT(*)','status=2'))
-    $sections[] = array('name'=>'Private Photos','page_name'=>'private');
-  if ($cameralife->Database->SelectOne('photos','COUNT(*)','status=3'))
-    $sections[] = array('name'=>'New Uploaded Pics','page_name'=>'upload');
-  $sections[] = array('name'=>'Update Database','page_name'=>'update');
-
-  $cameralife->Theme->MultiSection($sections);
+<form method="post" action="http://<?= $_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'] ?>&#63;page=<?= $_GET['page']?>">
+<h2>
+  Show:
+  <a href="?page=flagged">Flagged photos</a> |
+  <a href="?page=private">Private photos</a> |
+  <a href="?page=update">Filesystem errors</a>
+</h2>
+<?php
 
   if ($_GET['page'] == 'flagged')
     $target_status = 1;
@@ -101,7 +92,7 @@
   if ($_GET['page'] !== 'update') // Show stuff
   {
     if ($_GET['page'] == 'flagged')
-      echo "<p class='administrative'>Photos that have been flagged will show up here. If you 'erase' a photo. It will be moved moved to <b>".$cameralife->preferences['core']['deleted_dir']."</b> <a href='customize.php'>(change)</a>. You may send flagged photos to the private photo section.</p>";
+      echo "<p class='administrative'>Photos that have been flagged will show up here. If you 'erase' a photo. It will be moved moved to <b>".$cameralife->preferences['core']['deleted_dir']."</b> <a href='appearance.php'>(change)</a>. You may send flagged photos to the private photo section.</p>";
     else if ($_GET['page'] == 'private')
       echo '<p class="administrative">Photos that have been marked private will show here.</p>';
     else if ($_GET['page'] == 'upload')
@@ -119,26 +110,31 @@
 //TODO wow...
     // You know code is a hack when you use a SQL injection attack against yourself.
     $search->mySearchPhotoCondition = "status=$target_status OR 0";
+    $search->SetPage(0, 9999);
     $photos = $search->GetPhotos();
     $icons = array();
 
+    echo '<table>';
+
     foreach($photos as $photo)
     {
-        $icon = $photo->GetIcon();
-        $icon['image'] = '../' . $icon['image'];
-        $icon['href'] = '../' . $icon['href'];
-        $icon['name'] = '<select name="'.$photo->Get('id').'">'.
+      if (!($i++%4)) echo '<tr>';
+
+      $icon = $photo->GetIcon();
+      echo '<td align="center" width="25%">';
+      echo '<a href="../'.$icon['href'].'">';
+      echo '<img src="../'.$icon['image'].'"></a><br />';
+      echo '<select name="'.$photo->Get('id').'">'.
                         '<option value="0" '.($target_status==0?'selected':'').'>Public</option>'.
                         '<option value="1" '.($target_status==1?'selected':'').'>Flagged</option>'.
                         '<option value="2" '.($target_status==2?'selected':'').'>Private</option>'.
                         '<option value="3" '.($target_status==3?'selected':'').'>New Upload</option>'.
                         '<option value="4" '.($target_status==4?'selected':'').'>Erased</option></select><br>'.
                         $icon['name'];
-        $icons[] = $icon;
     }
 
-    $cameralife->Theme->Grid($icons);
     $total = $cameralife->Database->SelectOne('photos','COUNT(*)',"status=$target_status");
+    echo '</table>';
 ?>
 <p>
   <input type=submit value="Commit Changes">
@@ -149,7 +145,6 @@
   }
   else // Update DB
   {
-    echo "</table>\n";
     echo "<p>Updating the database to reflect any changes to the photos directory...</p>\n<ol>\n";
     flush();
 

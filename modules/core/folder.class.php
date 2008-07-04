@@ -259,7 +259,7 @@ class Folder extends Search
           $str = $photo['path'].$photo['filename']." is missing, and $candidatephotopath was found, ";
           $str .= "they are not the same, I don't know what to do... ";
           $str .= "If they are the same, move latter to former, update, then move back.";
-          $str .= "If theey are different, move latter out of the photo directory, update and then move back.";
+          $str .= "If they are different, move latter out of the photo directory, update and then move back.";
 
           $retval[] = $str;
 #          echo $a['DateTime'];

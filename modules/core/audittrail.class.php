@@ -100,6 +100,7 @@ class Receipt
     $condition = 'record_id='.$this->myRecord['record_id'];
     $condition .= " AND record_type='".$this->myRecord['record_type']."'";
     $condition .= " AND value_field='".$this->myRecord['value_field']."'";
+    # Gets the old one too...
     $result = $cameralife->Database->Select('logs', '*', $condition, 'ORDER BY id DESC LIMIT 2');
 
     $new = $result->FetchAssoc();
@@ -140,6 +141,5 @@ class Receipt
     unset($myRecord);
   }
 }
-
 
 ?>

@@ -7,13 +7,22 @@
 * Increment version in main.inc
 ! Clean up preferences
 ! Update themes
+Setup checks for content negotiation and modrewrite (fetch index?test=true and ...
+
+Google opensocial/friendconnect
+
+note, bleeding edge ideas are at: http://camera.phor.net/TODO
+
+-- VALID HTML STRICT!!!
 
 * never link to anything with .php, always use SmallIcon to get a link
   - then we can easily switch to use modrewrite by putting an if() in the
   - GetSmallIcon
 
+* handle relative paths when using rewrite for paths: http://camera.phor.net/folders/2008/2008-03%20Eurotrip/ -> css -> thumbnails
+
 -- Now stuff / Fun stuff --
-mv setup -> modules
+mv setup -> modules  IS THIS GOOD??
 
 * Interface instead of classes where appropriate, (requires PHP5)
 * grep upgrade hack
@@ -23,6 +32,7 @@ mv setup -> modules
 ! Make admin/*.php not use the Theme API
   - a nice css file
 * Don't use $_GET except at the top of each user-facing page
+  - passing variables to the theme engine
 * Separate all form and content
 ? Combine GetIcon and GetSmallIcon?
 ? Use XML to represent passing of HTML?
@@ -41,7 +51,7 @@ mv setup -> modules
     . Chooses to work off original or scaled image
   - Result: editing a photo will not require modifying the full sized image (takes forever) unless the user loads that full size image, in which case it is cached.
   - Admin may update these cache at their whim via the Update Database in Files in Admin
-* use posix-compliant pathname and a way to upgrade you db
+* use posix-compliant pathname and a way to upgrade you db (the PATH column in photos)
  - benefits?
 * Move theme preferences out of ['core']
 

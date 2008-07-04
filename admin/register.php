@@ -1,7 +1,7 @@
 <?php
   # Allow you to submit information about your site to me
 
-  $features=array('database','theme','security');
+  $features=array('database','security');
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
 
@@ -9,39 +9,33 @@
   $stats = new Stats;
   $counts = $stats->GetCounts();
 ?>
-
 <html>
 <head>
-  <title><?= $cameralife->preferences['core']['sitename'] ?> - Register</title>
-  <?php if($cameralife->Theme->cssURL()) {
-    echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
-  } ?>
-  <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
+  <title><?= $cameralife->preferences['core']['sitename'] ?></title>
+  <link rel="stylesheet" href="admin.css">
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 <body>
 
+<div id="header">
+<h1>Site Administration &ndash; Register</h1>
 <?php
-  $menu = array();
-  $menu[] = array("name"=>$cameralife->preferences['core']['siteabbr'],
-                  "href"=>"../index.php",
-                  'image'=>'small-main');
-  $menu[] = array("name"=>"Administration",
-                  "href"=>"index.php",
-                  'image'=>'small-admin');
+  $home = $cameralife->GetSmallIcon();
+  echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
+?> |
+<a href="index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>
+</div>
 
-
-  $cameralife->Theme->TitleBar("Registration",
-                               'admin',
-                               "Provide feedback of your experiences with Camera Life",
-                               $menu);
-?>
-
-<p align=left>
-  You can copy this letter and email it to cameralife@phor.net with 
-  the subject CAMERALIFE-FEEDBACK. We appreciate your feedback!
+<p>
+  We would appreciate if you mail this to cameralife@phor.net with 
+  the subject CAMERALIFE-FEEDBACK including any of your feedback.
 </p>
 
 <p style="border:3px solid brown; background: tan; color: black; padding:20px">
+  From: <?= $cameralife->preferences['core']['owner_email'] ?><br>
+  To: cameralife@phor.net<br>
+  Subj: CAMERALIFE-FEEDBACK<br>
+  <br>
   To the Camera Life team,<br>
   &nbsp;<br>
   I have set up a site named <strong><?= $cameralife->preferences['core']['sitename'] ?></strong> at <strong><?= str_replace('admin','',$cameralife->base_url) ?></strong> based on the <strong><?= $cameralife->version ?></strong> version of Camera Life.

@@ -6,7 +6,7 @@
 
   $photo = new Photo($_GET['id']);
   $format = $_GET['format'];
-  if ($_GET['ver'] === NULL) $cameralife->Error('Required argument ver missing!');
+  if (!is_numeric($_GET['ver'])) $cameralife->Error('Required number ver missing! Expected a number, got: '.$_GET['ver']);
   $path_parts = pathinfo($photo->Get('filename'));
   $extension = strtolower($path_parts['extension']);
 

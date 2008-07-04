@@ -18,44 +18,47 @@
 ?>
 <html>
 <head>
-  <title><?= $cameralife->preferences['core']['sitename'] ?> - Cache updater</title>
-  <?php if($cameralife->Theme->cssURL()) {
-    echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
-  } ?>
-  <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
+  <title><?= $cameralife->preferences['core']['sitename'] ?></title>
+  <link rel="stylesheet" href="admin.css">
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <script language="javascript">
+    function changeall() {
+      val = document.getElementById('status').value;
+      inputs = document.getElementsByTagName('select');
+      for (var i = 0; i < inputs.length; i++) {
+          inputs[i].value=val;
+      }
+    }
+  </script>
 </head>
 <body>
+
+<div id="header">
+<h1>Site Administration &ndash; Thumbnailer</h1>
+<?php
+  $home = $cameralife->GetSmallIcon();
+  echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
+?> |
+<a href="index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>
+</div>
 
 
 <form id="form1" method="get">
 
 <?php
-  $menu = array();
-  $menu[] = array("name"=>$cameralife->preferences['core']['siteabbr'],
-                  "href"=>"../index.php",
-                  'image'=>'small-main');
-  $menu[] = array("name"=>"Administration",
-                  "href"=>"../admin/index.php",
-                  'image'=>'small-admin');
-
-  $cameralife->Theme->TitleBar("Cache Updater",
-                               'admin',
-                               "Update thumbnails for photos all at once",
-                               $menu);
-
   $total = $cameralife->Database->SelectOne('photos', 'count(*)');
   $done = $cameralife->Database->SelectOne('photos', 'count(*)', "id <= $lastdone");
   $todo = $cameralife->Database->SelectOne('photos', 'count(*)', "id > $lastdone");
   $timeleft = round((time()-$starttime) * $todo / ($numdone + $done/500 + 1) / 60, 0);
 
-  echo 'We are now caching thumbnails. Thumbnails are also cached the first time any user views a photo. Caching them now avoids that small delay for the user. This process is not necessary if you are impatient.';
+  echo '<p>We are now caching thumbnails. Thumbnails are also cached the first time any user views a photo. Caching them now avoids that small delay for the user. This process is not necessary if you are impatient.</p>';
   echo "<h3>Progress: $done of $total done";
   if ($done != $total)
     echo " (about $timeleft minutes left)";
   echo "</h3>\n";
-  echo "<div style='width: 500px; background: #fff; border: 1px solid black; padding: 2px; margin:2em'>";
+  echo "<p><div style='width: 500px; background: #fff; border: 1px solid black; padding: 2px; margin:2em'>";
   echo "<div style='height: 25px; background: #347 url(".$cameralife->Theme->ImageURL('progress').") repeat-x; width:".($done/$total*100)."%'></div>";
-  echo "</div>\n";
+  echo "</div></p>\n";
   if ($todo == 0) die();
 
   $next1000 = $cameralife->Database->Select('photos', 'id', "id > $lastdone", 'ORDER BY id LIMIT 500');
@@ -78,5 +81,7 @@
   //echo "Fixed: $fixed photos.<br>\n";
   //echo "Continue: <a href='?lastdone=$lastdone'>Continue</a><br>\n";
   echo "<script language='javascript'>window.location='thumbnails.php?lastdone=$lastdone&starttime=$starttime&numdone=$numdone'</script>" ;
-
 ?>
+
+</body>
+</html>
