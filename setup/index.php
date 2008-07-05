@@ -22,7 +22,7 @@ Thank you for choosing to install Camera Life. We hope you will find this projec
 <ul>
 <li><a href="../README">The README</a>
 <li><a href="http://fdcl.sourceforge.net">The project webpage</a>
-<li>Hit us up: <a href="mailto:cameralife@phor.net">cameralife@phor.net</a>
+<li><a href="mailto:cameralife@phor.net">cameralife@phor.net</a>
 </ul>
 If you are upgrading from a previous version of Camera Life, stop and read the file <a href="../UPGRADE">UPGADE</a>.
 

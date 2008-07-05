@@ -29,13 +29,12 @@
 
   <p>Using cPanel:</p>
 
-  <pre>
-  Click MySQL Databases
-
-  Add Database: cameralife
-  Add User: <b>username</b> <b>password</b>
-  Add user to Db
-  </pre>
+  <ul>
+    <li>Click MySQL Databases</li>
+    <li>Add Database: cameralife</li>
+    <li>Add User: <b>username</b> <b>password</b></li>
+    <li>Add the new user to the new database with All Privileges</li>
+  </ul>
 
   <p>Note: If you setup Camera Life on a different system, please tell us about it at cameralife@phor.net</p>
 
