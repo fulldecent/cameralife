@@ -18,21 +18,10 @@ phpdoc -o HTML:frames:earthli -d . -t docs
 
 -- VALID HTML STRICT!!!
 
-* never link to anything with .php, always use SmallIcon to get a link
-  - then we can easily switch to use modrewrite by putting an if() in the
-  - GetSmallIcon
-
-* handle relative paths when using rewrite for paths: http://camera.phor.net/folders/2008/2008-03%20Eurotrip/ -> css -> thumbnails
-
--- Now stuff / Fun stuff --
-* grep upgrade hack
-
 -- Change theme engine --
 * Don't use $_GET except at the top of each user-facing page
   - passing variables to the theme engine
 * Separate all form and content
-? Combine GetIcon and GetSmallIcon?
-
 
 -- Things that will break the API --
 * Change photos.mtime to photos.filter

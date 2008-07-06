@@ -1,14 +1,9 @@
 <?php
-  $features=array('database','theme');
-  require "main.inc";
+  # $cameralife set by ShowPage()
 
-  $cameralife->Theme->ShowPage('upload');
-
-die('done');
-#################
-
-  $features = array('database', 'security', 'imageprocessing', 'theme');
-  require 'main.inc';
+  $cameralife->GetFeature('security');
+  $cameralife->GetFeature('photostore');
+  $cameralife->GetFeature('imageprocessing');
 
   if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$user['username'].'/')
   {

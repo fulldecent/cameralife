@@ -1,5 +1,6 @@
 <?php
 #TODO: more alt = basename(img)
+
   class SidebarTheme extends ThemeModule
   {
     function SidebarTheme() 
@@ -12,6 +13,14 @@
       $this->preferences[] = array('name'=>'main_topics_n', 'desc'=>'... N=', 'type'=>'number', 'default'=>'3');
       $this->preferences[] = array('name'=>'main_folders', 'desc'=>'Folders on main page', 'type'=>array('0'=>"Don't show",'1'=>'Show N random folders'), 'default'=>'1');
       $this->preferences[] = array('name'=>'main_folders_n', 'desc'=>'... N=', 'type'=>'number', 'default'=>'5');
+    }
+
+    function ShowPage($name, $object=NULL)
+    {
+      global $cameralife, $_SERVER, $_GET, $_POST;
+      $objectname = strtolower($name);
+      $$objectname = $object;
+      require dirname(__FILE__) . '/' . strtolower($name) . '.inc';
     }
 
     function cssURL()

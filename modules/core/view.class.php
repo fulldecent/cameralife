@@ -16,6 +16,14 @@ class View
    * href is HTML encoded, so you can <a href="$icon[href]">$icon[name]</a>
    */
   function GetIcon($size='large') {}
+
+  function ShowPage()
+  {
+    global $cameralife;
+
+    $cameralife->Theme->ShowPage(strtolower(get_class($this)), $this);
+  }
+
 }
 
 ?>

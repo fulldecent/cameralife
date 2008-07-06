@@ -1,18 +1,9 @@
 <?php
-  $features=array('database','theme');
-  require "main.inc";
+  # $cameralife and $atopic are set by ShowPage()
 
-  $topic = new Topic($_GET['name']);
-  $topic->ShowPage();
+  $cameralife->GetFeature('security');
+  $cameralife->GetFeature('photostore');
 
-die('done');
-#################
-
-  # Displays a category of photo albums "topic"
-  $features=array('database','security', 'theme', 'photostore');
-  require "main.inc";
-
-  $topic = new Topic($_GET['name']);
   $albums = $topic->GetAlbums();
   $counts = $topic->GetCounts();
 ?>

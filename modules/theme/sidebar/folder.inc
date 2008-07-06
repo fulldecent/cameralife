@@ -1,23 +1,11 @@
 <?php
-  $features=array('database','theme');
-  require "main.inc";
-
-  $folder = new Folder($_GET['path'], $true);
-  $folder->ShowPage();
-
-die('done');
-#################
-
-
-### die('done');
+  # $cameralife and $folder are set by ShowPage()
+  $cameralife->GetFeature('security');
+  $cameralife->GetFeature('photostore');
 
   # Browses a give path for photos
   # Magic vars GET:start, GET/POST:sort are handled in search.class.php
   
-  $features=array('database','theme','security', 'photostore');
-  require "main.inc";
-
-  $folder = new Folder($_GET['path'], $true);
   $counts = $folder->GetCounts();
 
   if ($_GET['page'] == 'folders' || !$counts['photos'])

@@ -1,16 +1,5 @@
 <?php
-  $features=array('database','theme');
-  require "main.inc";
-
-  $cameralife->Theme->ShowPage('stats');
-#TODO pass a stats object?
-die('done');
-#################
-
-
-
-  $features=array('database','theme');
-  require "main.inc";
+  # $cameralife and $album are set by ShowPage()
 
   $stats = new Stats;
   $counts = $stats->GetCounts();

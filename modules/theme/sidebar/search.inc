@@ -1,16 +1,8 @@
 <?php
-  $features=array('database','theme');
-  require "main.inc";
+  # $cameralife and $search are set by ShowPage()
 
-  $search = new Search($_GET['q']);
-  $search->ShowPage();
-
-die('done');
-#################
-
-
-  $features=array('database','theme','security', 'photostore');
-  require "main.inc";
+  $cameralife->GetFeature('security');
+  $cameralife->GetFeature('photostore');
 
   $start = $_GET['start'] 
     or $start = 0;
@@ -21,7 +13,6 @@ die('done');
   fclose ($log_handle);
   */
 
-  $search = new Search($_GET['q']);
   $counts = $search->GetCounts();
 
   #Be intelligent here...

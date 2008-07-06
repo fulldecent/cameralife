@@ -1,16 +1,12 @@
 <?php
-  $features=array('database','theme');
-  require "main.inc";
+  # $cameralife and $album are set by ShowPage()
 
-  $cameralife->Theme->ShowPage('login');
-
-die('done');
-#################
+  $cameralife->GetFeature('security');
+  $cameralife->GetFeature('photostore');
 
   # Handles logging in and registering... then sends 'em to the index page
 
-  $features=array('database','theme','security');
-  require "main.inc";
+  $cameralife->GetFeature('security');
 
   $_GET['page']
     or $_GET['page'] = 'login';
@@ -30,7 +26,7 @@ die('done');
 
 <?php
   $menu = array();
-  $menu[] = $cameralife->GetSmallIcon();
+  $menu[] = $cameralife->GetIcon('small');
   $menu[] = array("name"=>"Powered by Camera Life",
                   "href"=>"http://fdcl.sourceforge.net");
 

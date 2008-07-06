@@ -1,7 +1,7 @@
 <?php
   # Create RSS feeds for all kinds of stuff
 
-  $features=array('database','theme','security');
+  $features=array('database','theme','security', 'photostore');
   require "main.inc";
 
   $search = new Search($_GET['q']);
@@ -13,7 +13,7 @@
 ?>
 <rss version="2.0">
   <channel>
-    <title><![CDATA[<?= $cameralife->GetPref('sitename'] ?> - <?= $_GET['q'] ?>])></title>
+    <title><![CDATA[<?= $cameralife->GetPref('sitename') ?> - <?= $_GET['q'] ?>]]></title>
     <link><?= $cameralife->base_url ?></link>
     <description>Search results for '<? $_GET['q'] ?>'</description>
     <language>en-us</language>
@@ -25,12 +25,12 @@
 
     echo "    <item>\n";
     echo "      <title><![CDATA[".$photo->Get('description')."]]></title>\n";
-    echo "      <link>".$cameralife->base_url.'/'.$icon['href']."</link>\n";
-    echo "      <guid isPermaLink=\"true\">".$cameralife->base_url.'/'.$icon['href']."</guid>\n";
-    echo "      <description><![CDATA[<a href=\"".$cameralife->base_url.'/'.$icon['href']."\"><img border=\"0\" src=\"".$cameralife->base_url.'/'.$icon['image']."\"></a>]]></description>\n";
+    echo "      <link>".$icon['href']."</link>\n";
+    echo "      <guid isPermaLink=\"true\">".$icon['href']."</guid>\n";
+    echo "      <description><![CDATA[<a href=\"".$icon['href']."\"><img border=\"0\" src=\"".$icon['image']."\"></a>]]></description>\n";
     echo "      <category>photo</category>\n";
     echo "      <pubDate>".date('r',$date)."</pubDate>\n";
-#    echo "      <enclosure url=\"".$cameralife->base_url.'/'.$icon['image']."\" type=\"image/jpeg\" length=\"0\"></enclosure>\n";
+#    echo "      <enclosure url=\"".$icon['image']."\" type=\"image/jpeg\" length=\"0\"></enclosure>\n";
     echo "    </item>\n";
   }
 ?>

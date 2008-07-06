@@ -1,18 +1,9 @@
 <?php
-  $features=array('database','theme');
-  require "main.inc";
+  # $cameralife and $album are set by ShowPage()
 
-  $album = new Album($_GET['id']);
-  $album->ShowPage();
+  $cameralife->GetFeature('security');
+  $cameralife->GetFeature('photostore');
 
-die('done');
-#################
-
-
-#, 'photostore');
-  require "main.inc";
-
-  $album = new Album($_GET['id']);
   $album->Set('hits', $album->Get('hits') + 1);
   $results = $album->GetPhotos();
   $counts = $album->GetCounts();

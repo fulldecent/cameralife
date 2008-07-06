@@ -1,16 +1,11 @@
 <?php
-  $features=array('database','theme');
-  require "main.inc";
+  # $cameralife and $photo are set by ShowPage()
 
-  $photo = new Photo($_GET['id']);
-  $photo->ShowPage();
-
-die('done');
-#################
+  $cameralife->GetFeature('security');
+  $cameralife->GetFeature('photostore');
+  $cameralife->GetFeature('imageprocessing');
 
   # Display a photo, edit a photo, link to relevant places
-  $features=array('database', 'imageprocessing','security', 'theme', 'photostore');
-  require "main.inc";
 
   if ($_GET['referer'])
     $_SERVER['HTTP_REFERER'] = $_GET['referer'];
@@ -19,7 +14,6 @@ die('done');
 
   $sort = $_COOKIE["sort"] or $sort = 'id desc';
 
-  $photo = new Photo($_GET['id']);
   if ($photo->Get('status') != 0) 
     $cameralife->Security->authorize('admin_file', 'This file has been flagged or marked private');
   $icon = $photo->GetIcon('small');
@@ -135,10 +129,10 @@ die('done');
     echo "  <link rel=\"next prefetch\" href=\"$href\">\n";
   }
 ?>
-  <script type="text/javascript" src="keywords.php"></script>
-  <script type="text/javascript" src="delicious.js"></script>
-  <script type="text/javascript" src="photo.js"></script>
-  <script type="text/javascript" src="ajax.js"></script>
+  <script type="text/javascript" src="<?= $cameralife->base_url . '/modules/theme/' . $cameralife->GetPref('theme') ?>/keywords.php"></script>
+  <script type="text/javascript" src="<?= $cameralife->base_url . '/modules/theme/' . $cameralife->GetPref('theme') ?>/delicious.js"></script>
+  <script type="text/javascript" src="<?= $cameralife->base_url . '/modules/theme/' . $cameralife->GetPref('theme') ?>/pphoto.js"></script>
+  <script type="text/javascript" src="<?= $cameralife->base_url . '/modules/theme/' . $cameralife->GetPref('theme') ?>/ajax.js"></script>
   <script type="text/javascript">
 <?php
   $suggestions = $photo->Get('path');
