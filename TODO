@@ -5,7 +5,6 @@
 ! edit setup/install.mysql
 * database changes into setup
 * Increment version in main.inc
-! Clean up preferences
 ! Update themes
 Setup checks for content negotiation and modrewrite (fetch index?test=true and ...
 
@@ -22,20 +21,13 @@ note, bleeding edge ideas are at: http://camera.phor.net/TODO
 * handle relative paths when using rewrite for paths: http://camera.phor.net/folders/2008/2008-03%20Eurotrip/ -> css -> thumbnails
 
 -- Now stuff / Fun stuff --
-mv setup -> modules  IS THIS GOOD??
-
-* Interface instead of classes where appropriate, (requires PHP5)
 * grep upgrade hack
-* reply with HTTP/1.0 410 Gone if appropriate
 
 -- Change theme engine --
-! Make admin/*.php not use the Theme API
-  - a nice css file
 * Don't use $_GET except at the top of each user-facing page
   - passing variables to the theme engine
 * Separate all form and content
 ? Combine GetIcon and GetSmallIcon?
-? Use XML to represent passing of HTML?
 
 
 -- Things that will break the API --
@@ -51,19 +43,15 @@ mv setup -> modules  IS THIS GOOD??
     . Chooses to work off original or scaled image
   - Result: editing a photo will not require modifying the full sized image (takes forever) unless the user loads that full size image, in which case it is cached.
   - Admin may update these cache at their whim via the Update Database in Files in Admin
-* use posix-compliant pathname and a way to upgrade you db (the PATH column in photos)
- - benefits?
-* Move theme preferences out of ['core']
-
 ? logs.value_old is techically unnecessary
-* Enumerate the photos.status
+* Enumerate the photos.status and other columns
 
 -- The big picture --
 ! Integrate with CMS's like Phpnuke!?
+! Fantastico
 
 -- Features --
-* Admin->* "Changes Saved" should produce a message like Gmail
-* Admin->User createuser, changepasswd
+* Admin->* "Changes Saved" should produce a message like Gmail as in Photo.php
 * A logs module that gives you a receipt for any change you make
   - you can undo any arbitrary receipt
 
@@ -74,11 +62,5 @@ mv setup -> modules  IS THIS GOOD??
 -- UI (themes) --
 * theme -> more obvious tabs
 ? Make Theme->AssetURL work if content negotiation is off
-
--- Modules --
-* Make a legacy-GD module
-    imagecreatetruecolor -> imagecreate
-
-
 
 
