@@ -39,7 +39,7 @@
       $this->preferences[] = array('name'=>'theme', 'type'=>'string', 'default'=>'sidebar');
       $this->preferences[] = array('name'=>'iconset', 'type'=>'string', 'default'=>'cartoonic');
       $this->preferences[] = array('name'=>'photostore', 'type'=>'string', 'default'=>'local');
-      $this->preferences[] = array('name'=>'security', 'type'=>'string', 'default'=>'defaultsecurity');
+      $this->preferences[] = array('name'=>'security', 'type'=>'string', 'default'=>'default');
 
       $this->preferences[] = array('name'=>'checkpointlogs', 'type'=>'number', 'default'=>'0');
       $this->preferences[] = array('name'=>'checkpointcomments', 'type'=>'number', 'default'=>'0');

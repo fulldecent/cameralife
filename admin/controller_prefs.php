@@ -27,7 +27,7 @@
 
   foreach ($prefs as $pref)
   {
-    if ($pref['module'] && $pref['param'] && $pref['value'])
+    if (isset($pref['module']) && isset($pref['param']) && isset($pref['value']))
     {
       $cameralife->userpreferences[$pref['module']][$pref['param']] = $pref['value'];
       $cameralife->SavePreferences();

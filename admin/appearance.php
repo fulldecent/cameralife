@@ -160,7 +160,7 @@
     $prefnum++;
     echo "  <tr><td>".$pref['desc']."\n";
     echo "    <td>\n";
-    echo "      <input type=\"hidden\" name=\"module$prefnum\" value=\"theme\" />\n";
+    echo "      <input type=\"hidden\" name=\"module$prefnum\" value=\"".get_class($cameralife->Theme)."\" />\n";
     echo "      <input type=\"hidden\" name=\"param$prefnum\" value=\"".$pref['name']."\" />\n";
 
     $value = $cameralife->Theme->GetPref($pref['name']);

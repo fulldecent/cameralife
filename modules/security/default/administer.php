@@ -1,7 +1,7 @@
 <?php
   # In charge of monitoring users and security settings
 
-  $features=array('database','theme','security');
+  $features=array('database','security');
   require "../../../main.inc";
   $cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
 
@@ -11,89 +11,86 @@
 
   foreach ($_POST as $key => $val)
   {
-    if ($_GET['page'] == 'users')
-    {
-      if ($val == "delete")
-        $cameralife->Database->Delete('users',"username='$key'");
-      else
-        $cameralife->Database->Update('users',array('auth'=>$val),"username='$key'");
-    }
-    else if ($_GET['page'] == 'policies')
-    {
-// delegate to pref controller
-      $cameralife->preferences['defaultsecurity'][$key] = $val;
-    }
+    if ($val == "delete")
+      $cameralife->Database->Delete('users',"username='$key'");
+    else
+      $cameralife->Database->Update('users',array('auth'=>$val),"username='$key'");
   }
   $cameralife->SavePreferences();
 
   function html_select_auth($param_name)
   {
     global $cameralife;
+    global $prefnum;
+    $prefnum++;
 
-    echo "\n<select name=\"$param_name\">\n";
-    if ($cameralife->preferences['defaultsecurity'][$param_name] == 0)
+    echo "      <input type=\"hidden\" name=\"module$prefnum\" value=\"".get_class($cameralife->Security)."\" />\n";
+    echo "      <input type=\"hidden\" name=\"param$prefnum\" value=\"".$param_name."\" />\n";
+    echo "      <select name=\"value$prefnum\">\n";
+    if ($cameralife->Security->GetPref($param_name) == 0)
       echo "  <option selected value=\"0\">Anyone</option>\n";
     else
       echo "  <option value=\"0\">Anyone</option>\n";
-    if ($cameralife->preferences['defaultsecurity'][$param_name] == 1)
+    if ($cameralife->Security->GetPref($param_name) == 1)
       echo "  <option selected value=\"1\">Unconfirmed registration</option>\n";
     else
       echo "  <option value=\"1\">Unconfirmed registration</option>\n";
-    if ($cameralife->preferences['defaultsecurity'][$param_name] == 2)
+    if ($cameralife->Security->GetPref($param_name) == 2)
       echo "  <option selected value=\"2\">Confirmed registration</option>\n";
     else
       echo "  <option value=\"2\">Confirmed registration</option>\n";
-    if ($cameralife->preferences['defaultsecurity'][$param_name] == 3)
+    if ($cameralife->Security->GetPref($param_name) == 3)
       echo "  <option selected value=\"3\">Privileged account</option>\n";
     else
       echo "  <option value=\"3\">Priviliged account</option>\n";
-    if ($cameralife->preferences['defaultsecurity'][$param_name] == 4)
+    if ($cameralife->Security->GetPref($param_name) == 4)
       echo "  <option selected value=\"4\">Administrator</option>\n";
     else
       echo "  <option value=\"4\">Administrator</option>\n";
-    if ($cameralife->preferences['defaultsecurity'][$param_name] == 5)
+    if ($cameralife->Security->GetPref($param_name) == 5)
       echo "  <option selected value=\"5\">Owner</option>\n";
     else
       echo "  <option value=\"5\">Owner</option>\n";
     echo "</select>\n";
   }
 ?>
-
 <html>
 <head>
-  <title><?= $cameralife->preferences['core']['sitename'] ?> - User Manager</title>
-  <?php if($cameralife->Theme->cssURL()) {
-    echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
-  } ?>
-  <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
+  <title><?= $cameralife->GetPref('sitename') ?></title>
+  <link rel="stylesheet" href="../../../admin/admin.css">
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <script language="javascript">
+    function changeall() {
+      val = document.getElementById('status').value;
+      inputs = document.getElementsByTagName('select');
+      for (var i = 0; i < inputs.length; i++) {
+          inputs[i].value=val;
+      }
+    }
+  </script>
 </head>
 <body>
-<form method="post">
+
+<div id="header">
+<h1>Site Administration &ndash; Security Manager</h1>
+<?php
+  $home = $cameralife->GetIcon('small');
+  echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
+?> |
+<a href="../../../admin/index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>
+</div>
+
+<h2>
+  Show:
+  <a href="?page=users">Users</a> |
+  <a href="?page=policies">Policies</a>
+</h2>
 
 <?php
-  $menu = array();
-  $menu[] = $cameralife->GetSmallIcon();
-  $menu[] = array("name"=>"Administration",
-                  "href"=>$cameralife->base_url.'/admin/index.php',
-                  'image'=>'small-admin');
-
-  $cameralife->Theme->TitleBar("User Manager",
-                               'admin',
-                               "Modify, confirm and delete users",
-                               $menu);
-
-  $sections[] = array('name'=>'Users',
-                      'page_name'=>'users',
-                      'image'=>'small-login');
-  $sections[] = array('name'=>'Policies',
-                      'page_name'=>'policies',
-                      'image'=>'small-login');
-
-  $cameralife->Theme->MultiSection($sections);
-
   if ($_GET['page'] == 'users' ) 
   {
 ?>
+    <form method="post" action="<?= $PHP_SELF ?>">
     <table align="center" cellspacing="2" border=1 width="100%">
       <tr>
         <th width="16%">User
@@ -111,7 +108,7 @@
         $count_photos = $cameralife->Database->SelectOne('photos','COUNT(*)',"username='".$curuser["username"]."'");
   
         echo "<tr><td>\n";
-        $cameralife->Theme->Image('small-login',array('align'=>'middle'));
+        echo '<img src="'.$cameralife->IconURL('small-login').'">';
         echo $curuser["username"]."\n";
         echo "  <td><select name=\"".$curuser["username"]."\">\n";
         if($curuser["auth"] == 1)
@@ -149,6 +146,8 @@
     ?>
     </table>
 <?php } else if ($_GET['page'] == 'policies' ) { ?>
+    <form method="post" action="<?= $cameralife->base_url . '/admin/controller_prefs.php' ?>">
+    <input type="hidden" name="target" value="<?= $cameralife->base_url .'/modules/security/'.$cameralife->GetPref('security').'/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
     <table align="center" cellspacing="2" border=1 width="100%">
       <tr>
         <th colspan=2>
@@ -181,7 +180,7 @@
 <?php } ?> 
 
 <p>
-  <input type=submit value="Commit Changes">
+  <input type="submit" value="Commit Changes">
   <a href="users.php">(Revert to last saved)</a>
 </p>
 
