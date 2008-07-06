@@ -17,6 +17,19 @@
      *
      */
     var $preferences;
+
+    function GetPref($key)
+    {
+      global $cameralife;
+
+      $set = $cameralife->userpreferences[get_class($this)][$key];
+      if ($set) return $set;
+
+      foreach ($this->preferences as $pref)
+        if($pref['name'] == $key) return $pref['default'];
+
+      $cameralife->error('Unable to retreive preference: '. get_class($this) .' '.$key, __FILE__, __LINE__);
+    }
   }
 
 ?>

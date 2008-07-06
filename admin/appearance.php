@@ -13,11 +13,11 @@
   {
     if ($key == 'UseTheme')
     {
-      $cameralife->preferences['core']['theme'] = $val;
+      $cameralife->GetPref('theme') = $val;
       header('Location: customize.php?page=themes');
     }
     else
-      $cameralife->preferences['core'][$key] = rtrim($val,'/');
+      $cameralife->GetPref($key) = rtrim($val,'/');
   }
   $cameralife->SavePreferences();
 
@@ -38,7 +38,7 @@
 
 <html>
 <head>
-  <title><?= $cameralife->preferences['core']['sitename'] ?></title>
+  <title><?= $cameralife->GetPref('sitename') ?></title>
   <link rel="stylesheet" href="admin.css">
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
@@ -55,9 +55,9 @@
 
 <form method="post" action="controller_prefs.php">
 <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'].'&#63;page='.$_GET['page'] ?>" />
-<input type="hidden" name="module1" value="core" />
+<input type="hidden" name="module1" value="CameraLife" />
 <input type="hidden" name="param1" value="theme" />
-<input type="hidden" name="module2" value="core" />
+<input type="hidden" name="module2" value="CameraLife" />
 <input type="hidden" name="param2" value="iconset" />
 <table>
   <tr>
@@ -77,7 +77,7 @@
     
           include($theme."/theme-info.php");
     
-          if ($cameralife->preferences['core']['theme'] == basename($theme))
+          if ($cameralife->GetPref('theme') == basename($theme))
             echo "<option selected value=\"".basename($theme)."\">\n";
           else
             echo "<option value=\"".basename($theme)."\">\n";
@@ -108,7 +108,7 @@
 
           include($theme."/iconset-info.php");
 
-          if ($cameralife->preferences['core']['iconset'] == basename($theme))
+          if ($cameralife->GetPref('iconset') == basename($theme))
             echo "<option selected value=\"".basename($theme)."\">\n";
           else
             echo "<option value=\"".basename($theme)."\">\n";
@@ -131,29 +131,29 @@
   <tr>
     <td>Site name
     <td>
-      <input type="hidden" name="module1" value="core" />
+      <input type="hidden" name="module1" value="CameraLife" />
       <input type="hidden" name="param1" value="sitename" />
-      <input type=text name="value1" size=30 value="<?= $cameralife->preferences['core']['sitename'] ?>">
+      <input type=text name="value1" size=30 value="<?= $cameralife->GetPref('sitename') ?>">
   <tr>
     <td>Site abbreviation (used to refer to the main page)
     <td>
-      <input type="hidden" name="module2" value="core" />
+      <input type="hidden" name="module2" value="CameraLife" />
       <input type="hidden" name="param2" value="siteabbr" />
-      <input type=text name="value2" size=30 value="<?= $cameralife->preferences['core']['siteabbr'] ?>">
+      <input type=text name="value2" size=30 value="<?= $cameralife->GetPref('siteabbr') ?>">
   <tr>
     <td>Owner E-mail address (shown if something goes wrong)
     <td>
-      <input type="hidden" name="module3" value="core" />
+      <input type="hidden" name="module3" value="CameraLife" />
       <input type="hidden" name="param3" value="owner_email" />
-      <input type=text name="value3" size=30 value="<?= $cameralife->preferences['core']['owner_email'] ?>">
+      <input type=text name="value3" size=30 value="<?= $cameralife->GetPref('owner_email') ?>">
   <tr>
     <td>Use pretty URL's (requires mod rewrite)
     <td>
-      <input type="hidden" name="module4" value="core" />
+      <input type="hidden" name="module4" value="CameraLife" />
       <input type="hidden" name="param4" value="rewrite" />
       <select name="value4">
-        <option <?= $cameralife->preferences['core']['rewrite'] == 'no' ? 'selected="selected"':'' ?>>no</option>
-        <option <?= $cameralife->preferences['core']['rewrite'] == 'yes' ? 'selected="selected"':'' ?>>yes</option>
+        <option <?= $cameralife->GetPref('rewrite') == 'no' ? 'selected="selected"':'' ?>>no</option>
+        <option <?= $cameralife->GetPref('rewrite') == 'yes' ? 'selected="selected"':'' ?>>yes</option>
       </select>
   <tr>
     <td><td><input type="submit" value="Save changes" />
@@ -163,7 +163,7 @@
 
 <form method="post" action="controller_prefs.php">
 <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'].'&#63;page='.$_GET['page'] ?>" />
-<h2>Settings for <?= $cameralife->preferences['core']['theme'] ?></h2>
+<h2>Settings for <?= $cameralife->GetPref('theme') ?></h2>
 <table>
 <?php
   $prefnum=0;
@@ -174,11 +174,8 @@
     echo "    <td>\n";
     echo "      <input type=\"hidden\" name=\"module$prefnum\" value=\"theme\" />\n";
     echo "      <input type=\"hidden\" name=\"param$prefnum\" value=\"".$pref['name']."\" />\n";
- 
-    if ($cameralife->preferences['theme'][$pref['name']])
-      $value = $cameralife->preferences['theme'][$pref['name']];
-    else
-      $value = $pref['default'];
+
+    $value = $cameralife->Theme->GetPref($pref['name']);
 
     if ($pref['type'] == 'number' || $pref['type'] == 'string')
     {
@@ -201,40 +198,6 @@
   <tr><td><td><input type="submit" value="Save changes" />
 </table>
 </form>
-
-
-<form method="post" action="controller_prefs.php">
-<h1>RED RED MOE ME</h1>
-
-
-  <table align="center" cellspacing="2" border=1 width="100%">
-    <tr>
-      <th colspan=2>
-        Site directories - <i>relative to the main page</i>
-    <tr>
-      <td>
-        Main photo directory
-      <td width=100>
-        <input type=text name="photo_dir" size=30
-                value="<?= $cameralife->preferences['core']['photo_dir'] ?>">
-    <tr>
-      <td>
-        Camera Life data directory
-      <td>
-        <input type=text name="cache_dir" size=30
-                value="<?= $cameralife->preferences['core']['cache_dir'] ?>">
-    <tr>
-      <td>
-        Deleted photos (...where they go when you "erase" them)
-      <td>
-        <input type=text name="deleted_dir" size=30
-                value="<?= $cameralife->preferences['core']['deleted_dir'] ?>">
-  </table>
-
-  <p>
-    <input type=submit value="Save and Validate changes">
-    <a href="customize.php">(Revert to last saved)</a>
-  </p>
 
 </body>
 </html>
