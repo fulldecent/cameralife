@@ -11,10 +11,12 @@
     die('Redirecting to installer...');
   }
 
-  class CameraLife
+  require dirname(__FILE__).'/modules/module.inc';
+
+  class CameraLife extends CameraLifeModule
   {
     var $loaded_features;
-    var $preferences;
+    var $userpreferences;
     var $version;
     var $base_dir;
     var $base_url; // like http://camera.phor.net or http://phor.net/life/camera
@@ -27,13 +29,27 @@
       $this->base_dir = dirname(__FILE__);
       $this->base_url = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']),'/');
 
-      $this->version = '2.6.0';
-      $this->RelativeInclude('modules/module.inc',1);
+      $this->version = '2.6.1';
 
       // Load preferences
       $this->GetFeature('core');
       $this->GetFeature('database');
       $this->LoadPreferences();
+
+      $this->preferences[] = array('name'=>'theme', 'type'=>'string', 'default'=>'sidebar');
+      $this->preferences[] = array('name'=>'iconset', 'type'=>'string', 'default'=>'cartoonic');
+      $this->preferences[] = array('name'=>'photostore', 'type'=>'string', 'default'=>'local');
+      $this->preferences[] = array('name'=>'security', 'type'=>'string', 'default'=>'defaultsecurity');
+
+      $this->preferences[] = array('name'=>'checkpointlogs', 'type'=>'number', 'default'=>'0');
+      $this->preferences[] = array('name'=>'checkpointcomments', 'type'=>'number', 'default'=>'0');
+
+      $this->preferences[] = array('name'=>'sitename', 'type'=>'string', 'default'=>'My Photos');
+      $this->preferences[] = array('name'=>'siteabbr', 'type'=>'string', 'default'=>'Home');
+      $this->preferences[] = array('name'=>'sitedate', 'type'=>'string', 'default'=>'2008-07-05 01:01:01');
+      $this->preferences[] = array('name'=>'owner_email', 'type'=>'string', 'default'=>'none@none.none');
+
+      $this->preferences[] = array('name'=>'rewrite', 'type'=>'yesno', 'default'=>'no');
     }  
       
     function RelativeInclude($file)
@@ -70,9 +86,14 @@
           $this->Security = new DefaultSecurity() ;
           break;
         case 'theme': 
-          $this->RelativeInclude('modules/theme/'.$this->preferences['core']['theme'].'/theme.inc');
-          $themename = $this->preferences['core']['theme'].'theme';
+          $this->RelativeInclude('modules/theme/'.$this->GetPref('theme').'/theme.inc');
+          $themename = $this->GetPref('theme').'theme';
           $this->Theme = new $themename;
+          break;
+        case 'photostore':
+          $this->RelativeInclude('modules/photostore/'.$this->GetPref('photostore').'/module.inc');
+          $modulename = $this->GetPref('photostore').'photostore';
+          $this->PhotoStore = new $modulename;
           break;
         default:
           $this->Error("Non-existant feature requested: $feature");
@@ -83,34 +104,31 @@
     function LoadPreferences()
     {
       $query = $this->Database->Select('preferences','*');
-      $result = $query->FetchAssoc()
-        or $this->Error('No site preferences can be found!');
+      $result = $query->FetchAssoc();
 
       if ($result['sitename']) // upgrade hack
       {
         foreach($result as $key => $value)
         {
           if (strpos($key, 'auth_') === 0)
-            $this->preferences['defaultsecurity'][$key] = $value;
+            $this->userpreferences['DefaultSecurity'][$key] = $value;
           else
-            $this->preferences['core'][$key] = $value;
+            $this->userpreferences['CameraLife'][$key] = $value;
         }
-        $this->preferences['olddb'] = TRUE;
+        $this->olddb = TRUE;
       } else {
         while ($result)
         {
-          $this->preferences[$result['prefmodule']][$result['prefkey']] = $result['prefvalue'];
+          $this->userpreferences[$result['prefmodule']][$result['prefkey']] = $result['prefvalue'];
           $result = $query->FetchAssoc();
         }
       }
-
-      $this->preferences['defaultsecurity']['auth_cookie'] = 'cameralifeauth'; //TODO hmm
     }
 
     function SavePreferences()
     {
       // Upgrade hack
-      if ($this->preferences['olddb'] == TRUE)
+      if ($this->olddb == TRUE)
       {
         $sql = 'DROP TABLE `'.$this->Database->myPrefix.'preferences`';
         $this->Database->Query($sql)
@@ -126,7 +144,7 @@
           or $this->Error(mysql_error());
       }
 
-      foreach($this->preferences as $module => $moduleprefs)
+      foreach($this->userpreferences as $module => $moduleprefs)
       {
         if (is_array($moduleprefs))
         {
@@ -148,7 +166,7 @@
 
     function GetSmallIcon()
     {
-      return array("name"=>$this->preferences['core']['siteabbr'],
+      return array("name"=>$this->GetPref('siteabbr'),
                    "href"=>$this->base_url.'/index.php',
                    'image'=>'small-main',
                    'rel'=>'home');
@@ -156,7 +174,7 @@
 
     function IconURL($name)
     {
-      return $this->base_url."/modules/iconset/".$this->preferences['core']['iconset']."/$name";
+      return $this->base_url."/modules/iconset/".$this->GetPref('iconset')."/$name";
     }
 
     function Error($message, $file='', $line='')
@@ -169,9 +187,14 @@
         echo "  <div style=\"background: #eee; padding: 1em;\">Error at: <i>$file</i></div>\n";
       if ($line)
         echo "  <div style=\"background: #eee; padding: 1em;\">Line: <i>$line</i></div>\n";
-      echo "</div></div><!--\n";
-      var_dump(debug_backtrace());
-      echo "\n-->\n";
+      echo "</div></div>\n";
+
+      if (isset($cameralife->Security) && $cameralife->Security->authorize('admin_customize'))
+      {
+        echo "For details, view HTML source<!--\n";
+        var_dump(debug_backtrace());
+        echo "\n-->\n";
+      }
       exit(1);
     }
   }

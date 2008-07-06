@@ -3,7 +3,7 @@
   # Then redirects to the target page
 
   # Pass me variables like this:
-  # module1 = core
+  # module1 = CameraLife
   # param1 = site_name
   # value1 = Camera Life
   # target = admin/customize.php
@@ -29,7 +29,7 @@
   {
     if ($pref['module'] && $pref['param'] && $pref['value'])
     {
-      $cameralife->preferences[$pref['module']][$pref['param']] = $pref['value'];
+      $cameralife->userpreferences[$pref['module']][$pref['param']] = $pref['value'];
       $cameralife->SavePreferences();
     }
     else 

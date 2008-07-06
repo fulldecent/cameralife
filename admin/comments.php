@@ -30,7 +30,7 @@
 ?>
 <html>
 <head>
-  <title><?= $cameralife->preferences['core']['sitename'] ?></title>
+  <title><?= $cameralife->GetPref('sitename') ?></title>
   <link rel="stylesheet" href="admin.css">
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
   <script language="javascript">
@@ -117,7 +117,7 @@
     $checkpoint = $cameralife->Database->SelectOne('comments','MAX(id)');
     echo "<input type='hidden' name='checkpoint' value='$checkpoint'>\n";
 
-    $condition .= " AND id > ".($cameralife->preferences['core']['checkpointcomments']+0);
+    $condition .= " AND id > ".($cameralife->GetPref('checkpointcomments')+0);
     $extra = "GROUP BY photo_id ORDER BY id DESC";
 
     $result = $cameralife->Database->Select('comments','*, MAX(id) as maxid',$condition,$extra);
@@ -157,7 +157,7 @@
 <p>
   All of these logs will be hidden when you visit this page later<br>
   <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] ?>" />
-  <input type="hidden" name="module1" value="core" />
+  <input type="hidden" name="module1" value="CameraLife" />
   <input type="hidden" name="param1" value="checkpointcomments" />
   <input type="hidden" name="value1" value="<?= $checkpoint ?>">
   <input type="submit" value="Update checkpoint">

@@ -8,18 +8,18 @@
   # target = the exit URL, or 'ajax' for an ajax call
 
   @ini_set('max_execution_time',9000);
-  $features = array('database', 'security', 'imageprocessing', 'theme');
+  $features = array('database', 'security', 'imageprocessing', 'theme', 'photostore');
   require 'main.inc';
 
   // Description: Adds a file to the system
-  // Precondition: the images exists at $cameralife->preferences['core']['photo_dir'].'/'.$path.$filename
-  // Postcondition: image is added to database, thumbnails created
-  // Return: 0 = success, or a string describing the error
-  function add_image($path, $filename, $description = 'unnamed', $status = 0)
+  // Precondition: the images exists at $file
+  // Postcondition: image is added to the photostore at $path . $filename
+  // Return: 0 = success; or a string describing the error
+  function add_image($path, $filename, $file, $description = 'unnamed', $status = 0)
   {
     global $cameralife;
 
-    $filesize = filesize($cameralife->preferences['core']['photo_dir'].'/'.$path.$filename);
+    $filesize = filesize($file);
 
     $exists = $cameralife->Database->SelectOne('photos','COUNT(*)',"filename='$filename' AND fsize=$filesize");
     if ($exists)
@@ -32,12 +32,13 @@
     $upload['status'] = $status;
 
     $photo = new Photo($upload);
+    $cameralife->PhotoStore->PutFile($photo, $file);
 
     return 0;
   }
 
 
-  if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$user['username'].'/')
+  if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$cameralife->Security->GetName().'/')
   {
     $cameralife->Security->Authorize('admin_file', 1);
     $path = $_REQUEST['path'];
@@ -77,52 +78,87 @@
   if ($_FILES['userfile']['error'] == UPLOAD_ERR_NO_FILE)
     $cameralife->Error("No file was selected for upload.", __FILE__);
 
-  if (!file_exists($cameralife->preferences['core']['photo_dir'].'/'.$path))
-  {
-    mkdir($cameralife->preferences['core']['photo_dir'].'/'.$path)
-      or $cameralife->Error("The selected upload directory doesn't exist and could not be created.", __FILE__, __LINE__);
-  }
 
-  if (!is_writable($cameralife->preferences['core']['photo_dir'].'/'.$path))
-    $cameralife->Error("The selected upload directory isn't writable.", __FILE__, __LINE__);
+if ( !function_exists('sys_get_temp_dir') )
+{
+    // Based on http://www.phpit.net/
+    // article/creating-zip-tar-archives-dynamically-php/2/
+    function sys_get_temp_dir()
+    {
+        // Try to get from environment variable
+        if ( !empty($_ENV['TMP']) )
+        {
+            return realpath( $_ENV['TMP'] );
+        }
+        else if ( !empty($_ENV['TMPDIR']) )
+        {
+            return realpath( $_ENV['TMPDIR'] );
+        }
+        else if ( !empty($_ENV['TEMP']) )
+        {
+            return realpath( $_ENV['TEMP'] );
+        }
+
+        // Detect by creating a temporary file
+        else
+        {
+            // Try to use system's temporary directory
+            // as random name shouldn't exist
+            $temp_file = tempnam( md5(uniqid(rand(), TRUE)), '' );
+            if ( $temp_file )
+            {
+                $temp_dir = realpath( dirname($temp_file) );
+                unlink( $temp_file );
+                return $temp_dir;
+            }
+            else
+            {
+                return FALSE;
+            }
+        }
+    }
+}
 
   if (eregi ('\.zip$', $_FILES['userfile']['name']))
   {
     //echo "Uploading ZIP file.<br>";
-    $extractionpath = $cameralife->preferences['core']['photo_dir'].'/'.$path;
-    $basename = $_FILES['userfile']['name'];
-    move_uploaded_file($_FILES['userfile']['tmp_name'], $extractionpath.$basename)
-      or $camerlife->Error("Could not move the zip file, is the destination writable?");
+    $temp = tempnam('', 'cameralife_');
+    $tempdir = sys_get_temp_dir();
 
-    exec ("unzip -d '$extractionpath' -nj '$extractionpath$basename' '*jpg' '*JPG' '*jpeg' '*JPEG' '*png' '*PNG'", $output, $return);
-    unlink ($extractionpath.$basename);
+    $basename = $_FILES['userfile']['name'];
+    move_uploaded_file($_FILES['userfile']['tmp_name'], $temp)
+      or $camerlife->Error("Could not move the zip file, is the destination writable? $temp");
+
+    exec ("unzip -d $tempdir -nj '$temp' '*jpg' '*JPG' '*jpeg' '*JPEG' '*png' '*PNG'", $output, $return);
+    unlink ($temp);
 
     foreach ($output as $outputline)
     {
-      $outputline = explode($extractionpath, $outputline);
-      if (count($outputline) != 2) continue;
-      if (!preg_match("/.jpg$|.jpeg$|.png$/i", $outputline[1])) continue;
-        $result = add_image($path, $outputline[1], $_POST['description'], $status);
+      if (preg_match("|$tempdir".'/?\s?(.+)|', $outputline, $matches))
+      {
+        if (!preg_match("/.jpg$|.jpeg$|.png$/i", $matches[1])) continue;
+        $result = add_image($path, $matches[1], $tempdir.'/'.$matches[1], $_POST['description'], $status);
+        unlink($tempdir.'/'.$matches[1]);
+      }
 
       if ($result)
       {
         $cameralife->Error("Filename: ".$outputline[1], __FILE__);
-#TODO delete the files on failure
       }
     }
   }
   else
   {
-    move_uploaded_file($_FILES['userfile']['tmp_name'], 
-                      $cameralife->preferences['core']['photo_dir'].'/'.$path.$_FILES['userfile']['name'])
+    $temp = tempnam('', 'cameralife_');
+
+    move_uploaded_file($_FILES['userfile']['tmp_name'], $temp)
       or $camerlife->Error("Could not upload the photo, is the destination writable?");
 
-    $result = add_image($path, $_FILES['userfile']['name'], $_POST['description'], $status);
+    $result = add_image($path, $_FILES['userfile']['name'], $temp, $_POST['description'], $status);
+    @unlink ($temp);
 
     if ($result != 0)
-    {
       $cameralife->Error("Error adding image: $result", __FILE__);
-    }
   }
 
   if ($_POST['target'] == 'ajax')

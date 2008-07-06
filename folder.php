@@ -2,10 +2,10 @@
   # Browses a give path for photos
   # Magic vars GET:start, GET/POST:sort are handled in search.class.php
   
-  $features=array('database','theme','security');
+  $features=array('database','theme','security', 'photostore');
   require "main.inc";
 
-  $folder = new Folder($_GET['path']);
+  $folder = new Folder($_GET['path'], $true);
   $counts = $folder->GetCounts();
 
   if ($_GET['page'] == 'folders' || !$counts['photos'])
@@ -19,7 +19,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title><?= $cameralife->preferences['core']['sitename'] ?></title>
+  <title><?= $cameralife->GetPref('sitename') ?></title>
   <?php if($cameralife->Theme->cssURL()) {
     echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
   } ?>
@@ -29,7 +29,7 @@
 <form method="post"> 
 <?php
 $menu = array();
-  $menu[] = array('name'=>$cameralife->preferences['core']['siteabbr'],
+  $menu[] = array('name'=>$cameralife->GetPref('siteabbr'),
                   'href'=>'index.php',
                   'image'=>'small-main');
   if ($folder->Path())

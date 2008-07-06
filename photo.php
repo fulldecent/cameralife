@@ -1,6 +1,6 @@
 <?php
   # Display a photo, edit a photo, link to relevant places
-  $features=array('database', 'imageprocessing','security', 'theme');
+  $features=array('database', 'imageprocessing','security', 'theme', 'photostore');
   require "main.inc";
 
   if ($_GET['referer'])
@@ -262,7 +262,7 @@
   {
 ?>
     <div class="administrative" align=center>
-      Thank you for your contributions to <?= $cameralife->preferences['core']['sitename'] ?>, please consider
+      Thank you for your contributions to <?= $cameralife->GetPref('sitename') ?>, please consider
       <?php $cameralife->Theme->Image('small-login',array('align'=>'middle')) ?>
       <b><a href="login.php">registering or logging in</a></b>.
     </div>

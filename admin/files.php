@@ -5,7 +5,7 @@
 
   @ini_set('max_execution_time',9000);
 
-  $features=array('database','theme','security','imageprocessing');
+  $features=array('database','security','imageprocessing', 'photostore');
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
   chdir ($cameralife->base_dir);
@@ -49,7 +49,7 @@
 ?>
 <html>
 <head>
-  <title><?= $cameralife->preferences['core']['sitename'] ?></title>
+  <title><?= $cameralife->GetPref('sitename') ?></title>
   <link rel="stylesheet" href="admin.css">
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
   <script language="javascript">
@@ -92,7 +92,7 @@
   if ($_GET['page'] !== 'update') // Show stuff
   {
     if ($_GET['page'] == 'flagged')
-      echo "<p class='administrative'>Photos that have been flagged will show up here. If you 'erase' a photo. It will be moved moved to <b>".$cameralife->preferences['core']['deleted_dir']."</b> <a href='appearance.php'>(change)</a>. You may send flagged photos to the private photo section.</p>";
+      echo "<p class='administrative'>Photos that have been flagged will show up here. If you 'erase' a photo, if will be deteled from your photostore. Some photostores will keep a copy of deleted photos. You can configure photostores <a href='photostore.php'>here</a>. You may send flagged photos to the private photo section.</p>";
     else if ($_GET['page'] == 'private')
       echo '<p class="administrative">Photos that have been marked private will show here.</p>';
     else if ($_GET['page'] == 'upload')
@@ -123,7 +123,7 @@
       $icon = $photo->GetIcon();
       echo '<td align="center" width="25%">';
       echo '<a href="../'.$icon['href'].'">';
-      echo '<img src="../'.$icon['image'].'"></a><br />';
+      echo '<img src="'.$icon['image'].'"></a><br />';
       echo '<select name="'.$photo->Get('id').'">'.
                         '<option value="0" '.($target_status==0?'selected':'').'>Public</option>'.
                         '<option value="1" '.($target_status==1?'selected':'').'>Flagged</option>'.
@@ -141,7 +141,6 @@
   <a href="<?= $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'] ?>">(Undo changes)</a>
 </p>
 <?php
-    $cameralife->Theme->PageSelector($_GET['start'],$total,12,"page=".$_GET["page"]);
   }
   else // Update DB
   {

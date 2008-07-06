@@ -13,7 +13,7 @@
 ?>
 <rss version="2.0">
   <channel>
-    <title><![CDATA[<?= $cameralife->preferences['core']['sitename'] ?> - <?= $_GET['q'] ?>]]></title>
+    <title><![CDATA[<?= $cameralife->GetPref('sitename'] ?> - <?= $_GET['q'] ?>])></title>
     <link><?= $cameralife->base_url ?></link>
     <description>Search results for '<? $_GET['q'] ?>'</description>
     <language>en-us</language>

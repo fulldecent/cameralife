@@ -11,7 +11,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title><?= $cameralife->preferences["sitename"] ?></title>
+  <title><?= $cameralife->GetStat('sitename') ?></title>
   <?php if($cameralife->Theme->cssURL()) {
     echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
   } ?>
@@ -77,7 +77,7 @@
 
 <?php $cameralife->Theme->Section('Fun Facts (reload for more)'); ?>
   <ul>
-    <li><?= $cameralife->preferences['core']['sitename'] ?> has been online since <?= $cameralife->preferences['core']['sitedate'] ?> (<b><?= $counts['daysonline'] ?> days</b>).
+    <li><?= $cameralife->GetPref('sitename'] ?> has been online since <?= $cameralife->GetPref('sitedate') ?> (<b><?= $counts['daysonline') ?> days</b>).
   </ul>
   <ul>
 <?php

@@ -14,7 +14,7 @@
   $photo = $result->FetchAssoc()
     or die('You have followed a stale link or have found a bug in this site :-)');
 
-  $file = $cameralife->preferences['core']['cache_dir'].'/'.$photo['id'].'_150.jpg';
+  $file = $cameralife->photostore->GetPref('cache_dir').'/'.$photo['id'].'_150.jpg';
   if (!file_exists($file))
   {
     $size = 150;

@@ -16,7 +16,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title><?= $cameralife->preferences['core']['sitename'] ?></title>
+  <title><?= $cameralife->GetPref('sitename') ?></title>
   <?php if($cameralife->Theme->cssURL()) {
     echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
   } ?>
@@ -29,7 +29,7 @@
 <?php
   $menu = array();
 
-  $menu[] = array("name"=>$cameralife->preferences['core']['siteabbr'],
+  $menu[] = array("name"=>$cameralife->GetPref('siteabbr'),
                   "href"=>"index.php",
                   'image'=>'small-main');
 

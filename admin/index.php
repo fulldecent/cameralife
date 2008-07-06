@@ -1,7 +1,7 @@
 <?php
   # Provides a menu to choose administrative options
 
-  $features=array('database','security');
+  $features=array('database','security', 'photostore');
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
 
@@ -9,14 +9,13 @@
   $numpri = $cameralife->Database->SelectOne('photos','COUNT(*)','status=2');
   $numupl = $cameralife->Database->SelectOne('photos','COUNT(*)','status=3');
   $numreg = $cameralife->Database->SelectOne('users','COUNT(*)','auth=1');
-  $numlog = $cameralife->Database->SelectOne('logs','COUNT(*)','id>'.($cameralife->preferences['core']['checkpointlogs']+0));
-  $numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->preferences['core']['checkpointcomments']+0));
+  $numlog = $cameralife->Database->SelectOne('logs','COUNT(*)','id>'.($cameralife->GetPref('checkpointlogs')+0));
+  $numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->GetPref('checkpointcomments')+0));
   $numfserrors = count(Folder::Update());
-
 ?>
 <html>
 <head>
-  <title><?= $cameralife->preferences['core']['sitename'] ?></title>
+  <title><?= $cameralife->GetPref('sitename') ?></title>
   <link rel="stylesheet" href="admin.css">
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
@@ -134,6 +133,13 @@
       echo "<p class=\"alert\">$numdel photos have been flagged</p>";
     if ($numupl)
       echo "<p class=\"alert\">$numupl photos have been uploaded but not reviewed</p>";
+  }
+
+  if ($cameralife->Security->authorize('admin_file'))
+  {
+    echo "<h2><a href=\"photostore.php\">Photo Storage</a></h2>\n";
+    echo "<p>Setup where your photos are stored: in a local folder, a remote server, Amazon S3, ...</p>\n";
+
     echo "<p class=\"alert\">There are $numfserrors issues with your photos directory</p>";
   }
 

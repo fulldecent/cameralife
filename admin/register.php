@@ -11,7 +11,7 @@
 ?>
 <html>
 <head>
-  <title><?= $cameralife->preferences['core']['sitename'] ?></title>
+  <title><?= $cameralife->GetPref('sitename') ?></title>
   <link rel="stylesheet" href="admin.css">
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
@@ -32,13 +32,13 @@
 </p>
 
 <p style="border:3px solid brown; background: tan; color: black; padding:20px">
-  From: <?= $cameralife->preferences['core']['owner_email'] ?><br>
+  From: <?= $cameralife->GetPref('owner_email') ?><br>
   To: cameralife@phor.net<br>
   Subj: CAMERALIFE-FEEDBACK<br>
   <br>
   To the Camera Life team,<br>
   &nbsp;<br>
-  I have set up a site named <strong><?= $cameralife->preferences['core']['sitename'] ?></strong> at <strong><?= str_replace('admin','',$cameralife->base_url) ?></strong> based on the <strong><?= $cameralife->version ?></strong> version of Camera Life.
+  I have set up a site named <strong><?= $cameralife->GetPref('sitename') ?></strong> at <strong><?= str_replace('admin','',$cameralife->base_url) ?></strong> based on the <strong><?= $cameralife->version ?></strong> version of Camera Life.
   It has been up for <strong><?= $counts['daysonline'] ?></strong> days, contains <strong><?= $counts['photos'] ?></strong> photos and is running on <strong><?= eregi_replace('server.*','',eregi_replace('<[^>]*>', '', $_SERVER['SERVER_SIGNATURE'])) ?></strong>.<br>
   &nbsp;<br>
   You <strong>may/may not (pick one!)</strong> list my site on your Camera Life software demo page.<br>
@@ -50,7 +50,7 @@
   Cheers,<br>
   &nbsp;<br>
   <strong>Your Name</strong><br>
-  <?= $cameralife->preferences['core']['owner_email'] ?><br>
+  <?= $cameralife->GetPref('owner_email') ?><br>
 </p>
   
 </body>
