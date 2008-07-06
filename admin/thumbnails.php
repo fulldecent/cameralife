@@ -2,7 +2,7 @@
   # Admin tool to update thumbnails since they are lazily created
 
   @ini_set('max_execution_time',9000);
-  $features=array('database','theme','security','imageprocessing');
+  $features=array('database','theme','security','imageprocessing', 'photostore');
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
   chdir ($cameralife->base_dir);
@@ -36,7 +36,7 @@
 <div id="header">
 <h1>Site Administration &ndash; Thumbnailer</h1>
 <?php
-  $home = $cameralife->GetSmallIcon();
+  $home = $cameralife->GetIcon('small');
   echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
 ?> |
 <a href="index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>
@@ -51,7 +51,7 @@
   $todo = $cameralife->Database->SelectOne('photos', 'count(*)', "id > $lastdone");
   $timeleft = round((time()-$starttime) * $todo / ($numdone + $done/500 + 1) / 60, 0);
 
-  echo '<p>We are now caching thumbnails. Thumbnails are also cached the first time any user views a photo. Caching them now avoids that small delay for the user. This process is not necessary if you are impatient.</p>';
+  echo '<p>We are now caching thumbnails. This avoids a delay when a photo is viewed for the first time.</p>';
   echo "<h3>Progress: $done of $total done";
   if ($done != $total)
     echo " (about $timeleft minutes left)";
@@ -68,7 +68,7 @@
   {
     $curphoto = new Photo($next['id']);
     flush();
-    if ($curphoto->CheckThumbnail())
+    if ($cameralife->PhotoStore->CheckThumbnails($curphoto))
     {
       echo "Updating #".$next['id']."<br>\n";
       $fixed++;

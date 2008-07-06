@@ -134,6 +134,32 @@
     }
 
     /**
+    *  CheckThumbnails
+    *
+    *  Ensures that thumbnails exist
+    *
+    *  @param $photo - a target photo object
+    *
+    *  @return true if work was done
+    */
+    function CheckThumbnails($photo) 
+    {
+      global $cameralife;
+
+      $path_parts = pathinfo($photo->Get('filename'));
+      $extension = strtolower($path_parts['extension']);
+
+      if (!file_exists($cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension) ||
+          !file_exists($cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension) ||
+          $photo->Get('modified') && !file_exists($cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension))
+      {
+        $photo->GenerateThumbnail();
+        return TRUE;
+      }
+      return FALSE;
+    }
+
+    /**
     *  ModifyFile
     *
     *  Puts a modified version of a photo into the photostore. Passing

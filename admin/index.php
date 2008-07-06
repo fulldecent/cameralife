@@ -24,7 +24,7 @@
 <div id="header">
 <h1>Site Administration</h1>
 <?php
-  $home = $cameralife->GetSmallIcon();
+  $home = $cameralife->GetIcon('small');
   echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
 ?> |
 <a href="../stats.php"><img src="<?= $cameralife->IconURL('small-photo')?>">Stats</a> |

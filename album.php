@@ -6,6 +6,7 @@
   $album->Set('hits', $album->Get('hits') + 1);
   $results = $album->GetPhotos();
   $counts = $album->GetCounts();
+  $icon = $album->GetIcon();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -26,13 +27,23 @@
 
   if ($cameralife->Security->authorize('admin_albums') && !$_GET['edit'])
   {
+    if (strpos($icon['href'], '&#63;') !== FALSE)
+      $href = $icon['href'] . '&amp;id='.$album->Get('id').'&amp;edit=true';
+    else
+      $href = $icon['href'] . '&#63;id='.$album->Get('id').'&amp;edit=true';
+
     $menu[] = array('name'=>'Edit this Album',
-                    "href"=>"$PHPSELF&#63;id=".$album->Get('id').'&amp;edit=true',
+                    "href"=>$href,
                     'image'=>'small-admin');
   }
 
+  if (strpos($icon['href'], '&#63;') !== FALSE)
+    $href = $icon['href'] . '&amp;help';
+  else
+    $href = $icon['href'] . '&#63;help';
+
   $menu[] = array('name'=>'Add photos to this Album',
-                  'href'=>"$PHPSELF&#63;id=".$album->Get('id').'&amp;help',
+                  'href'=>$href,
                   'onclick'=>"javascript:void(document.getElementById('help').style.display='');return false",
                   'image'=>'small-admin');
 
@@ -79,7 +90,7 @@
           <td>
             <input type=submit name="action" value="Update">
             <input type=submit name="action" value="Delete">
-            <a href="<?= $_SERVER['PHP_SELF'] ?>&#63;id=<?= $album->Get('id') ?>">(cancel)</a>
+            <a href="<?= $icon['href'] ?>">(cancel)</a>
       </table>
     </form>
     </div>

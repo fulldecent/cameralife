@@ -161,11 +161,11 @@ class Search extends View
     return $folders;
   }
 
-  function GetSmallIcon()
+  function GetIcon($size='large')
   {
     return array('name'=>'Search for '.$this->myQuery,
                  'href'=>"search.php&#63;q=".urlencode($this->myQuery),
-                 'image'=>'small-search');
+                 'image'=>($size=='large')?'search':'small-search');
   }
 
 }

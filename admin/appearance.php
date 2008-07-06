@@ -35,7 +35,7 @@
 <div id="header">
 <h1>Site Administration &ndash; Theme</h1>
 <?php
-  $home = $cameralife->GetSmallIcon();
+  $home = $cameralife->GetIcon('small');
   echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
 ?> |
 <a href="index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a> | <a href="http://fdcl.sourceforge.net/index.php&#63;content=themes">Get more themes</a>

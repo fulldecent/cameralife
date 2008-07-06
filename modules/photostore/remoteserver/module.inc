@@ -154,6 +154,20 @@
     }
 
     /**
+    *  CheckThumbnails
+    *
+    *  Ensures that thumbnails exist
+    *
+    *  @param $photo - a target photo object
+    *
+    *  @return true if work was done
+    */
+    function CheckThumbnails($photo)
+    {
+      return FALSE; # we always cache thumbnails, no doubt
+    }
+
+    /**
     *  ModifyFile
     *
     *  Puts a modified version of a photo into the photostore. Passing

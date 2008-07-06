@@ -269,8 +269,8 @@ class Folder extends Search
       # Bonus code
       if ($cameralife->PhotoStore->name='local')
       {
+        $actualsize = filesize($cameralife->base_dir . '/' . $cameralife->PhotoStore->GetPref('photo_dir') . '/' . $new_file);
         $extra = ' and fsize='.$actualsize;
-        $actualsize = filesize($cameralife->PhotoStore->GetPref('photo_dir') . '/' . $new_file);
       }
       else
         $extra = '';

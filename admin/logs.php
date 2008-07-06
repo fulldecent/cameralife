@@ -82,7 +82,7 @@
 <div id="header">
 <h1>Site Administration &ndash; Log Viewer</h1>
 <?php
-  $home = $cameralife->GetSmallIcon();
+  $home = $cameralife->GetIcon('small');
   echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
 ?> |
 <a href="index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>  |
@@ -205,16 +205,18 @@
       echo "<tr><td align=center>";
       if ($record['record_type'] == 'photo')
       {
-        echo "<a href=\"../photo.php&#63;id=".$record['record_id']."\">";
-        $cameralife->IconURL('small-photo');
+        $photo = new Photo($record['record_id']);
+        $icon = $photo->GetIcon('small');
+        echo "<a href=\"".$icon['href']."\">";
+        echo '<img src="'.$cameralife->IconURL('small-photo').'">';
         echo "</a>";
       }
       else if ($record['record_type'] == 'album')
-        $cameralife->IconURL('small-album');
+        echo '<img src="'.$cameralife->IconURL('small-album').'">';
       else if ($record['record_type'] == 'preference')
-        $cameralife->IconURL('small-admin');
+        echo '<img src="'.$cameralife->IconURL('small-admin').'">';
       else if ($record['record_type'] == 'user')
-        $cameralife->IconURL('small-user');
+        echo '<img src="'.$cameralife->IconURL('small-user').'">';
       echo "<br><i>".$record['value_field']."</i>";
       echo "<td>\n";
 

@@ -17,6 +17,9 @@ RewriteRule ^(.*)photos/([^/]+)/(\d+)\. $1modules/photostore/local/media.php?for
 RewriteRule ^(.*)folders/(.*) $1folder.php?path=$2
 RewriteRule ^(.*)albums/(\d+) $1album.php?id=$2&%{QUERY_STRING}
 RewriteRule ^(.*)topics/(.+) $1topic.php?name=$2
+#
+# Note: these rewrites affect photo.class.php, who analyzes the HTTP referer
+#
 </IfModule>
 
 

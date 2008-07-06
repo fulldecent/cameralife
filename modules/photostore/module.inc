@@ -75,6 +75,17 @@
     function PutThumbnails($photo, $scaled, $thumbnail) {}
 
     /**
+    *  CheckThumbnails
+    *
+    *  Ensures that thumbnails exist
+    *
+    *  @param $photo - a target photo object
+    *
+    *  @return true if work was done
+    */
+    function CheckThumbnails($photo) {}
+
+    /**
     *  ModifyFile
     *
     *  Puts a modified version of a photo into the photostore. Passing NULL

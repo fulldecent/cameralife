@@ -19,6 +19,7 @@
   {
     global $cameralife;
 
+    if (!$description) $description = 'unnamed';
     $filesize = filesize($file);
 
     $exists = $cameralife->Database->SelectOne('photos','COUNT(*)',"filename='$filename' AND fsize=$filesize");

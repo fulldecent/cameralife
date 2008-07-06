@@ -12,6 +12,8 @@ class View
    * return may also include: context (flavor text), rel and rev (from HTML a element attributes)
    *   and width and height (for the image)
    * image will be a URL or a named icon (see IconSet modules)
+   *
+   * href is HTML encoded, so you can <a href="$icon[href]">$icon[name]</a>
    */
   function GetIcon($size='large') {}
 }

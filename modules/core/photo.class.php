@@ -4,7 +4,7 @@
 class Photo extends View
 {
   var $record, $image;
-  var $context; // an Album, or Search or Folder of where the user came from to get to this photo
+  var $context; // an Album, Search or Folder of where the user came from to get to this photo
   var $contextPhotos; // photos from context
   var $contextPrev; // the previous photo in context
   var $contextNext; // the next photo in contex
@@ -183,7 +183,7 @@ class Photo extends View
     global $cameralife;
 
     $retval = array('name'=>$this->record['description'],
-                 'image'=>$this->GetMedia(),
+                 'image'=>($size=='large')?$this->GetMedia():'small-photo',
                  'context'=>$this->record['hits'],
                  'width'=>$this->record['tn_width'],
                  'height'=>$this->record['tn_height']);
@@ -267,10 +267,10 @@ die('fixme'.__FILE__.__LINE__);
     return $retval;
   }
 
-  // Returns an array of Icons of related to this photo
+  // Returns an array of Icons of Views related to this photo
   // one of them will have $icon['class'] = 'referer'
   // We use the page's referer to find which is the referer
-  // also sets $context
+  // also sets $this->context
   function GetRelated()
   {
     global $_SERVER, $cameralife;
@@ -282,22 +282,21 @@ die('fixme'.__FILE__.__LINE__);
       $extrasearch = "&amp;start=".$regs[1];
 
     // Find if the referer is an album 
-    if (eregi ("album.php\?id=([0-9]*)",$_SERVER['HTTP_REFERER'],$regs))
+    if (eregi ("album.php\?id=([0-9]*)",$_SERVER['HTTP_REFERER'],$regs) || eregi("albums/([0-9]+)",$_SERVER['HTTP_REFERER'],$regs))
     {
       $album = new Album($regs[1]);
 
-      $icon = $album->GetTopic()->GetSmallIcon();
+      $icon = $album->GetTopic()->GetIcon('small');
       $icon['name'] = 'Other ' . $icon['name'];
       $retval[] = $icon;
 
-      $icon = $album->GetSmallIcon();
+      $icon = $album->GetIcon('small');
       $icon['class'] = 'referer tag';
       $retval[] = $icon;
 
       $this->context = $album;
     }
 
-///TODO: this algorithm is not scalable, add a Search::Albums(Contains($photoid))
     // Find all albums that contain this photo, this is not 100%
     $result = $cameralife->Database->Select('albums','id,name',"'".addslashes($this->Get('description'))."' LIKE CONCAT('%',term,'%')");
     while ($albumrecord = $result->FetchAssoc())
@@ -307,14 +306,14 @@ die('fixme'.__FILE__.__LINE__);
         continue;
 
       $album = new Album($albumrecord['id']);
-      $retval[] = $album->GetSmallIcon();
+      $retval[] = $album->GetIcon('small');
     }
 
     // Did they come from a search??
     if (eregi ("q=([^&]*)",$_SERVER['HTTP_REFERER'],$regs))
     {
       $search = new Search($regs[1]);
-      $icon = $search->GetSmallIcon();
+      $icon = $search->GetIcon('small');
       $icon['class'] = 'referer';
       $icon['href'] .= $extrasearch;
       $retval[] = $icon;
@@ -329,7 +328,7 @@ die('fixme'.__FILE__.__LINE__);
 
       if ($counts['photos'] > 1)
       {
-        $icon = $search->GetSmallIcon();
+        $icon = $search->GetIcon('small');
         $icon['name'] = 'Photos named the same';
         $retval[] = $icon;
       }
@@ -337,7 +336,7 @@ die('fixme'.__FILE__.__LINE__);
 
     if (strlen($this->Get('path')) > 0)
     {
-      $icon = $this->GetFolder()->GetSmallIcon();
+      $icon = $this->GetFolder()->GetIcon('small');
 
       if (!$this->context)
       {
@@ -348,6 +347,7 @@ die('fixme'.__FILE__.__LINE__);
 
       $retval[] = $icon;
     }
+
     return $retval;
   }
 

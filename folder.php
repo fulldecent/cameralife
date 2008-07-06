@@ -36,7 +36,7 @@ $menu = array();
                     'image'=>'small-search');
 
   foreach($folder->GetAncestors() as $ancestor)
-    $menu[] = $ancestor->GetSmallIcon();
+    $menu[] = $ancestor->GetIcon('small');
 
   if ($cameralife->Security->Authorize('admin_file'))
     $menu[] = array('name'=>'Upload photo here',

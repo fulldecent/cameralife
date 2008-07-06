@@ -13,6 +13,11 @@
   $photo = new Photo($_GET['id']);
   if ($photo->Get('status') != 0) 
     $cameralife->Security->authorize('admin_file', 'This file has been flagged or marked private');
+  $icon = $photo->GetIcon('small');
+  if (strpos($icon['href'], '&#63;') !== FALSE)
+    $hrefinquery = $icon['href'] . '&amp;';
+  else
+    $hrefinquery = $icon['href'] . '&#63;';
 
   if ($cameralife->Security->GetName())
     $rating = $avg = $cameralife->Database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->Get('id')." AND username='".$cameralife->Security->GetName()."'");
@@ -37,7 +42,7 @@
   if ($cameralife->Security->authorize('photo_rename'))
   {
     $menu[] = array('name'=>'Rename photo',
-                    'href'=>$_SERVER['PHP_SELF']."&#63;id=".$photo->Get('id')."&amp;action=rename"."&amp;referer=".urlencode($_SERVER['HTTP_REFERER']),
+                    'href'=>$hrefinquery . 'action=rename&amp;referer='.urlencode($_SERVER['HTTP_REFERER']),
                     'image'=>'small-admin',
                     'section'=>'Tasks',
                     'onclick'=>"return toggleshowrename();");
@@ -45,7 +50,7 @@
   if ($cameralife->Security->authorize('photo_delete'))
   {
     $menu[] = array('name'=>'Flag / Report photo',
-                    'href'=>$_SERVER['PHP_SELF']."&#63;id=".$photo->Get('id')."&amp;referer=".urlencode($_SERVER['HTTP_REFERER'])."&amp;action=delete",
+                    'href'=>$hreyinquery . "id=".$photo->Get('id')."&amp;referer=".urlencode($_SERVER['HTTP_REFERER'])."&amp;action=delete",
                     'image'=>'small-admin',
                     'section'=>'Tasks',
                     'onclick'=>"document.getElementById('delete').style.display='';return false");
@@ -53,7 +58,7 @@
   if ($cameralife->Security->authorize('photo_modify'))
   {
     $menu[] = array('name'=>'Modify (rotate, revert, ...)',
-                    'href'=>$_SERVER['PHP_SELF']."&#63;id=".$photo->Get('id')."&amp;referer=".urlencode($_SERVER['HTTP_REFERER'])."&amp;action=modify",
+                    'href'=>$hrefinquery . "id=".$photo->Get('id')."&amp;referer=".urlencode($_SERVER['HTTP_REFERER'])."&amp;action=modify",
                     'image'=>'small-admin',
                     'section'=>'Tasks',
                     'onclick'=>"document.getElementById('modify').style.display='';return false");
@@ -192,7 +197,7 @@
 
         <tr><td><td>
           <input type="submit" value="Save Changes" onclick="makeRequest('photo_controller.php','renameform',renameDone);return false">
-          <a href="<?= $_SERVER['PHP_SELF'] ?>&#63;id=<?= $photo->Get('id') ?>"
+          <a href="<?= $icon['href'] ?>"
              onclick="return toggleshowrename()">(cancel)</a> 
       </table>
     </div>
@@ -232,7 +237,7 @@
           <td>A very similar photo supercedes this one
       </table>
           <p><input type="submit" value="Flag Photo">
-          <a href="<?= $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'] ?>"
+          <a href="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>"
            onclick="document.getElementById('delete').style.display='none';return false">(cancel)</a> </p>
     </div>
   </form>
@@ -244,7 +249,7 @@
     <div style="<?=($_GET['action'] == 'modify')?'':'display:none'?>"class="administrative" align=center id="modify">
       <form action="photo_controller.php" method="POST">
       Rotate: <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-      <input type="hidden" name="target" value="<?= $cameralife->base_url.'/'.basename($_SERVER['PHP_SELF']).'?'.$_SERVER['QUERY_STRING'] ?>" />
+      <input type="hidden" name="target" value="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>" />
       <input type="hidden" name="action" value="rotate" />
         <input type="submit" name="param1" value="Rotate Counter-Clockwise">
         <input type="submit" name="param1" value="Rotate Clockwise">
@@ -252,19 +257,19 @@
 
       <form action="photo_controller.php" method="POST">
       Revert: <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-      <input type="hidden" name="target" value="<?= $cameralife->base_url.'/'.basename($_SERVER['PHP_SELF']).'?'.$_SERVER['QUERY_STRING'] ?>" />
+      <input type="hidden" name="target" value="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>" />
       <input type="hidden" name="action" value="revert" />
         <input type="submit" name="param1" value="Revert">
       </form>
 
       <form action="photo_controller.php" method="POST">
       Regenerate Thumbnail: <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-      <input type="hidden" name="target" value="<?= $cameralife->base_url.'/'.basename($_SERVER['PHP_SELF']).'?'.$_SERVER['QUERY_STRING'] ?>" />
+      <input type="hidden" name="target" value="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>" />
       <input type="hidden" name="action" value="rethumb" />
         <input type="submit" name="param1" value="Regenerate Thumbnail">
       </form>
 
-      <a href="<?= $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'] ?> "
+      <a href="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?> "
          onclick="document.getElementById('modify').style.display='none';return false">(cancel)</a> 
     </div>
 <?php
@@ -311,7 +316,7 @@
     echo '<form action="undo_controller.php" method="post">';
     echo '<input id="receiptid" type="hidden" name="id" value="'.$cameralife->receipt->Get('id').'" />';
     echo '<input type="hidden" name="action" value="undo" />';
-    echo '<input type="hidden" name="target" value="'.$cameralife->base_url.'/'.basename($_SERVER['PHP_SELF']).'?'.$_SERVER['QUERY_STRING'].'" />';
+    echo '<input type="hidden" name="target" value="'.$hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']).'" />';
     echo $cameralife->receipt->GetDescription().' <button type="submit">Undo</button></form></div>';
   }
   else
@@ -377,7 +382,7 @@
     <td width="49%">
     <form action="photo_controller.php" method=POST name="form">
     <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
-    <input type="hidden" name="target" value="<?= $cameralife->base_url.'/'.basename($_SERVER['PHP_SELF']).'?'.$_SERVER['QUERY_STRING'] ?>">
+    <input type="hidden" name="target" value="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>">
     <input type="hidden" name="action" value="rate">
       <?php 
         $cameralife->Theme->Section('Feedback'); 
@@ -412,7 +417,7 @@ echo "<strong>".$comment['username']."</strong> <em>" . $comment['date']."</em><
 
 <form action="photo_controller.php" method=POST name="form">
 <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
-<input type="hidden" name="target" value="<?= $cameralife->base_url.'/'.basename($_SERVER['PHP_SELF']).'?'.$_SERVER['QUERY_STRING'] ?>">
+<input type="hidden" name="target" value="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>">
 <input type="hidden" name="action" value="comment">
 <input name="param1">
 <input type="submit" value="Post comment">
