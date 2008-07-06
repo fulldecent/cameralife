@@ -21,8 +21,8 @@
 
 <?php
   $menu = array();
-  $menu[] = $cameralife->GetSmallIcon();
-  $menu[] = $album->GetTopic()->GetSmallIcon();
+  $menu[] = $cameralife->GetIcon('small');
+  $menu[] = $album->GetTopic()->GetIcon('small');
 
   if ($cameralife->Security->authorize('admin_albums') && !$_GET['edit'])
   {

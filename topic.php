@@ -10,7 +10,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title><?= $cameralife->GetPref('sitename'].': '.$_GET['name') ?></title>
+  <title><?= $cameralife->GetPref('sitename').' : '.$_GET['name'] ?></title>
   <?php if($cameralife->Theme->cssURL()) {
     echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
   } ?>
@@ -20,9 +20,7 @@
 <form name="form1" method=post action="album_controller.php">
 <?php
   $menu = array();
-  $menu[] = array('name'=>$cameralife->GetPref('siteabbr'),
-                  'href'=>'index.php',
-                  'image'=>'small-main');
+  $menu[] = $cameralife->GetIcon('small');
   if ($cameralife->Security->authorize('admin_albums'))
   {
     $menu[] = array('name'=>"Add an album to \"".$_GET['name']."\"",

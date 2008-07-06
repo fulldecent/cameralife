@@ -1,7 +1,7 @@
 <?php
   # the class for getting and using photos
   
-class Photo
+class Photo extends View
 {
   var $record, $image;
   var $context; // an Album, or Search or Folder of where the user came from to get to this photo
@@ -178,14 +178,22 @@ class Photo
     return new Folder($this->record['path'], FALSE);
   }
 
-  function GetIcon()
+  function GetIcon($size='large')
   {
-    return array('href'=>'photo.php&#63;id='.$this->record['id'], 
-                 'name'=>$this->record['description'],
+    global $cameralife;
+
+    $retval = array('name'=>$this->record['description'],
                  'image'=>$this->GetMedia(),
                  'context'=>$this->record['hits'],
                  'width'=>$this->record['tn_width'],
                  'height'=>$this->record['tn_height']);
+    
+    if ($cameralife->GetPref('rewrite') == 'yes')
+      $retval['href'] = $cameralife->base_url.'/photos/'.$this->record['id'];
+    else
+      $retval['href'] = $cameralife->base_url.'/photo.php?id='.$this->record['id'];
+ 
+    return $retval;
   }
 
   function GetEXIF()

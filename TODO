@@ -12,6 +12,10 @@ Google opensocial/friendconnect
 
 note, bleeding edge ideas are at: http://camera.phor.net/TODO
 
+phpdoc
+phpdoc -o HTML:frames:earthli -d . -t docs
+
+
 -- VALID HTML STRICT!!!
 
 * never link to anything with .php, always use SmallIcon to get a link

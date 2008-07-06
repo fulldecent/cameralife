@@ -12,6 +12,8 @@
     $cameralife->Security->Authorize('photo_upload', 1);
     $path = 'upload/'.$cameralife->Security->GetName().'/';
   }
+  $folder = new Folder($path);
+  $icon = $folder->GetIcon();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -25,7 +27,7 @@
 <body>
 <BGSOUND src="filedone.wav">
 <form enctype="multipart/form-data" method=POST action="upload_controller.php">
-<input type="hidden" name="target" value="<?= $cameralife->base_url."/folder.php&#63;path=$path"?>">
+<input type="hidden" name="target" value="<?= $icon['href'] ?>">
 <?php
   $menu = array();
 

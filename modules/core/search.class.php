@@ -1,7 +1,7 @@
 <?php
   # the class for getting and using search
   
-class Search
+class Search extends View
 {
   var $mySearchPhotoCondition;
   var $mySearchAlbumCondition;

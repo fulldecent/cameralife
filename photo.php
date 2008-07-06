@@ -31,7 +31,7 @@
   $photo->Set('hits', $photo->Get('hits') + 1);
 
   $menu = array();
-  $menu[] = $cameralife->GetSmallIcon();
+  $menu[] = $cameralife->GetIcon('small');
 
   // Show all the tasks the user can do (if they're allowed)
   if ($cameralife->Security->authorize('photo_rename'))
@@ -58,19 +58,30 @@
                     'section'=>'Tasks',
                     'onclick'=>"document.getElementById('modify').style.display='';return false");
   }
-  if ($cameralife->Security->authorize('admin_albums') && eregi ("album.php\?id=([0-9]*)",$_SERVER['HTTP_REFERER'],$regs))
+  if ($cameralife->Security->authorize('admin_albums') && (eregi ("album.php\?id=([0-9]+)",$_SERVER['HTTP_REFERER'],$regs) || eregi("albums/([0-9]+)",$_SERVER['HTTP_REFERER'],$regs)))
   {
     $album = new Album($regs[1]);
-
-    $menu[] = array('name'=>'Use this for <b>'.$album->Get('name').'</b>',
-                    'href'=>'album.php&#63;id='.$album->Get('id').'&amp;poster_id='.$photo->Get('id'),
-                    'image'=>'small-album',
-                    'section'=>'Tasks');
+    $icon = $album->GetIcon('small');
+#TODO a separate controller?
+    if (strpos($icon['href'], '&#63;') !== FALSE)
+      $icon['href'] .= '&poster_id='.$photo->Get('id');
+    else 
+      $icon['href'] .= '?poster_id='.$photo->Get('id');
+    $icon['name'] = 'Use this for <b>'.$album->Get('name').'</b>';
+    $icon['section'] = 'Tasks';
+    $menu[] = $icon;
   }
   if ($photo->Get('status') == 0)
   {
+    $icon = $photo->GetIcon();
+    if (strpos($icon['href'], '&#63;') !== FALSE)
+      $icon['href'] .= '&amp;referer='.urlencode($_SERVER['HTTP_REFERER'])."&amp;action=print";
+    else
+      $icon['href'] .= '&#63;referer='.urlencode($_SERVER['HTTP_REFERER'])."&amp;action=print";
+
+
     $menu[] = array('name'=>'Order prints',
-                    'href'=>$_SERVER['PHP_SELF']."&#63;id=".$photo->Get('id')."&amp;referer=".urlencode($_SERVER['HTTP_REFERER'])."&amp;action=print",
+                    'href'=>$icon['href'],
                     'image'=>'small-admin',
                     'section'=>'Tasks');
   }

@@ -119,28 +119,32 @@
         {
           echo "<div class='context2'><a href=\"search.php&#63;albumhelp=1\">Create a new album</a></div>\n";
         }
-        $topic_query = $cameralife->Database->Select('albums','distinct topic');
+        $topic_query = $cameralife->Database->Select('albums','DISTINCT topic');
   
         while ($topic = $topic_query->FetchAssoc())
         {
-          echo "<div class='context'><a href=\"topic.php&#63;name=".urlencode($topic["topic"])."\">";
+          $topic = new Topic($topic['topic']);
+          $icon = $topic->GetIcon('small');
+
+          echo "<div class='context'><a href=\"".$icon['href']."\">";
           $cameralife->Theme->Image('small-topic', array('align'=>'left'));
-          echo $topic["topic"]."</a><br>\n";
+          echo $icon['name']."</a><br>\n";
   
           if ($cameralife->Theme->GetPref('main_topics')==2) // Link a couple albums
           {
-            $where = "topic='".$topic['topic']."'";
+            $where = "topic='".$topic->Get('name')."'";
             $extra = 'ORDER BY RAND() LIMIT '.$cameralife->Theme->GetPref('main_topics_n');
-            $album_query = $cameralife->Database->Select('albums','id,name',$where,$extra);
+            $album_query = $cameralife->Database->Select('albums','id',$where,$extra);
             echo "<div class='context2'>(";
-            $first = true;
+            $count = 0;
   
             while ($album = $album_query->FetchAssoc())
             {
-              if (!$first) echo ", ";
-              $first = FALSE;
-              echo "<a href=\"album.php&#63;id=".$album["id"]."\">".
-                    $album['name']."</a>";
+              if ($count++) echo ", ";
+              $album = new Album($album['id']);
+              $icon = $album->GetIcon();
+              echo "<a href=\"".$icon['href']."\">".
+                    $icon['name']."</a>";
             }
             echo ")</div>\n";
           }
@@ -165,12 +169,15 @@
 
         foreach ($folders as $folder)
         {
+          $icon = $folder->GetIcon('small');
 //TODO use folder's Icon
-          echo "<div class='context'><a href=\"folder.php&#63;path=".urlencode($folder->Path())."\"> ";
+          echo "<div class='context'><a href=\"".$icon['href']."\"> ";
           $cameralife->Theme->Image('small-folder', array('align'=>'middle'));
-          echo $folder->Basename()."</a></div>\n";
+          echo $icon['name']."</a></div>\n";
         }
-        echo "<div class='context'><a href=\"folder.php&#63;page=folder&amp;path=\">";
+        $root = new Folder('');
+        $icon = $root->GetIcon();
+        echo "<div class='context'><a href=\"".$icon['href']."\">";
         $cameralife->Theme->Image('small-folder', array('align'=>'middle'));
         echo "... all folders</a></div>";
       } /* end folders */

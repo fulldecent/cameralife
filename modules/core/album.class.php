@@ -68,21 +68,32 @@ class Album extends Search
     $cameralife->Database->Delete('logs',"record_type='album' AND record_id=".$this->record['id']);
   }
 
-  function GetIcon()
+  function GetIcon($size='large')
   {
-    return array('href'=>'album.php&#63;id='.$this->record['id'],
-                 'name'=>$this->record['name'],
-                 'image'=>'media.php&#63;format=thumbnail&amp;id='.$this->record['poster_id'].'&amp;ver=',$this->record['mtime'],
-                 'context'=>$this->record['hits'],
-                 'rel'=>'tag');
-  }
+    global $cameralife;
 
-  function GetSmallIcon()
-  {
-    return array('href'=>'album.php&#63;id='.$this->record['id'],
-                 'name'=>$this->record['name'],
-                 'image'=>'small-album',
-                 'rel'=>'tag');
+    $retval = array();
+
+    if ($cameralife->GetPref('rewrite') == 'yes')
+      $retval['href'] = $cameralife->base_url.'/albums/'.$this->record['id'];
+    else
+      $retval['href'] = $cameralife->base_url.'album.php&#63;id='.$this->record['id'];
+ 
+    if ($size == 'large')
+    {
+      $photo = new Photo($this->record['poster_id']);
+      $retval['image'] = $photo->GetMedia('thumbnail');
+    }
+    else
+    {
+      $retval['image'] = 'small-album';
+    }
+
+    $retval['name'] = $this->record['name'];
+    $retval['context'] = $this->record['hits'];
+    $retval['rel'] = 'tag';
+
+    return $retval;
   }
 }
 ?>

@@ -13,7 +13,7 @@
 
   require dirname(__FILE__).'/modules/module.inc';
 
-  class CameraLife extends CameraLifeModule
+  class CameraLife extends CameraLifeModule # and View
   {
     var $loaded_features;
     var $userpreferences;
@@ -164,11 +164,11 @@
       }
     }
 
-    function GetSmallIcon()
+    function GetIcon($size='large')
     {
       return array("name"=>$this->GetPref('siteabbr'),
                    "href"=>$this->base_url.'/index.php',
-                   'image'=>'small-main',
+                   'image'=>($size=='large')?'main':'small-main',
                    'rel'=>'home');
     }
 

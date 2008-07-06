@@ -1,4 +1,5 @@
 <?php
+  require_once dirname(__FILE__) .'/view.class.php';
   require_once dirname(__FILE__) .'/search.class.php';
   require_once dirname(__FILE__) .'/album.class.php';
   require_once dirname(__FILE__) .'/photo.class.php';

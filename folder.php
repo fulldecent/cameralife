@@ -29,9 +29,7 @@
 <form method="post"> 
 <?php
 $menu = array();
-  $menu[] = array('name'=>$cameralife->GetPref('siteabbr'),
-                  'href'=>'index.php',
-                  'image'=>'small-main');
+  $menu[] = $cameralife->GetIcon('small');
   if ($folder->Path())
     $menu[] = array('name'=>'Search for '.$folder->Basename(),
                     'href'=>'search.php&#63;q='.$folder->Basename(),
@@ -42,7 +40,7 @@ $menu = array();
 
   if ($cameralife->Security->Authorize('admin_file'))
     $menu[] = array('name'=>'Upload photo here',
-                    'href'=>'upload.php&#63;path='.$folder->Path(),
+                    'href'=>$cameralife->base_url.'/upload.php&#63;path='.$folder->Path(),
                     'image'=>'small-main');
   
   $folder_name = $folder->Basename()

@@ -92,34 +92,27 @@ class Folder extends Search
     return $result;
   }
 
-  function GetIcon()
+  function GetIcon($size='large')
   {
     global $cameralife;
+    $retval = array();
 
     if ($cameralife->GetPref('rewrite') == 'yes')
-      return array('href'=>$cameralife->base_url.'/folders/'.$this->path, 'name'=>basename($this->path), 'image'=>'icon-folder');
+      $retval['href'] = $cameralife->base_url.'/folders/'.$this->path;
     else
-      return array('href'=>$cameralife->base_url.'/folder.php&#63;path='.$this->path, 'name'=>basename($this->path), 'image'=>'icon-folder');
-
-  }
-
-  function GetSmallIcon()
-  {
-    global $cameralife;
-
+      $retval['href'] = $cameralife->base_url.'/folder.php&#63;path='.$this->path;
+    
     if (basename($this->path))
-      $name = basename($this->path);
+      $retval['name'] = basename($this->path);
     else
-      $name = '(Top level)';
+      $retval['name'] = '(Top level)';
 
-    if ($cameralife->GetPref('rewrite') == 'yes')
-      $href = $cameralife->base_url.'/folder.php&#63;path='.$this->path;
+    if ($size=='large')
+      $retval['image'] = 'folder';
     else
-      $href = 'folder.php&#63;path='.$this->path;
+      $retval['image'] = 'small-folder';
 
-    return array('href'=>$href,
-                 'name'=>"Folder $name",
-                 'image'=>'small-folder');
+    return $retval;
   }
 
   function Path()
