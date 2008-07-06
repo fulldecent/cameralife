@@ -25,7 +25,7 @@
 //todo error checking
       global $cameralife;
 
-      return $cameralife->base_url."/modules/iconset/".$cameralife->preferences['core']['iconset']."/$name";
+      return $cameralife->base_url."/modules/iconset/".$cameralife->GetPref('iconset')."/$name";
     }
 
     function Image($name, $extra=array()) 
