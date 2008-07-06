@@ -1,4 +1,12 @@
 <?php
+  $features=array('database','theme');
+  require "main.inc";
+
+  $cameralife->Theme->ShowPage('index');
+
+die('done');
+#################
+
   $features=array('database','theme','security', 'photostore');
   require "main.inc";
 

@@ -50,6 +50,7 @@
       $this->preferences[] = array('name'=>'owner_email', 'type'=>'string', 'default'=>'none@none.none');
 
       $this->preferences[] = array('name'=>'rewrite', 'type'=>'yesno', 'default'=>'no');
+      $this->preferences[] = array('name'=>'iphone', 'type'=>'yesno', 'default'=>'yes');
     }  
       
     function RelativeInclude($file)
@@ -86,8 +87,13 @@
           $this->Security = new DefaultSecurity() ;
           break;
         case 'theme': 
-          $this->RelativeInclude('modules/theme/'.$this->GetPref('theme').'/theme.inc');
-          $themename = $this->GetPref('theme').'theme';
+          if ($this->GetPref('iphone') && (stristr($_SERVER['HTTP_USER_AGENT'], 'iPhone') || stristr($_SERVER['HTTP_USER_AGENT'], 'iPod')) )
+            $theme = 'iphone';
+          else 
+            $theme = $this->GetPref('theme');
+
+          $this->RelativeInclude('modules/theme/'.$theme.'/theme.inc');
+          $themename = $theme.'theme';
           $this->Theme = new $themename;
           break;
         case 'photostore':

@@ -144,6 +144,15 @@
         <option <?= $cameralife->GetPref('rewrite') == 'yes' ? 'selected="selected"':'' ?>>yes</option>
       </select>
   <tr>
+    <td>Use the iPhone theme for iPhones and iPod touches?
+    <td>
+      <input type="hidden" name="module4" value="CameraLife" />
+      <input type="hidden" name="param4" value="iphone" />
+      <select name="value4">
+        <option <?= $cameralife->GetPref('iphone') == 'no' ? 'selected="selected"':'' ?>>no</option>
+        <option <?= $cameralife->GetPref('iphone') == 'yes' ? 'selected="selected"':'' ?>>yes</option>
+      </select>
+  <tr>
     <td><td><input type="submit" value="Save changes" />
 </table>
 </form>
