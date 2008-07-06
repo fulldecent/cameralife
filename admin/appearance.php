@@ -9,18 +9,6 @@
 
   $_GET['page'] or $_GET['page'] = 'setup';
 
-  foreach ($_POST as $key => $val)
-  {
-    if ($key == 'UseTheme')
-    {
-      $cameralife->GetPref('theme') = $val;
-      header('Location: customize.php?page=themes');
-    }
-    else
-      $cameralife->GetPref($key) = rtrim($val,'/');
-  }
-  $cameralife->SavePreferences();
-
   function check_dir($dir)
   {
     global $cameralife;

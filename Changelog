@@ -1,4 +1,7 @@
 SVN  Will Entriken <cameralife AT phor.net>
+* Add support for remote file storage over FTP, SSH, ...
+* Fixed gallery API (iPhoto support)
+* Separated filesystem calls and preferences into modules
 * Check for update from the admin interface
 * Start decoupling theme API from the rest of the functionality
 * Automatically updates when the photos directory is changed 

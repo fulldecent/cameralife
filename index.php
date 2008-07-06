@@ -165,6 +165,7 @@
 
         foreach ($folders as $folder)
         {
+//TODO use folder's Icon
           echo "<div class='context'><a href=\"folder.php&#63;path=".urlencode($folder->Path())."\"> ";
           $cameralife->Theme->Image('small-folder', array('align'=>'middle'));
           echo $folder->Basename()."</a></div>\n";

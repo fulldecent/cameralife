@@ -94,17 +94,30 @@ class Folder extends Search
 
   function GetIcon()
   {
-    return array('href'=>'folder.php&#63;path='.$this->path, 'name'=>basename($this->path), 'image'=>'icon-folder');
+    global $cameralife;
+
+    if ($cameralife->GetPref('rewrite') == 'yes')
+      return array('href'=>$cameralife->base_url.'/folders/'.$this->path, 'name'=>basename($this->path), 'image'=>'icon-folder');
+    else
+      return array('href'=>$cameralife->base_url.'/folder.php&#63;path='.$this->path, 'name'=>basename($this->path), 'image'=>'icon-folder');
+
   }
 
   function GetSmallIcon()
   {
+    global $cameralife;
+
     if (basename($this->path))
       $name = basename($this->path);
     else
       $name = '(Top level)';
 
-    return array('href'=>'folder.php&#63;path='.$this->path, 
+    if ($cameralife->GetPref('rewrite') == 'yes')
+      $href = $cameralife->base_url.'/folder.php&#63;path='.$this->path;
+    else
+      $href = 'folder.php&#63;path='.$this->path;
+
+    return array('href'=>$href,
                  'name'=>"Folder $name",
                  'image'=>'small-folder');
   }
