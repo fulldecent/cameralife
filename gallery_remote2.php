@@ -3,8 +3,12 @@
   # An implementation of the Gallery Remote API version 2.3
   # http://svn.sourceforge.net/viewvc/*checkout*/gallery/trunk/gallery_remote/gal_remote_proto-2.html
 
-  $features=array('database', 'security', 'imageprocessing');
+  $features=array('database', 'security', 'imageprocessing', 'photostore');
   require "main.inc";
+
+# try something
+session_start();  
+
 
   # gallery remote api is inadequate!
   if ($_GET['redirect'])
@@ -30,7 +34,6 @@
 //     $string = str_replace('\'', "${escape}quote", $string);
 //     $string = str_replace('&', "${escape}amp", $string);
 //     $string = str_replace(' ', "${escape}space", $string);
-
 
     $string = urlencode($string);
     $string = str_replace('+', '%20', $string);
@@ -80,7 +83,7 @@
   {
     global $cameralife;
     $result = $cameralife->Security->Login($_POST['uname'], $_POST['password']);
-    setcookie('GALLERYSID', $_COOKIE[$cameralife->preferences['defaultsecurity']['auth_cookie']], time()+60*60*24*30);
+    setcookie('GALLERYSID', $_COOKIE[$cameralife->Security->GetPref('auth_cookie')], time()+60*60*24*30);
 
     if ($result === true)
     {
@@ -100,10 +103,6 @@
 
   function gr_fetch_albums()
   {
-/*$r = print_r($GLOBALS, 1);
-$fd = fopen('tmp','w+');
-fwrite($fd, $r);
-fclose($fd);*/
     global $cameralife;
 
     if (!$cameralife->Security->Authorize('admin_file'))
@@ -113,10 +112,12 @@ fclose($fd);*/
       exit(1);
     }
 
-
     echo "#__GR2PROTO__\n";
 
     $folders = folder_search(new Folder(''));
+    if (count($_SESSION['albums']))
+      foreach($_SESSION['albums'] as $album)
+        $folders[count($folders)+1] = $album;
     foreach ($folders as $i => $folder)
     {
       $parentname = dirname($folder);
@@ -186,7 +187,8 @@ fclose($fd);*/
     echo "status_text=Fetch-album-images successful.\n";
   }
 
-  function folder_search($folder, $i=1  )
+  // come up with a enumerated list of folders
+  function folder_search($folder, $i=1)
   {
     $retval = array();
     if ($folder->Path())
@@ -236,19 +238,10 @@ fclose($fd);*/
       if ($_FILES['userfile']['error'] == UPLOAD_ERR_NO_FILE)
         $error = "No file was selected for upload.";
 
-      if (!file_exists($cameralife->preferences['core']['photo_dir'].'/'.$path))
-      {
-        mkdir_p($cameralife->preferences['core']['photo_dir'].'/'.$path)
-          or $error = "The selected upload directory doesn't exist and could not be created.";
-      }
-
-      if (!is_writable($cameralife->preferences['core']['photo_dir'].'/'.$path))
-        $error = "The selected upload directory isn't writable.";
-
       if (!$error)
       {
-        move_uploaded_file($_FILES['userfile']['tmp_name'], 
-                          $cameralife->preferences['core']['photo_dir'].'/'.$path.$filename)
+        $temp = tempnam('', 'cameralife_');
+        move_uploaded_file($_FILES['userfile']['tmp_name'], $temp)
           or $cameralife->Error("Could not upload the photo, is the destination writable?");
 
         $upload['filename'] = $filename;
@@ -258,6 +251,8 @@ fclose($fd);*/
         $upload['status'] = 0;
 
         $photo = new Photo($upload);
+        $cameralife->PhotoStore->PutFile($photo, $temp);
+        @unlink($temp);
       }
     }
     else
@@ -294,5 +289,9 @@ fclose($fd);*/
     echo "status_text=Camera Life does not support empty folders (albums), upload where you want, We'll make the folder on the fly.\n";
     echo "album_name=".$_POST['set_albumName'].$_POST['newAlbumName'].escapeforgr('/')."\n";
 
+    if ($_POST['newAlbumName'])
+      $_SESSION['albums'][] = $_POST['set_albumName'].$_POST['newAlbumName'].'/';
+    else
+      $_SESSION['albums'][] = $_POST['newAlbumTitle'].$_POST['newAlbumName'].'/';
   }
 ?>
