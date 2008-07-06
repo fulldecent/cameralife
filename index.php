@@ -1,27 +1,27 @@
 <?php
-  $features=array('database','theme','security');
+  $features=array('database','theme','security', 'photostore');
   require "main.inc";
 
   $_GET['page'] or $_GET['page'] = 'rand';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
-  Welcome to <?= $cameralife->preferences['core']['sitename'] ?>!
-  This site is maintained by: <?= $cameralife->preferences['core']['owner_email'] ?>
+  Welcome to <?= $cameralife->GetPref('sitename') ?>!
+  This site is maintained by: <?= $cameralife->GetPref('owner_email') ?>
 
   This site is powered by Camera Life version <?= $cameralife->version ?> by Will Entriken "Full Decent",
   available at: http://fdcl.sourceforge.net
 -->
 <html>
 <head>
-  <title><?= $cameralife->preferences['core']['sitename'] ?></title>
+  <title><?= $cameralife->GetPref('sitename') ?></title>
   <?php if($cameralife->Theme->cssURL()) {
     echo '  <link rel="stylesheet" type="text/css" href="'.$cameralife->Theme->cssURL()."\">\n";
   } ?>
   <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
   <link rel="icon" type="image/vnd.microsoft.icon" href="favicon.ico"/>
-  <link rel="alternate" type="application/rss+xml" title="RSS feed of <?= $cameralife->preferences['core']['sitename'] ?>" href="rss.php&#63;q="/>
-  <link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml" title="<?= $cameralife->preferences['core']['sitename'] ?> search" />
+  <link rel="alternate" type="application/rss+xml" title="RSS feed of <?= $cameralife->GetPref('sitename') ?>" href="rss.php&#63;q="/>
+  <link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml" title="<?= $cameralife->GetPref('sitename') ?> search" />
 </head>
 <body>
 <?php
@@ -60,7 +60,7 @@
                     'href'=>'http://fdcl.sourceforge.net/',
                     'image'=>'small-admin');
   }
-  $cameralife->Theme->TitleBar($cameralife->preferences['core']['sitename'],
+  $cameralife->Theme->TitleBar($cameralife->GetPref('sitename'),
                                'main',
                                FALSE,
                                $menu);
@@ -70,7 +70,7 @@
   if ($counts['photos'] == 0) 
     echo '<div class="administrative">Camera Life has been successfully installed on this site. There are currently no photos on this site. For more information on setting up this site and adding photos, see <a href="setup/index3.php"><strong>the Setup page</strong></a>.</div>';
 
-  if ($cameralife->preferences['theme']['main_thumbnails']) 
+  if ($cameralife->Theme->GetPref('main_thumbnails')) 
   {
     $sections[] = array('name'=>'Random Photos',
                         'page_name'=>'rand',
@@ -89,7 +89,7 @@
 
     list($sort,$type) = explode('-', $_GET['page']);
 
-    $search->SetPage(0, $cameralife->preferences['theme']['main_thumbnails_n']);
+    $search->SetPage(0, $cameralife->Theme->GetPref('main_thumbnails_n'));
     $search->SetSort($sort);
 
     if ($type == 'folders')
@@ -112,7 +112,7 @@
   <table width="100%" cellpadding=0 cellspacing=0>
     <tr valign=top>
       <td width="49%">
-<?php if ($cameralife->preferences['theme']['main_topics']) 
+<?php if ($cameralife->Theme->GetPref('main_topics')) 
       {
         $cameralife->Theme->Section('Topics');
         if ($cameralife->Security->authorize('admin_albums'))
@@ -127,10 +127,10 @@
           $cameralife->Theme->Image('small-topic', array('align'=>'left'));
           echo $topic["topic"]."</a><br>\n";
   
-          if ($cameralife->preferences['theme']['main_topics']==2) // Link a couple albums
+          if ($cameralife->Theme->GetPref('main_topics')==2) // Link a couple albums
           {
             $where = "topic='".$topic['topic']."'";
-            $extra = 'ORDER BY RAND() LIMIT '.$cameralife->preferences['theme']['main_topics_n'];
+            $extra = 'ORDER BY RAND() LIMIT '.$cameralife->Theme->GetPref('main_topics_n');
             $album_query = $cameralife->Database->Select('albums','id,name',$where,$extra);
             echo "<div class='context2'>(";
             $first = true;
@@ -155,13 +155,13 @@
           <input type="text" name="q" value="" size="20">
           <input type="image" src="<?= $cameralife->Theme->ImageURL('search') ?>" value="search">
         </form>
-<?php if ($cameralife->preferences['theme']['main_folders'] == 1) 
+<?php if ($cameralife->Theme->GetPref('main_folders') == 1) 
       {
 
         $cameralife->Theme->Section('Browse');
   
         $root = new Folder();
-        $folders = $root->GetDescendants($cameralife->preferences['theme']['main_folders_n']);
+        $folders = $root->GetDescendants($cameralife->Theme->GetPref('main_folders_n'));
 
         foreach ($folders as $folder)
         {
@@ -179,7 +179,7 @@
         $cameralife->Theme->Section('Upload', 'upload.php');
         echo "<div class='context'><a href=\"upload.php\">";
         $cameralife->Theme->Image('small-photo', array('align'=>'middle'));
-        echo "  Upload photos to ".$cameralife->preferences['core']['sitename'];
+        echo "  Upload photos to ".$cameralife->GetPref('sitename');
         echo "</a></div>";
       }
       else
