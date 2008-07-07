@@ -9,19 +9,21 @@
 Setup checks for content negotiation and modrewrite (fetch index?test=true and ...
 
 Google opensocial/friendconnect
+Amazon S3 support
 
 note, bleeding edge ideas are at: http://camera.phor.net/TODO
 
 phpdoc
 phpdoc -o HTML:frames:earthli -d . -t docs
 
+Releases:
+  svn export , chmod, ...
 
 -- VALID HTML STRICT!!!
 
--- Change theme engine --
-* Don't use $_GET except at the top of each user-facing page
-  - passing variables to the theme engine
-* Separate all form and content
+-- The big picture --
+! Integrate with CMS's like Phpnuke!?
+! Fantastico
 
 -- Things that will break the API --
 * Change photos.mtime to photos.filter
@@ -38,22 +40,12 @@ phpdoc -o HTML:frames:earthli -d . -t docs
   - Admin may update these cache at their whim via the Update Database in Files in Admin
 ? logs.value_old is techically unnecessary
 * Enumerate the photos.status and other columns
-
--- The big picture --
-! Integrate with CMS's like Phpnuke!?
-! Fantastico
+* A standard way of getting information about modules, and loading them (compare to theme-info.php)
 
 -- Features --
 * Admin->* "Changes Saved" should produce a message like Gmail as in Photo.php
-* A logs module that gives you a receipt for any change you make
-  - you can undo any arbitrary receipt
-
-
--- Design Considerations --
-? A module API that allows announcing modules, loading, unloading
 
 -- UI (themes) --
 * theme -> more obvious tabs
 ? Make Theme->AssetURL work if content negotiation is off
-
 

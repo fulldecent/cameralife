@@ -40,6 +40,7 @@
       $this->preferences[] = array('name'=>'iconset', 'type'=>'string', 'default'=>'cartoonic');
       $this->preferences[] = array('name'=>'photostore', 'type'=>'string', 'default'=>'local');
       $this->preferences[] = array('name'=>'security', 'type'=>'string', 'default'=>'default');
+      $this->preferences[] = array('name'=>'imageprocessing', 'type'=>'string', 'default'=>'gd');
 
       $this->preferences[] = array('name'=>'checkpointlogs', 'type'=>'number', 'default'=>'0');
       $this->preferences[] = array('name'=>'checkpointcomments', 'type'=>'number', 'default'=>'0');
@@ -64,42 +65,36 @@
         return true;
       if ($this->loaded_features[$feature]=='loading')
         $this->Error('Circular reference in features :-(');
-    
       $loaded_features[$feature]='loading';
+
       $this->RelativeInclude("modules/$feature/module.inc");
+      $allfeatures = array('core'=>NULL, 'database'=>'Database', 'imageprocessing'=>'ImageProcessing', 'security'=>'Security', 'theme'=>'Theme', 'photostore'=>'PhotoStore');
+      $cutename = $allfeatures[$feature];
       
       switch ($feature)
       {
-//TODO: generalize
         case 'core': 
-          $this->RelativeInclude('modules/core/module.inc');
           break;
         case 'database': 
-          $this->RelativeInclude('modules/database/mysql/mysql.inc');
+          $this->RelativeInclude('modules/database/mysql/module.inc');
           $this->Database = new MysqlDatabase() ;
-          break;
-        case 'imageprocessing': 
-          $this->RelativeInclude('modules/imageprocessing/gd.inc');
-          $this->ImageProcessing = new GDImageProcessing() ;
-          break;
-        case 'security': 
-          $this->RelativeInclude('modules/security/default/default.inc');
-          $this->Security = new DefaultSecurity() ;
           break;
         case 'theme': 
           if ($this->GetPref('iphone') && (stristr($_SERVER['HTTP_USER_AGENT'], 'iPhone') || stristr($_SERVER['HTTP_USER_AGENT'], 'iPod')) )
-            $theme = 'iphone';
+            $implementation = 'iphone';
           else 
-            $theme = $this->GetPref('theme');
-
-          $this->RelativeInclude('modules/theme/'.$theme.'/theme.inc');
-          $themename = $theme.'theme';
-          $this->Theme = new $themename;
+            $implementation = $this->GetPref('theme');
+          $this->RelativeInclude("modules/$feature/$implementation/module.inc");
+          $modulename = $implementation.$feature;
+          $this->$cutename = new $modulename;
           break;
+        case 'security': 
+        case 'imageprocessing': 
         case 'photostore':
-          $this->RelativeInclude('modules/photostore/'.$this->GetPref('photostore').'/module.inc');
-          $modulename = $this->GetPref('photostore').'photostore';
-          $this->PhotoStore = new $modulename;
+          $implementation = $this->GetPref($feature);
+          $this->RelativeInclude("modules/$feature/$implementation/module.inc");
+          $modulename = $implementation.$feature;
+          $this->$cutename = new $modulename;
           break;
         default:
           $this->Error("Non-existant feature requested: $feature");
