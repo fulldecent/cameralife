@@ -162,7 +162,7 @@
   if ($cameralife->Security->authorize('photo_rename'))
   {
 ?>
-    <form action="photo_controller.php" method="POST" name="form" id="renameform">
+    <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST" name="form" id="renameform">
     <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
     <input type="hidden" name="target" value="<?= $cameralife->base_url.'/photo.php&#63;id='.$photo->Get('id').'&referer='.urlencode($_SERVER['HTTP_REFERER']) ?>">
     <input type="hidden" name="action" value="rename">
@@ -199,7 +199,7 @@
         <tr><td>&nbsp;
 
         <tr><td><td>
-          <input type="submit" value="Save Changes" onclick="makeRequest('photo_controller.php','renameform',renameDone);return false">
+          <input type="submit" value="Save Changes" onclick="makeRequest('<?= $cameralife->base_url ?>/photo_controller.php','renameform',renameDone);return false">
           <a href="<?= $icon['href'] ?>"
              onclick="return toggleshowrename()">(cancel)</a> 
       </table>
@@ -218,7 +218,7 @@
     else
       $target = $cameralife->base_url.'/index.php';
 ?>
-    <form action="photo_controller.php" method="POST">
+    <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
     <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
     <input type="hidden" name="target" value="<?= $target ?>" />
     <input type="hidden" name="action" value="flag" />
@@ -250,7 +250,7 @@
   {
 ?>
     <div style="<?=($_GET['action'] == 'modify')?'':'display:none'?>"class="administrative" align=center id="modify">
-      <form action="photo_controller.php" method="POST">
+      <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
       Rotate: <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
       <input type="hidden" name="target" value="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>" />
       <input type="hidden" name="action" value="rotate" />
@@ -258,14 +258,14 @@
         <input type="submit" name="param1" value="Rotate Clockwise">
       </form>
 
-      <form action="photo_controller.php" method="POST">
+      <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
       Revert: <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
       <input type="hidden" name="target" value="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>" />
       <input type="hidden" name="action" value="revert" />
         <input type="submit" name="param1" value="Revert">
       </form>
 
-      <form action="photo_controller.php" method="POST">
+      <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
       Regenerate Thumbnail: <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
       <input type="hidden" name="target" value="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>" />
       <input type="hidden" name="action" value="rethumb" />
@@ -316,7 +316,7 @@
   if (isset($cameralife->receipt))
   {
     echo '<div id="receipt" class="receipt">';
-    echo '<form action="undo_controller.php" method="post">';
+    echo '<form action="'.$cameralife->base_url.'/undo_controller.php" method="post">';
     echo '<input id="receiptid" type="hidden" name="id" value="'.$cameralife->receipt->Get('id').'" />';
     echo '<input type="hidden" name="action" value="undo" />';
     echo '<input type="hidden" name="target" value="'.$hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']).'" />';
@@ -383,7 +383,7 @@
       ?>
     <td width="2%">
     <td width="49%">
-    <form action="photo_controller.php" method=POST name="form">
+    <form action="<?= $cameralife->base_url?>/photo_controller.php" method=POST name="form">
     <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
     <input type="hidden" name="target" value="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>">
     <input type="hidden" name="action" value="rate">
@@ -418,7 +418,7 @@ echo "<strong>".$comment['username']."</strong> <em>" . $comment['date']."</em><
       ?>
 </form>
 
-<form action="photo_controller.php" method=POST name="form">
+<form action="<?= $cameralife->base_url ?>/photo_controller.php" method=POST name="form">
 <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
 <input type="hidden" name="target" value="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>">
 <input type="hidden" name="action" value="comment">

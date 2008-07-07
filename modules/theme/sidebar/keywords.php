@@ -2,7 +2,7 @@
   # Output a javascript file to use in conjunction with 
   # the keyword tagging system
   $features=array('database', 'security');
-  require "main.inc";
+  require "../../../main.inc";
 
   if (!$cameralife->Security->authorize('admin_file'))
     $condition = 'AND status=0';
