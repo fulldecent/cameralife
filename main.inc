@@ -180,6 +180,8 @@
 
     function Error($message, $file='', $line='')
     {
+      global $cameralife;
+
       echo '<div style="margin: 3em; background: gray; border: 2px solid gray; padding:0.5em">';
       echo '  <div style="text-align:center; color: white; font-size:large">';
       echo '    Camera Life has encountered an error!</div>';
@@ -190,11 +192,28 @@
         echo "  <div style=\"background: #eee; padding: 1em;\">Line: <i>$line</i></div>\n";
       echo "</div></div>\n";
 
-      if (isset($cameralife->Security) && $cameralife->Security->authorize('admin_customize'))
+      if ($cameralife->Security && $cameralife->Security->authorize('admin_customize'))
       {
-        echo "For details, view HTML source<!--\n";
-        var_dump(debug_backtrace());
-        echo "\n-->\n";
+        echo "You can have the details, since you are an admin:<pre>\n";
+#        var_dump(debug_backtrace());
+        echo "</pre>\n";
+        $calls = debug_backtrace();
+        echo "<dl>\n";
+        foreach ($calls as $call)
+        {
+          echo "<dt>{$call['file']}:{$call['line']}<br />\n";
+          if ($call['class'])
+            echo $call['class'].'::';
+          echo $call['function']."</dt>";
+          echo '<dd><pre>';
+          var_dump($call['args']);
+          echo '</pre></dd>';
+          echo '<dd><p>For object details view source...</p><!--<pre>';
+          var_dump($call['object']);
+          echo '--></pre></dd>';
+        }
+        echo "</dl>\n";
+
       }
       exit(1);
     }

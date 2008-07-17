@@ -119,13 +119,21 @@
   if($photoPrev)
   {
     $icon = $photoPrev->GetIcon();
-    $href = $icon['href'].'&amp;referer='.urlencode($_SERVER['HTTP_REFERER']);
+    if (strpos($icon['href'], '&#63;') !== FALSE)
+      $hrefinqueryTMP = $icon['href'] . '&amp;';
+    else
+      $hrefinqueryTMP = $icon['href'] . '&#63;';
+    $href = $hrefinqueryTMP.'referer='.urlencode($_SERVER['HTTP_REFERER']);
     echo "  <link rel=\"prev\" href=\"$href\">\n";
   }
   if($photoNext)
   {
     $icon = $photoNext->GetIcon();
-    $href = $icon['href'].'&amp;referer='.urlencode($_SERVER['HTTP_REFERER']);
+    if (strpos($icon['href'], '&#63;') !== FALSE)
+      $hrefinqueryTMP = $icon['href'] . '&amp;';
+    else
+      $hrefinqueryTMP = $icon['href'] . '&#63;';
+    $href = $hrefinqueryTMP.'referer='.urlencode($_SERVER['HTTP_REFERER']);
     echo "  <link rel=\"next prefetch\" href=\"$href\">\n";
   }
 ?>
@@ -210,11 +218,17 @@
   if ($cameralife->Security->authorize('photo_delete'))
   {
     if ($photoNext)
-      $target = 'photo.php&#63;id='.$photoNext->Get('id');
+    {
+      $tmp = $photoNext->GetIcon();
+      $target = $tmp['href'];
+    }
     elseif ($photoPrev)
-      $target = 'photo.php&#63;id='.$photoPrev->Get('id');
+    {
+      $tmp = $photoPrev->GetIcon();
+      $target = $tmp['href'];
+    }
     elseif ($_SERVER['HTTP_REFERER'])
-      $target = $_SERVER['HTTP_REFERER'];
+      $target = $_SERVER['HTTP_REFERER']; #wont work
     else
       $target = $cameralife->base_url.'/index.php';
 ?>
@@ -331,7 +345,13 @@
   if($photoPrev)
   {
     $icon = $photoPrev->GetIcon();
-    $href = $icon['href'].'&amp;referer='.urlencode($_SERVER['HTTP_REFERER']);
+
+    if (strpos($icon['href'], '&#63;') !== FALSE)
+      $hrefinqueryTMP = $icon['href'] . '&amp;';
+    else
+      $hrefinqueryTMP = $icon['href'] . '&#63;';
+    $href = $hrefinqueryTMP.'referer='.urlencode($_SERVER['HTTP_REFERER']);
+
     $src = $icon['image'];
     $alt = htmlentities($icon['name']);
     echo "<a href='$href'><img id=\"prevphoto\" style=\"margin: 0 10px\" src='$src' alt=\"$alt\"></a>\n\n";
@@ -341,7 +361,13 @@
   if($photoNext)
   {
     $icon = $photoNext->GetIcon();
-    $href = $icon['href'].'&amp;referer='.urlencode($_SERVER['HTTP_REFERER']);
+
+    if (strpos($icon['href'], '&#63;') !== FALSE)
+      $hrefinqueryTMP = $icon['href'] . '&amp;';
+    else
+      $hrefinqueryTMP = $icon['href'] . '&#63;';
+    $href = $hrefinqueryTMP.'referer='.urlencode($_SERVER['HTTP_REFERER']);
+
     $src = $icon['image'];
     $alt = htmlentities($icon['name']);
     echo "<a href='$href'><img id=\"nextphoto\" style=\"margin: 0 10px\" src='$src' alt=\"$alt\"></a>";

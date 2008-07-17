@@ -28,7 +28,7 @@
       $path_parts = pathinfo($filename);
       $this->extension = strtolower($path_parts['extension']);
 
-      if ($this->extension=='jpeg' | $this->extension=='jpg')
+      if ($this->extension=='jpeg' | $this->extension=='jpg' | $this->extension=='' ) # going out on a limb here...
         $this->original_image = imagecreatefromjpeg($filename);
       elseif ($this->extension=='png')
         $this->original_image = imagecreatefrompng($filename);
@@ -131,7 +131,7 @@
     */
     function Save($filename, $quality = 91) 
     {
-      if ($this->extension=='jpeg' | $this->extension=='jpg')
+      if ($this->extension=='jpeg' | $this->extension=='jpg' | $this->extension=='') # on a limb...
       {
         @imagejpeg($this->original_image, $filename, $quality)
           or $cameralife->Error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);

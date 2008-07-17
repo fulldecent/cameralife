@@ -30,6 +30,22 @@
 
       $cameralife->error('Unable to retreive preference: '. get_class($this) .' '.$key, __FILE__, __LINE__);
     }
+
+    // NULL value resets to the default
+    function SetPref($key, $value)
+    {
+      global $cameralife;
+
+      if ($value == NULL)
+      {
+        foreach ($this->preferences as $pref)
+          if($pref['name'] == $key) 
+            $value = $pref['default'];
+      }
+
+      $cameralife->userpreferences[get_class($this)][$key] = $value;
+      $cameralife->SavePreferences();
+    }
   }
 
 ?>

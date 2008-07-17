@@ -8,7 +8,7 @@
   # param2 = extra info...
   # target = the exit URL, or 'ajax' for an ajax call
 
-  $features=array('database', 'imageprocessing', 'security');
+  $features=array('database', 'imageprocessing', 'security', 'photostore');
   require "main.inc";
 
   $photo = new Photo($_POST['id'])

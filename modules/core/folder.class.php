@@ -142,7 +142,7 @@ class Folder extends Search
 
     $retval = array();
     $new_files = $cameralife->PhotoStore->ListFiles();
-    if (!count($new_files)) return array('Nothing was found in the photostore.');
+    if (!is_array($new_files) || !count($new_files)) return array('Nothing was found in the photostore.');
     $result = $cameralife->Database->Select('photos','id,filename,path,fsize','','ORDER BY path, filename');
 
     // Verify each photo in the DB
@@ -339,6 +339,8 @@ class Folder extends Search
     global $cameralife;
 
     $files = $cameralife->PhotoStore->ListFiles($this->path, FALSE);
+    if(!is_array($files)) return FALSE;
+
     $fsphotos = $fsdirs = array();
     foreach ($files as $file)
     {

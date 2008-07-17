@@ -7,14 +7,43 @@
   *
   */
 
+  require dirname(__FILE__) . '/phpFlickr-2.2.0/phpFlickr.php';
+
   class FlickrPhotoStore extends PhotoStore
   {
     function FlickrPhotoStore() 
     {
+      global $_GET, $_SESSION, $cameralife;
+
       $this->name = 'Flickr';
 
+      $this->about = 'Before you set the api key and sercet here, <a href="http://www.flickr.com/services/api/keys/">go to flickr</a> and set your callback URL to the URL of this page! When you have done this, <a href="?flickrlogin=true">click here</a>.';
+
+      $this->preferences[] = array('name'=>'service', 'desc'=>'Service', 'type'=>array('flickr'=>'flickr.com','23'=>'23hq.com','zooomr'=>'zooomr.com'), 'default'=>'flickr');
       $this->preferences[] = array('name'=>'api_key', 'desc'=>'Flickr API Key', 'type'=>'string', 'default'=>'SET THIS');
+      $this->preferences[] = array('name'=>'api_secret', 'desc'=>'Flickr API Secret', 'type'=>'string', 'default'=>'SET THIS');
+      $this->preferences[] = array('name'=>'flickr_auth_token', 'desc'=>'Auth Token', 'type'=>'string', 'default'=>'DO NOT SET THIS');
       $this->preferences[] = array('name'=>'photoset_id', 'desc'=>'Photoset ID', 'type'=>'string', 'default'=>'SET THIS');
+
+      if ($this->GetPref('api_key') != 'SET THIS' && $this->GetPref('api_secret') != 'SET THIS')
+      {
+        $this->Flickr = new phpFlickr($this->GetPref('api_key'), $this->GetPref('api_secret'));
+        $this->Flickr->service = $this->GetPref('service');
+
+        if ($_GET['frob'])
+        {
+           $this->Flickr->auth_getToken($_GET['frob'], $_SESSION['phpFlickr_auth_token']);
+          $this->SetPref('flickr_auth_token', $_SESSION['phpFlickr_auth_token']);
+        }
+
+        if ($_GET['flickrlogin'])
+        {
+          $this->Flickr->auth('delete', FALSE);
+        }
+
+        $this->Flickr->setToken($this->GetPref('flickr_auth_token'));
+      }
+
     } 
 
     /**
@@ -67,6 +96,8 @@
       $path_parts = pathinfo($photo->Get('filename'));
       $extension = strtolower($path_parts['extension']);
 
+      list($photoid, $farmid, $serverid, $secret) = preg_split('/[-\.]/', $photo->Get('filename'));
+
       if ($type == 'thumbnail')
          $file = "http://farm$farmid.static.flickr.com/$serverid/${photoid}_${secret}_t.jpg";
       elseif ($type == 'scaled')
@@ -75,9 +106,9 @@
          $file = "http://farm$farmid.static.flickr.com/$serverid/${photoid}_${secret}.jpg";
 
       $target = tempnam('', 'cameralife_');
-     
       copy($file, $target);
-      return array('filename'=>$target, 'temporary'=>TRUE, 'mtime'=>0);
+
+      return array($target, TRUE, 0);
     }
 
     /**
@@ -93,25 +124,28 @@
     function PutFile($photo, $filename) 
     {
       global $cameralife;
+      
+      $context = $photo->GetContext();
+      $tags = array();
+      if (is_array($context))
+      {
+        foreach ($context as $rel)
+          $tags[] = preg_replace('/ /', '_', $rel['name']);
+      }
+      $tags = join(' ', $tags);
 
-      $cameralife->Error('Uploading is not implemented for Flickr... yet', __FILE__, __LINE__);
+      $this->Flickr->async_upload($filename, $photo->Get('description'), $tags, $photo->Get('status') == 0);
     }
 
     /**
     *  PutThumbnails
     *
-    *  Puts a a scaled photo and thumbnail into the photostore. 
-    *
-    *  @param $photo - a target photo object
-    *  @param $scaled - the file to insert
-    *  @param $thumbnail - the file to insert
+    *  Flickr does thumbnails for us
     *
     *  @return none
     */
     function PutThumbnails($photo, $scaled, $thumbnail) 
     {
-      global $cameralife;
-
       return;
     }
 
@@ -144,7 +178,11 @@
     {
       global $cameralife;
 
-      $cameralife->Error('Uploading is not implemented for Flickr... yet', __FILE__, __LINE__);
+      list($photoid, $farmid, $serverid, $secret) = preg_split('/[-\.]/', $photo->Get('filename'));
+      
+      $this->Flickr->replace($filename, $photoid);
+      if ($this->Flickr->getErrorCode() == 1)
+        $cameralife->Error('You must have a PRO account ith Flickr to replace/modify existing photos');
     }
 
 
@@ -161,7 +199,8 @@
     {
       global $cameralife;
 
-      $cameralife->Error('Erasing is not implemented for Flickr... yet', __FILE__, __LINE__);
+echo 'FLICKR DELETING...';
+#      $cameralife->Error('Erasing is not implemented for Flickr... yet', __FILE__, __LINE__);
     }
 
     /**
@@ -170,38 +209,24 @@
     *  Returns a list of all files in the photostore
     *
     *  @return an array of files, in the form 'path'=>basename(path)
+    *  or FALSE on error
     */
     function ListFiles($path = '', $recur=TRUE)
     {
       global $cameralife;
 
-      $params = array(
-        'api_key'	=> $this->GetPref('api_key'),
-        'method'	=> 'flickr.photosets.getPhotos',
-        'photoset_id'	=> $this->GetPref('photoset_id'),
-        'format'	=> 'php_serial',
-      );
+      $result = $this->Flickr->photos_search(array('user_id'=>'me'));
 
-      $encoded_params = array();
-      foreach ($params as $k => $v){
-        $encoded_params[] = urlencode($k).'='.urlencode($v);
-      }
-
-      $url = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
-      $rsp = file_get_contents($url);
-      $rsp_obj = unserialize($rsp);
-
-#die(var_dump($rsp_obj));
-      if ($rsp_obj['stat'] == 'ok')
+      if ($result)
       {
         $retval = array();
-        foreach ($rsp_obj['photoset']['photo'] as $photo)
+        foreach ($result['photo'] as $photo)
           $retval['flickr/'.$photo['id'].'-'.$photo['farm'].'-'.$photo['server'].'-'.$photo['secret'].'.jpg'] = $photo['id'].'-'.$photo['farm'].'-'.$photo['server'].'-'.$photo['secret'].'.jpg';
         return $retval;
       }
       else
       {
-        $cameralife->Error('Flickr replied with an error: '.$rsp,__FILE__,__LINE__);
+        return FALSE;
       }
     }
 

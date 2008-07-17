@@ -1,5 +1,8 @@
 !=need to do, *=todo, ?=waste of time
 
+Unbreak:
+  EXIF
+
 == TODO before a release ==
 * grep -r TODO .
 ! edit setup/install.mysql
@@ -14,7 +17,7 @@ Amazon S3 support
 note, bleeding edge ideas are at: http://camera.phor.net/TODO
 
 phpdoc
-phpdoc -o HTML:frames:earthli -d . -t docs
+phpdoc -o HTML:frames:earthli -d . -t ../docs
 
 Releases:
   svn export , chmod, ...

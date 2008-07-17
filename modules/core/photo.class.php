@@ -32,7 +32,8 @@ class Photo extends View
     {
       $result = $cameralife->Database->Select('photos','*', "id=$original");
       $this->record = $result->FetchAssoc()
-        or $cameralife->Error("Cannot load photo: $original", __FILE__, __LINE__);
+      ;
+#        or $cameralife->Error("Cannot load photo: $original", __FILE__, __LINE__);
     }
     elseif(is_array($original)) # A new image, given by an array
     {
@@ -135,8 +136,8 @@ class Photo extends View
 
     if ($this->record['modified'])
     {
-      $cameralife->PhotoStore->ModifyFile($this, NULL);
       $this->record['modified'] = 0;
+      $cameralife->PhotoStore->ModifyFile($this, NULL);
     }
 
     $this->GenerateThumbnail(TRUE); # will commit $this->record

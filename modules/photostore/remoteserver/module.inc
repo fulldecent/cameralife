@@ -94,13 +94,14 @@
       elseif ($type == 'thumbnail')
         $file = $this->GetPref('cache_dir').'/'.$photo->Get('id').'_150.'.$extension;
 
+/* assume consistent state
       if (!file_exists($file))
       {
         if ($type == 'original')
           $cameralife->Error("The photo <b>$file</b> cannot be found");
         $photo->GenerateThumbnail();
       }
-
+*/
       return array($file, FALSE, filemtime($file));
     }
 
@@ -145,11 +146,13 @@
       $extension = strtolower($path_parts['extension']);
 
       $this->mkdir_recursive($this->GetPref('cache_dir'));
+      @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
       copy($scaled, $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
-      unlink($scaled);
+#      unlink($scaled);
 #      chmod($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension, 0666);
+      @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
       copy($thumbnail, $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
-      unlink($thumbnail);
+#      unlink($thumbnail);
 #      chmod($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension, 0666);
     }
 
@@ -164,7 +167,18 @@
     */
     function CheckThumbnails($photo)
     {
-      return FALSE; # we always cache thumbnails, no doubt
+      global $cameralife;
+
+      $path_parts = pathinfo($photo->Get('filename'));
+      $extension = strtolower($path_parts['extension']);
+
+      if(!file_exists($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension))
+      {
+        $photo->GenerateThumbnail();
+        return TRUE;
+      }
+      else
+        return FALSE;
     }
 
     /**
@@ -185,12 +199,14 @@
       $path_parts = pathinfo($photo->Get('filename'));
       $extension = strtolower($path_parts['extension']);
 
-      rename($filename, $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
-      chmod($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension, 0666);
-      unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
-      unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
+      @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
+      if ($filename)
+        copy($filename, $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
+      @chmod($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension, 0666);
+      @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
+      @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
 
-      # if not lazy, update thumbnails
+      $photo->GenerateThumbnail($filename == NULL); // if we are reverting, let Generate know
     }
 
 
