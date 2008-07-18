@@ -104,7 +104,7 @@
       global $cameralife;
 
       $this->mkdir_recursive($cameralife->base_dir .'/'. $this->GetPref('photo_dir') .'/'. $photo->Get('path'));
-      rename($filename, $cameralife->base_dir .'/'. $this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'))
+      copy($filename, $cameralife->base_dir .'/'. $this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'))
         or $cameralife->Error('Could not add photo: ' . $photo->Get('path').$photo->Get('filename'), __FILE__, __LINE__);
       chmod($cameralife->base_dir .'/'. $this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'), 0666);
     }

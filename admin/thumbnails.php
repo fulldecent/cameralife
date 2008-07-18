@@ -56,8 +56,8 @@
   if ($done != $total)
     echo " (about $timeleft minutes left)";
   echo "</h3>\n";
-  echo "<p><div style='width: 500px; background: #fff; border: 1px solid black; padding: 2px; margin:2em'>";
-  echo "<div style='height: 25px; background: #347 url(".$cameralife->Theme->ImageURL('progress').") repeat-x; width:".($done/$total*100)."%'></div>";
+  echo "<p><div style='width: 500px; background: #fff; border: 1px solid black; padding: 2px; margin:2em auto'>";
+  echo "<div style='height: 25px; background: #347 url(".$cameralife->IconURL('progress').") repeat-x; width:".($done/$total*100)."%'></div>";
   echo "</div></p>\n";
   if ($todo == 0) die();
 

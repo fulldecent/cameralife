@@ -11,6 +11,8 @@ Unbreak:
 ! Update themes
 Setup checks for content negotiation and modrewrite (fetch index?test=true and ...
 
+set permissions in photostore public/notpublic
+
 Google opensocial/friendconnect
 Amazon S3 support
 

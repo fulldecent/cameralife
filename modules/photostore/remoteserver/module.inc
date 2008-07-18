@@ -102,7 +102,7 @@
         $photo->GenerateThumbnail();
       }
 */
-      return array($file, FALSE, filemtime($file));
+      return array($file, FALSE, @filemtime($file));
     }
 
     /**
@@ -120,9 +120,9 @@
       global $cameralife;
 
       $this->mkdir_recursive($this->GetPref('photo_dir') .'/'. $photo->Get('path'));
+      @unlink($this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'));
       copy($filename, $this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'))
         or $cameralife->Error('Could not add photo: ' . $photo->Get('path').$photo->Get('filename'), __FILE__, __LINE__);
-      unlink($filename);
       $photo->GenerateThumbnail();
 #      chmod($this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'), 0666);
     }

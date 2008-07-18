@@ -34,6 +34,7 @@
 
     $photo = new Photo($upload);
     $cameralife->PhotoStore->PutFile($photo, $file);
+    unlink($file);
 
     return 0;
   }

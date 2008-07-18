@@ -125,12 +125,14 @@
     {
       global $cameralife;
       
-      $context = $photo->GetContext();
+      $context = $photo->GetRelated();
       $tags = array();
       if (is_array($context))
       {
         foreach ($context as $rel)
+        {
           $tags[] = preg_replace('/ /', '_', $rel['name']);
+        }
       }
       $tags = join(' ', $tags);
 
