@@ -136,7 +136,7 @@
       }
       $tags = join(' ', $tags);
 
-      $this->Flickr->async_upload($filename, $photo->Get('description'), $tags, $photo->Get('status') == 0);
+      $this->Flickr->async_upload($filename, $photo->Get('description'), '', $tags, $photo->Get('status') == 0);
     }
 
     /**
