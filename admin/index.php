@@ -11,7 +11,6 @@
   $numreg = $cameralife->Database->SelectOne('users','COUNT(*)','auth=1');
   $numlog = $cameralife->Database->SelectOne('logs','COUNT(*)','id>'.($cameralife->GetPref('checkpointlogs')+0));
   $numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->GetPref('checkpointcomments')+0));
-  $numfserrors = count(Folder::Update());
 ?>
 <html>
 <head>
@@ -33,7 +32,7 @@
   if (file_exists('../.svn'))
   {
     $svn = exec('svnversion '.$cameralife->base_dir);
-    if ($svn != 'not versioned' && 0)
+    if ($svn != 'not versioned')
     {
       echo "Camera Life version <strong>svn:$svn</strong> | ";
 
@@ -139,8 +138,6 @@
   {
     echo "<h2><a href=\"photostore.php\">Photo Storage</a></h2>\n";
     echo "<p>Setup where your photos are stored: in a local folder, a remote server, Amazon S3, ...</p>\n";
-
-    echo "<p class=\"alert\">There are $numfserrors issues with your photos directory</p>";
   }
 
   if ($cameralife->Security->authorize('admin_customize'))

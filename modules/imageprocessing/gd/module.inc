@@ -94,7 +94,7 @@
                          $new_width, $new_height,
                          $base_width, $base_height);
  
-      if ($this->extension=='jpeg' | $this->extension=='jpg')
+      if ($this->extension=='jpeg' || $this->extension=='jpg' || $this->extension=='') # wild guess
       {
         @imagejpeg($new_image, $filename, $quality)
           or $cameralife->Error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);

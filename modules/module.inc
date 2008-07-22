@@ -12,7 +12,7 @@
      *     an named array with:
      *       name -- string
      *       desc -- string
-     *       type -- directory, string, number, yesno (0/1), or an array of possible values (enum)
+     *       type -- directory, string, number, yesno ('0' or '1'), or an array of possible values (enum)
      *       default -- the default value
      *
      */
@@ -23,7 +23,7 @@
       global $cameralife;
 
       $set = $cameralife->userpreferences[get_class($this)][$key];
-      if ($set) return $set;
+      if (isset($set)) return $set;
 
       foreach ($this->preferences as $pref)
         if($pref['name'] == $key) return $pref['default'];

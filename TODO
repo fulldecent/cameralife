@@ -21,6 +21,14 @@ note, bleeding edge ideas are at: http://camera.phor.net/TODO
 phpdoc
 phpdoc -o HTML:frames:earthli -d . -t ../docs
 
+Photostore API
+ * security functions (photo status)
+ * centralize the download/serve locally workflow, since everything except LOCAL will do this
+
+SET FILENAME ON RESTORE TO FLICKR???
+
+Use photo->record['extension'] ??
+
 Releases:
   svn export , chmod, ...
 

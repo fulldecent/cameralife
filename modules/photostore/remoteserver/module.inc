@@ -42,17 +42,19 @@
         $extension = strtolower($path_parts['extension']);
 
         if ($type=='photo')
-          return $this->GetPref('photo_dir_url').'/'.$photo->Get('path').$photo->Get('filename');
+        {  
+          if ($photo->Get('modified'))
+            return $this->GetPref('cache_dir_url').'/'.$photo->Get('id').'_mod.'.$extension;
+          else
+            return $this->GetPref('photo_dir_url').'/'.$photo->Get('path').$photo->Get('filename');
+        }
         elseif ($type=='scaled')
           return $this->GetPref('cache_dir_url').'/'.$photo->Get('id').'_600.'.$extension;
         else // ($type=='thumbnail')
           return $this->GetPref('cache_dir_url').'/'.$photo->Get('id').'_150.'.$extension;
       }
 
-      if ($cameralife->GetPref('rewrite') == 'yes')
-        return $cameralife->base_url."/photos/$type/".$photo->record['id'].'.'.$photo->extension.'?'.($photo->record['mtime']+0);
-      else
-        return $cameralife->base_url.'/modules/photostore/'.basename(dirname(__FILE__)).'/media.php&#63;format='.$type.'&amp;id='.$photo->record['id'].'&amp;ver='.$photo->record['mtime'];
+      return $cameralife->base_url.'/modules/photostore/'.basename(dirname(__FILE__)).'/media.php&#63;format='.$type.'&amp;id='.$photo->record['id'].'&amp;ver='.$photo->record['mtime'];
     }
 
     /**

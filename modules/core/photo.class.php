@@ -98,9 +98,9 @@ class Photo extends View
     $this->LoadImage($original);
     $imagesize = $this->image->GetSize();
 
-    $scaled = tempnam('', 'cameralife_');
+    $scaled = tempnam('', 'cameralife_S');
     $this->image->Resize($scaled, 600);
-    $thumbnail = tempnam('', 'cameralife_');
+    $thumbnail = tempnam('', 'cameralife_T');
     $thumbsize = $this->image->Resize($thumbnail, 150);
     $cameralife->PhotoStore->PutThumbnails($this, $scaled, $thumbnail);
     @unlink($scaled);
