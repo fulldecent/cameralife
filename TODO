@@ -1,3 +1,23 @@
+HOW TO DO A RELEASE
+-------------------
+Release on SF.net and Freshmeat.net
+Make docs...
+
+svn export https://entriken@fdcl.svn.sourceforge.net/svnroot/fdcl/trunk cameralife
+chmod 777 cameralife/ cameralife/photo cameralife/images/ cameralife/images/*
+touch cameralife/deleted.log
+chmod 777 cameralife/deleted.log 
+
+zip cameralife-2.6.2aa cameralife/
+rm cameralife-2.6.2aa 
+zip -r cameralife-2.6.2aa.zip cameralife/
+tar -czf cameralife-2.6.2aa.tgz cameralife/
+tar -cjf cameralife-2.6.2aa.tar.bz2 cameralife/
+
+scp cameralife-* fulldecent@frs.sourceforge.net:uploads
+---------------------
+
+
 !=need to do, *=todo, ?=waste of time
 
 Unbreak:
@@ -26,6 +46,8 @@ Photostore API
  * centralize the download/serve locally workflow, since everything except LOCAL will do this
 
 SET FILENAME ON RESTORE TO FLICKR???
+
+update readme, install, update, hacking...
 
 Use photo->record['extension'] ??
 

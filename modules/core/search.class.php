@@ -33,7 +33,7 @@ class Search extends View
     $this->mySearchPhotoCondition = implode(' AND ', $searchPhotoConditions);
     $this->mySearchAlbumCondition = implode(' AND ', $searchAlbumConditions);
     $this->mySearchFolderCondition = implode(' AND ', $searchFolderConditions);
-    
+
     if ($this->mySort = $_POST['sort'])
       setcookie("sort",$this->mySort);
     elseif 
@@ -121,8 +121,8 @@ class Search extends View
       case 'oldest':    $sort = 'albums.id'; break;
       case 'az':        $sort = 'description'; break;
       case 'za':        $sort = 'description desc'; break;
-      case 'popular':   $sort = 'hits desc'; break;
-      case 'unpopular': $sort = 'hits'; break;
+      case 'popular':   $sort = 'albums.hits desc'; break;
+      case 'unpopular': $sort = 'albums.hits'; break;
       case 'rand':      $sort = 'rand()'; break;
       default:          $sort = 'albums.id desc';
     }

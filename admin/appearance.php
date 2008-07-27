@@ -146,9 +146,9 @@
   <tr>
     <td>Use the iPhone theme for iPhones and iPod touches?
     <td>
-      <input type="hidden" name="module4" value="CameraLife" />
-      <input type="hidden" name="param4" value="iphone" />
-      <select name="value4">
+      <input type="hidden" name="module5" value="CameraLife" />
+      <input type="hidden" name="param5" value="iphone" />
+      <select name="value5">
         <option <?= $cameralife->GetPref('iphone') == 'no' ? 'selected="selected"':'' ?>>no</option>
         <option <?= $cameralife->GetPref('iphone') == 'yes' ? 'selected="selected"':'' ?>>yes</option>
       </select>

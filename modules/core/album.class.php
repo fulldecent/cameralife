@@ -77,7 +77,7 @@ class Album extends Search
     if ($cameralife->GetPref('rewrite') == 'yes')
       $retval['href'] = $cameralife->base_url.'/albums/'.$this->record['id'];
     else
-      $retval['href'] = $cameralife->base_url.'album.php&#63;id='.$this->record['id'];
+      $retval['href'] = $cameralife->base_url.'/album.php&#63;id='.$this->record['id'];
  
     if ($size == 'large')
     {

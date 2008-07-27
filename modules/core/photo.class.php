@@ -201,7 +201,8 @@ class Photo extends View
   {
     global $cameralife;
 
-die('fixme'.__FILE__.__LINE__);
+return(array('Date'=>'now', 'camera'=>'a cool camera', 'fix me'=>'YES PLESA!!'));
+
     $exif = @exif_read_data($cameralife->preferences['core']['photo_dir'].'/'.$this->record['path'].$this->record['filename'], 'IFD0', true);
     $retval = array();
 
