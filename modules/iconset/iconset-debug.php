@@ -7,7 +7,7 @@
 
   if (!$_GET['theme'] || eregi('/',$_GET['theme']))
   {
-    echo "Select a theme to examine<ul>";
+    echo "<h1>Select a theme to examine</h1><ul>";
     $fd = opendir('.');
     while ($file = readdir($fd))
       if (is_dir($file) && $file[0] != '.')
@@ -21,7 +21,7 @@
     $fd_image = opendir("$theme");
     while ($image = readdir($fd_image))
     {
-      if ($image[0] == '.' || strstr($image,'~'))
+      if ($image[0] == '.' || strstr($image,'~') || strstr($image, 'php'))
         continue;
       eregi('(.*)\.(.*)',$image,$regs);
       $images[$regs[1]][] = $regs[2];
@@ -32,10 +32,9 @@
 
     foreach($required_images as $image)
     {
-      if ($i == 0)
+      if ($i++%2 == 0)
         echo '<tr><td>&nbsp;<tr>';
       echo '<td align=left width="50%">';
-      $i = 1-$i;
 
       echo "<h3>$image</h3>";
       if ($images[$image])
@@ -43,8 +42,7 @@
         sort($images[$image]);
 
         foreach($images[$image] as $suffix)
-          echo "$suffix<img src=\"$theme/$image.$suffix\"
-                align=middle>&nbsp;&nbsp;&nbsp;";
+          echo "$suffix<img src=\"$theme/$image.$suffix\" align=middle>&nbsp;&nbsp;&nbsp;";
       }
       else
       {
@@ -60,10 +58,9 @@
 
     foreach($extras as $image => $suffixes)
     {
-      if ($i == 0)
+      if ($j++%2 == 0)
         echo '<tr><td>&nbsp;<tr>';
       echo '<td align=left width="50%">';
-      $i = 1-$i;
 
       echo "<h3>$image</h3>";
       if ($images[$image])

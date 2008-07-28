@@ -5,6 +5,22 @@
     function NightlifeTheme() 
     {
       $this->name = 'nightlife';
+
+      $this->preferences[] = array('name'=>'main_thumbnails', 'desc'=>'Show random, most popular, latest photos...', 'type'=>array('1'=>'Show N thumbnails','0'=>'No'), 'default'=>'1');
+      $this->preferences[] = array('name'=>'main_thumbnails_n', 'desc'=>'... N=', 'type'=>'number', 'default'=>'4');
+      $this->preferences[] = array('name'=>'main_topics', 'desc'=>'Photo album topics', 'type'=>array('0'=>"Don't show",'1'=>'Show all topics','2'=>"Show all topics, and N albums each"), 'default'=>'2');
+      $this->preferences[] = array('name'=>'main_topics_n', 'desc'=>'... N=', 'type'=>'number', 'default'=>'3');
+      $this->preferences[] = array('name'=>'main_folders', 'desc'=>'Folders on main page', 'type'=>array('0'=>"Don't show",'1'=>'Show N random folders'), 'default'=>'1');
+      $this->preferences[] = array('name'=>'main_folders_n', 'desc'=>'... N=', 'type'=>'number', 'default'=>'5');
+
+    }
+
+    function ShowPage($name, $object=NULL)
+    {
+      global $cameralife, $_SERVER, $_GET, $_POST;
+      $objectname = strtolower($name);
+      $$objectname = $object;
+      require dirname(__FILE__) . '/' . strtolower($name) . '.inc';
     }
 
     function cssURL()
@@ -13,13 +29,15 @@
       return $cameralife->base_url."/modules/theme/".$this->name."/theme.css";
     }
 
-    function ImageURL($name) 
+    function ImageURL($name)
     {
+//todo error checking
       global $cameralife;
-      return $cameralife->base_url."/modules/iconset/".$cameralife->preferences['core']['iconset']."/$name";
+
+      return $cameralife->base_url."/modules/iconset/".$cameralife->GetPref('iconset')."/$name";
     }
 
-    function Image($name, $extra=array()) 
+    function Image($name, $extra=array())
     {
       if (eregi('src="([^"]*)"', $name)) # HTML IMG
       {
@@ -41,7 +59,8 @@
 
       echo "<img";
       foreach ($image as $attr => $val)
-        echo " $attr=\"$val\"";
+        if ($val)
+          echo " $attr=\"$val\"";
       echo ">\n";
     }
 
@@ -70,24 +89,29 @@
       echo "</table>\n";
     }
 
-#TODO: consider not passing a database object here, an array of arrays
-    function Grid($query) 
+    // query is an array of Icons, or and array of classes that have Icons
+    function Grid($query)
     {
       echo "  <table width='100%' class='grid' align=center cellspacing=3 cellpadding=3>\n";
       $i=0;
-    
-      while ($thumb = $query->FetchAssoc())
+
+      foreach ($query as $thumb)
       {
+        if (is_array($thumb))
+          $icon = $thumb;
+        else
+          $icon = $thumb->GetIcon();
+
         if ($i%4==0) echo "    <tr>\n";
-        $i++;
-    
+          $i++;
+
         echo "      <td align='center' width='25%'>".
-             "<a href=\"".$thumb["href"]."\">\n";
-        $imageattrs = array('alt'=>'thumb', 'width'=>$thumb['tn_width'], 'height'=>$thumb['tn_height']);
-        $this->Image($thumb["tn"], $imageattrs);
-        echo "</a><br>".$thumb['description'];
-        if ($thumb["comment"])
-          echo " <i><font size='-2'>(".$thumb['comment'].")</font></i>";
+             "<a href=\"".$icon["href"]."\">\n";
+        $imageattrs = array('alt'=>'thumb', 'width'=>$icon['width'], 'height'=>$icon['height']);
+        $this->Image($icon["image"], $imageattrs);
+        echo "</a><br>".$icon['name'];
+        if ($icon['context'])
+          echo " <i><font size='-2'>(".$icon['context'].")</font></i>";
         echo "\n";
       }
       echo "  </table>\n";

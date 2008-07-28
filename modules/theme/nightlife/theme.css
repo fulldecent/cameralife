@@ -7,7 +7,7 @@ body
   font-size: medium;
   font-family: Arial, Times, sans-serif;
   color: white;
-  background: url("images/background") black;
+  background: url("background") black;
   background-position: top left;
   background-attachment: fixed;
   background-repeat: no-repeat;
