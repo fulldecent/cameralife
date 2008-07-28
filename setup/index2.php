@@ -177,58 +177,6 @@
       ) TYPE=MyISAM COMMENT='Customizable site options';";
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','sitename','My Photos','My Photos')")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','siteabbr','Home','Home')")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT INTO `${prefix}preferences` VALUES('core','sitedate',NOW(),NOW())")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','owner_email','none@none.none','none@none.none')")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','photo_dir','images/photos','image/photos')")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','cache_dir','images/cache','image/cache')")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','upload_dir','images/upload','image/upload')")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','deleted_dir','images/deleted','image/deleted')")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_thumbnails',1,1)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_thumbnails_n',4,4)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_topics',2,2)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_topics_n',3,3)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_folders',1,1)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','main_folders_n',5,5)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','theme','sidebar','sidebar')")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','iconset','cartoonic','cartoonic')")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('core','checkpoint',0,0)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_photo_rename',0,0)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_photo_delete',0,0)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_photo_modify',3,3)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_admin_albums',4,4)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_photo_upload',1,1)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_admin_file',4,4)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_admin_theme',4,4)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_admin_customize',5,5)")
-      or die(mysql_error() . ' ' . __LINE__);
-    mysql_query("INSERT into `${prefix}preferences` VALUES('defaultsecurity','auth_cookie','cameralifeauth','cameralifeauth')")
-      or die(mysql_error() . ' ' . __LINE__);
 
     $SQL = "
       CREATE TABLE `${prefix}users` (
@@ -242,6 +190,17 @@
         PRIMARY KEY  (`username`),
         UNIQUE KEY `username` (`username`)
       ) TYPE=MyISAM COMMENT='Users of the system';";
+    mysql_query($SQL)
+      or die(mysql_error() . ' ' . __LINE__);
+
+    $SQL = "
+      CREATE TABLE `${prefix}exif` (
+        `photoid` int(11) NOT NULL,
+        `tag` varchar(50) NOT NULL,
+        `value` varchar(255) NOT NULL,
+        PRIMARY KEY  (`photoid`,`tag`),
+        KEY `photoid` (`photoid`)
+      ) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);
 
