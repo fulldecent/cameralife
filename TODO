@@ -1,29 +1,27 @@
-HOW TO DO A RELEASE
+==================================
+TODO For the 2.6.2 Realease Cycle
+----------------------------------
+
+* http://www.oxygen-icons.org/
+* Fix old themes
+* Once-over on the install process
+* Update the website, link to documentation
+* exif - Photo::Load($original = FALSE) -> Photo::GetMetadata() which saves exif
+* README, HACKING, DOCS, ChangeLog, ...
+* set permissions in photostore public/notpublic
+
+Photostore API
+ * security functions (photo status)
+ * centralize the download/serve locally workflow (i.e. media.php), since everything except LOCAL will do this
+SET FILENAME ON RESTORE TO FLICKR???
+
+deleted dir? for other photostores? regression?
+
+deleted.log, fix hack
+
+===================
+RELEASE HOWTO
 -------------------
-Release on SF.net and Freshmeat.net
-Make docs...
-
-svn export https://entriken@fdcl.svn.sourceforge.net/svnroot/fdcl/trunk cameralife
-chmod 777 cameralife/ cameralife/photo cameralife/images/ cameralife/images/*
-touch cameralife/deleted.log
-chmod 777 cameralife/deleted.log 
-
-zip cameralife-2.6.2aa cameralife/
-rm cameralife-2.6.2aa 
-zip -r cameralife-2.6.2aa.zip cameralife/
-tar -czf cameralife-2.6.2aa.tgz cameralife/
-tar -cjf cameralife-2.6.2aa.tar.bz2 cameralife/
-
-scp cameralife-* fulldecent@frs.sourceforge.net:uploads
----------------------
-
-
-!=need to do, *=todo, ?=waste of time
-
-Unbreak:
-  EXIF
-
-== TODO before a release ==
 * grep -r TODO .
 ! edit setup/install.mysql
 * database changes into setup
@@ -31,30 +29,40 @@ Unbreak:
 ! Update themes
 Setup checks for content negotiation and modrewrite (fetch index?test=true and ...
 
-set permissions in photostore public/notpublic
+svn commit
+VERSION=2.6.2a
 
-Google opensocial/friendconnect
-Amazon S3 support
-
-note, bleeding edge ideas are at: http://camera.phor.net/TODO
-
-phpdoc
 phpdoc -o HTML:frames:earthli -d . -t ../docs
+scp -r ../docs fulldecent@fdcl.sf.net/home/groups/f/fd/fdcl/htdocs
 
-Photostore API
- * security functions (photo status)
- * centralize the download/serve locally workflow, since everything except LOCAL will do this
+pushd /tmp
+svn export https://entriken@fdcl.svn.sourceforge.net/svnroot/fdcl/trunk cameralife
+touch cameralife/deleted.log
+chmod 777 cameralife/ cameralife/images/ cameralife/images/* cameralife/deleted.log
 
-SET FILENAME ON RESTORE TO FLICKR???
+zip -r cameralife-${VERSION}.zip cameralife/
+tar -czf cameralife-${VERSION}.tgz cameralife/
+tar -cjf cameralife-${VERSION}.tar.bz2 cameralife/
+scp cameralife-* fulldecent@frs.sourceforge.net:uploads
+rm -rf cameralife*
+popd
 
-update readme, install, update, hacking...
+http://sourceforge.net/projects/fdcl/
+http://freshmeat.net/projects/fdcl/
 
-Use photo->record['extension'] ??
+===========================
+TODO AFTER 2.6.2
+note: bleeding edge ideas are at: http://camera.phor.net/TODO
+----------------------------
 
-Releases:
-  svn export , chmod, ...
+!=need to do, *=todo, ?=waste of time
 
--- VALID HTML STRICT!!!
+! OpenID providers: (yahoo, blogger, AIM, LiveJournal, myspace)
+* Google opensocial/friendconnect
+* Use photo->record['extension'] ??
+* VALID HTML STRICT!!!
+* fdcl.sf.net analytics
+* RDF announcement of new versions? more info on this?
 
 -- The big picture --
 ! Integrate with CMS's like Phpnuke!?
