@@ -74,6 +74,7 @@ class Photo extends View
   }
 
   // If you can guarantee record['modified'] is false, set $original to TRUE
+  // If ORIGINAL is set, we can collect and use some extra metadata
   function LoadImage($original = FALSE)
   {
     global $cameralife;
@@ -155,10 +156,13 @@ class Photo extends View
     $this->Destroy();
 
     # Bonus code
-    $fh = fopen($cameralife->base_dir.'/deleted.log', 'a')
-      or $cameralife->Error("Can't open ".$cameralife->base_dir.'/deleted.log', __FILE__, __LINE__);
-    fwrite($fh, date('Y-m-d H:i:s')."\t".$this->record['path'].$this->record['filename']."\n");
-    fclose($fh);
+    if (file_exists($cameralife->base_dir.'/deleted.log'))
+    {
+      $fh = fopen($cameralife->base_dir.'/deleted.log', 'a')
+        or $cameralife->Error("Can't open ".$cameralife->base_dir.'/deleted.log', __FILE__, __LINE__);
+      fwrite($fh, date('Y-m-d H:i:s')."\t".$this->record['path'].$this->record['filename']."\n");
+      fclose($fh);
+    }
   }
 
   function Destroy()
@@ -171,7 +175,13 @@ class Photo extends View
   {
     global $cameralife;
 
-    return $cameralife->PhotoStore->GetURL($this, $type);
+    if ($url = $cameralife->PhotoStore->GetURL($this, $type))
+      return $url;
+
+    if ($cameralife->GetPref('rewrite') == 'yes')
+      return $cameralife->base_url."/photos/$type/".$this->record['id'].'.'.$this->extension.'?'.($this->record['mtime']+0);
+    else
+      return $cameralife->base_url.'/media.php&#63;format='.$type.'&amp;id='.$this->record['id'].'&amp;ver='.$this->record['mtime'];
   }
 
   function GetFolder()
@@ -353,7 +363,7 @@ return(array('Date'=>'now', 'camera'=>'a cool camera', 'fix me'=>'YES PLESA!!'))
     return $retval;
   }
 
-  // private?
+  // PRIVATE
   function GetContext()
   {
     if (!$this->context)

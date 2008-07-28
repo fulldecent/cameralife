@@ -2,21 +2,14 @@
 TODO For the 2.6.2 Realease Cycle
 ----------------------------------
 
-* Fix old themes
 * Once-over on the install process
-* Update the website, link to documentation
 * exif - Photo::Load($original = FALSE) -> Photo::GetMetadata() which saves exif
-* README, HACKING, DOCS, ChangeLog, ...
 * set permissions in photostore public/notpublic
 
 Photostore API
  * security functions (photo status)
- * centralize the download/serve locally workflow (i.e. media.php), since everything except LOCAL will do this
 SET FILENAME ON RESTORE TO FLICKR???
 
-deleted dir? for other photostores? regression?
-
-deleted.log, fix hack
 
 ===================
 RELEASE HOWTO

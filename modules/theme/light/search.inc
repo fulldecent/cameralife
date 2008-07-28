@@ -48,26 +48,17 @@
   $header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of'.$_GET['q'].'" href="'.$camerasife->base_url.'/rss.php&#63;q='.$_GET['q'].'" />';
   $cameralife->Theme->Header('Site search', 'main', $header);
 ?>
-<div id="text">
+<div id="sidebar">
 <form method="GET"> 
-  
+  <div class="item">
+    <a href="?q=unnamed">Search for unnamed photos</a>
+  </div>
 <?php
-  $menu = array();
-  $menu[] = array('name'=>$cameralife->GetPref('siteabbr'),
-                  'href'=>'index.php',
-                  'image'=>'small-main');
-  $menu[] = array('name'=>'Search for everything',
-                  'href'=>'search.php',
-                  'image'=>'small-search');
-  $menu[] = array('name'=>'Search unnamed photos',
-                  'href'=>'search.php?q=unnamed',
-                  'image'=>'small-search');
 
   if($_GET['page'] == "p" && $cameralife->Security->Authorize('admin_albums'))
-          $menu[] = array('name'=>'Create an Album of these photos',
-                          'href'=>'topic.php&#63;edit=true&amp;term='.urlencode($_GET['q']),
-                          'image'=>'small-album');
+    echo '<div class="item"><a href="topic.php&#63;edit=true&amp;term='.urlencode($_GET['q']).'">Create an Album of these photos</a></div>';
 
+echo '</div><div id="text">';
   if ($_GET['albumhelp'])
   {
 ?>

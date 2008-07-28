@@ -1,9 +1,9 @@
 *
 * Camera Life
-* Version 2.6.0 - 2007-07-07
+* Version 2.6.2 - 2009-07-27
 * http://fdcl.sourceforge.net
 *
-* Copyright (C) 2001-2007 Will Entriken "Full Decent" <cameralife AT phor.net>
+* Copyright (C) 2001-2008 Will Entriken "Full Decent" <cameralife AT phor.net>
 *
 * Camera Life is released under the terms of the GNU General Public 
 * License as published by the Free Software Foundation; either version 2 
@@ -20,40 +20,46 @@ I INTRODUCTION
 
 II FEATURES
 
- A Self Updating
+ A Storing photos
 
-   Camera Life will automatically cache and thumbnail photos it finds in your
-   system. Photos are automatically assorted into Albums based on their
-   descriptions.
+   You can store photos in a folder on your webserver, another FTP/WWWserver,
+   Amazon S3 or Flickr. Photos added to your "photostore" will be recognized
+   by Camera Life and cached/thumbnailed.
 
- B Photo Albums
+ B Organizing Photos
 
-   Users can browse your photos by file system hierarchy (files in folders),
-   or by Albums. An Album is a collection of photos containing a certain word
-   in their description. Since the system knows which photos are related, it 
-   can suggest photos that a user may be interested in while they are browsing.
+   Photos are browsable by file heirarchy. You can edit the description for
+   each photo and add tags. Then you can create Albums, which are groups of
+   photos containing some search term. As you rename and tag photos, they
+   are automatically added to or removed from Albums. Each Album is a member
+   of a Topic.
 
- C Security
+   Camera Life will learn how photos are related and present the user with
+   photos that are related to the one currently showing.
 
-   Users sign up for accounts from the main page. An Admin can then grant 
-   privileges to users (Administer:User Manager:Users). You can also integrate
-   Camera Life into your own authentication system by creating a module.
+ C The social effect
 
- D Non-destructive
+   You can allow site users to edit photo description, add tags, comment
+   on photos and flag photos for deletion. This is enabled by default. All
+   actions on the site have an audit trail and can be undone. This is under
+   the Administer interface.
 
-   Changes to your site are all logged and undoable. You can allow anyone to
-   contribute photo descriptions, and then easily rollback changes in the 
-   event of defacement. (Administer::Log Viewer)
+ D Extensible
 
- E Extensible
+   The code is very modular. You can easily add themes or iconset to your 
+   site, or integrate with your existing CMS or template system.
 
-   You can easily add themes or iconset to your site, or integrate with your
-   existing CMS or template system.
+ E Web 2.0 / Integration
 
- F Web 2.0
+   Camera Life supports microformats and some of the interface is done with 
+   AJAX. It supports photocasting through an RSS feed. iPhone users will
+   see a special version of the site. Camera Life is compatible with the
+   Gallery Remote API, so you can use tools designed for Gallery to upload
+   your photos to the site:
 
-   Camera Life supports microformats and rss and some of the interface is
-   done with AJAX. It supports photocasting through an RSS feed.
+     iPhoto:      http://zwily.com/iphoto/
+     KDE/digikam: http://www.digikam.org/?q=about/features09x
+     Java:        http://gallery.menalto.com/wiki/Gallery_Remote
 
 
 III INSTALLATION
@@ -72,11 +78,12 @@ IV MAITENANCE
  A Administer
 
    Regularly login as admin and click Administer at the top of the main page. 
-   Items that require attention will be noted in red.
+   Items that require your attention will be noted in red.
 
  B Add Albums
 
    To create new Albums, login and choose Create Album from the front page.
+   Or start a search and click 'Create an album with these results'
 
 
 V BUGS

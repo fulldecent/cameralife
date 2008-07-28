@@ -24,10 +24,10 @@
                   'href'=>'search.php&#63;q='.$_GET['name'],
                   'image'=>'small-search');
 
-  $cameralife->Theme->TitleBar('Photo albums of '.$_GET['name'],
-                               'topic',
-                               "(".$counts['albums']." albums)",
-                               $menu);
+#  $cameralife->Theme->TitleBar('Photo albums of '.$_GET['name'],
+#                               'topic',
+#                               "(".$counts['albums']." albums)",
+#                               $menu);
 
   if ($_GET['edit'])
   {
@@ -39,7 +39,7 @@
 
     <p class="info" align=left>
       You are about to create an Album of photos whose descriptions contain "<b><?= $_GET['term'] ?></b>".
-      <?php if (file_exists('setup/albums.html')) echo "<a href=\"setup/albums.html\">Click here for more information about albums</a>"; ?>
+      <?php if (file_exists('setup/albums.html')) echo "<a href=\"".$cameralife->base_url."/setup/albums.html\">Click here for more information about albums</a>"; ?>
     </p>
     <table>
       <tr>

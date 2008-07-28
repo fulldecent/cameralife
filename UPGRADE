@@ -1,11 +1,11 @@
 *
 * Camera Life
-* Version 2.6.0 - 2007-07-07
+* Version 2.6.2 - 2008-07-27
 * http://fdcl.sourceforge.net
 *
-* Copyright (C) 2001-2007 Will Entriken "Full Decent" <cameralife AT phor.net>
+* Copyright (C) 2001-2008 Will Entriken "Full Decent" <cameralife AT phor.net>
 *
-* UPGRADING Camera Life from any version
+* UPGRADING Camera Life from any version to any version
 *
 
 Upgrading from an older version of Camera Life requires working knowledge of MySQL.
@@ -13,17 +13,8 @@ Basically, it goes like this:
 
   * Look at your database structure
   * Look at the new database structure (in setup/install.mysql)
-  * Update your tables to the new format.
-  * Paste this into modules/config.inc, making changes as necessary:
-
-    <?php
-    $db_host = 'localhost';
-    $db_name = 'cameralife';
-    $db_user = 'cameralife';
-    $db_pass = '5b887nj';
-    $db_prefix = '';
-    ?>
-
+  * Update your tables to the new format
+  * Edit modules/config.inc, using modules/config-example.inc as a template
   * Paste the new source files on top of the old ones
 
   * Now enter the site:
@@ -33,11 +24,9 @@ Basically, it goes like this:
 
 Extra notes:
 
-  In some recent versions, there was a unique key on photos.filename, but we
-  finally got rid of that.
-
-  In some older versions admin/.htaccess was used for security, that is no
-  longer necessary. But you will want the new .htaccess in your root directory.
+  * Pay attention to unique keys, the key on photos.filename was removed in 2.5
+  * admin/.htaccess was removed in 2.2
+  * .htaccess was added in 2.5
 
   Image sizes can now be null (lazy thumbnailing):)
   alter table photos change height height int(11);
@@ -45,7 +34,5 @@ Extra notes:
   alter table photos change width width int(11);
   alter table photos change tn_width tn_width int(11);
 
-  insert into preferences VALUES('core','cache_dir','images/cache','images/cache');
   mkdir images/cache
   chmod 777 images/cache
-  

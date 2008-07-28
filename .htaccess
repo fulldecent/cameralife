@@ -12,8 +12,8 @@ Deny from all
 <IfModule mod_rewrite.c>
 RewriteEngine on
 RewriteRule ^(.*)photos/(\d+) $1photo.php?id=$2&%{QUERY_STRING}
-RewriteRule ^(.*)photos/([^/]+)/(\d+)-(\d+)\. $1modules/photostore/local/media.php?format=$2&id=$3&ver=$4
-RewriteRule ^(.*)photos/([^/]+)/(\d+)\. $1modules/photostore/local/media.php?format=$2&id=$3&ver=%{QUERY_STRING}
+RewriteRule ^(.*)photos/([^/]+)/(\d+)-(\d+)\. $1media.php?format=$2&id=$3&ver=$4
+RewriteRule ^(.*)photos/([^/]+)/(\d+)\. $1media.php?format=$2&id=$3&ver=%{QUERY_STRING}
 RewriteRule ^(.*)folders/(.*) $1folder.php?path=$2
 RewriteRule ^(.*)albums/(\d+) $1album.php?id=$2&%{QUERY_STRING}
 RewriteRule ^(.*)topics/(.+) $1topic.php?name=$2

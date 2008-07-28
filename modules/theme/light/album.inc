@@ -12,8 +12,7 @@
   $extrahead = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of '.$album->Get('name').'" href="'.$cameralife->base_url.'/rss.php&#63;q='.$album->Get('term').'"/>'; 
   $cameralife->Theme->Header($cameralife->GetPref('sitename').': '.$album->Get('name'), 'album', $extrahead);
 ?>
-<div id="text">
-
+<div id="sidebar">
 <?php
   $menu = array();
   $menu[] = $cameralife->GetIcon('small');
@@ -26,9 +25,7 @@
     else
       $href = $icon['href'] . '&#63;id='.$album->Get('id').'&amp;edit=true';
 
-    $menu[] = array('name'=>'Edit this Album',
-                    "href"=>$href,
-                    'image'=>'small-admin');
+    echo '<div class="item"><a href="'.$href.'">Edit this Album</a></div>';
   }
 
   if (strpos($icon['href'], '&#63;') !== FALSE)
@@ -41,16 +38,17 @@
                   'onclick'=>"javascript:void(document.getElementById('help').style.display='');return false",
                   'image'=>'small-admin');
 
-  $cameralife->Theme->TitleBar($album->Get('name'),
-                               'album',
-                               '('.$counts['photos'].' total photos)',
-                               $menu);
+echo '</div><div id="text">';
+#  $cameralife->Theme->TitleBar($album->Get('name'),
+#                               'album',
+#                               '('.$counts['photos'].' total photos)',
+#                               $menu);
 
   if ($_GET['edit'] && $cameralife->Security->authorize('admin_albums'))
   {
 ?>
     <div class="administrative" align=center>
-    <form name="form1" method=post action="album_controller.php">
+    <form name="form1" method=post action="<?= $cameralife->base_url ?>/album_controller.php">
     <input type="hidden" name="id" value="<?= $_GET['id'] ?>">
     <input type="hidden" name="target" value="<?= $cameralife->base_url.'/album.php&#63;id='.$album->Get('id') ?>">
       <p class="info" align=left>

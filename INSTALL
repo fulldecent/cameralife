@@ -35,7 +35,7 @@
 
      Add Db: cameralife
      Add User: USER PASS
-     Add user to Db
+     Add user to Db with all privs
 
      Click phpMyAdmin
      Choose the database on the left
