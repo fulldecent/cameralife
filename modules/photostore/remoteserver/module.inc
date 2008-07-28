@@ -54,7 +54,7 @@
           return $this->GetPref('cache_dir_url').'/'.$photo->Get('id').'_150.'.$extension;
       }
 
-      return $cameralife->base_url.'/modules/photostore/'.basename(dirname(__FILE__)).'/media.php&#63;format='.$type.'&amp;id='.$photo->record['id'].'&amp;ver='.$photo->record['mtime'];
+      return FALSE; # request handled through media.php
     }
 
     /**

@@ -20,14 +20,17 @@
     /**
     *  GetURL
     *
-    *  Gets a URL for the client to access the selected resource.
+    *  Gets a URL for the client to access the selected resource. Or return FALSE.
+    *  If FALSE, the caller must construct a URL to media.php
+    *  That page will GetFile() the photo and display it to the user.
+    * 
     *  (Implementation note: make sure non-public photos do not have 
     *  publicly accessible urls)
     *
     *  @param $photo - a target photo obeject
     *  @param $type - one of ('photo', 'scaled', 'thumbnail')
     *
-    *  @return a URL
+    *  @return a URL or FALSE
     */
     function GetURL($photo, $type='photo') {}
 

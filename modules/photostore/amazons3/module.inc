@@ -5,6 +5,8 @@
   *  Private files are delivered through this server.
   *  Lazy thumbnailing is not supported.
   *
+  *  Does not support the deleted dir
+  *
   */
 
   class AmazonS3PhotoStore extends PhotoStore
@@ -100,8 +102,7 @@
           return 'http://s3.amazonaws.com/'.$this->GetPref('cachebucket').'/'.$photo->Get('id').'_150.'.$extension;
       }
 
-      return $cameralife->base_url.'/modules/photostore/'.basename(dirname(__FILE__)).'/media.php&#63;format='.$type.'&amp;id='.$photo->record['id
-'].'&amp;ver='.$photo->record['mtime'];
+      return FALSE; # request handled through media.php
     }
 
     /**

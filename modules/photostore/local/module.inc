@@ -32,12 +32,8 @@
     */
     function GetURL($photo, $type='photo') 
     {
-      global $cameralife;
-
-      if ($cameralife->GetPref('rewrite') == 'yes')
-        return $cameralife->base_url."/photos/$type/".$photo->record['id'].'.'.$photo->extension.'?'.($photo->record['mtime']+0);
-      else
-        return $cameralife->base_url.'/modules/photostore/'.basename(dirname(__FILE__)).'/media.php&#63;format='.$type.'&amp;id='.$photo->record['id'].'&amp;ver='.$photo->record['mtime'];
+      return FALSE; // this request will be handled through media.php
+      // see note in photstore/module.php
     }
 
     /**
