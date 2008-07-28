@@ -12,6 +12,7 @@
   $extrahead = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of '.$album->Get('name').'" href="'.$cameralife->base_url.'/rss.php&#63;q='.$album->Get('term').'"/>'; 
   $cameralife->Theme->Header($cameralife->GetPref('sitename').': '.$album->Get('name'), 'album', $extrahead);
 ?>
+<div id="text">
 
 <?php
   $menu = array();

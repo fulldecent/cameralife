@@ -44,18 +44,11 @@
     $_GET['page'] = 'p';
     $results = $search->GetPhotos();
   }
+
+  $header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of'.$_GET['q'].'" href="'.$camerasife->base_url.'/rss.php&#63;q='.$_GET['q'].'" />';
+  $cameralife->Theme->Header('Site search', 'main', $header);
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-  <title><?= $cameralife->GetPref('sitename') ?></title>
-  <?php if($cameralife->Theme->cssURL()) {
-    echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
-  } ?>
-  <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
-  <link rel="alternate" type="application/rss+xml" title="RSS feed of <?= $_GET['q'] ?>" href="rss.php&#63;q=<?= $_GET['q'] ?>"/>
-</head>
-<body>
+<div id="text">
 <form method="GET"> 
   
 <?php
@@ -75,8 +68,6 @@
                           'href'=>'topic.php&#63;edit=true&amp;term='.urlencode($_GET['q']),
                           'image'=>'small-album');
 
-  $cameralife->Theme->TitleBar('Site search', 'main', FALSE, $menu);
-
   if ($_GET['albumhelp'])
   {
 ?>
@@ -90,13 +81,6 @@
 <?php
     }
 
-    $cameralife->Theme->Section('Search for')
-?>
-  <input type="text" name="q" value="<?= stripslashes($_GET['q']) ?>">
-  <input type="hidden" name="page" value="<?= $_GET['page'] ?>">
-  <input type="image" src="<?= $cameralife->Theme->ImageURL('search') ?>" value="search">
-
-<?php 
   if($_GET['albumhelp']) exit(0);
 
   if ($counts['albums'] > 0)
@@ -125,12 +109,6 @@
     $cameralife->Theme->PageSelector($start,$counts['folders'],12,"page=f&amp;q=".$_GET["q"]);
   else
     $cameralife->Theme->PageSelector($start,$counts['photos'],12,"page=p&amp;q=".$_GET["q"]);
-/*
-  $cameralife->Theme->SortSelector('id'=>'Oldest First','id desc'=>'Newest First',
-                                   'description'=>'A-Z', 'description desc'=>'Z-A',
-                                   'comments'=>'Most popular', 'comments desc'=>'Least Popular',
-                                   'rand()'=>'Randomly');
-*/
 ?>
 
 <p>
@@ -145,6 +123,6 @@
   </select>
   <input type=submit value="Sort">
 </p>
-
-</form>
-</html>
+<?php
+  $cameralife->Theme->Footer();
+?>

@@ -87,18 +87,18 @@
     <div id="menu">
        <div id="menu_list">
         <a href="<?= $cameralife->base_url ?>/index.php"><?= $cameralife->GetPref('siteabbr') ?></a>
-        <img src="images/splitter.gif" class="splitter" alt="" />
+        <img src="<?= $cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))) ?>/images/splitter.gif" class="splitter" alt="" />
         <a href="<?= $cameralife->base_url ?>/stats.php">Stats</a>
-        <img src="images/splitter.gif" class="splitter" alt="" />
+        <img src="<?= $cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))) ?>/images/splitter.gif" class="splitter" alt="" />
 <?php
 
   if ($cameralife->Security->GetName())
   {
 
     echo '        <a href="'.$cameralife->base_url.'/logout.php">Logout '.$cameralife->Security->GetName().'</a>';
-    echo '        <img src="images/splitter.gif" class="splitter" alt="" />';
+    echo '        <img src="'.$cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))).'/images/splitter.gif" class="splitter" alt="" />';
     echo '        <a href="'.$myfoldericon['href'].'">My Uploads</a>';
-    echo '        <img src="images/splitter.gif" class="splitter" alt="" />';
+    echo '        <img src="'.$cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))).'/images/splitter.gif" class="splitter" alt="" />';
     echo '        <a href="'.$cameralife->base_url.'/admin/index.php">Administer</a>';
 #    echo '        <img src="images/splitter.gif" class="splitter" alt="" />';
 #    echo '        <a href="admin/appearance.php">Customize this page</a>';
@@ -106,7 +106,7 @@
   else
   { 
     echo '        <a href="'.$cameralife->base_url.'/login.php">Login</a>';
-    echo '        <img src="images/splitter.gif" class="splitter" alt="" />';
+    echo '        <img src="'.$cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))).'/images/splitter.gif" class="splitter" alt="" />';
     echo '        <a href="http://fdcl.sourceforge.net/">Powered by Camera Life</a>';
   }
 
@@ -116,17 +116,17 @@ echo '
   </div>
   <div id="logo">';
 
-echo'    <div id="slogan" style="padding: 0"><strong>';
+echo '    <div id="slogan" style="padding: 0">';
 
       if ($image) $this->Image($image);
-
+echo '    <strong id="title">';
 echo $title.'</strong></div>
       <div id="logo_text">
         <a href="#">Search</a>
         <br/><br/>
         Type here to search by photo description, keywords, albums and more
         <form action="'.$cameralife->base_url.'/search.php" method="get">
-          <input name="q" value="" size="20" type="text">
+          <input name="q" value="'.$_GET['q'].'" size="20" type="text">
           <input src="'.$cameralife->IconURL('search').'" value="search" type="image">
         </form>
       </div>

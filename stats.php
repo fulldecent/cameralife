@@ -1,5 +1,5 @@
 <?php
-  $features=array('database','theme');
+  $features=array('database','theme', 'security');
   require "main.inc";
 
   $cameralife->Theme->ShowPage('stats');

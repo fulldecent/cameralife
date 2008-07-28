@@ -67,7 +67,8 @@ $hrefinquery . 'XXXXX';
   foreach (split('/', $suggestions) as $keyword)
     $keys['"'.eregi_replace('[^a-z0-9]','',$keyword).'"']=1;
   $headers .= 'var copytags=['.implode(',',array_keys($keys))."]\n";
-  $headers .= "var rating=".($rating+0)."\n";
+  $headers .= 'var rating='.($rating+0)."\n";
+  $headers .= 'var cameralifebaseurl="'.$cameralife->base_url.'"';
   $headers .='</script>';
 
   $cameralife->Theme->Header(htmlentities($photo->Get('description')), 'photo', $headers, 'init()');
@@ -83,7 +84,7 @@ $hrefinquery . 'XXXXX';
   if ($cameralife->Security->authorize('photo_rename'))
   {
     $href = $icon['href'].'&amp;action=rename';
-    echo "       <li><a href=\"$href\" onClick=\"document.getElementById('rename').style.display='';return false;\">Rename photo</a></li>\n";
+    echo "       <li><a href=\"$href\" onClick=\"document.getElementById('rename').style.display='';focusTo(\$id('formtitle'),0);return false;\">Rename photo</a></li>\n";
   }
   if ($cameralife->Security->authorize('photo_delete'))
   {

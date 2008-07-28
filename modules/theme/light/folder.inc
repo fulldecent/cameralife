@@ -15,19 +15,8 @@
     $_GET['page'] = 'photos';
     $results = $folder->GetPhotos();
   }
-?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-  <title><?= $cameralife->GetPref('sitename') ?></title>
-  <?php if($cameralife->Theme->cssURL()) {
-    echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
-  } ?>
-  <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
-</head>
-<body>
-<form method="post"> 
-<?php
+
+
 $menu = array();
   $menu[] = $cameralife->GetIcon('small');
   if ($folder->Path())
@@ -45,10 +34,12 @@ $menu = array();
   
   $folder_name = $folder->Basename()
     or $folder_name = '(Top Level)';
-  $cameralife->Theme->TitleBar($folder_name,
-                               'folder',
-                               FALSE,
-                               $menu);
+
+  $cameralife->Theme->Header($folder_name, 'folder');
+?>
+<div id="text">
+<?php
+
   if ($counts['photos'] > 0)
     $sections[] = array('name'=>"Contains ".$counts['photos']." photos",
                         'page_name'=>'photos',

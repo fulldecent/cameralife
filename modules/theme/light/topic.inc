@@ -9,6 +9,7 @@
 
   $cameralife->Theme->Header($cameralife->GetPref('sitename').' : '.$_GET['name'], 'topic');
 ?>
+<div id="text">
 <form name="form1" method=post action="album_controller.php">
 <?php
   $menu = array();

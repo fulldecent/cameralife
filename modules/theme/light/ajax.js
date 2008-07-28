@@ -69,6 +69,6 @@ function renameDone()
     document.getElementById('title').innerHTML=newtitle;
     document.getElementById('rename').style.display='none';
     document.getElementById('receipt').style.visibility='visible';
-    document.getElementById('receipt').innerHTML='<form action="undo_controller.php" method="post"><input id="receiptid" type="hidden" name="id" value="'+response.firstChild.firstChild.textContent+'" /><input type="hidden" name="action" value="undo" /><input type="hidden" name="target" value="'+window.location+'" />The description has been updated. <button type="submit">Undo</button></form>';
+    document.getElementById('receipt').innerHTML='<form action="'+cameralifebaseurl+'/undo_controller.php" method="post"><input id="receiptid" type="hidden" name="id" value="'+response.firstChild.firstChild.textContent+'" /><input type="hidden" name="action" value="undo" /><input type="hidden" name="target" value="'+window.location+'" />The description has been updated. <button type="submit">Undo</button></form>';
     
 }
