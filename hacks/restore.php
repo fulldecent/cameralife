@@ -66,10 +66,11 @@
         if($photo['modified']) 
         {
 //TODO fix hardcoded file format
+// this first one could be /dev/null?
           $cameralife->PhotoStore->ModifyFile(new Photo($photo['id']), $_REQUEST['moddir'] . '/' . $photo['id'] . '_mod.jpg');
         }
 
-        $cameralife->PhotoStore->PutFile(new Photo($photo['id']), $_REQUEST['photodir'] . '/' . $photo['path'] . $photo['filename']);
+        $ticket = $cameralife->PhotoStore->PutFile(new Photo($photo['id']), $_REQUEST['photodir'] . '/' . $photo['path'] . $photo['filename']);
 
 //TODO doing this twice is not efficient!
         if($photo['modified']) 
@@ -77,8 +78,6 @@
 //TODO fix hardcoded file format
           $cameralife->PhotoStore->ModifyFile(new Photo($photo['id']), $_REQUEST['moddir'] . '/' . $photo['id'] . '_mod.jpg');
         }
-
-
 
         echo "<p>Copying: " . $photo['path'] . $photo['filename'] . "</p>\n";
         flush();
@@ -95,6 +94,13 @@
 ?>
 
 <p>This tool will restore your backed up photos. <strong>USE ABSOLUTE PATHS</strong>.</p>
+
+<?php
+  if ($cameralife->GetPref('photostore') == 'flickr' && !is_writable(dirname(__FILE__)))
+  {
+    echo '<div style="background: red">I need to write into '.dirname(__FILE__).' please make it writable.</div>';
+  }
+?>
 
 <form method="post" action="http://<?= $_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'] ?>">
 

@@ -62,9 +62,11 @@
     {
       global $cameralife;
 
+      $exists = TRUE;
       # flickr cleanup of async upload
       if(strstr($photo->Get('path'), 'flickr/') === FALSE)
-        $this->CleanUpload($photo);
+        $exists = $this->CleanUpload($photo);
+      if (!$exists) return $cameralife->base_url.'/modules/photostore/'.basename(dirname(__FILE__)).'/spinner.gif';
 
       list($photoid, $farmid, $serverid, $secret) = preg_split('/[-\.]/', $photo->Get('filename'));
 #var_dump($photoid, $farmid, $secret);
@@ -99,6 +101,12 @@
 
       $path_parts = pathinfo($photo->Get('filename'));
       $extension = strtolower($path_parts['extension']);
+
+      $exists = TRUE;
+      # flickr cleanup of async upload
+      if(strstr($photo->Get('path'), 'flickr/') === FALSE)
+        $exists = $this->CleanUpload($photo);
+      if (!$exists) return FALSE;
 
       list($photoid, $farmid, $serverid, $secret) = preg_split('/[-\.]/', $photo->Get('filename'));
 
@@ -141,7 +149,6 @@
       $tags = join(' ', $tags);
 
       $ticket = $this->Flickr->async_upload($filename, $photo->Get('description'), '', $tags, $photo->Get('status') == 0);
-die($ticket);
       $comment = array('photo_id'=>$photo->Get('id'), 'username'=>'', 'user_ip'=>'', 'comment'=>'flickr ticketid '.$ticket, 'date'=>date('Y-m-d'));
       $cameralife->Database->Insert('comments', $comment);
     }
@@ -244,14 +251,29 @@ echo 'FLICKR DELETING...';
     }
 
     // Private
+    // returns true on success, errors on fail, or false on still waiting...
     function CleanUpload(&$photo)
     {
       global $cameralife;
 
-var_dump($photo);
-die('tmp');
-       # we never cleaned up the async upload
+      $comment = $cameralife->Database->SelectOne('comments', 'comment', 'photo_id='.$photo->Get('id').' AND comment LIKE "flickr ticketid %"');
+      preg_match('/flickr ticketid (.+)/', $comment, $regs)
+        or $cameralife->Error('count not get flickr ticket ROAR!', __FILE__, __LINE__);
 
+      $resp = $this->Flickr->photos_upload_checkTickets($regs[1]);
+      if ($resp[0]['invalid'])
+        $cameralife->Error('invalid photo sent to flickr ROAR!', __FILE__, __LINE__);
+      if ($resp[0]['complete'] == 0)
+        return FALSE;
+      if ($resp[0]['complete'] == 2)
+        $cameralife->Error('invalid photo sent to flickr ROAR!', __FILE__, __LINE__);
+
+      $photoinfo = $this->Flickr->photos_getInfo($resp[0]['photoid']);
+ 
+      $filename = $photoinfo['id'].'-'.$photoinfo['farm'].'-'.$photoinfo['server'].'-'.$photoinfo['secret'].'.jpg';
+      $cameralife->Database->Update('photos', array('filename'=>$filename, 'path'=>'flickr/'), 'id='.$photo->Get('id'));
+      $cameralife->Database->Delete('comments', 'photo_id='.$photo->Get('id').' AND comment LIKE "flickr ticketid %"');
+      return TRUE;
     }
 
   }
