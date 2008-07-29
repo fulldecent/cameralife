@@ -78,7 +78,7 @@
   Show:
   <a href="?page=flagged">Flagged photos</a> |
   <a href="?page=private">Private photos</a> |
-  <a href="?page=update">Filesystem errors</a>
+  <a href="?page=update">Rescan photos</a>
 </h2>
 <?php
 
@@ -107,7 +107,7 @@
     echo '</select></p>';
 
     $search = new Search('');
-//TODO wow...
+//TODO wow!
     // You know code is a hack when you use a SQL injection attack against yourself.
     $search->mySearchPhotoCondition = "status=$target_status OR 0";
     $search->SetPage(0, 9999);
@@ -122,7 +122,7 @@
 
       $icon = $photo->GetIcon();
       echo '<td align="center" width="25%">';
-      echo '<a href="../'.$icon['href'].'">';
+      echo '<a href="'.$icon['href'].'">';
       echo '<img src="'.$icon['image'].'"></a><br />';
       echo '<select name="'.$photo->Get('id').'">'.
                         '<option value="0" '.($target_status==0?'selected':'').'>Public</option>'.

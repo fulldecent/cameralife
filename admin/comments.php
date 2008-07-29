@@ -56,7 +56,7 @@
   echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
 ?> |
 <a href="index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>  |
-<a href="../setup/checkpoints.html">Help with checkpoints</a>
+<a href="<?= $cameralife->base_url ?>/setup/checkpoints.html">Help with checkpoints</a>
 </div>
 
   <div id="allusers" <?= ($showallusers) ? '' : 'style="display:none"' ?>>
@@ -123,8 +123,11 @@
     $result = $cameralife->Database->Select('comments','*, MAX(id) as maxid',$condition,$extra);
     while($record = $result->FetchAssoc())
     {
+      $photo = new Photo($$record['photo_id']);
+      $icon = $photo->GetIcon();
+
       echo "<tr><td align=center>";
-      echo "<a href=\"../photo.php&#63;id=".$record['photo_id']."\">";
+      echo "<a href=\"".$icon['href']."\">";
       echo "<img src=\"".$cameralife->IconURL('small-photo')."\">";
       echo "</a>";
       echo "<br><i>".$record['value_field']."</i>";

@@ -22,7 +22,7 @@ Thank you for choosing to install Camera Life. We hope you will find this projec
 <ul>
 <li><a href="../README">The README</a>
 <li><a href="http://fdcl.sourceforge.net">The project webpage</a>
-<li><a href="mailto:cameralife@phor.net">cameralife@phor.net</a>
+<li><a href="mailto:cameralife (AT) phor.net">cameralife (AT) phor.net</a>
 </ul>
 If you are upgrading from a previous version of Camera Life, stop and read the file <a href="../UPGRADE">UPGADE</a>.
 
@@ -111,6 +111,24 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
                 <tr><td colspan=2><p class='important'>The directory modules/  
                 is not writable by the webserver. If you fix this, setup will be faster, otherwise, 
                 you will need to manually paste a file in there later. <a href =\"index.php\">Check again</a>";
+        }
+        elseif (!is_writable('../images/photos/'))
+        {
+          echo "<font color=orange>Warning</font>
+                <tr><td colspan=2><p class='important'>The directory image/photos/  
+                is not writable by the webserver. If you fix this, setup will be faster <a href =\"index.php\">Check again</a>";
+        }
+        elseif (!is_writable('../images/cache/'))
+        {
+          echo "<font color=orange>Warning</font>
+                <tr><td colspan=2><p class='important'>The directory image/cache/  
+                is not writable by the webserver. If you fix this, setup will be faster <a href =\"index.php\">Check again</a>";
+        }
+        elseif (!is_writable('../images/deleted/'))
+        {
+          echo "<font color=orange>Warning</font>
+                <tr><td colspan=2><p class='important'>The directory image/deleted/  
+                is not writable by the webserver. If you fix this, setup will be faster <a href =\"index.php\">Check again</a>";
         }
         elseif(!file_exists('../.htaccess'))
         {

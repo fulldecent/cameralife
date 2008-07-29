@@ -33,7 +33,7 @@
 <body>
 
 <div id="header">
-<h1>Site Administration &ndash; Theme</h1>
+<h1>Site Administration &ndash; Appearance</h1>
 <?php
   $home = $cameralife->GetIcon('small');
   echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";

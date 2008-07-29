@@ -19,7 +19,7 @@ Collect some photos that you would like to use with the site. Now, either:
 <ul>
   <li>Place them in the images/photos, or
   <li>Make your existing folder writable and change your photo directory in the 
-      <a href="../admin/photostore.php" target="_blank">Site Setup</a> 
+      <a href="../admin/photostore.php" target="_blank">Photo Storage setup</a> 
 </ul>
 
 <h2>Cover me, I'm going in</h2>
@@ -30,8 +30,7 @@ a tutorial on how your site works.
 
 <ul>
   <li>Go to your <a href="../admin/appearance.php" target="_blank">Site Setup</a> page and name your site, you can change your theme while you're there
-  <li>Now go to your <a href="../admin/files.php" target="_blank">File Manager</a> page and update your
-database, do this whenever you add or change photos into your photo directory
+  <li>Now go to your <a href="../admin/files.php" target="_blank">File Manager</a> page and Rescan Photos, do this whenever you add or change photos in your photo directory
   <li><a href="../search.php&#63;q=unnamed&amp;sort=photos.id" target="_blank">Search</a> for the unnamed pics you just imported and name some of them
   <li><a href="albums.html" target="_blank">Learn about Albums</a>, and create a few
 </ul>
@@ -39,7 +38,7 @@ database, do this whenever you add or change photos into your photo directory
 <h2>You're done</h2>
 
 Your site is now set up. Please let me know if this installer was helpful,
-email me at: <a href="mailto:cameralife@phor.net">cameralife-bugs@phor.net</a> (start subject with "CAMERALIFE-BUGS:").
+email me at: <a href="mailto:cameralife AT phor.net">cameralife-bugs AT phor.net</a> (start subject with "CAMERALIFE-BUGS:").
 Now run along and check out <a href="../index.php">your site</a>.
 
 </body>

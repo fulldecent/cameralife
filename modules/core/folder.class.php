@@ -265,6 +265,7 @@ class Folder extends Search
      
       $newpath=dirname($new_file);
       if ($newpath) $newpath .= '/';
+      if ($newpath=='./') $newpath = '';
 
       # Bonus code
       if ($cameralife->PhotoStore->name=='local')
