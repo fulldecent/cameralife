@@ -62,6 +62,10 @@
     {
       global $cameralife;
 
+      # flickr cleanup of async upload
+      if(strstr($photo->Get('path'), 'flickr/') === FALSE)
+        $this->CleanUpload($photo);
+
       list($photoid, $farmid, $serverid, $secret) = preg_split('/[-\.]/', $photo->Get('filename'));
 #var_dump($photoid, $farmid, $secret);
 
@@ -136,7 +140,10 @@
       }
       $tags = join(' ', $tags);
 
-      $this->Flickr->async_upload($filename, $photo->Get('description'), '', $tags, $photo->Get('status') == 0);
+      $ticket = $this->Flickr->async_upload($filename, $photo->Get('description'), '', $tags, $photo->Get('status') == 0);
+die($ticket);
+      $comment = array('photo_id'=>$photo->Get('id'), 'username'=>'', 'user_ip'=>'', 'comment'=>'flickr ticketid '.$ticket, 'date'=>date('Y-m-d'));
+      $cameralife->Database->Insert('comments', $comment);
     }
 
     /**
@@ -234,6 +241,17 @@ echo 'FLICKR DELETING...';
       {
         return FALSE;
       }
+    }
+
+    // Private
+    function CleanUpload(&$photo)
+    {
+      global $cameralife;
+
+var_dump($photo);
+die('tmp');
+       # we never cleaned up the async upload
+
     }
 
   }
