@@ -151,6 +151,10 @@
       return;
     }
 
+//TODO...
+    # hm??? any thounght?
+    function SetPermissions() {}
+
     /**
     *  CheckThumbnails
     *

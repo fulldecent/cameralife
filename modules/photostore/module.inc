@@ -55,7 +55,7 @@
     /**
     *  PutFile
     *
-    *  Puts a new photo into the photostore. 
+    *  Puts a new photo into the photostore. Photo should be put with appropriate permissions
     *
     *  @param $photo - a target photo object
     *  @param $filename - the local filesystem file that we are putting
@@ -67,7 +67,7 @@
     /**
     *  PutThumbnails
     *
-    *  Puts a a scaled photo and thumbnail into the photostore. 
+    *  Puts a a scaled photo and thumbnail into the photostore. Photo should be put with appropriate permissions
     *
     *  @param $photo - a target photo object
     *  @param $scaled - the file to insert
@@ -76,6 +76,17 @@
     *  @return none
     */
     function PutThumbnails($photo, $scaled, $thumbnail) {}
+
+    /**
+    *  SetPermissions
+    *
+    *  Make the photo public or private on the photostore, according to $photo->Get('status')
+    *
+    *  @param $photo - a target photo object
+    *
+    *  @return none
+    */
+    function SetPermissions($photo) {}
 
     /**
     *  CheckThumbnails

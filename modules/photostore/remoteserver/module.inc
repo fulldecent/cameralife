@@ -158,6 +158,10 @@
 #      chmod($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension, 0666);
     }
 
+//TODO
+    # hm??? any thounght?
+    function SetPermissions() {}
+
     /**
     *  CheckThumbnails
     *

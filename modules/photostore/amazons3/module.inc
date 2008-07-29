@@ -224,6 +224,10 @@
       $photo->GenerateThumbnail();
     }
 
+//TODO
+    # hm??? any thounght?
+    function SetPermissions() {}
+
     /**
     *  PutThumbnails
     *

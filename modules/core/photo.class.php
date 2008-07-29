@@ -63,6 +63,8 @@ class Photo extends View
     $receipt = NULL;
     if ($key != 'hits')
       $receipt = AuditTrail::Log('photo',$this->record['id'],$key,$this->record[$key],$value);
+    if ($key == 'status')
+      $cameralife->Photostore->SetPermissions($this);
     $this->record[$key] = $value;
     $cameralife->Database->Update('photos', array($key=>$value), 'id='.$this->record['id']);
     return $receipt;
@@ -82,7 +84,10 @@ class Photo extends View
     if (isset($this->image)) return;
     list ($file, $temp, $this->record['mtime']) = $cameralife->PhotoStore->GetFile($this);
     if ($original)
+    {
       $this->record['fsize'] = filesize($file);
+      $this->LoadEXIF($file);
+    }
 
     $this->image = $cameralife->ImageProcessing->CreateImage($file);
     if (!$this->image->Check()) $cameralife->Error("Bad photo processing: $origphotopath",__FILE__,__LINE__);
@@ -153,6 +158,7 @@ class Photo extends View
     $cameralife->Database->Delete('logs',"record_type='photo' AND record_id=".$this->record['id']);
     $cameralife->Database->Delete('ratings',"id=".$this->record['id']);
     $cameralife->Database->Delete('comments',"photo_id=".$this->record['id']);
+    $cameralife->Database->Delete('exif',"photoid=".$this->record['id']);
     $this->Destroy();
 
     # Bonus code
@@ -211,9 +217,23 @@ class Photo extends View
   {
     global $cameralife;
 
-return(array('Date'=>'now', 'camera'=>'a cool camera', 'fix me'=>'YES PLESA!!'));
+    $retval = array();
+    $query = $cameralife->Database->Select('exif', '*', "photoid=".$this->record['id']);
 
-    $exif = @exif_read_data($cameralife->preferences['core']['photo_dir'].'/'.$this->record['path'].$this->record['filename'], 'IFD0', true);
+    while($row = $query->FetchAssoc())
+    {
+      if ($row['tag'] == 'empty') continue;
+      $retval[$row['tag']] = $row['value'];
+    }
+
+    return $retval;
+  }
+
+  function LoadEXIF($file)
+  {
+    global $cameralife;
+
+    $exif = @exif_read_data($file, 'IFD0', true);
     $retval = array();
 
     if ($exif===false) return $retval;
@@ -276,7 +296,11 @@ return(array('Date'=>'now', 'camera'=>'a cool camera', 'fix me'=>'YES PLESA!!'))
       }
     }
 
-    return $retval;
+    if (!count($retval)) $retval=array('empty'=>'true');
+
+    $cameralife->Database->Delete('exif', 'photoid='.$this->record['id']);
+    foreach ($retval as $tag=>$value)
+      $cameralife->Database->Insert('exif', array('photoid'=>$this->record['id'], 'tag'=>$tag, 'value'=>$value));
   }
 
   // Returns an array of Icons of Views related to this photo

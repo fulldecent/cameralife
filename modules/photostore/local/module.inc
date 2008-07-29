@@ -56,8 +56,7 @@
     {
       global $cameralife;
 
-      $path_parts = pathinfo($photo->Get('filename'));
-      $extension = strtolower($path_parts['extension']);
+      $extension = $photo->extension;
 
       if ($type == 'photo')
       {
@@ -79,7 +78,7 @@
       {
         if ($type == 'original')
           $cameralife->Error("The photo <b>$file</b> cannot be found");
-        $photo->GenerateThumbnail();
+        $photo->GenerateThumbnail($photo->Get('modified') ? 'FALSE' : 'TRUE');
       }
 
       return array($file, FALSE, filemtime($file));
@@ -108,7 +107,7 @@
     /**
     *  PutThumbnails
     *
-    *  Puts a a scaled photo and thumbnail into the photostore. 
+    *  Puts a scaled photo and thumbnail into the photostore. 
     *
     *  @param $photo - a target photo object
     *  @param $scaled - the file to insert
@@ -123,11 +122,14 @@
       $path_parts = pathinfo($photo->Get('filename'));
       $extension = strtolower($path_parts['extension']);
 
-      rename($scaled, $cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
+      @rename($scaled, $cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
       chmod($cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension, 0666);
-      rename($thumbnail, $cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
+      @rename($thumbnail, $cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
       chmod($cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension, 0666);
     }
+
+    # unnessary, user does not access files directly
+    function SetPermissions() {}
 
     /**
     *  CheckThumbnails
