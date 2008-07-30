@@ -22,7 +22,7 @@ class Stats
     $this->counts['photohits'] = $cameralife->Database->SelectOne('photos','SUM(hits)');
     $this->counts['maxphotohits'] = $cameralife->Database->SelectOne('photos','MAX(hits)');
     $this->counts['maxalbumhits'] = $cameralife->Database->SelectOne('albums','MAX(hits)');
-    $this->counts['daysonline'] = floor((time()-strtotime($cameralife->preferences['core']['sitedate'])) / 86400 );
+    $this->counts['daysonline'] = floor((time()-strtotime($cameralife->GetPref('sitedate'))) / 86400 );
     return $this->counts;
   }
 

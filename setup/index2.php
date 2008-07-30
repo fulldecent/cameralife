@@ -178,6 +178,9 @@
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);
 
+    mysql_query("INSERT INTO `${prefix}preferences` VALUES('core','sitedate',NOW(),NOW())")
+      or die(mysql_error() . ' ' . __LINE__);
+
     $SQL = "
       CREATE TABLE `${prefix}users` (
         `username` varchar(30) NOT NULL default '',

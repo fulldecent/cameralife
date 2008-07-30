@@ -8,24 +8,19 @@ TODO For the 2.6.2 Realease Cycle
 ===================
 RELEASE HOWTO
 -------------------
-* grep -r TODO .
-! edit setup/install.mysql
-* database changes into setup
-* Increment version in main.inc
-! Update themes
-Setup checks for content negotiation and modrewrite (fetch index?test=true and ...
-
+grep -r //TODO .
+vim setup/install.mysql
+vim +/this..version main.inc
 svn commit
-VERSION=2.6.2a
 
+# the fast part...
+VERSION=2.6.2b
 phpdoc -o HTML:frames:earthli -d . -t ../docs
-scp -r ../docs fulldecent@fdcl.sf.net/home/groups/f/fd/fdcl/htdocs
-
+rsync --delete -ave ssh ../docs fulldecent@fdcl.sf.net:/home/groups/f/fd/fdcl/htdocs
 pushd /tmp
 svn export https://entriken@fdcl.svn.sourceforge.net/svnroot/fdcl/trunk cameralife
 touch cameralife/deleted.log
 chmod 777 cameralife/ cameralife/images/ cameralife/images/* cameralife/deleted.log
-
 zip -r cameralife-${VERSION}.zip cameralife/
 tar -czf cameralife-${VERSION}.tgz cameralife/
 tar -cjf cameralife-${VERSION}.tar.bz2 cameralife/
@@ -33,13 +28,14 @@ scp cameralife-* fulldecent@frs.sourceforge.net:uploads
 rm -rf cameralife*
 popd
 
-http://sourceforge.net/projects/fdcl/
-http://freshmeat.net/projects/fdcl/
+http://sourceforge.net/project/admin/newrelease.php?package_id=70316&group_id=70910
+http://freshmeat.net/add-release/34159/36247/
 
 ===========================
 TODO AFTER 2.6.2
 note: bleeding edge ideas are at: http://camera.phor.net/TODO
 ----------------------------
+Setup checks for content negotiation and modrewrite (fetch index?test=true and ...
 Validate
 Regression: microformats, sitemaps, rss, gallery API, OpenSearch, hacks
 update module API's and documentation

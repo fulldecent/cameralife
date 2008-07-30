@@ -47,7 +47,7 @@
 
       $this->preferences[] = array('name'=>'sitename', 'type'=>'string', 'default'=>'My Photos');
       $this->preferences[] = array('name'=>'siteabbr', 'type'=>'string', 'default'=>'Home');
-      $this->preferences[] = array('name'=>'sitedate', 'type'=>'string', 'default'=>'2008-07-05 01:01:01');
+      $this->preferences[] = array('name'=>'sitedate', 'type'=>'string', 'default'=>date('Y-m-d'));
       $this->preferences[] = array('name'=>'owner_email', 'type'=>'string', 'default'=>'none@none.none');
 
       $this->preferences[] = array('name'=>'rewrite', 'type'=>'yesno', 'default'=>'no');
@@ -105,46 +105,14 @@
     function LoadPreferences()
     {
       $query = $this->Database->Select('preferences','*');
-      $result = $query->FetchAssoc();
-
-      if ($result['sitename']) // upgrade hack
+      while ($result = $query->FetchAssoc();)
       {
-        foreach($result as $key => $value)
-        {
-          if (strpos($key, 'auth_') === 0)
-            $this->userpreferences['DefaultSecurity'][$key] = $value;
-          else
-            $this->userpreferences['CameraLife'][$key] = $value;
-        }
-        $this->olddb = TRUE;
-      } else {
-        while ($result)
-        {
-          $this->userpreferences[$result['prefmodule']][$result['prefkey']] = $result['prefvalue'];
-          $result = $query->FetchAssoc();
-        }
+        $this->userpreferences[$result['prefmodule']][$result['prefkey']] = $result['prefvalue'];
       }
     }
 
     function SavePreferences()
     {
-      // Upgrade hack
-      if ($this->olddb == TRUE)
-      {
-        $sql = 'DROP TABLE `'.$this->Database->myPrefix.'preferences`';
-        $this->Database->Query($sql)
-          or $this->Error(mysql_error());
-        $sql =  "CREATE TABLE `".$this->Database->myPrefix."preferences` (
-                `prefmodule` varchar(64) NOT NULL default 'core',
-                `prefkey` varchar(64) NOT NULL,
-                `prefvalue` varchar(255) NOT NULL ,
-                `prefdefault` varchar(255) NOT NULL,
-                PRIMARY KEY (`prefmodule`, `prefkey`)
-                );";
-        $this->Database->Query($sql)
-          or $this->Error(mysql_error());
-      }
-
       foreach($this->userpreferences as $module => $moduleprefs)
       {
         if (is_array($moduleprefs))
