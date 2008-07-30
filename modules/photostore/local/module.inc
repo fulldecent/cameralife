@@ -201,12 +201,12 @@
       $extension = strtolower($path_parts['extension']);
 
       $this->mkdir_recursive($cameralife->base_dir . '/' . $this->GetPref('deleted_dir') .'/'. $photo->Get('path'));
-      rename ($cameralife->base_dir . '/' . $this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'), $cameralife->base_dir . '/' . $this->GetPref('deleted_dir') .'/'. $photo->Get('path').$photo->Get('filename'));
+      @rename ($cameralife->base_dir . '/' . $this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'), $cameralife->base_dir . '/' . $this->GetPref('deleted_dir') .'/'. $photo->Get('path').$photo->Get('filename'));
 
       if ($photo->Get('modified'))
-        unlink($cameralife->base_dir . '/' . $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
-      unlink($cameralife->base_dir . '/' . $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
-      unlink($cameralife->base_dir . '/' . $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
+        @unlink($cameralife->base_dir . '/' . $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
+      @unlink($cameralife->base_dir . '/' . $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
+      @unlink($cameralife->base_dir . '/' . $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
     }
 
     /**
