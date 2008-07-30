@@ -1,7 +1,7 @@
 <?php
-  $features=array('database','theme');
+  $features=array('database','theme','photostore');
   require "main.inc";
 
-  $folder = new Folder($_GET['path'], $true);
+  $folder = new Folder($_GET['path'], TRUE);
   $folder->ShowPage();
 ?>

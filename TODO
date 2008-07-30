@@ -5,6 +5,8 @@ TODO For the 2.6.2 Realease Cycle
 * Once-over on the install process
 SET FILENAME ON RESTORE TO FLICKR???
 
+Upload to flickr - set tags, asbums, directory...
+
 
 ===================
 RELEASE HOWTO
@@ -41,6 +43,9 @@ http://freshmeat.net/projects/fdcl/
 TODO AFTER 2.6.2
 note: bleeding edge ideas are at: http://camera.phor.net/TODO
 ----------------------------
+
+grep '\./' */*php | grep -v requ
+
 
 !=need to do, *=todo, ?=waste of time
 

@@ -155,7 +155,7 @@ class Folder extends Search
       if ($new_files[$photopath])
       {
         # Bonus code, if this is local, we can do more verification
-        if ($cameralife->PhotoStore->name=='local' && $photo['fsize'])
+        if ($cameralife->GetPref('photostore')=='local' && $photo['fsize'])
         {
           $photofile = $cameralife->base_dir.'/'.$cameralife->PhotoStore->GetPref('photo_dir')."/$photopath";
           $actualsize = filesize($photofile);
@@ -192,7 +192,7 @@ class Folder extends Search
       foreach ($candidatephotopaths as $candidatephotopath)
       {
         # Bonus code
-        if ($cameralife->PhotoStore->name=='local')
+        if ($cameralife->GetPref('photostore')=='local')
         {
           $actualsize = filesize($cameralife->PhotoStore->GetPref('photo_dir') . '/' . $new_file);
           if ($actualsize != $photo['fsize'])
@@ -268,7 +268,7 @@ class Folder extends Search
       if ($newpath=='./') $newpath = '';
 
       # Bonus code
-      if ($cameralife->PhotoStore->name=='local')
+      if ($cameralife->GetPref('photostore')=='local')
       {
         $actualsize = filesize($cameralife->base_dir . '/' . $cameralife->PhotoStore->GetPref('photo_dir') . '/' . $new_file);
         $extra = ' and fsize='.$actualsize;
@@ -292,7 +292,7 @@ class Folder extends Search
 
         # Bonus code
         $same = FALSE;
-        if ($cameralife->PhotoStore->name=='local')
+        if ($cameralife->GetPref('photostore')=='local')
         {
 //TODO is this worth generalizing?
           $a = file_get_contents($cameralife->base_dir.'/'.$cameralife->PhotoStore->GetPref('photo_dir') . '/' . $photo['path'].$photo['filename']);
@@ -311,7 +311,7 @@ class Folder extends Search
       }
 
       # Bonus code
-      if ($cameralife->PhotoStore->name=='local')
+      if ($cameralife->GetPref('photostore')=='local')
       {
         $deletedfile = $cameralife->base_dir.'/'.$cameralife->PhotoStore->GetPref('deleted_dir')."/$newpath$newbase";
         if (file_exists($deletedfile) && filesize($deletedfile) == filesize($cameralife->base_dir.'/'.$cameralife->PhotoStore->GetPref('photo_dir') . '/' . $new_file))
@@ -350,7 +350,7 @@ class Folder extends Search
       else 
       {
         # Local optimization (hack?)
-        if ($cameralife->PhotoStore->name=='local')
+        if ($cameralife->GetPref('photostore')=='local')
         {
           if (!is_dir($cameralife->PhotoStore->GetPref('photo_dir') . '/' . $this->path . $file))
             continue;

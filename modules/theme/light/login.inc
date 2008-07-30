@@ -15,27 +15,14 @@
 <html>
 <head>
   <title><?= $cameralife->GetPref('sitename') ?></title>
-  <?php if($cameralife->Theme->cssURL()) {
-    echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
-  } ?>
   <?php if($location){echo "<meta http-equiv='refresh' content='1;url=$location'>";} ?>
   <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
 </head>
 <body>
 <form method="post" action="login_controller.php">
 
-<?php
-  $menu = array();
-  $menu[] = $cameralife->GetIcon('small');
-  $menu[] = array("name"=>"Powered by Camera Life",
-                  "href"=>"http://fdcl.sourceforge.net");
-
-  $cameralife->Theme->TitleBar("Login / Register",
-                                'login',
-                                FALSE,
-                                $menu);
-
-  $sections[] = array('name'=>'Login',
+  <?php
+/*$sections[] = array('name'=>'Login',
                       'page_name'=>'login',
                       'image'=>'small-login');
   $sections[] = array('name'=>'Register',
@@ -43,7 +30,7 @@
                       'image'=>'small-login');
 
   $cameralife->Theme->MultiSection($sections);
-
+*/
 ?>
 <table>
   <tr><td>Username:<td><input type="text" name="param1" value="<?= $_POST["username"]?>">

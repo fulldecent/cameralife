@@ -174,7 +174,8 @@
       $path_parts = pathinfo($photo->Get('filename'));
       $extension = strtolower($path_parts['extension']);
 
-      rename($filename, $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
+      rename($filename, $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension)
+        or $cameralife->Error('Rename error', __FILE__, __LINE__);
       chmod($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension, 0666);
       unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
       unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
