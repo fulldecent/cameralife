@@ -105,7 +105,7 @@
     function LoadPreferences()
     {
       $query = $this->Database->Select('preferences','*');
-      while ($result = $query->FetchAssoc();)
+      while ($result = $query->FetchAssoc())
       {
         $this->userpreferences[$result['prefmodule']][$result['prefkey']] = $result['prefvalue'];
       }
