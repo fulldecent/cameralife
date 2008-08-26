@@ -131,7 +131,7 @@
       return $this->curuser['username'];
     }
 
-//TODO is this mecessary?
+//TODO is this mecessary? -- use REMOTE_ADDR or GetAddr consistently
     /* Returns the current user's IP address */
     function GetAddr () 
     {

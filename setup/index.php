@@ -102,6 +102,13 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
         was not copied. You're going to need to fix that before you continue. ">
   <tr>
     <td>
+      Checking for mod_rewrite...
+    <td>
+      <font color=green>Successful</font>
+      <img height=10 width=50 src="../testrewrite" alt="Your server doesn't appear to support
+        MOD REWRITE. This is not required, but if you add it, Camera Life will use it.">
+  <tr>
+    <td>
       Checking package permissions...
     <td>
       <?php

@@ -20,9 +20,6 @@
   $photoPrev = $photo->GetPrevious();
   $photoNext = $photo->GetNext();
 
-//TODO deleteme
-$hrefinquery . 'XXXXX';
-
   if ($cameralife->Security->GetName())
     $rating = $avg = $cameralife->Database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->Get('id')." AND username='".$cameralife->Security->GetName()."'");
   else

@@ -89,7 +89,6 @@ trong></a>.</div>';
         foreach ($folders as $folder)
         {
           $icon = $folder->GetIcon('small');
-//TODO use folder's Icon
           echo "<li><a href=\"".$icon['href']."\"> ";
           echo $icon['name']."</a></li>\n";
         }

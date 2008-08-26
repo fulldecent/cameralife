@@ -20,6 +20,10 @@ Collect some photos that you would like to use with the site. Now, either:
   <li>Place them in the images/photos, or
   <li>Make your existing folder writable and change your photo directory in the 
       <a href="../admin/photostore.php" target="_blank">Photo Storage setup</a> 
+  <li>Use the <a href="../upload.php" target="_blank">Upload Page</a></li>
+  <li>Use <a href="http://zwily.com/iphoto/" target="_blank">iPhotoToGallery</a>, <a href="http://www.digikam.org/" target="_blank">digKkam</a>, <a href="http://gallery.menalto.com/wiki/Gallery_Remote" target="_blank">Gallery Remote</a> or any <a href="http://codex.gallery2.org/Other_Clients#Photonator_.28Mac_OS_X.29" target="_blank">other software</a> compatible with the Gallery Remote API</li>
+  <li>Advanced setup: change your <a href="../admin/photostore.php" target="_blank">Photo Storage setup</a> to use your Amazon S3, or Flickr, or remote FTP storage</li>
+  
 </ul>
 
 <h2>Cover me, I'm going in</h2>

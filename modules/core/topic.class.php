@@ -27,7 +27,7 @@ class Topic extends Search
     if ($cameralife->GetPref('rewrite') == 'yes')
       $href = $cameralife->base_url.'/topics/'.$this->name;
     else
-      $href = $cameralife->base_url.'/topic.php?name='.$this->name;
+      $href = $cameralife->base_url.'/topic.php&#63;name='.$this->name;
 
     return array('href'=>$href,
                  'name'=>$this->name,

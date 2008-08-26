@@ -208,7 +208,7 @@ class Photo extends View
     if ($cameralife->GetPref('rewrite') == 'yes')
       $retval['href'] = $cameralife->base_url.'/photos/'.$this->record['id'];
     else
-      $retval['href'] = $cameralife->base_url.'/photo.php?id='.$this->record['id'];
+      $retval['href'] = $cameralife->base_url.'/photo.php&#63;id='.$this->record['id'];
  
     return $retval;
   }

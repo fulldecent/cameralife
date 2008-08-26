@@ -108,9 +108,9 @@ class Folder extends Search
       $retval['name'] = '(Top level)';
 
     if ($size=='large')
-      $retval['image'] = 'folder';
+      $retval['image'] = $cameralife->IconURL('folder');
     else
-      $retval['image'] = 'small-folder';
+      $retval['image'] = $cameralife->IconURL('small-folder');
 
     return $retval;
   }

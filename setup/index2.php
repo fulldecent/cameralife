@@ -31,9 +31,10 @@
 
   <ul>
     <li>Click MySQL Databases</li>
-    <li>Add Database: cameralife</li>
-    <li>Add User: <b>username</b> <b>password</b></li>
-    <li>Add the new user to the new database with All Privileges</li>
+    <li>New Database: cameralife</li>
+    <li>Add New User: <b>username</b> <b>password</b></li>
+    <li>Add User To Database: select your user and database, and tick ALL PRIVILEGES</li>
+    <li>Note, your cPanel account name will proceed your database and user names below. For example, your database name will be mycpanelname_cameralife</li>
   </ul>
 
   <p>Note: If you setup Camera Life on a different system, please tell us about it at cameralife@phor.net</p>

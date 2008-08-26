@@ -103,10 +103,8 @@ iphone
         foreach ($folders as $folder)
         {
           $icon = $folder->GetIcon('small');
-//TODO use folder's Icon
-          echo "<div class='context'><a href=\"".$icon['href']."\"> ";
-          $cameralife->Theme->Image('small-folder', array('align'=>'middle'));
-          echo $icon['name']."</a></div>\n";
+          echo "<li><a href=\"".$icon['href']."\"> <img src=\"";
+          echo $icon['image']."\" alt=\"folder\"> ".$icon['name']."</a></li>\n";
         }
         $root = new Folder('');
         $icon = $root->GetIcon();

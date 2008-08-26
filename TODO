@@ -8,7 +8,7 @@ TODO For the 2.6.2 Realease Cycle
 ===================
 RELEASE HOWTO
 -------------------
-grep -r //TODO .
+find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
 vim setup/install.mysql
 vim +/this..version main.inc
 svn commit
@@ -35,13 +35,11 @@ http://freshmeat.net/add-release/34159/36247/
 TODO AFTER 2.6.2
 note: bleeding edge ideas are at: http://camera.phor.net/TODO
 ----------------------------
-Setup checks for content negotiation and modrewrite (fetch index?test=true and ...
 Validate
 Regression: microformats, sitemaps, rss, gallery API, OpenSearch, hacks
 update module API's and documentation
 photostore does not fully protect private photos
-
-Favicon
+harden against malicio us user inputs and sql inj ection -- you like that anti-grep obfuscation?
 
 grep '\./' */*php | grep -v requ
 
@@ -50,11 +48,10 @@ Upload to flickr - set tags, asbums, directory...
 !=need to do, *=todo, ?=waste of time
 
 ! OpenID providers: (yahoo, blogger, AIM, LiveJournal, myspace)
-* Google opensocial/friendconnect
+* Google friendconnect
 * Use photo->record['extension'] ??
 * VALID HTML STRICT!!!
 * fdcl.sf.net analytics
-* RDF announcement of new versions? more info on this?
 
 -- The big picture --
 ! Integrate with CMS's like Phpnuke!?

@@ -17,6 +17,7 @@ RewriteRule ^(.*)photos/([^/]+)/(\d+)\. $1media.php?format=$2&id=$3&ver=%{QUERY_
 RewriteRule ^(.*)folders/(.*) $1folder.php?path=$2
 RewriteRule ^(.*)albums/(\d+) $1album.php?id=$2&%{QUERY_STRING}
 RewriteRule ^(.*)topics/(.+) $1topic.php?name=$2
+RewriteRule ^(.*)testrewrite $1setup/images/helpalbums.jpg
 #
 # Note: these rewrites affect photo.class.php, who analyzes the HTTP referer
 #
