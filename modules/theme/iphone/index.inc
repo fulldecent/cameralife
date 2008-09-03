@@ -34,9 +34,6 @@
           <input type="image" src="<?= $cameralife->Theme->ImageURL('search') ?>" value="search">
         </form>
 
-
-<?= $cameralife->GetPref('sitename') ?>
-iphone
 <?php
 
   $search = new Search('');

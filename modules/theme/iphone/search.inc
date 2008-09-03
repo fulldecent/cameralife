@@ -53,52 +53,14 @@
     echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
   } ?>
   <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
+  <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=yes;" />
   <link rel="alternate" type="application/rss+xml" title="RSS feed of <?= $_GET['q'] ?>" href="rss.php&#63;q=<?= $_GET['q'] ?>"/>
 </head>
 <body>
+<h1><?= $_GET['q'] ?></h1>
 <form method="GET"> 
   
-<?php
-  $menu = array();
-  $menu[] = array('name'=>$cameralife->GetPref('siteabbr'),
-                  'href'=>'index.php',
-                  'image'=>'small-main');
-  $menu[] = array('name'=>'Search for everything',
-                  'href'=>'search.php',
-                  'image'=>'small-search');
-  $menu[] = array('name'=>'Search unnamed photos',
-                  'href'=>'search.php?q=unnamed',
-                  'image'=>'small-search');
-
-  if($_GET['page'] == "p" && $cameralife->Security->Authorize('admin_albums'))
-          $menu[] = array('name'=>'Create an Album of these photos',
-                          'href'=>'topic.php&#63;edit=true&amp;term='.urlencode($_GET['q']),
-                          'image'=>'small-album');
-
-  $cameralife->Theme->TitleBar('Site search', 'main', FALSE, $menu);
-
-  if ($_GET['albumhelp'])
-  {
-?>
-    <?php $cameralife->Theme->Section('How to use Albums') ?>
-
-      <?php $cameralife->Theme->Image('small-album', array('align'=>'middle')) ?> An Album is a collection of photos with a common term in their description. <br>
-      <?php $cameralife->Theme->Image('small-topic', array('align'=>'middle')) ?> A Topic is a logical collection of Albums. Ex: People, Places, Events<br>
-      <?php $cameralife->Theme->Image('small-search', array('align'=>'middle')) ?> To create an album, perform a search, then choose "Create an album from these photos" on the toolbar.<br>
-      <p>Note: In the future, you can simply perform a search, without pulling up these instructions.
-      <?php if (file_exists('setup/albums.html')) echo "<a href=\"setup/albums.html\">Click here for more information</a>"; ?></p>
-<?php
-    }
-
-    $cameralife->Theme->Section('Search for')
-?>
-  <input type="text" name="q" value="<?= stripslashes($_GET['q']) ?>">
-  <input type="hidden" name="page" value="<?= $_GET['page'] ?>">
-  <input type="image" src="<?= $cameralife->Theme->ImageURL('search') ?>" value="search">
-
 <?php 
-  if($_GET['albumhelp']) exit(0);
-
   if ($counts['albums'] > 0)
     $sections[] = array('name'=>$counts['albums'].' albums of '.$_GET['q'],
                         'page_name'=>'a',

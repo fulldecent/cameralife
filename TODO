@@ -8,13 +8,14 @@ TODO For the 2.6.2 Realease Cycle
 ===================
 RELEASE HOWTO
 -------------------
+
+VERSION=2.6.2b3 # edit this line!!!
 find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
 vim setup/install.mysql
-vim +/this..version main.inc
 svn commit
 
 # the fast part...
-VERSION=2.6.2b
+sed "/this..version/s/'.*'/'$VERSION'/" -i main.inc
 phpdoc -o HTML:frames:earthli -d . -t ../docs
 rsync --delete -ave ssh ../docs fulldecent@fdcl.sf.net:/home/groups/f/fd/fdcl/htdocs
 pushd /tmp
@@ -35,6 +36,7 @@ http://freshmeat.net/add-release/34159/36247/
 TODO AFTER 2.6.2
 note: bleeding edge ideas are at: http://camera.phor.net/TODO
 ----------------------------
+
 Validate
 Regression: microformats, sitemaps, rss, gallery API, OpenSearch, hacks
 update module API's and documentation
