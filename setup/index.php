@@ -56,7 +56,7 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
         {
           echo "<font color=red>Error</font>
                 <tr><td colspan=2><p class='important'>You do not appear to have GD installed, ".
-               "see http://us4.php.net/manual/en/ref.image.php for more info</p>";
+               "see http://php.net/manual/en/ref.image.php for more info, or on Ubuntu use: apt-get install php5-gd; reboot</p>";
           $continue = false;
         }
       ?>

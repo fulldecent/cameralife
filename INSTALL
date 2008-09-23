@@ -13,6 +13,8 @@
    Camera Life requires: PHP with MySQL support and GD with JPEG support.
    The server needs to support Content Negotiation (see the .htaccess file).
 
+   To add GD support on Ubuntu, use: apt-get install php5-gd; reboot
+
  B. Auto install
 
    Untar the package and point your browser to the created folder.

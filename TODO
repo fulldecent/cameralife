@@ -4,6 +4,11 @@ TODO For the 2.6.2 Realease Cycle
 
 * Once-over on the install process
 
+website: 
+  update buildscript for version on website
+  rename to cameralife
+  update the admin/index phone-home version script
+
 
 ===================
 RELEASE HOWTO
@@ -17,7 +22,7 @@ svn commit
 # the fast part...
 sed "/this..version/s/'.*'/'$VERSION'/" -i main.inc
 phpdoc -o HTML:frames:earthli -d . -t ../docs
-rsync --delete -ave ssh ../docs fulldecent@fdcl.sf.net:/home/groups/f/fd/fdcl/htdocs
+rsync --delete -ave ssh ../docs fulldecent,fdcl@web.sf.net:htdocs
 pushd /tmp
 svn export https://entriken@fdcl.svn.sourceforge.net/svnroot/fdcl/trunk cameralife
 touch cameralife/deleted.log
@@ -58,6 +63,7 @@ Upload to flickr - set tags, asbums, directory...
 -- The big picture --
 ! Integrate with CMS's like Phpnuke!?
 ! Fantastico
+? Gallery theme compatibility
 
 -- Things that will break the API --
 * Change photos.mtime to photos.filter
