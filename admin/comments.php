@@ -2,7 +2,7 @@
   # Part of the user manager section:
   # Log analyzer - analyze all logs
 
-  $features=array('database','security');
+  $features=array('database','security', 'photostore');
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
 
@@ -123,8 +123,8 @@
     $result = $cameralife->Database->Select('comments','*, MAX(id) as maxid',$condition,$extra);
     while($record = $result->FetchAssoc())
     {
-      $photo = new Photo($$record['photo_id']);
-      $icon = $photo->GetIcon();
+      $photo = new Photo($record['photo_id']);
+      $icon = $photo->GetIcon('small');
 
       echo "<tr><td align=center>";
       echo "<a href=\"".$icon['href']."\">";

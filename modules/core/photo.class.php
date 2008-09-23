@@ -180,7 +180,6 @@ class Photo extends View
   function GetMedia($type='thumbnail')
   {
     global $cameralife;
-
     if ($url = $cameralife->PhotoStore->GetURL($this, $type))
       return $url;
 
@@ -195,6 +194,7 @@ class Photo extends View
     return new Folder($this->record['path'], FALSE);
   }
 
+  // small or large
   function GetIcon($size='large')
   {
     global $cameralife;
