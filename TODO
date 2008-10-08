@@ -47,6 +47,9 @@ Regression: microformats, sitemaps, rss, gallery API, OpenSearch, hacks
 update module API's and documentation
 photostore does not fully protect private photos
 harden against malicio us user inputs and sql inj ection -- you like that anti-grep obfuscation?
+  and uploading non-images
+
+picasa compatibility
 
 grep '\./' */*php | grep -v requ
 

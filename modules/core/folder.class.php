@@ -130,10 +130,22 @@ class Folder extends Search
     return dirname($this->path);
   }
 
+  // Private
+  function array_isearch($str, $array) 
+  {
+    foreach($array as $k => $v) 
+      if(strcasecmp($str, $v) == 0) return $k;
+    return false;
+  }
+
   // Make the DB match what is actually on the filesystem
   // Returns an array of any errors or warnings
   // Note: this does not use the pretty classes, it is optimized to
   //   access/edit the DB directly
+  //
+  // We don't keep hashes of the photos (I think it's too slow). Instead,
+  // we use a whole lot of logic to compare the expected database with the
+  // actual filesystem to find missing photos. NO MAN LEFT BEHIND.
   //
   // This works well under many strange circumstances, bring it!
   function Update()
@@ -174,6 +186,7 @@ class Folder extends Search
         continue;
       }
 
+
       // Look for a photo in the same place, but with the filename capitalization changed
       if ($new_files[strtolower($photopath)])
       {
@@ -185,6 +198,46 @@ class Folder extends Search
       {
         unset ($new_files[strtoupper($photopath)]);
         continue;
+      }
+ 
+      # Was photo renamed lcase?
+      if ($filename != strtolower($filename))
+      {
+        $candidatephotopaths = array_keys($new_files, strtolower($filename));
+
+        foreach ($candidatephotopaths as $candidatephotopath)
+        {
+          $candidatedirname=dirname($candidatephotopath);
+          $candidatefilename=dirname($candidatephotopath);
+          if ($candidatedirname) $candidatedirname .= '/';
+          if ($candidatedirname == './') $candidatedirname = '';
+          if ($photo['path'] == $candidatedirname)
+          {
+            unset ($new_files[$candidatephotopath]);
+            $cameralife->Database->Update('photos',array('filename'=>$candidatefilename),'id='.$photo['id']);
+            continue 2;
+          }
+        }
+      }
+
+      # Was photo renamed ucase?
+      if ($filename != strtoupper($filename))
+      {
+        $candidatephotopaths = array_keys($new_files, strtoupper($filename));
+
+        foreach ($candidatephotopaths as $candidatephotopath)
+        {
+          $candidatedirname=dirname($candidatephotopath);
+          $candidatefilename=dirname($candidatephotopath);
+          if ($candidatedirname) $candidatedirname .= '/';
+          if ($candidatedirname == './') $candidatedirname = '';
+          if ($photo['path'] == $candidatedirname)
+          {
+            unset ($new_files[$candidatephotopath]);
+            $cameralife->Database->Update('photos',array('filename'=>$candidatefilename),'id='.$photo['id']);
+            continue 2;
+          }
+        }
       }
 
       // Look for a photo with the same name and filesize anywhere else
@@ -205,7 +258,7 @@ class Folder extends Search
 
         $cameralife->Database->Update('photos',array('path'=>$candidatedirname),'id='.$photo['id']);
         $retval[] = "$filename moved to $candidatedirname";
-        unset ($new_files[$photopath]);
+        unset ($new_files[$candidatephotopath]);
 
         # keep track of the number 0234 in like DSCN_0234.jpg
         $number = preg_replace('/[^\d]/','',$filename);
@@ -231,7 +284,7 @@ class Folder extends Search
 
           $cameralife->Database->Update('photos',array('path'=>$candidatedirname),'id='.$photo['id']);
           $retval[] = "$photopath probably moved to $candidatedirname";
-          unset ($new_files[$photopath]);
+          unset ($new_files[$candidatephotopath]);
           $lastmoved = array($number, $candidatedirname);
           continue 2;
         }
@@ -244,6 +297,7 @@ class Folder extends Search
 
           $retval[] = $str;
           unset ($new_files[$photopath]);
+#          unset ($new_files[$candidatephotopath]); # needed?
           continue 2;
         }
       }
@@ -261,6 +315,8 @@ class Folder extends Search
 
     foreach ($new_files as $new_file => $newbase)
     {
+      if (preg_match("/^picasa.ini|digikam3.db$/i",$newbase))
+        continue;
       if (!preg_match("/.jpg$|.jpeg$|.png$/i",$newbase))
       {
         $retval[] = "Skipped $new_file because it is not a JPEG or PNG file";

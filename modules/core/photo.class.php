@@ -66,7 +66,7 @@ class Photo extends View
     if ($key != 'hits')
       $receipt = AuditTrail::Log('photo',$this->record['id'],$key,$this->record[$key],$value);
     if ($key == 'status')
-      $cameralife->Photostore->SetPermissions($this);
+      $cameralife->PhotoStore->SetPermissions($this);
     $this->record[$key] = $value;
     $cameralife->Database->Update('photos', array($key=>$value), 'id='.$this->record['id']);
     return $receipt;
