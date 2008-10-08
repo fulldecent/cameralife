@@ -143,8 +143,7 @@
     {
       global $cameralife;
 
-      $path_parts = pathinfo($photo->Get('filename'));
-      $extension = strtolower($path_parts['extension']);
+      $extesnion = $photo->extension;
 
       if (!file_exists($cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension) ||
           !file_exists($cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension) ||
@@ -171,12 +170,16 @@
     {
       global $cameralife;
 
-      $path_parts = pathinfo($photo->Get('filename'));
-      $extension = strtolower($path_parts['extension']);
-
-      rename($filename, $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension)
-        or $cameralife->Error('Rename error', __FILE__, __LINE__);
-      chmod($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension, 0666);
+      $extension = $photo->extension;
+ 
+      if($filename)
+      {
+        rename($filename, $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension)
+          or $cameralife->Error('Rename error', __FILE__, __LINE__);
+        chmod($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension, 0666);
+      }
+      elseif (file_exists($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension))
+        unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
       unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
       unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
 
@@ -197,8 +200,7 @@
     {
       global $cameralife;
 
-      $path_parts = pathinfo($photo->Get('filename'));
-      $extension = strtolower($path_parts['extension']);
+      $extesnion = $photo->extension;
 
       $this->mkdir_recursive($cameralife->base_dir . '/' . $this->GetPref('deleted_dir') .'/'. $photo->Get('path'));
       @rename ($cameralife->base_dir . '/' . $this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'), $cameralife->base_dir . '/' . $this->GetPref('deleted_dir') .'/'. $photo->Get('path').$photo->Get('filename'));

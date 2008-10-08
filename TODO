@@ -14,7 +14,7 @@ website:
 RELEASE HOWTO
 -------------------
 
-VERSION=2.6.2b3 # edit this line!!!
+VERSION=2.6.2b4 # edit this line!!!
 find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
 vim setup/install.mysql
 svn commit
@@ -56,7 +56,6 @@ Upload to flickr - set tags, asbums, directory...
 
 ! OpenID providers: (yahoo, blogger, AIM, LiveJournal, myspace)
 * Google friendconnect
-* Use photo->record['extension'] ??
 * VALID HTML STRICT!!!
 * fdcl.sf.net analytics
 

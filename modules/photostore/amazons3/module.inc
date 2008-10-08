@@ -86,8 +86,7 @@
 
       if ($photo->Get('status') == 0) #public
       {
-        $path_parts = pathinfo($photo->Get('filename'));
-        $extension = strtolower($path_parts['extension']);
+        $extesnion = $photo->extension;
 
         if ($type=='photo')
         {
@@ -125,8 +124,7 @@
     {
       global $cameralife;
 
-      $path_parts = pathinfo($photo->Get('filename'));
-      $extension = strtolower($path_parts['extension']);
+      $extesnion = $photo->extension;
 
       if ($type == 'photo')
       {
@@ -239,8 +237,7 @@
     {
       global $cameralife;
 
-      $path_parts = pathinfo($photo->Get('filename'));
-      $extension = strtolower($path_parts['extension']);
+      $extesnion = $photo->extension;
 
 #######
       $aws_key = $this->GetPref('accesskey');
@@ -345,8 +342,7 @@
     {
       global $cameralife;
 
-      $path_parts = pathinfo($photo->Get('filename'));
-      $extension = strtolower($path_parts['extension']);
+      $extesnion = $photo->extension;
 #######
       $aws_key = $this->GetPref('accesskey');
       $aws_bucket = $this->GetPref('photobucket'); // AWS bucket 

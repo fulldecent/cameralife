@@ -38,8 +38,7 @@
 
       if ($photo->Get('status') == 0) #public
       {
-        $path_parts = pathinfo($photo->Get('filename'));
-        $extension = strtolower($path_parts['extension']);
+        $extesnion = $photo->extension;
 
         if ($type=='photo')
         {  
@@ -77,8 +76,7 @@
     {
       global $cameralife;
 
-      $path_parts = pathinfo($photo->Get('filename'));
-      $extension = strtolower($path_parts['extension']);
+      $extesnion = $photo->extension;
 
       if ($type == 'photo')
       {
@@ -144,8 +142,7 @@
     {
       global $cameralife;
 
-      $path_parts = pathinfo($photo->Get('filename'));
-      $extension = strtolower($path_parts['extension']);
+      $extesnion = $photo->extension;
 
       $this->mkdir_recursive($this->GetPref('cache_dir'));
       @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
@@ -175,8 +172,7 @@
     {
       global $cameralife;
 
-      $path_parts = pathinfo($photo->Get('filename'));
-      $extension = strtolower($path_parts['extension']);
+      $extesnion = $photo->extension;
 
       if(!file_exists($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension))
       {
@@ -202,8 +198,7 @@
     {
       global $cameralife;
 
-      $path_parts = pathinfo($photo->Get('filename'));
-      $extension = strtolower($path_parts['extension']);
+      $extesnion = $photo->extension;
 
       @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
       if ($filename)
@@ -229,8 +224,7 @@
     {
       global $cameralife;
 
-      $path_parts = pathinfo($photo->Get('filename'));
-      $extension = strtolower($path_parts['extension']);
+      $extesnion = $photo->extension;
 
       $this->mkdir_recursive($this->GetPref('deleted_dir') .'/'. $photo->Get('path'));
       rename ($this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'), $this->GetPref('deleted_dir') .'/'. $photo->Get('path').$photo->Get('filename'));

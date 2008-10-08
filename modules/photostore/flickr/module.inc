@@ -99,8 +99,7 @@
     {
       global $cameralife;
 
-      $path_parts = pathinfo($photo->Get('filename'));
-      $extension = strtolower($path_parts['extension']);
+      $extesnion = $photo->extension;
 
       $exists = TRUE;
       # flickr cleanup of async upload

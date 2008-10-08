@@ -130,12 +130,12 @@ class Folder extends Search
     return dirname($this->path);
   }
 
-  // Static function to make the DB match what is actually on the filesystem
+  // Make the DB match what is actually on the filesystem
   // Returns an array of any errors or warnings
   // Note: this does not use the pretty classes, it is optimized to
-  //   edit the DB directly
+  //   access/edit the DB directly
   //
-  // This works well under many strange circumstances you can put it in
+  // This works well under many strange circumstances, bring it!
   function Update()
   {
     global $cameralife;
@@ -194,13 +194,14 @@ class Folder extends Search
         # Bonus code
         if ($cameralife->GetPref('photostore')=='local')
         {
-          $actualsize = filesize($cameralife->PhotoStore->GetPref('photo_dir') . '/' . $new_file);
+          $actualsize = filesize($cameralife->base_dir.'/'.$cameralife->PhotoStore->GetPref('photo_dir') . '/' . $candidatephotopath);
           if ($actualsize != $photo['fsize'])
             continue;
         }
 
         $candidatedirname=dirname($candidatephotopath);
-        if ($candidatedirname) $candidatedirname .= './';
+        if ($candidatedirname) $candidatedirname .= '/';
+        if ($candidatedirname == './') $candidatedirname = '';
 
         $cameralife->Database->Update('photos',array('path'=>$candidatedirname),'id='.$photo['id']);
         $retval[] = "$filename moved to $candidatedirname";
@@ -225,7 +226,8 @@ class Folder extends Search
         if ($number > 1000 && abs($number - $lastmoved[0])<5 && $newpath == $lastmoved[1])
         {
           $candidatedirname=dirname($candidatephotopath).'/';
-          if ($candidatedirname) $candidatedirname .= './';
+          if ($candidatedirname) $candidatedirname .= '/';
+          if ($candidatedirname=='./') $candidatedirname = '';
 
           $cameralife->Database->Update('photos',array('path'=>$candidatedirname),'id='.$photo['id']);
           $retval[] = "$photopath probably moved to $candidatedirname";
@@ -252,8 +254,10 @@ class Folder extends Search
       $photoObj->Erase();
     }
 
+    //
     // $new_files now contains a list of existing files that are not in the database
     // We are looking for any excuse NOT to add them to the DB
+    //
 
     foreach ($new_files as $new_file => $newbase)
     {
@@ -271,7 +275,7 @@ class Folder extends Search
       if ($cameralife->GetPref('photostore')=='local')
       {
         $actualsize = filesize($cameralife->base_dir . '/' . $cameralife->PhotoStore->GetPref('photo_dir') . '/' . $new_file);
-        $extra = ' and fsize='.$actualsize;
+        $extra = ' AND (fsize='.$actualsize.' OR fsize IS NULL)';
       }
       else
         $extra = '';
