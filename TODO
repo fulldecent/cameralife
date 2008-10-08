@@ -14,7 +14,7 @@ website:
 RELEASE HOWTO
 -------------------
 
-VERSION=2.6.2b4 # edit this line!!!
+VERSION=2.6.2b5 # edit this line!!!
 find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
 vim setup/install.mysql
 svn commit
