@@ -1,10 +1,9 @@
 <?php
 #returns a rotated thumbnail
 
-  $features=array('database','security','imageprocessing');
+  $features=array('database','security','imageprocessing', 'photostore');
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
-  chdir ($cameralife->base_dir);
 
   $cameralife->Security->authorize('admin_file', 1);
 
@@ -14,7 +13,10 @@
   $photo = $result->FetchAssoc()
     or die('You have followed a stale link or have found a bug in this site :-)');
 
-  $file = $cameralife->photostore->GetPref('cache_dir').'/'.$photo['id'].'_150.jpg';
+  if ($cameralife->GetPref('photostore')!='local')
+    die('This hack demands a local photostore');
+
+  $file = $cameralife->base_dir.'/'.$cameralife->PhotoStore->GetPref('cache_dir').'/'.$photo['id'].'_150.jpg';
   if (!file_exists($file))
   {
     $size = 150;
@@ -58,8 +60,8 @@
       $rotated = ImageRotateRightAngle($original_image, $degrees);
     else 
     {
-      $rotated = ImageRotateRightAngle($original_image, $degrees);
-      $rotated = ImageRotateRightAngle($rotated, $degrees);
+      $rotated = ImageRotateRightAngle($original_image, 90);
+      $rotated = ImageRotateRightAngle($rotated, 90);
     }
   }
 

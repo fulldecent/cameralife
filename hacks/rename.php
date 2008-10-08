@@ -1,10 +1,9 @@
 <?php
   # Admin tool to batch rename unnamed photos
 
-  $features=array('database','theme','security','imageprocessing');
+  $features=array('database','theme','security','imageprocessing','photostore' );
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
-  chdir ($cameralife->base_dir);
 
   $cameralife->Security->authorize('admin_file', 1); // Require
 
@@ -51,9 +50,7 @@
 <html>
 <head>
   <title><?= $cameralife->GetPref('sitename') ?> - Batch Renamer</title>
-  <?php if($cameralife->Theme->cssURL()) {
-    echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
-  } ?>
+  <link rel="stylesheet" href="hacks.css">
   <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
   <script language="javascript">
     function changealldesc() {
@@ -102,20 +99,17 @@
 <body>
 <form id="form1" method="post"> <!--action="<?= $_SERVER['PHP_SELF'] ?>&#63;start=<?= $_GET['start']?>"-->
 
+<div id="header">
+<h1>Hacks - Rename</h1>
 <?php
-  $menu = array();
-  $menu[] = array("name"=>$cameralife->GetPref('siteabbr'),
-                  "href"=>"../index.php",
-                  'image'=>'small-main');
-  $menu[] = array("name"=>"Administration",
-                  "href"=>"../admin/index.php",
-                  'image'=>'small-admin');
+  $home = $cameralife->GetIcon('small');
+  echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
+?> |
+<a href="../stats.php"><img src="<?= $cameralife->IconURL('small-photo')?>">Stats</a> |
+<a href="../admin/index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Administration</a>
+</div>
 
-  $cameralife->Theme->TitleBar("Batch Rename",
-                               'admin',
-                               "Rename unnamed photo fast",
-                               $menu);
-
+<?php
   echo "<p>Show <select name=\"perpage\" onchange=\"document.getElementById('form1').submit()\">";
   foreach(array(8,12,25,100,'all') as $num)
   {
@@ -147,13 +141,13 @@
     echo "<input id=\"desc_".$photo['id']."\" name=\"desc_".$photo['id']."\" value=\"".$photo['description']."\"><br>";
     echo "<input id=\"key_".$photo['id']."\" name=\"key_".$photo['id']."\" value=\"".$photo['keywords']."\"><br> ";
     echo "<input checked type=radio id=\"rot0_".$photo['id']."\" name=\"rot_".$photo['id']."\" value=\"0\" onclick=\"document.getElementById('img_".$photo['id']."').src='rotatethumb.php?id=".$photo['id']."&amp;rotate=0'\">";
-    echo "<label for=\"rot0_".$photo['id']."\">0&deg;</label>";
+    echo "<label for=\"rot0_".$photo['id']."\">N</label>";
     echo "<input type=radio id=\"rot90_".$photo['id']."\" name=\"rot_".$photo['id']."\" value=\"90\" onclick=\"document.getElementById('img_".$photo['id']."').src='rotatethumb.php?id=".$photo['id']."&amp;rotate=90'\">";
-    echo "<label for=\"rot90_".$photo['id']."\">90&deg;</label>";
+    echo "<label for=\"rot90_".$photo['id']."\">R</label>";
     echo "<input type=radio id=\"rot180_".$photo['id']."\" name=\"rot_".$photo['id']."\" value=\"180\" onclick=\"document.getElementById('img_".$photo['id']."').src='rotatethumb.php?id=".$photo['id']."&amp;rotate=180'\">";
-    echo "<label for=\"rot180_".$photo['id']."\">180&deg;</label>";
+    echo "<label for=\"rot180_".$photo['id']."\">U</label>";
     echo "<input type=radio id=\"rot270_".$photo['id']."\" name=\"rot_".$photo['id']."\" value=\"270\" onclick=\"document.getElementById('img_".$photo['id']."').src='rotatethumb.php?id=".$photo['id']."&amp;rotate=270'\">";
-    echo "<label for=\"rot270_".$photo['id']."\">270&deg;</label><br>";
+    echo "<label for=\"rot270_".$photo['id']."\">L</label><br>";
     $checked = ($photo['status']==0)?'checked':'';
     echo "<input $checked type=radio id=\"stat0_".$photo['id']."\" name=\"stat_".$photo['id']."\" value=\"0\">";
     echo "<label for=\"stat0_".$photo['id']."\">Public</label>";
