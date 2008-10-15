@@ -16,6 +16,22 @@
       $this->preferences[] = array('name'=>'photo_dir', 'desc'=>'Main photo directory', 'type'=>'directory', 'default'=>'images/photos');
       $this->preferences[] = array('name'=>'cache_dir', 'desc'=>'Camera Life data directory', 'type'=>'directory', 'default'=>'images/cache');
       $this->preferences[] = array('name'=>'deleted_dir', 'desc'=>'Deleted photos (...where they go when you "erase" them)', 'type'=>'directory', 'default'=>'images/deleted');
+
+//TODO make this platform-independent
+      if (preg_match('|^/|', $this->GetPref('photo_dir')))
+        $this->PhotoDir = rtrim($this->GetPref('photo_dir'), '/');
+      else
+        $this->PhotoDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('photo_dir'), '/');
+
+      if (preg_match('|^/|', $this->GetPref('cache_dir')))
+        $this->CacheDir = rtrim($this->GetPref('cache_dir'), '/');
+      else
+        $this->CacheDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('cache_dir'), '/');
+
+      if (preg_match('|^/|', $this->GetPref('deleted_dir')))
+        $this->DeletedDir = rtrim($this->GetPref('deleted_dir'), '/');
+      else
+        $this->DeletedDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('deleted_dir'), '/');
     } 
 
     /**
@@ -45,7 +61,7 @@
     *  @param $type - one of ('photo', 'original', 'modified', 'scaled', 'thumbnail')
     *    'photo' refers to the modified (if exists) otherwise original
     *
-    *  @return an array with two elements:
+    *  @return an array with three elements:
     *     filename - string - the local file you requested
     *     temporary - boolean
     *     mtime ...
@@ -61,18 +77,18 @@
       if ($type == 'photo')
       {
         if ($photo->Get('modified'))
-          $file = $cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension;
+          $file = $this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension;
         else
-          $file = $cameralife->base_dir .'/'. $this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename');
+          $file = $this->PhotoDir .'/'. $photo->Get('path').$photo->Get('filename');
       }
       elseif ($type == 'original')
-        $file = $cameralife->base_dir .'/'. $this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename');
+        $file = $this->PhotoDir .'/'. $photo->Get('path').$photo->Get('filename');
       elseif ($type == 'modified')
-        $file = $cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension;
+        $file = $this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension;
       elseif ($type == 'scaled')
-        $file = $cameralife->base_dir .'/'. $this->GetPref('cache_dir').'/'.$photo->Get('id').'_600.'.$extension;
+        $file = $this->CacheDir .'/'.$photo->Get('id').'_600.'.$extension;
       elseif ($type == 'thumbnail')
-        $file = $cameralife->base_dir .'/'. $this->GetPref('cache_dir').'/'.$photo->Get('id').'_150.'.$extension;
+        $file = $this->CacheDir .'/'.$photo->Get('id').'_150.'.$extension;
 
       if (!file_exists($file))
       {
@@ -98,10 +114,10 @@
     {
       global $cameralife;
 
-      $this->mkdir_recursive($cameralife->base_dir .'/'. $this->GetPref('photo_dir') .'/'. $photo->Get('path'));
-      copy($filename, $cameralife->base_dir .'/'. $this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'))
+      $this->mkdir_recursive($this->PhotoDir .'/'. $photo->Get('path'));
+      copy($filename, $this->PhotoDir .'/'. $photo->Get('path').$photo->Get('filename'))
         or $cameralife->Error('Could not add photo: ' . $photo->Get('path').$photo->Get('filename'), __FILE__, __LINE__);
-      chmod($cameralife->base_dir .'/'. $this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'), 0666);
+      chmod($this->PhotoDir .'/'. $photo->Get('path').$photo->Get('filename'), 0666);
     }
 
     /**
@@ -121,10 +137,10 @@
 
       $extension = $photo->extension;
 
-      @rename($scaled, $cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
-      chmod($cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension, 0666);
-      @rename($thumbnail, $cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
-      chmod($cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension, 0666);
+      @rename($scaled, $this->CacheDir .'/'. $photo->Get('id').'_600.'.$extension);
+      chmod($this->CacheDir .'/'. $photo->Get('id').'_600.'.$extension, 0666);
+      @rename($thumbnail, $this->CacheDir .'/'. $photo->Get('id').'_150.'.$extension);
+      chmod($this->CacheDir .'/'. $photo->Get('id').'_150.'.$extension, 0666);
     }
 
     # unnessary, user does not access files directly
@@ -145,9 +161,9 @@
 
       $extesnion = $photo->extension;
 
-      if (!file_exists($cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension) ||
-          !file_exists($cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension) ||
-          $photo->Get('modified') && !file_exists($cameralife->base_dir .'/'. $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension))
+      if (!file_exists($this->CacheDir .'/'. $photo->Get('id').'_600.'.$extension) ||
+          !file_exists($this->CacheDir .'/'. $photo->Get('id').'_150.'.$extension) ||
+          $photo->Get('modified') && !file_exists($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension))
       {
         $photo->GenerateThumbnail();
         return TRUE;
@@ -174,14 +190,14 @@
  
       if($filename)
       {
-        rename($filename, $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension)
+        rename($filename, $this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension)
           or $cameralife->Error('Rename error', __FILE__, __LINE__);
-        chmod($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension, 0666);
+        chmod($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension, 0666);
       }
-      elseif (file_exists($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension))
-        unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
-      unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
-      unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
+      elseif (file_exists($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension))
+        unlink($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension);
+      unlink($this->CacheDir .'/'. $photo->Get('id').'_600.'.$extension);
+      unlink($this->CacheDir .'/'. $photo->Get('id').'_150.'.$extension);
 
       # if not lazy, update thumbnails
     }
@@ -202,13 +218,13 @@
 
       $extesnion = $photo->extension;
 
-      $this->mkdir_recursive($cameralife->base_dir . '/' . $this->GetPref('deleted_dir') .'/'. $photo->Get('path'));
-      @rename ($cameralife->base_dir . '/' . $this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'), $cameralife->base_dir . '/' . $this->GetPref('deleted_dir') .'/'. $photo->Get('path').$photo->Get('filename'));
+      $this->mkdir_recursive($this->DeletedDir .'/'. $photo->Get('path'));
+      @rename ($this->PhotoDir .'/'. $photo->Get('path').$photo->Get('filename'), $this->DeletedDir .'/'. $photo->Get('path').$photo->Get('filename'));
 
       if ($photo->Get('modified'))
-        @unlink($cameralife->base_dir . '/' . $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
-      @unlink($cameralife->base_dir . '/' . $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
-      @unlink($cameralife->base_dir . '/' . $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
+        @unlink($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension);
+      @unlink($this->CacheDir .'/'. $photo->Get('id').'_600.'.$extension);
+      @unlink($this->CacheDir .'/'. $photo->Get('id').'_150.'.$extension);
     }
 
     /**
@@ -223,7 +239,7 @@
       global $cameralife;
   
       $retval = array();
-      $prefix = $cameralife->base_dir . '/' . $this->GetPref('photo_dir');
+      $prefix = $this->PhotoDir;
       if ($dir = opendir($prefix . '/' . $path))
       {
         $children = array();
