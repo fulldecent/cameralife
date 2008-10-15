@@ -28,20 +28,14 @@
 
   if ($cameralife->Security->authorize('admin_albums') && !$_GET['edit'])
   {
-    if (strpos($icon['href'], '&#63;') !== FALSE)
-      $href = $icon['href'] . '&amp;id='.$album->Get('id').'&amp;edit=true';
-    else
-      $href = $icon['href'] . '&#63;id='.$album->Get('id').'&amp;edit=true';
+    $href = AddParam($icon['href'], 'edit', 'true');
 
     $menu[] = array('name'=>'Edit this Album',
                     "href"=>$href,
                     'image'=>'small-admin');
   }
 
-  if (strpos($icon['href'], '&#63;') !== FALSE)
-    $href = $icon['href'] . '&amp;help';
-  else
-    $href = $icon['href'] . '&#63;help';
+  $href = AddParam($icon['href'], 'help');
 
   $menu[] = array('name'=>'Add photos to this Album',
                   'href'=>$href,
@@ -57,8 +51,8 @@
   {
 ?>
     <div class="administrative" align=center>
-    <form name="form1" method=post action="album_controller.php">
-    <input type="hidden" name="id" value="<?= $_GET['id'] ?>">
+    <form name="form1" method=post action="<?= $cameralife->base_url ?>/album_controller.php">
+    <input type="hidden" name="id" value="<?= $album->Get('id') ?>">
     <input type="hidden" name="target" value="<?= $cameralife->base_url.'/album.php&#63;id='.$album->Get('id') ?>">
       <p class="info" align=left>
         You are editing the Album named <b><?= $album->Get('name') ?></b>, which is a collection of photos 
@@ -74,13 +68,11 @@
             This album and others like it are:<td>
             <select name="param2">
             <?php 
-              $result = $cameralife->Database->Select('albums','DISTINCT topic');
-              while ($topics = $result->FetchAssoc())
+              foreach(Topic::GetTopics() as $thetopic)
               {
-                  $topic = $topics['topic'];
-                  $selected = ($album->Get('topic') == $topic) ? 'selected' : '';
-                  if ($album->Get('topic') == $topic) $preselect = true;
-                  echo "<option $selected onclick=\"javascript:document.form1.topicother.disabled=true\" value=\"$topic\">$topic</option>\n";
+                  $selected = ($album->Get('topic') == $thetopic) ? 'selected' : '';
+                  if ($album->Get('topic') == $thetopic) $preselect = true;
+                  echo "<option $selected onclick=\"javascript:document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
               }
             ?>
             <option value="othertopic" <?= $preselect ? '' : 'selected' ?> onclick="javascript:document.form1.topicother.disabled=false">(A new topic)</option>
@@ -100,16 +92,13 @@
   if ($_GET['poster_id'])
   {
     $cameralife->Security->authorize('admin_albums',1);
+    $album->SetPoster($_GET['poster_id']);
 ?>
     <div class="administrative" align=center>
-            The album <b><?= $album->Get('name') ?></b> will be represented by this photo 
+      The album <b><?= $album->Get('name') ?></b> will be represented by this photo 
+      <img src="<?= $album->GetPoster()->GetMedia() ?>" alt="Poster photo">
+    </div>
 <?php
-    $cameralife->Database->SelectOne('photos','COUNT(*)','id='.$_GET['poster_id'])
-      or $cameralife->Error('The selected poster photo does not exist', __FILE__, __LINE__);
-    $album->Set('poster_id', $_GET['poster_id']);
-
-    echo '<img src="'.$album->GetPoster()->GetMedia().'" alt="Poster photo">';
-    echo '</div>';
   }
 ?>
   <div id="help" class="administrative" style="display:<?php echo isset($_GET['help'])?'block':'none' ?>; text-align:center">

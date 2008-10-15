@@ -48,10 +48,10 @@ trong></a>.</div>';
 
                 <ul>
 <?php
-        $topic_query = $cameralife->Database->Select('albums','DISTINCT topic');
-        while ($topic = $topic_query->FetchAssoc())
+
+        foreach (Topic::GetTopics() as $thetopic)
         {
-          $topic = new Topic($topic['topic']);
+          $topic = new Topic($thetopic);
           $icon = $topic->GetIcon('small');
 
           echo "<li><strong><a href=\"".$icon['href']."\">";
@@ -59,15 +59,14 @@ trong></a>.</div>';
 
           if ($cameralife->Theme->GetPref('main_topics')==2) // Link a couple albums
           {
-            $where = "topic='".$topic->Get('name')."'";
-            $extra = 'ORDER BY RAND() LIMIT '.$cameralife->Theme->GetPref('main_topics_n');
-            $album_query = $cameralife->Database->Select('albums','id',$where,$extra);
-            $count = 0;
+            $topic->SetSort('rand');
+            $topic->SetPage(0, $cameralife->Theme->GetPref('main_topics_n'));
 
-            while ($album = $album_query->FetchAssoc())
+            echo "<div class='context2'>(";
+            $count = 0;
+            foreach($topic->GetAlbums() as $album)
             {
               if ($count++) echo ", ";
-              $album = new Album($album['id']);
               $icon = $album->GetIcon();
               echo "<a href=\"".$icon['href']."\">".
                     $icon['name']."</a>";

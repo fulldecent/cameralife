@@ -65,13 +65,11 @@ echo '</div><div id="text">';
             This album and others like it are:<td>
             <select name="param2">
             <?php 
-              $result = $cameralife->Database->Select('albums','DISTINCT topic');
-              while ($topics = $result->FetchAssoc())
+              foreach(Topic::GetTopics() as $thetopic)
               {
-                  $topic = $topics['topic'];
-                  $selected = ($album->Get('topic') == $topic) ? 'selected' : '';
+                  $selected = ($album->Get('topic') == $thetopic) ? 'selected' : '';
                   if ($album->Get('topic') == $topic) $preselect = true;
-                  echo "<option $selected onclick=\"javascript:document.form1.topicother.disabled=true\" value=\"$topic\">$topic</option>\n";
+                  echo "<option $selected onclick=\"javascript:document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
               }
             ?>
             <option value="othertopic" <?= $preselect ? '' : 'selected' ?> onclick="javascript:document.form1.topicother.disabled=false">(A new topic)</option>
@@ -91,16 +89,13 @@ echo '</div><div id="text">';
   if ($_GET['poster_id'])
   {
     $cameralife->Security->authorize('admin_albums',1);
+    $album->SetPoster($_GET['poster_id']);
 ?>
     <div class="administrative" align=center>
             The album <b><?= $album->Get('name') ?></b> will be represented by this photo 
+      <img src="<?= $album->GetPoster()->GetMedia() ?>" alt="Poster photo">
+    </div>
 <?php
-    $cameralife->Database->SelectOne('photos','COUNT(*)','id='.$_GET['poster_id'])
-      or $cameralife->Error('The selected poster photo does not exist', __FILE__, __LINE__);
-    $album->Set('poster_id', $_GET['poster_id']);
-
-    echo '<img src="'.$album->GetPoster()->GetMedia().'" alt="Poster photo">';
-    echo '</div>';
   }
 ?>
   <div id="help" class="administrative" style="display:<?php echo isset($_GET['help'])?'block':'none' ?>; text-align:center">

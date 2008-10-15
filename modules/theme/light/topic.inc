@@ -49,13 +49,11 @@
         <td>This album and others like it are:
         <td><select name="param1">
           <?php 
-            $result = $cameralife->Database->Select('albums','DISTINCT topic');
-            while ($topics = $result->FetchAssoc())
+            foreach (Topic::GetTopics() as $thetopic)
             {
-                $topic = $topics['topic'];
-                $selected = ($album['topic'] == $topic) ? 'selected' : '';
-                if ($album['topic'] == $topic) $preselect = true;
-                echo "<option $selected onclick=\"javascript:document.form1.topicother.disabled=true\" value=\"$topic\">$topic</option>\n";
+                $selected = ($album['topic'] == $thetopic) ? 'selected' : '';
+                if ($album['topic'] == $thetopic) $preselect = true;
+                echo "<option $selected onclick=\"javascript:document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
             }
           ?>
             <option value="othertopic" <?= $preselect ? '' : 'selected' ?> onclick="javascript:document.form1.topicother.disabled=false">(A new topic)</option>
