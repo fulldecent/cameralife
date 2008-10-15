@@ -4,6 +4,14 @@
 
   $search = new Search($_GET['q']);
 
+  /* Bonus code to log searches
+  $log_handle = fopen ("search.log", "a");
+  fwrite($log_handle, $_GET["q"]."\n");
+  fclose ($log_handle);
+  */
+
+  $counts = $search->GetCounts();
+
   #Be intelligent here...
   if (!$counts['folders'] && $counts['albums'] == 1)
   {

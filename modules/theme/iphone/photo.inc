@@ -22,11 +22,6 @@
   else
     $hrefinquery = $icon['href'] . '&#63;';
 
-  if ($cameralife->Security->GetName())
-    $rating = $avg = $cameralife->Database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->Get('id')." AND username='".$cameralife->Security->GetName()."'");
-  else
-    $rating = $avg = $cameralife->Database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->Get('id')." AND user_ip='".$_SERVER['REMOTE_ADDR']."'");
-
   $photo->Set('hits', $photo->Get('hits') + 1);
 
   $menu = array();

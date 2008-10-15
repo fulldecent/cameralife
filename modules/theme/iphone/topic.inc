@@ -21,50 +21,6 @@
 <form name="form1" method=post action="album_controller.php">
 <h1><?= $topic->GetName() ?></h1>
 <?php
-
-  if ($_GET['edit'])
-  {
-    $cameralife->Security->authorize('admin_albums',1);
-?>
-  <div class="administrative" align=center>
-    <input type="hidden" name="param4" value="<?= $_GET['term'] ?>">
-    <input type="hidden" name="target" value="<?= $cameralife->base_url ?>/index.php">
-
-    <p class="info" align=left>
-      You are about to create an Album of photos whose descriptions contain "<b><?= $_GET['term'] ?></b>".
-      <?php if (file_exists('setup/albums.html')) echo "<a href=\"setup/albums.html\">Click here for more information about albums</a>"; ?>
-    </p>
-    <table>
-      <tr>
-        <td>The Album's name:
-        <td><input type="text" name="param3" value="<?= ucwords($_GET['term']) ?>">
-      <tr>
-        <td>This album and others like it are:
-        <td><select name="param1">
-          <?php 
-            $result = $cameralife->Database->Select('albums','DISTINCT topic');
-            while ($topics = $result->FetchAssoc())
-            {
-                $topic = $topics['topic'];
-                $selected = ($album['topic'] == $topic) ? 'selected' : '';
-                if ($album['topic'] == $topic) $preselect = true;
-                echo "<option $selected onclick=\"javascript:document.form1.topicother.disabled=true\" value=\"$topic\">$topic</option>\n";
-            }
-          ?>
-            <option value="othertopic" <?= $preselect ? '' : 'selected' ?> onclick="javascript:document.form1.topicother.disabled=false">(A new topic)</option>
-          </select>
-          <input <?= $preselect ? 'disabled' : '' ?> type="text" name="param2" name="topicother" id="topicother" value="NEW TOPIC">
-      <tr>
-        <td>
-        <td>
-          <input type=submit name="action" value="Create">
-          <a href="search.php&#63;q=<?= $_GET['term'] ?>">(cancel)</a>
-    </table>
-  </div>
-<?php
-    exit();
-  }
-
   $cameralife->Theme->Grid($albums);
   
   if ($sort == 'rand()') $start = -1;

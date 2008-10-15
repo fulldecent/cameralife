@@ -53,6 +53,7 @@ class Search extends View
     $this->mySort = $sort;
   }
 
+  # static function, and a not static function...
   function SortOptions()
   {
     $retval = array();
@@ -64,7 +65,7 @@ class Search extends View
     $retval[] = array('unpopular', 'Unpopular First');
     $retval[] = array('rand', 'Random');
     if (is_object($this) && array_key_exists($this->mySort, $retval))
-      $retval['$this->mySort'][] = 'selected';
+      $retval[$this->mySort][] = 'selected';
     return $retval;
   }
 

@@ -72,11 +72,10 @@
 <?php if ($cameralife->Theme->GetPref('main_topics')) 
       {
         $cameralife->Theme->Section('Topics');
-        $topic_query = $cameralife->Database->Select('albums','DISTINCT topic');
   
-        while ($topic = $topic_query->FetchAssoc())
+        foreach (Topic::GetTopics() as $thetopic)
         {
-          $topic = new Topic($topic['topic']);
+          $topic = new Topic($thetopic);
           $icon = $topic->GetIcon('small');
 
           echo "<div class='context'><a href=\"".$icon['href']."\">";

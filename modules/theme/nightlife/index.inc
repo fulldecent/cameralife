@@ -121,29 +121,26 @@
         {
           echo "<div class='context2'><a href=\"search.php&#63;albumhelp=1\">Create a new album</a></div>\n";
         }
-        $topic_query = $cameralife->Database->Select('albums','DISTINCT topic');
-  
-        while ($topic = $topic_query->FetchAssoc())
+
+        foreach (Topic::GetTopics() as $thetopic)
         {
-          $topic = new Topic($topic['topic']);
+          $topic = new Topic($thetopic);
           $icon = $topic->GetIcon('small');
 
           echo "<div class='context'><a href=\"".$icon['href']."\">";
           $cameralife->Theme->Image('small-topic', array('align'=>'left'));
           echo $icon['name']."</a><br>\n";
-  
+
           if ($cameralife->Theme->GetPref('main_topics')==2) // Link a couple albums
           {
-            $where = "topic='".$topic->Get('name')."'";
-            $extra = 'ORDER BY RAND() LIMIT '.$cameralife->Theme->GetPref('main_topics_n');
-            $album_query = $cameralife->Database->Select('albums','id',$where,$extra);
+            $topic->SetSort('rand');
+            $topic->SetPage(0, $cameralife->Theme->GetPref('main_topics_n'));
+            
             echo "<div class='context2'>(";
             $count = 0;
-  
-            while ($album = $album_query->FetchAssoc())
+            foreach($topic->GetAlbums() as $album)
             {
               if ($count++) echo ", ";
-              $album = new Album($album['id']);
               $icon = $album->GetIcon();
               echo "<a href=\"".$icon['href']."\">".
                     $icon['name']."</a>";

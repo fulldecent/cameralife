@@ -38,6 +38,21 @@ class Topic extends Search
                  'name'=>$this->name,
                  'image'=>($size=='large')?'topic':'small-topic');
   }
+
+  # STATIC
+  function GetTopics()
+  {
+    global $cameralife;
+
+    $retval = array();
+    $result = $cameralife->Database->Select('albums','DISTINCT topic');
+    while ($topic = $result->FetchAssoc())
+      $retval[] = $topic['topic'];
+
+    return $retval;
+  }
+
+
 }
 
 ?>

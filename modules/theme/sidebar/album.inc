@@ -68,13 +68,11 @@
             This album and others like it are:<td>
             <select name="param2">
             <?php 
-              $result = $cameralife->Database->Select('albums','DISTINCT topic');
-              while ($topics = $result->FetchAssoc())
+              foreach(Topic::GetTopics() as $thetopic)
               {
-                  $topic = $topics['topic'];
-                  $selected = ($album->Get('topic') == $topic) ? 'selected' : '';
-                  if ($album->Get('topic') == $topic) $preselect = true;
-                  echo "<option $selected onclick=\"javascript:document.form1.topicother.disabled=true\" value=\"$topic\">$topic</option>\n";
+                  $selected = ($album->Get('topic') == $thetopic) ? 'selected' : '';
+                  if ($album->Get('topic') == $thetopic) $preselect = true;
+                  echo "<option $selected onclick=\"javascript:document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
               }
             ?>
             <option value="othertopic" <?= $preselect ? '' : 'selected' ?> onclick="javascript:document.form1.topicother.disabled=false">(A new topic)</option>
@@ -97,9 +95,12 @@
     $album->SetPoster($_GET['poster_id']);
 ?>
     <div class="administrative" align=center>
-            The album <b><?= $album->Get('name') ?></b> will be represented by this photo 
-  <img src="<?= $album->GetPoster()->GetMedia() ?>" alt="Poster photo">
-  </div>
+      The album <b><?= $album->Get('name') ?></b> will be represented by this photo 
+      <img src="<?= $album->GetPoster()->GetMedia() ?>" alt="Poster photo">
+    </div>
+<?php
+  }
+?>
   <div id="help" class="administrative" style="display:<?php echo isset($_GET['help'])?'block':'none' ?>; text-align:center">
     To add photos to this album, edit any photo on the site and add "<b><?= $album->Get('term') ?></b>" to its description.
   </div>

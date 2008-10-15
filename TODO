@@ -6,6 +6,7 @@ TODO For the 2.6.2 Realease Cycle
 
 ! grep GET  -r modules/theme/*/*inc
 ! grep Database -r modules/theme/*/*inc
+. use AddParam()
 
 
 website: 
@@ -45,6 +46,10 @@ http://freshmeat.net/add-release/34159/36247/
 TODO AFTER 2.6.2
 note: bleeding edge ideas are at: http://camera.phor.net/TODO
 ----------------------------
+
+generalize photo metadata: exif, comments, ratings, flickr backup/restore hack
+don't handle hits in the theme(), do it before the showpage();
+
 
 folders is very slow...
 
