@@ -29,6 +29,10 @@ class Album extends Search
       $this->record = $result->FetchAssoc()
         or die('Bad album :-(');
     }
+    else
+    {
+      $comeralife->Error("Invalid album", __FILE__, __LINE__);
+    }
 
     Search::Search($this->record['term']);
   }
