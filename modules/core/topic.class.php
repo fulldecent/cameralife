@@ -12,7 +12,12 @@ class Topic extends Search
     $this->name = $name;
 
     Search::Search('');
-    $this->mySearchAlbumCondition = "topic = '".$this->name."'";
+    $this->mySearchAlbumCondition = "topic = '".mysql_real_escape_string($this->name)."'";
+  }
+
+  function GetName()
+  {
+    return htmlentities($this->name);
   }
 
   function Get($item)

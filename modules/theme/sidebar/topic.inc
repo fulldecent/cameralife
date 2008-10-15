@@ -10,7 +10,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title><?= $cameralife->GetPref('sitename').' : '.$_GET['name'] ?></title>
+  <title><?= $cameralife->GetPref('sitename').' : '.$topic->GetName() ?></title>
   <?php if($cameralife->Theme->cssURL()) {
     echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
   } ?>
@@ -23,15 +23,15 @@
   $menu[] = $cameralife->GetIcon('small');
   if ($cameralife->Security->authorize('admin_albums'))
   {
-    $menu[] = array('name'=>"Add an album to \"".$_GET['name']."\"",
+    $menu[] = array('name'=>"Add an album to \"".$topic->GetName()."\"",
                     'href'=>"search.php&#63;albumhelp=1",
                     'image'=>'small-album');
   }
-  $menu[] = array('name'=>"Search for \"".$_GET['name']."\"",
-                  'href'=>'search.php&#63;q='.$_GET['name'],
+  $menu[] = array('name'=>"Search for \"".$topic->GetName()."\"",
+                  'href'=>'search.php&#63;q='.$topic->GetName(),
                   'image'=>'small-search');
 
-  $cameralife->Theme->TitleBar('Photo albums of '.$_GET['name'],
+  $cameralife->Theme->TitleBar('Photo albums of '.$topic->GetName(),
                                'topic',
                                "(".$counts['albums']." albums)",
                                $menu);

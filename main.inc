@@ -29,7 +29,7 @@
       $this->base_dir = dirname(__FILE__);
       $this->base_url = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']),'/');
 
-      $this->version = '2.6.2b4';
+      $this->version = '2.6.2b5';
 
       // Load preferences
       $this->GetFeature('core');
@@ -199,4 +199,28 @@
     if ($receipt->IsValid())
       $cameralife->receipt = $receipt;
   }
+
+  ####
+  #
+  # Convenience functions:
+  #
+
+  // In: an HTML-escaped url, and HTML-escaped param and value
+  // Out: an HTML-escaped url with a get parameter added
+  function AddParam($url, $param, $value=NULL)
+  {
+    if ((strpos($url, '&#63;') !== FALSE) || (strpos($url, '?') !== FALSE))
+      $url .= "&amp;$param";
+    else
+      $url .= "&#63;$param";
+
+    if ($value !==NULL)
+      $url .= "=$value";
+
+    return $url;
+  }
+
+
+
+
 ?>

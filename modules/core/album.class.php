@@ -23,7 +23,7 @@ class Album extends Search
       $this->record['poster_id'] = $result[0]->Get('id');
       $this->record['id'] = $cameralife->Database->Insert('albums', $this->record);
     }
-    else  # This is an ID
+    elseif(is_numeric($original))  # This is an ID
     {
       $result = $cameralife->Database->Select('albums', '*', "id=$original");
       $this->record = $result->FetchAssoc()
@@ -53,6 +53,19 @@ class Album extends Search
   function GetPoster()
   {
     return new Photo($this->record['poster_id']);
+  }
+
+  function SetPoster($poster)
+  {
+    global $cameralife;
+
+    if (!is_numeric($poster))
+      $cameralife->Error("Failed to set poster for album", __FILE__, __LINE__);
+
+    $cameralife->Database->SelectOne('photos','COUNT(*)','status=1 AND id='.$_GET['poster_id'])
+      or $cameralife->Error('The selected poster photo does not exist', __FILE__, __LINE__);
+
+    $this->Set('poster_id', $_GET['poster_id']);
   }
 
   function GetTopic()

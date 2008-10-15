@@ -4,6 +4,10 @@ TODO For the 2.6.2 Realease Cycle
 
 * Once-over on the install process
 
+! grep GET  -r modules/theme/*/*inc
+! grep Database -r modules/theme/*/*inc
+
+
 website: 
   update buildscript for version on website
   rename to cameralife
@@ -14,9 +18,9 @@ website:
 RELEASE HOWTO
 -------------------
 
-VERSION=2.6.2b5 # edit this line!!!
+VERSION=2.6.2b6 # edit this line, then SAVE THIS FILE
 find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
-vim setup/install.mysql
+#vim setup/install.mysql
 svn commit
 
 # the fast part...
@@ -41,6 +45,10 @@ http://freshmeat.net/add-release/34159/36247/
 TODO AFTER 2.6.2
 note: bleeding edge ideas are at: http://camera.phor.net/TODO
 ----------------------------
+
+folders is very slow...
+
+edit rename hack - allow it to work on all files in a given path
 
 Validate
 Regression: microformats, sitemaps, rss, gallery API, OpenSearch, hacks

@@ -77,6 +77,7 @@ class Photo extends View
     return $this->record[$key];
   }
 
+//TODO kill original?
   // If you can guarantee record['modified'] is false, set $original to TRUE
   // If ORIGINAL is set, we can collect and use some extra metadata
   function LoadImage($original = FALSE)
@@ -85,7 +86,7 @@ class Photo extends View
 
     if (isset($this->image)) return;
     list ($file, $temp, $this->record['mtime']) = $cameralife->PhotoStore->GetFile($this);
-    if ($original)
+    if ($this->record['original'])
     {
       $this->record['fsize'] = filesize($file);
       $this->LoadEXIF($file);
@@ -148,7 +149,9 @@ class Photo extends View
       $cameralife->PhotoStore->ModifyFile($this, NULL);
     }
 
-    $this->GenerateThumbnail(TRUE); # will commit $this->record
+    $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
+#   $this->GenerateThumbnail(TRUE); # will commit $this->record
+//TODO+ is lazy good in revert
   }
  
   function Erase()

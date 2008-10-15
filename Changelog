@@ -1,4 +1,5 @@
 SVN  Will Entriken <cameralife AT phor.net>
+* Fix some XSS and injection exploits
 * New iconsets and themes
 * Amazon S3 Support
 * Flickr support

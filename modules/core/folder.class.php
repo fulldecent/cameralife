@@ -26,8 +26,8 @@ class Folder extends Search
       Folder::Update();
 
     Search::Search('');
-    $this->mySearchPhotoCondition = "path='".addslashes($this->path)."'";
-    $this->mySearchFolderCondition = "path LIKE '".addslashes($this->path)."%/' AND path NOT LIKE '".addslashes($this->path)."%/%/'";
+    $this->mySearchPhotoCondition = "path='".mysql_real_escape_string($this->path)."'";
+    $this->mySearchFolderCondition = "path LIKE '".mysql_real_escape_string($this->path)."%/' AND path NOT LIKE '".addslashes($this->path)."%/%/'";
   }
 
   # returns an array of Folders

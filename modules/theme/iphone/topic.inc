@@ -1,5 +1,5 @@
 <?php
-  # $cameralife and $atopic are set by ShowPage()
+  # $cameralife and $topic are set by ShowPage()
 
   $cameralife->GetFeature('security');
   $cameralife->GetFeature('photostore');
@@ -10,7 +10,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title><?= $cameralife->GetPref('sitename').' : '.$_GET['name'] ?></title>
+  <title><?= $cameralife->GetPref('sitename').' : '.$topic->GetName() ?></title>
   <?php if($cameralife->Theme->cssURL()) {
     echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
   } ?>
@@ -19,7 +19,7 @@
 </head>
 <body>
 <form name="form1" method=post action="album_controller.php">
-<h1><?= $_GET['name'] ?></h1>
+<h1><?= $topic->GetName() ?></h1>
 <?php
 
   if ($_GET['edit'])
