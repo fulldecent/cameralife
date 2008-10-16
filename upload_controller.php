@@ -149,7 +149,7 @@ if ( !function_exists('sys_get_temp_dir') )
       }
     }
   }
-  else
+  elseif (eregi ('\.jpg$|\.png$|\.jpeg$', $_FILES['userfile']['name']))
   {
     $temp = tempnam('', 'cameralife_');
 
@@ -161,6 +161,10 @@ if ( !function_exists('sys_get_temp_dir') )
 
     if ($result != 0)
       $cameralife->Error("Error adding image: $result", __FILE__);
+  }
+  else
+  {
+    $cameralife->Error('Unsupported filetype');
   }
 
   if ($_POST['target'] == 'ajax')

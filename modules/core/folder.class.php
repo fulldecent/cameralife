@@ -169,7 +169,7 @@ class Folder extends Search
         # Bonus code, if this is local, we can do more verification
         if ($cameralife->GetPref('photostore')=='local' && $photo['fsize'])
         {
-          $photofile = $cameralife->base_dir.'/'.$cameralife->PhotoStore->GetPref('photo_dir')."/$photopath";
+          $photofile = $cameralife->PhotoStore->PhotoDir."/$photopath";
           $actualsize = filesize($photofile);
 
           // Found, but changed
@@ -247,7 +247,7 @@ class Folder extends Search
         # Bonus code
         if ($cameralife->GetPref('photostore')=='local')
         {
-          $actualsize = filesize($cameralife->base_dir.'/'.$cameralife->PhotoStore->GetPref('photo_dir') . '/' . $candidatephotopath);
+          $actualsize = filesize($cameralife->PhotoStore->PhotoDir . '/' . $candidatephotopath);
           if ($actualsize != $photo['fsize'])
             continue;
         }
@@ -330,7 +330,7 @@ class Folder extends Search
       # Bonus code
       if ($cameralife->GetPref('photostore')=='local')
       {
-        $actualsize = filesize($cameralife->base_dir . '/' . $cameralife->PhotoStore->GetPref('photo_dir') . '/' . $new_file);
+        $actualsize = filesize($cameralife->PhotoStore->PhotoDir . '/' . $new_file);
         $extra = ' AND (fsize='.$actualsize.' OR fsize IS NULL)';
       }
       else
@@ -354,9 +354,8 @@ class Folder extends Search
         $same = FALSE;
         if ($cameralife->GetPref('photostore')=='local')
         {
-//TODO is this worth generalizing?
-          $a = file_get_contents($cameralife->base_dir.'/'.$cameralife->PhotoStore->GetPref('photo_dir') . '/' . $photo['path'].$photo['filename']);
-          $b = file_get_contents($cameralife->base_dir.'/'.$cameralife->PhotoStore->GetPref('photo_dir') . '/' . $new_file);
+          $a = file_get_contents($cameralife->PhotoStore->PhotoDir . '/' . $photo['path'].$photo['filename']);
+          $b = file_get_contents($cameralife->PhotoStore->PhotoDir . '/' . $new_file);
           if ($a == $b)
             $same = TRUE;
         }
@@ -373,8 +372,8 @@ class Folder extends Search
       # Bonus code
       if ($cameralife->GetPref('photostore')=='local')
       {
-        $deletedfile = $cameralife->base_dir.'/'.$cameralife->PhotoStore->GetPref('deleted_dir')."/$newpath$newbase";
-        if (file_exists($deletedfile) && filesize($deletedfile) == filesize($cameralife->base_dir.'/'.$cameralife->PhotoStore->GetPref('photo_dir') . '/' . $new_file))
+        $deletedfile = $cameralife->PhotoStore->DeletedDir ."/$newpath$newbase";
+        if (file_exists($deletedfile) && filesize($deletedfile) == filesize($cameralife->PhotoStore->PhotoDir . '/' . $new_file))
         {
           $error = "A file that was added to the photostore $new_file is the same as ";
           $error .= "a file that was previoulsy deleted. Remove the new or the old file: ";
