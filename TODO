@@ -18,7 +18,7 @@ website:
 RELEASE HOWTO
 -------------------
 
-VERSION=2.6.2b7 # edit this line, then SAVE THIS FILE
+VERSION=2.6.2b8 # edit this line, then SAVE THIS FILE
 find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
 #vim setup/install.mysql
 svn commit
