@@ -196,10 +196,8 @@
       }
       elseif (file_exists($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension))
         unlink($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension);
-      unlink($this->CacheDir .'/'. $photo->Get('id').'_600.'.$extension);
-      unlink($this->CacheDir .'/'. $photo->Get('id').'_150.'.$extension);
-
-      # if not lazy, update thumbnails
+      @unlink($this->CacheDir .'/'. $photo->Get('id').'_600.'.$extension);
+      @unlink($this->CacheDir .'/'. $photo->Get('id').'_150.'.$extension);
     }
 
 

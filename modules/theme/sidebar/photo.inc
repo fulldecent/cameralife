@@ -11,6 +11,8 @@
     $_SERVER['HTTP_REFERER'] = $_GET['referer'];
   $_SERVER['HTTP_REFERER'] = str_replace($cameralife->base_url,'', $_SERVER['HTTP_REFERER']);
   $_SERVER['HTTP_REFERER'] = preg_replace('|^/|', '', $_SERVER['HTTP_REFERER']);
+  if (preg_match('|^photos/|',$_SERVER['HTTP_REFERER']))
+    $_SERVER['HTTP_REFERER'] = ''; // not useful information
 
   $sort = $_COOKIE["sort"] or $sort = 'id desc';
 
@@ -139,7 +141,7 @@
 ?>
   <script type="text/javascript" src="<?= $cameralife->base_url . '/modules/theme/' . $cameralife->GetPref('theme') ?>/keywords.php"></script>
   <script type="text/javascript" src="<?= $cameralife->base_url . '/modules/theme/' . $cameralife->GetPref('theme') ?>/delicious.js"></script>
-  <script type="text/javascript" src="<?= $cameralife->base_url . '/modules/theme/' . $cameralife->GetPref('theme') ?>/pphoto.js"></script>
+  <script type="text/javascript" src="<?= $cameralife->base_url . '/modules/theme/' . $cameralife->GetPref('theme') ?>/photo.js"></script>
   <script type="text/javascript" src="<?= $cameralife->base_url . '/modules/theme/' . $cameralife->GetPref('theme') ?>/ajax.js"></script>
   <script type="text/javascript">
 <?php
@@ -149,6 +151,7 @@
     $keys['"'.eregi_replace('[^a-z0-9]','',$keyword).'"']=1;
   echo 'var copytags=['.implode(',',array_keys($keys))."]\n";
   echo "var rating=".($rating+0)."\n";
+  echo 'var base_url="'.$cameralife->base_url.'"';
 ?>
   </script>
 </head>
@@ -334,7 +337,7 @@
     echo '<input id="receiptid" type="hidden" name="id" value="'.$cameralife->receipt->Get('id').'" />';
     echo '<input type="hidden" name="action" value="undo" />';
     echo '<input type="hidden" name="target" value="'.$hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']).'" />';
-    echo $cameralife->receipt->GetDescription().' <button type="submit">Undo</button></form></div>';
+    echo '<span id="receipttext">'.$cameralife->receipt->GetDescription().'</span> <button type="submit">Undo</button></form></div>';
   }
   else
   { 

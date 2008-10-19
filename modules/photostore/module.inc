@@ -103,7 +103,8 @@
     *  ModifyFile
     *
     *  Puts a modified version of a photo into the photostore. Passing NULL
-    *  for the filename will revert the file to the original.
+    *  for the filename will revert the file to the original. The passed
+    *  file is destroyed.
     *
     *  @param $photo - a target photo object
     *  @param $filename - the local filesystem file that we are putting

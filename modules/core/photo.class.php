@@ -132,8 +132,8 @@ class Photo extends View
 
     $temp = tempnam('', 'cameralife_');
     $this->image->Save($temp);
-    $cameralife->PhotoStore->ModifyFile($this, $temp);
-    unlink($temp);
+    $cameralife->PhotoStore->ModifyFile($this, $temp); # $temp is unlinked by ModifyFile
+    $this->record['mtime'] = time();
     
     $this->record['modified'] = 1;
     $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
@@ -147,11 +147,10 @@ class Photo extends View
     {
       $this->record['modified'] = 0;
       $cameralife->PhotoStore->ModifyFile($this, NULL);
+      $this->record['mtime'] = 0;
     }
 
     $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
-#   $this->GenerateThumbnail(TRUE); # will commit $this->record
-//TODO+ is lazy good in revert
   }
  
   function Erase()
@@ -191,7 +190,7 @@ class Photo extends View
     if ($cameralife->GetPref('rewrite') == 'yes')
       return $cameralife->base_url."/photos/$type/".$this->record['id'].'.'.$this->extension.'?'.($this->record['mtime']+0);
     else
-      return $cameralife->base_url.'/media.php&#63;format='.$type.'&amp;id='.$this->record['id'].'&amp;ver='.$this->record['mtime'];
+      return $cameralife->base_url.'/media.php&#63;format='.$type.'&amp;id='.$this->record['id'].'&amp;ver='.($this->record['mtime']+0);
   }
 
   function GetFolder()

@@ -73,7 +73,10 @@ function init() { var elements = ['alpha','copy','freq', 'network'], divs={}, fr
         document.onkeydown = document.onkeypress = document.onkeyup = handler
         updateHilight()
 
-  focusTo($id('formtitle'),0)
+        if($id('rename').style.display != 'none')
+        {
+          focusTo($id('formtitle'),0)
+        }
 }
 
 function makeDiv(id) { var obj=document.createElement('div'); obj.id=id; return obj }

@@ -21,8 +21,8 @@
 
       $this->preferences[] = array('name'=>'accesskey', 'desc'=>'Your access key', 'type'=>'string', 'default'=>'SET THIS');
       $this->preferences[] = array('name'=>'secretaccesskey', 'desc'=>'Your sercet access key', 'type'=>'string', 'default'=>'SET THIS');
-      $this->preferences[] = array('name'=>'photobucket', 'desc'=>'Bucket for Photos (needs to be globally unique, i.e. no other AWS thought of this before)', 'type'=>'string', 'default'=>'myphotos');
-      $this->preferences[] = array('name'=>'cachebucket', 'desc'=>'Bucket for cache files (needs to be globally unique, i.e. no other AWS thought of this before)', 'type'=>'string', 'default'=>'mycache');
+      $this->preferences[] = array('name'=>'photobucket', 'desc'=>'Bucket for Photos (needs to be globally unique, i.e. no other AWS user thought of this before)', 'type'=>'string', 'default'=>'myphotos');
+      $this->preferences[] = array('name'=>'cachebucket', 'desc'=>'Bucket for cache files (needs to be globally unique, i.e. no other AWS user thought of this before)', 'type'=>'string', 'default'=>'mycache');
       $this->preferences[] = array('name'=>'created', 'desc'=>'Have the buckets already been created?', 'type'=>'yesno', 'default'=>'no');
 
       if (($this->GetPref('accesskey') != 'SET THIS') && ($this->GetPref('secretaccesskey') != 'SET THIS') && (!$this->GetPref('created')))
@@ -325,7 +325,70 @@
     */
     function ModifyFile($photo, $filename) 
     {
-      $this->PutFile($photo, $filename); // overwrite it
+      $extesnion = $photo->extension;
+
+      if($filename)
+      {
+        $aws_key = $this->GetPref('accesskey');
+        $source_file = $filename; // file to upload to S3
+        $file_type = mime_content_type($source_file);  // or other file type like "image/jpeg" for JPEG image, 
+        $aws_bucket = $this->GetPref('cachebucket'); // AWS bucket 
+        $aws_object = urlencode($photo->Get('id').'_mod.'.$extension);         // AWS object name (file name)
+
+        $file_data = file_get_contents($source_file);
+        if ($file_data == false) die("Failed to read file ".$source_file);
+
+        $file_length = strlen($file_data); // for Content-Length HTTP field 
+
+        // opening HTTP connection to Amazon S3
+        $fp = fsockopen("s3.amazonaws.com", 80, $errno, $errstr, 30);
+        if (!$fp)
+          $cameralife->Error("Cannot connect to AWS: $errstr ($errno)\n");
+
+        $dt = gmdate('r'); // GMT based timestamp
+        $access = $photo->Get('status') == 0 ? 'public-read' : 'private';
+
+        // preparing String to Sign    (see AWS S3 Developer Guide)
+        $string2sign = "PUT\n\n{$file_type}\n{$dt}\nx-amz-acl:{$access}\n/{$aws_bucket}/{$aws_object}";
+
+        // preparing HTTP PUT query
+        $query = "PUT /{$aws_bucket}/{$aws_object} HTTP/1.1\r\nHost: s3.amazonaws.com\r\nx-amz-acl: ${access}\r\nConnection: keep-alive\r\nContent-Ty
+pe: {$file_type}\r\nContent-Length: {$file_length}\r\nDate: $dt\r\nAuthorization: AWS {$aws_key}:".$this->amazon_hmac($string2sign)."\r\n\r\n";
+        $query .= $file_data;
+
+        $resp = $this->sendREST($fp, $query);
+        if (strpos($resp, '<Error>') !== false)
+          $cameralife->Error("AWS put failed: $resp", __FILE__, __LINE__);
+
+        fclose($fp);
+        unlink($filename);
+      }
+      else
+      {
+        $extesnion = $photo->extension;
+        $aws_key = $this->GetPref('accesskey');
+        $aws_bucket = $this->GetPref('photobucket'); // AWS bucket 
+        $aws_object = urlencode($photo->Get('id').'_mod.'.$extension);         // AWS object name (file name)
+
+        // opening HTTP connection to Amazon S3
+        $fp = fsockopen("s3.amazonaws.com", 80, $errno, $errstr, 30);
+        if (!$fp)
+          $cameralife->Error("Cannot connect to AWS: $errstr ($errno)\n");
+
+        $dt = gmdate('r'); // GMT based timestamp
+
+        // preparing String to Sign    (see AWS S3 Developer Guide)
+        $string2sign = "DELETE\n\n\n{$dt}\n/{$aws_bucket}/{$aws_object}";
+        // preparing HTTP PUT query
+        $query = "DELETE /{$aws_bucket}/{$aws_object} HTTP/1.1\r\nHost: s3.amazonaws.com\r\nConnection: keep-alive\r\nDate: $dt\r\nAuthorization: AWS
+ {$aws_key}:".$this->amazon_hmac($string2sign)."\r\n\r\n";
+
+        $resp = $this->sendREST($fp, $query);
+        if (strpos($resp, '<Error>') !== false)
+          $cameralife->Error("AWS delete failed: $resp", __FILE__, __LINE__);
+
+        fclose($fp);
+      }
     }
 
 
@@ -379,7 +442,7 @@
       if (strpos($resp, '<Error>') !== false)
         $cameralife->Error("AWS delete failed: $resp", __FILE__, __LINE__);
 #######
-      $aws_object = urlencode($photo->Get('id').'_600.'.$extension);         // AWS object name (file name)
+      $aws_object = urlencode($photo->Get('id').'_150.'.$extension);         // AWS object name (file name)
       $dt = gmdate('r'); // GMT based timestamp
 
       // preparing String to Sign    (see AWS S3 Developer Guide)

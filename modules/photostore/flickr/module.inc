@@ -201,7 +201,8 @@
       
       $this->Flickr->replace($filename, $photoid);
       if ($this->Flickr->getErrorCode() == 1)
-        $cameralife->Error('You must have a PRO account ith Flickr to replace/modify existing photos');
+        $cameralife->Error('You must have a PRO account with Flickr to replace/modify existing photos');
+      unlink($filename);
     }
 
 

@@ -203,9 +203,12 @@
       @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
       if ($filename)
         copy($filename, $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
+      elseif (file_exists($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension))
+        unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
       @chmod($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension, 0666);
       @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
       @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
+      unlink($filename);
 
       $photo->GenerateThumbnail($filename == NULL); // if we are reverting, let Generate know
     }
