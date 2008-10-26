@@ -210,7 +210,7 @@ Design by <a href="http://www.realitysoftware.ca" title="Website Design"><strong
         echo "<a";
         if ($_GET['page'] == $section['page_name'])
           echo ' id="current"';
-        echo " href=\"".$_SERVER['PHP_SELF']."&#63;page=".$section['page_name'];
+        echo " href=\"".urlencode($_SERVER['PHP_SELF'])."&#63;page=".$section['page_name'];
         if ($http_get)
           foreach($http_get as $var => $val)
             echo "&amp;$var=$val";
@@ -233,7 +233,7 @@ Design by <a href="http://www.realitysoftware.ca" title="Website Design"><strong
         if ($start==-1)
         {
           echo "<span class='current'>Randomly showing <b>$per_page</b> of <b>$total</b></span> ";
-          echo "<a class='nextprev' href=\"".$_SERVER["PHP_SELF"]."&#63;$param\">More &#187;</a>";
+          echo "<a class='nextprev' href=\"".urlencode($_SERVER["PHP_SELF"])."&#63;$param\">More &#187;</a>";
         }
         else
         {
@@ -243,7 +243,7 @@ Design by <a href="http://www.realitysoftware.ca" title="Website Design"><strong
           if ($last==0) $last=1;
       
           if ($first != $start)
-            echo "<a class='nextprev' href=\"".$_SERVER["PHP_SELF"]."&#63;$param&amp;start=".($start-$per_page)."\">";
+            echo "<a class='nextprev' href=\"".urlencode($_SERVER["PHP_SELF"])."&#63;$param&amp;start=".($start-$per_page)."\">";
           else
             echo "<span class='nextprev'>";
           echo '&#171; Previous';
@@ -260,13 +260,13 @@ Design by <a href="http://www.realitysoftware.ca" title="Website Design"><strong
             }
             else
             {
-              echo "<a href=\"".$_SERVER["PHP_SELF"]."&#63;$param&amp;start=$i\">";
+              echo "<a href=\"".urlencode($_SERVER["PHP_SELF"])."&#63;$param&amp;start=$i\">";
               echo ($i/$per_page+1)."</a> ";
             }
           }
   
           if ($last != $start)
-            echo "<a class='nextprev' href=\"".$_SERVER["PHP_SELF"]."&#63;$param&amp;start=".($start+$per_page)."\">";
+            echo "<a class='nextprev' href=\"".urlencode($_SERVER["PHP_SELF"])."&#63;$param&amp;start=".($start+$per_page)."\">";
           else
             echo "<span class='nextprev'>";
           echo 'Next &#187;';

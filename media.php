@@ -12,7 +12,7 @@
 
   $photo = new Photo($_GET['id']);
   $format = $_GET['format'];
-  if (!is_numeric($_GET['ver'])) $cameralife->Error('Required number ver missing! Expected a number, got: '.$_GET['ver']);
+  if (!is_numeric($_GET['ver'])) $cameralife->Error('Required number ver missing! Expected a number, got: '.htmlentities($_GET['ver']));
   $extension = $photo->extension;
 
   if (!$cameralife->Security->authorize('admin_file'))

@@ -50,7 +50,7 @@ $menu = array();
                         'small-folder');
 
   if (count($sections) > 0)
-    $cameralife->Theme->MultiSection($sections, array('path'=>$_GET['path']));
+    $cameralife->Theme->MultiSection($sections, array('path'=>htmlentities($folder->Path()));
   else
   {
     $cameralife->Error('This folder does not exist.');
@@ -61,9 +61,9 @@ $menu = array();
   if ($sort == 'rand()') $start = -1;
 
   if ($_GET['page'] == "photos")
-    $cameralife->Theme->PageSelector($_GET['start'],$counts['photos'],12,"page=photos&amp;path=".$_GET["path"]);
+    $cameralife->Theme->PageSelector($_GET['start'],$counts['photos'],12,"page=photos&amp;path=".urlencode($folder->Path()));
   else // ($_GET['page'] == "folders")
-    $cameralife->Theme->PageSelector ($_GET['start'],$counts['folders'],12,"page=folders&amp;path=".$_GET["path"]);
+    $cameralife->Theme->PageSelector ($_GET['start'],$counts['folders'],12,"page=folders&amp;path=".urlencode($folder->Path()));
 
 ?>
 

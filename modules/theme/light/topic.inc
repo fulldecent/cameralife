@@ -1,5 +1,5 @@
 <?php
-  # $cameralife and $atopic are set by ShowPage()
+  # $cameralife and $topic are set by ShowPage()
 
   $cameralife->GetFeature('security');
   $cameralife->GetFeature('photostore');
@@ -7,7 +7,7 @@
   $albums = $topic->GetAlbums();
   $counts = $topic->GetCounts();
 
-  $cameralife->Theme->Header($cameralife->GetPref('sitename').' : '.$_GET['name'], 'topic');
+  $cameralife->Theme->Header($cameralife->GetPref('sitename').' : '.htmlentities($topic->GetName()), ' topic');
 ?>
 <div id="text">
 <form name="form1" method=post action="album_controller.php">
@@ -16,12 +16,12 @@
   $menu[] = $cameralife->GetIcon('small');
   if ($cameralife->Security->authorize('admin_albums'))
   {
-    $menu[] = array('name'=>"Add an album to \"".$_GET['name']."\"",
+    $menu[] = array('name'=>"Add an album to \"".htmlentities($topic->GetName())."\"",
                     'href'=>"search.php&#63;albumhelp=1",
                     'image'=>'small-album');
   }
-  $menu[] = array('name'=>"Search for \"".$_GET['name']."\"",
-                  'href'=>'search.php&#63;q='.$_GET['name'],
+  $menu[] = array('name'=>"Search for \"".htmlentities($topic->GetName())."\"",
+                  'href'=>'search.php&#63;q='.urlencode($topic->GetName()),
                   'image'=>'small-search');
 
 #  $cameralife->Theme->TitleBar('Photo albums of '.$_GET['name'],
@@ -34,17 +34,17 @@
     $cameralife->Security->authorize('admin_albums',1);
 ?>
   <div class="administrative" align=center>
-    <input type="hidden" name="param4" value="<?= $_GET['term'] ?>">
+    <input type="hidden" name="param4" value="<?= htmlentities($_GET['term']) ?>">
     <input type="hidden" name="target" value="<?= $cameralife->base_url ?>/index.php">
 
     <p class="info" align=left>
-      You are about to create an Album of photos whose descriptions contain "<b><?= $_GET['term'] ?></b>".
+      You are about to create an Album of photos whose descriptions contain "<b><?= htmlentities($_GET['term']) ?></b>".
       <?php if (file_exists('setup/albums.html')) echo "<a href=\"".$cameralife->base_url."/setup/albums.html\">Click here for more information about albums</a>"; ?>
     </p>
     <table>
       <tr>
         <td>The Album's name:
-        <td><input type="text" name="param3" value="<?= ucwords($_GET['term']) ?>">
+        <td><input type="text" name="param3" value="<?= htmlentities(ucwords($_GET['term'])) ?>">
       <tr>
         <td>This album and others like it are:
         <td><select name="param1">
@@ -63,7 +63,7 @@
         <td>
         <td>
           <input type=submit name="action" value="Create">
-          <a href="search.php&#63;q=<?= $_GET['term'] ?>">(cancel)</a>
+          <a href="search.php&#63;q=<?= urlencode($topic->GetName()) ?>">(cancel)</a>
     </table>
   </div>
 <?php
@@ -73,7 +73,7 @@
   $cameralife->Theme->Grid($albums);
   
   if ($sort == 'rand()') $start = -1;
-  $cameralife->Theme->PageSelector($start,$total,12,"name=".$_GET["name"]);
+  $cameralife->Theme->PageSelector($start,$total,12,"name=".urlencode($_GET["name"]));
 ?>
 </form>
 

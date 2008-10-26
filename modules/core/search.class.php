@@ -169,6 +169,11 @@ class Search extends View
                  'image'=>($size=='large')?'search':'small-search');
   }
 
+  function GetQuery()
+  {
+    return $this->myQuery;
+  }
+
 }
 
 ?>

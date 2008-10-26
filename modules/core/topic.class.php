@@ -17,7 +17,7 @@ class Topic extends Search
 
   function GetName()
   {
-    return htmlentities($this->name);
+    return $this->name;
   }
 
   function Get($item)
@@ -35,7 +35,7 @@ class Topic extends Search
       $href = $cameralife->base_url.'/topic.php&#63;name='.$this->name;
 
     return array('href'=>$href,
-                 'name'=>$this->name,
+                 'name'=>htmlentities($this->name),
                  'image'=>($size=='large')?'topic':'small-topic');
   }
 

@@ -42,7 +42,7 @@
 </table>
 
 <input type="hidden" name="target" value="<?= $cameralife->base_url.'/index.php' ?>">
-<input type="submit" name="action" value="<?= ucwords($_GET['page']) ?>">
+<input type="submit" name="action" value="<?= htmlentities(ucwords($_GET['page'])) ?>">
 
 </form>
 </body>

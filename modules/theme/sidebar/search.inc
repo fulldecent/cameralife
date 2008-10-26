@@ -4,9 +4,7 @@
   $cameralife->GetFeature('security');
   $cameralife->GetFeature('photostore');
 
-  $start = $_GET['start'] 
-    or $start = 0;
-
+  $start = $_GET['start'] + 0;
   $search->SetPage($start);
   if (($_GET['page'] == 'a') || (!isset($_GET['page']) && $counts['albums'] >0))
   {
@@ -32,10 +30,10 @@
     echo '  <link rel="stylesheet" href="'.$cameralife->Theme->cssURL()."\">\n";
   } ?>
   <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
-  <link rel="alternate" type="application/rss+xml" title="RSS feed of <?= $_GET['q'] ?>" href="rss.php&#63;q=<?= $_GET['q'] ?>"/>
+  <link rel="alternate" type="application/rss+xml" title="RSS feed of <?= htmlentities($search->GetQuery()) ?>" href="rss.php&#63;q=<?= urlencode($search->GetQuery()) ?>"/>
 </head>
 <body>
-<form method="GET"> 
+<form method="get"> 
   
 <?php
   $menu = array();
@@ -51,7 +49,7 @@
 
   if($_GET['page'] == "p" && $cameralife->Security->Authorize('admin_albums'))
           $menu[] = array('name'=>'Create an Album of these photos',
-                          'href'=>'topic.php&#63;edit=true&amp;term='.urlencode($_GET['q']),
+                          'href'=>'topic.php&#63;edit=true&amp;term='.urlencode($search->GetQuery()),
                           'image'=>'small-album');
 
   $cameralife->Theme->TitleBar('Site search', 'main', FALSE, $menu);
@@ -71,7 +69,7 @@
 
     $cameralife->Theme->Section('Search for')
 ?>
-  <input type="text" name="q" value="<?= stripslashes($_GET['q']) ?>">
+  <input type="text" name="q" value="<?= htmlentities(stripslashes($search->GetQuery())) ?>">
   <input type="hidden" name="page" value="<?= $_GET['page'] ?>">
   <input type="image" src="<?= $cameralife->Theme->ImageURL('search') ?>" value="search">
 
@@ -79,31 +77,31 @@
   if($_GET['albumhelp']) exit(0);
 
   if ($counts['albums'] > 0)
-    $sections[] = array('name'=>$counts['albums'].' albums of '.$_GET['q'],
+    $sections[] = array('name'=>$counts['albums'].' albums of '.htmlentities($search->GetQuery()),
                         'page_name'=>'a',
                         'image'=>'small-topic');
   if ($counts['folders'] > 0)
-    $sections[] = array('name'=>$counts['folders'].' folders of '.$_GET['q'],
+    $sections[] = array('name'=>$counts['folders'].' folders of '.htmlentities($search->GetQuery()),
                         'page_name'=>'f',
                         'image'=>'small-topic');
   if ($counts['photos'] > 0)
-    $sections[] = array('name'=>$counts['photos'].' photos of '.$_GET['q'],
+    $sections[] = array('name'=>$counts['photos'].' photos of '.htmlentities($search->GetQuery()),
                         'page_name'=>'p',
                         'image'=>'small-topic');
 
   if (count($sections) > 0)
-    $cameralife->Theme->MultiSection($sections, array('q'=>$_GET['q']));
+    $cameralife->Theme->MultiSection($sections, array('q'=>htmlentities($search->GetQuery())));
   else
     $cameralife->Theme->Section('Sorry, no results');
 
   $cameralife->Theme->Grid($results);
 
   if ($_GET['page'] == "a")
-    $cameralife->Theme->PageSelector($start,$counts['albums'],12,"page=a&amp;q=".$_GET["q"]);
+    $cameralife->Theme->PageSelector($start,$counts['albums'],12,"page=a&amp;q=".urlencode($search->GetQuery()));
   else if ($_GET['page'] == "f")
-    $cameralife->Theme->PageSelector($start,$counts['folders'],12,"page=f&amp;q=".$_GET["q"]);
+    $cameralife->Theme->PageSelector($start,$counts['folders'],12,"page=f&amp;q=".urlencode($search->GetQuery()));
   else
-    $cameralife->Theme->PageSelector($start,$counts['photos'],12,"page=p&amp;q=".$_GET["q"]);
+    $cameralife->Theme->PageSelector($start,$counts['photos'],12,"page=p&amp;q=".urlencode($search->GetQuery()));
 /*
   $cameralife->Theme->SortSelector('id'=>'Oldest First','id desc'=>'Newest First',
                                    'description'=>'A-Z', 'description desc'=>'Z-A',

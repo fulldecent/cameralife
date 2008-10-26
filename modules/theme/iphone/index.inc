@@ -4,7 +4,12 @@
   $cameralife->GetFeature('security');
   $cameralife->GetFeature('photostore');
 
-  $_GET['page'] or $_GET['page'] = 'rand';
+  if ($_GET['page'] == 'newest')
+    $page = 'newest';
+  elseif ($_GET['page'] == 'newest-folders')
+    $page = 'newest-folders';
+  else
+    $page = 'rand';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
@@ -23,8 +28,6 @@
   <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
   <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=yes;" />
   <link rel="icon" type="image/vnd.microsoft.icon" href="favicon.ico"/>
-  <link rel="alternate" type="application/rss+xml" title="RSS feed of <?= $cameralife->GetPref('sitename') ?>" href="rss.php&#63;q="/>
-  <link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml" title="<?= $cameralife->GetPref('sitename') ?> search" />
 </head>
 <body>
 
@@ -52,12 +55,10 @@
 
     $cameralife->Theme->MultiSection($sections);
 
-    list($sort,$type) = explode('-', $_GET['page']);
-
     $search->SetPage(0, $cameralife->Theme->GetPref('main_thumbnails_n'));
-    $search->SetSort($sort);
+    $search->SetSort($page == 'rand' ? 'rand' : 'newest');
 
-    if ($type == 'folders')
+    if ($page == 'newest-folders')
       $results = $search->GetFolders();
     else
       $results = $search->GetPhotos();

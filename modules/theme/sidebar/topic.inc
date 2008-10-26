@@ -41,17 +41,17 @@
     $cameralife->Security->authorize('admin_albums',1);
 ?>
   <div class="administrative" align=center>
-    <input type="hidden" name="param4" value="<?= $_GET['term'] ?>">
+    <input type="hidden" name="param4" value="<?= htmlentities($topic->GetName()) ?>">
     <input type="hidden" name="target" value="<?= $cameralife->base_url ?>/index.php">
 
     <p class="info" align=left>
-      You are about to create an Album of photos whose descriptions contain "<b><?= $_GET['term'] ?></b>".
+      You are about to create an Album of photos whose descriptions contain "<b><?= htmlentities($_GET['term']) ?></b>".
       <?php if (file_exists('setup/albums.html')) echo "<a href=\"setup/albums.html\">Click here for more information about albums</a>"; ?>
     </p>
     <table>
       <tr>
         <td>The Album's name:
-        <td><input type="text" name="param3" value="<?= ucwords($_GET['term']) ?>">
+        <td><input type="text" name="param3" value="<?= htmlentities(ucwords($_GET['term'])) ?>">
       <tr>
         <td>This album and others like it are:
         <td><select name="param1">
@@ -70,7 +70,7 @@
         <td>
         <td>
           <input type=submit name="action" value="Create">
-          <a href="search.php&#63;q=<?= $_GET['term'] ?>">(cancel)</a>
+          <a href="search.php&#63;q=<?= urlencode($_GET['term']) ?>">(cancel)</a>
     </table>
   </div>
 <?php
@@ -80,7 +80,7 @@
   $cameralife->Theme->Grid($albums);
   
   if ($sort == 'rand()') $start = -1;
-  $cameralife->Theme->PageSelector($start,$total,12,"name=".$_GET["name"]);
+  $cameralife->Theme->PageSelector($start,$total,12,"name=".urlencode($topic->GetName()));
 ?>
 </form>
 

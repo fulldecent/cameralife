@@ -24,7 +24,7 @@
   $cameralife->Theme->Grid($albums);
   
   if ($sort == 'rand()') $start = -1;
-  $cameralife->Theme->PageSelector($start,$total,12,"name=".$_GET["name"]);
+  $cameralife->Theme->PageSelector($start,$total,12,"name=".urlencode($topic->GetName()));
 ?>
 </form>
 

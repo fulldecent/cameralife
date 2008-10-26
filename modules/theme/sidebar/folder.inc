@@ -5,6 +5,8 @@
 
   # Browses a give path for photos
   # Magic vars GET:start, GET/POST:sort are handled in search.class.php
+
+  $start = $_GET['start'] + 0;
   
   $counts = $folder->GetCounts();
 
@@ -70,9 +72,9 @@ $menu = array();
   if ($sort == 'rand()') $start = -1;
 
   if ($_GET['page'] == "photos")
-    $cameralife->Theme->PageSelector($_GET['start'],$counts['photos'],12,"page=photos&amp;path=".$_GET["path"]);
+    $cameralife->Theme->PageSelector($_GET['start'],$counts['photos'],12,"page=photos&amp;path=".htmlentities($folder->Path()));
   else // ($_GET['page'] == "folders")
-    $cameralife->Theme->PageSelector ($_GET['start'],$counts['folders'],12,"page=folders&amp;path=".$_GET["path"]);
+    $cameralife->Theme->PageSelector ($_GET['start'],$counts['folders'],12,"page=folders&amp;path=".htmlentities($folder->Path()));
 
 ?>
 

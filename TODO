@@ -5,7 +5,10 @@ TODO For the 2.6.2 Realease Cycle
 * Once-over on the install process
 
 ! grep GET  -r modules/theme/*/*inc
+! grep PHP_SELF  -r modules/theme/*/*inc
 . use AddParam()
+! THE CHRIS PROBLEM
+not need content negotiation
 
 
 website: 
@@ -18,7 +21,7 @@ website:
 RELEASE HOWTO
 -------------------
 
-VERSION=2.6.2b8 # edit this line, then SAVE THIS FILE
+VERSION=2.6.2b9 # edit this line, then SAVE THIS FILE
 find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
 #vim setup/install.mysql
 svn commit
@@ -49,6 +52,8 @@ note: bleeding edge ideas are at: http://camera.phor.net/TODO
 
 generalize photo metadata: exif, comments, ratings, flickr backup/restore hack
 don't handle hits in the theme(), do it before the showpage();
+
+an option to use SSL for private photos
 
 
 folders is very slow...
