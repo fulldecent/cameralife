@@ -50,6 +50,8 @@ note: bleeding edge ideas are at: http://camera.phor.net/TODO
 ----------------------------
 ! grep Database -r modules/theme/*/*inc
 
+move Image stuff further out into ImageProcessing
+
 generalize photo metadata: exif, comments, ratings, flickr backup/restore hack
 don't handle hits in the theme(), do it before the showpage();
 

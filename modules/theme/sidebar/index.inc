@@ -23,6 +23,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
   <link rel="icon" type="image/vnd.microsoft.icon" href="favicon.ico"/>
   <link rel="alternate" type="application/rss+xml" title="RSS feed of <?= $cameralife->GetPref('sitename') ?>" href="rss.php&#63;q="/>
+  <link rel="alternate" type="application/rss+xml" title="RSS feed of <?= $cameralife->GetPref('sitename') ?>" href="rss-folders.php&#63;q="/>
   <link rel="search" type="application/opensearchdescription+xml" href="opensearch.xml" title="<?= $cameralife->GetPref('sitename') ?> search" />
 </head>
 <body>

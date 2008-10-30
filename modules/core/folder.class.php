@@ -6,7 +6,8 @@ class Folder extends Search
 
   # must construct with either a Photo or a Path
   # choose sync to verify the Folder with whats actually on the disk
-  function Folder($original = '', $sync=FALSE)
+  # optional; you tell me whn my latest photo is from, in unixtime
+  function Folder($original = '', $sync=FALSE, $date=NULL)
   {
     global $cameralife;
 
@@ -21,6 +22,7 @@ class Folder extends Search
     {
       $this->path = $original->Get('path');
     }
+    $this->date = $date;
 
     if($sync && !$this->Fsck())
       Folder::Update();
@@ -111,6 +113,8 @@ class Folder extends Search
       $retval['image'] = $cameralife->IconURL('folder');
     else
       $retval['image'] = $cameralife->IconURL('small-folder');
+
+    $retval['date'] = $this->date;
 
     return $retval;
   }

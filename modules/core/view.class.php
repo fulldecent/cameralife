@@ -10,8 +10,8 @@ class View
    * @return array with keys: href, name, image
    *
    * return may also include: context (flavor text), rel and rev (from HTML a element attributes)
-   *   and width and height (for the image)
-   * image will be a URL or a named icon (see IconSet modules)
+   *   and width and height (for the image), date (unix time)
+   * image will be a URL
    *  these named icons will match ^[a-z-]+$
    *
    * href is HTML encoded, so you can <a href="$icon[href]">$icon[name]</a>

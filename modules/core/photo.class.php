@@ -40,7 +40,7 @@ class Photo extends View
       $this->record['description'] = 'unnamed';
       $this->record['status'] = '0';
       $this->record['fsize'] = filesize($fullpath);
-      $this->record['created'] = date('Y-m-d', filemtime($fullpath));
+      $this->record['created'] = date('Y-m-d');
       $this->recode['modified'] = '0';
       $this->recode['mtime'] = '0';
       $this->record = array_merge($this->record, $original);

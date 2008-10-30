@@ -155,10 +155,10 @@ class Search extends View
     }
 
     $condition = $this->mySearchFolderCondition.' AND status=0';
-    $query = $cameralife->Database->Select('photos', 'path', $condition, 'GROUP BY path ORDER BY '.$sort.' '.$this->myLimit);
+    $query = $cameralife->Database->Select('photos', 'path, MAX(mtime) as date', $condition, 'GROUP BY path ORDER BY '.$sort.' '.$this->myLimit);
     $folders = array();
     while ($row = $query->FetchAssoc())
-      $folders[] = new Folder($row['path'], FALSE);
+      $folders[] = new Folder($row['path'], FALSE, $row['date']);
     return $folders;
   }
 
