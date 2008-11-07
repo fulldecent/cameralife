@@ -11,6 +11,8 @@
   {
     function LocalPhotoStore() 
     {
+      global $cameralife;
+
       $this->name = 'Local';
 
       $this->preferences[] = array('name'=>'photo_dir', 'desc'=>'Main photo directory', 'type'=>'directory', 'default'=>'images/photos');
@@ -116,7 +118,7 @@
 
       $this->mkdir_recursive($this->PhotoDir .'/'. $photo->Get('path'));
       copy($filename, $this->PhotoDir .'/'. $photo->Get('path').$photo->Get('filename'))
-        or $cameralife->Error('Could not add photo: ' . $photo->Get('path').$photo->Get('filename'), __FILE__, __LINE__);
+        or $cameralife->Error('Could not add photo: ' . $photo->Get('path').$photo->Get('filename') . ' from '.$filename, __FILE__, __LINE__);
       chmod($this->PhotoDir .'/'. $photo->Get('path').$photo->Get('filename'), 0666);
     }
 

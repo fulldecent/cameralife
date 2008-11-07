@@ -55,7 +55,8 @@
     /**
     *  PutFile
     *
-    *  Puts a new photo into the photostore. Photo should be put with appropriate permissions
+    *  Puts a new photo into the photostore. Photo should be put with appropriate permissions.
+    *  The file $filename will not be modified or deleted.
     *
     *  @param $photo - a target photo object
     *  @param $filename - the local filesystem file that we are putting

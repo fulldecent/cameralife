@@ -22,7 +22,7 @@
 
     if (!$_POST['param1']) $cameralife->Error('Parameter missing.');
 
-    $photo->Set('flag', substr($_POST['param1'], 1,1));
+    $photo->Set('flag', $_POST['param1']);
     $receipt = $photo->Set('status', 1);
   }
   elseif ($_POST['action'] == 'rename')

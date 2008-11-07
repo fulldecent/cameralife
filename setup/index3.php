@@ -17,7 +17,7 @@
 
 Collect some photos that you would like to use with the site. Now, either:
 <ul>
-  <li>Place them in the images/photos, or
+  <li>Place them in the folder images/photos, or
   <li>Make your existing folder writable and change your photo directory in the 
       <a href="../admin/photostore.php" target="_blank">Photo Storage setup</a> 
   <li>Use the <a href="../upload.php" target="_blank">Upload Page</a></li>

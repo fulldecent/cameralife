@@ -30,8 +30,9 @@
   <p>Using cPanel:</p>
 
   <ul>
-    <li>Click MySQL Databases</li>
-    <li>New Database: cameralife</li>
+    <li><a target="_new" href="http://<?= $_SERVER['HTTP_HOST'] ?>/cpanel">Login to cPanel</a></li>
+    <li>Click <a target="_new" href="http://<?= $_SERVER['HTTP_HOST'] ?>:2082/frontend/x3/sql/index.html">MySQL Databases</a></li>
+    <li>Create Database: cameralife, go back</li>
     <li>Add New User: <b>username</b> <b>password</b></li>
     <li>Add User To Database: select your user and database, and tick ALL PRIVILEGES</li>
     <li>Note, your cPanel account name will proceed your database and user names below. For example, your database name will be mycpanelname_cameralife</li>
@@ -69,8 +70,6 @@
 
 <?php } else { ?>
 
-  <h2>Trying Credentials</h2>
-
   <?php
     if (!$_POST['host'])
       die ("You didn't specify a server to connect to, <a href=\"index2.php\">go back</a> and try again");
@@ -96,9 +95,7 @@
             the existing tables! To upgrade, consult the <a href='../UPGRADE'>UPGRADE</a> file");
   ?>
 
-  I am able to login with those credentials.
-
-  <h2>Setting up tables</h2>
+  <p>Logged in to database...</p>
 
   <?php
 
@@ -124,6 +121,7 @@
         `keywords` varchar(255) NOT NULL default '',
         `username` varchar(30) default NULL,
         `status` int(11) NOT NULL default '0',
+        `flag` enum('indecent','photography','subject','bracketing') default NULL,
         `width` int(11) default '0',
         `height` int(11) default '0',
         `tn_width` int(11) default '0',
@@ -224,7 +222,7 @@
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);
 
-    echo "Done creating tables<br>";
+    echo "<p>Creating tables...</p>";
 
     $salted_password = crypt($_POST['sitepass'],'admin');
     $SQL = "INSERT INTO ${prefix}users (username, password, auth, cookie, last_online)
@@ -232,11 +230,9 @@
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);
 
-    echo "Done creating admin account<br>";
+    echo "<p>Creating admin account</p>";
 
   ?>
-
-  <h2>Creating config file</h2>
 
   <?php
     $config[] = "<?php\n";
@@ -255,15 +251,16 @@
         fwrite ($fd, $line);
       fclose($fd);
 
-      echo "I have setup your config file appropriately.";
+      echo "<p>Writing configuration file...</p>";
+      echo "<p>Setup is complete.</p>";
     }
     else
     {
-      echo "I cannot write your config file modules/config.inc ";
+      echo "<p>I cannot write your config file modules/config.inc ";
       echo "Please create this file and paste in the following:<pre class='code'>";
       foreach ($config as $line)
         echo htmlentities($line) . "\n";
-      echo "</pre>";
+      echo "</pre></p>";
     }
   ?>
 

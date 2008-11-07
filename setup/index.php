@@ -26,7 +26,7 @@ Thank you for choosing to install Camera Life. We hope you will find this projec
 </ul>
 If you are upgrading from a previous version of Camera Life, stop and read the file <a href="../UPGRADE">UPGADE</a>.
 
-<h2>Prerequisites</h2>
+<h2>Checking Prerequisites...</h2>
 
 <p />
 <table width="90%" align=center>
@@ -96,17 +96,45 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
     <td>
       Checking for content negotiation...
     <td>
-      <font color=green>Successful</font>
-      <img height=10 width=50 src="images/blank" alt="Your server doesn't appear to support
-        CONTENT NEGOTIATION, or is not allowing HTACCESS OVERRIDES. Or maybe the file .htaccess 
-        was not copied. You're going to need to fix that before you continue. ">
+      <?php
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . ($_SERVER['SERVER_PORT'] == 80 ? '' : ':'.$_SERVER['SERVER_PORT']). str_replace('index.php','',$_SERVER['PHP_SELF']) . 'images/blank.gif';
+        $fh = fopen($url, 'r');
+        while (!feof($fh)) 
+        {
+          $data .= fread($fh, 8192);
+        }
+
+        if (md5($data) == 'accba0b69f352b4c9440f05891b015c5')
+          echo "<font color=green>Configured</font>";
+        else
+        {
+          echo "<font color=red>Error</font>
+                <tr><td colspan=2><p class='important'>Your server doesn't appear to support
+                CONTENT NEGOTIATION, or is not allowing HTACCESS OVERRIDES. Or maybe the file .htaccess
+                was not copied. You're going to need to fix that before you continue.</p>";
+          $continue = false;
+        }
+      ?>
   <tr>
     <td>
       Checking for mod_rewrite...
     <td>
-      <font color=green>Successful</font>
-      <img height=10 width=50 src="../testrewrite" alt="Your server doesn't appear to support
-        MOD REWRITE. This is not required, but if you add it, Camera Life will use it.">
+      <?php
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . ($_SERVER['SERVER_PORT'] == 80 ? '' : ':'.$_SERVER['SERVER_PORT']). str_replace('index.php','',$_SERVER['PHP_SELF']) . '../testrewrite';
+        $fh = @fopen($url, 'r');
+        while ($fh && !feof($fh)) 
+        {
+          $data2 .= fread($fh, 8192);
+        }
+        if (md5($data2) == 'accba0b69f352b4c9440f05891b015c5')
+          echo "<font color=green>Configured</font>";
+        else
+        {
+          echo "<font color=red>Error</font>
+                <tr><td colspan=2><p class='important'>Your server doesn't appear to support
+                MOD REWRITE. This is not required, but if you add it, you can have pretty URL's.</p>";
+        }
+      ?>
   <tr>
     <td>
       Checking package permissions...
