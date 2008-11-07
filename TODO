@@ -13,21 +13,20 @@ not need content negotiation
 
 website: 
   update buildscript for version on website
-  rename to cameralife
+  rename to cameralife.sf.net
   update the admin/index phone-home version script
 
+find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
 
 ===================
 RELEASE HOWTO
 -------------------
 
-VERSION=2.6.2b9 # edit this line, then SAVE THIS FILE
-find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
-#vim setup/install.mysql
-svn commit
+# Change this first line, then paste in to terminal...
 
-# the fast part...
-sed "/this..version/s/'.*'/'$VERSION'/" -i main.inc
+VERSION='2.6.2b10' # CHANGE THIS LINE!!!
+sed "/this..version/s/'2.6.2b10'/" -i main.inc TODO
+svn commit -m "Releasing version $VERSION"
 phpdoc -o HTML:frames:earthli -d . -t ../docs
 rsync --delete -ave ssh ../docs fulldecent,fdcl@web.sf.net:htdocs
 pushd /tmp
@@ -57,6 +56,7 @@ don't handle hits in the theme(), do it before the showpage();
 
 an option to use SSL for private photos
 
+#vim setup/install.mysql
 
 folders is very slow...
 
