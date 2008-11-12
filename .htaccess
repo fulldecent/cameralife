@@ -3,6 +3,10 @@ Options -Indexes +MultiViews
 
 php_value post_max_size 20971520
 php_value upload_max_filesize 20971520
+php_value memory_limit 128M
+
+
+
 
 <Files ~ ".inc">
 Order allow,deny

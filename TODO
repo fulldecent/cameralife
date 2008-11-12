@@ -2,17 +2,14 @@
 TODO For the 2.6.2 Realease Cycle
 ----------------------------------
 
-* Once-over on the install process
-
 ! grep GET  -r modules/theme/*/*inc
 ! grep PHP_SELF  -r modules/theme/*/*inc
 . use AddParam()
 ! THE CHRIS PROBLEM
-not need content negotiation
 
 
 website: 
-  update buildscript for version on website
+  update buildscript for version number displayed on website
   rename to cameralife.sf.net
   update the admin/index phone-home version script
 
@@ -55,6 +52,11 @@ generalize photo metadata: exif, comments, ratings, flickr backup/restore hack
 don't handle hits in the theme(), do it before the showpage();
 
 an option to use SSL for private photos
+
+Email upload photos, like flickr # http://www.phpclasses.org/browse/file/3.html
+
+Theme bounty! iPod Nano / shuffle
+
 
 #vim setup/install.mysql
 

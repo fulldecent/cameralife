@@ -34,5 +34,12 @@ Extra notes:
   alter table photos change width width int(11);
   alter table photos change tn_width tn_width int(11);
 
+  UPDATE photos SET flag='indecent' WHERE flag='n';
+  UPDATE photos SET flag='photography' WHERE flag='h';
+  UPDATE photos SET flag='subject' WHERE flag='u';
+  UPDATE photos SET flag='bracketing' WHERE flag='r';
+  ALTER TABLE  `photos` CHANGE  `flag`  `flag` ENUM(  'indecent',  'photography',  'subject',  'bracketing' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL
+
+
   mkdir images/cache
   chmod 777 images/cache

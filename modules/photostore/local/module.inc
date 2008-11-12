@@ -240,7 +240,7 @@
   
       $retval = array();
       $prefix = $this->PhotoDir;
-      if ($dir = opendir($prefix . '/' . $path))
+      if ($dir = @opendir($prefix . '/' . $path))
       {
         $children = array();
         while (false !== ($file = readdir($dir)))
