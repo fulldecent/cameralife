@@ -1,32 +1,32 @@
 DirectoryIndex index.php
-Options -Indexes +MultiViews
+Options -Indexes +MultiViews +FollowSymLinks
 
 php_value post_max_size 20971520
 php_value upload_max_filesize 20971520
 php_value memory_limit 128M
 
-
-
-
-<Files ~ ".inc">
-Order allow,deny
-Deny from all
-</Files>
-
+#
+# CHANGE THE REWRITEBASE BELOW, THATS THE LINE YOU'RE LOOKING FOR
+#
 <IfModule mod_rewrite.c>
 RewriteEngine on
-RewriteRule ^(.*)photos/(\d+) $1photo.php?id=$2&%{QUERY_STRING}
-RewriteRule ^(.*)photos/([^/]+)/(\d+)-(\d+)\. $1media.php?format=$2&id=$3&ver=$4
-RewriteRule ^(.*)photos/([^/]+)/(\d+)\. $1media.php?format=$2&id=$3&ver=%{QUERY_STRING}
-RewriteRule ^(.*)folders/(.*) $1folder.php?path=$2
-RewriteRule ^(.*)albums/(\d+) $1album.php?id=$2&%{QUERY_STRING}
-RewriteRule ^(.*)topics/(.+) $1topic.php?name=$2
-RewriteRule ^(.*)testrewrite $1setup/images/clear.gif
+RewriteBase /cameralife/
+RewriteRule ^photos/(\d+) photo.php?id=$1&%{QUERY_STRING}
+RewriteRule ^photos/([^/]+)/(\d+)-(\d+)\. media.php?format=$1&id=$2&ver=$3
+RewriteRule ^photos/([^/]+)/(\d+)\. media.php?format=$1&id=$2&ver=%{QUERY_STRING}
+RewriteRule ^folders/(.*) folder.php?path=$1
+RewriteRule ^albums/(\d+) album.php?id=$1&%{QUERY_STRING}
+RewriteRule ^topics/(.+) topic.php?name=$1
+RewriteRule ^testrewrite setup/images/clear.gif
 #
 # Note: these rewrites affect photo.class.php, who analyzes the HTTP referer
 #
 </IfModule>
 
+<Files ~ ".inc">
+Order allow,deny
+Deny from all
+</Files>
 
 #<Files ~ jpg>
 #Order allow,deny

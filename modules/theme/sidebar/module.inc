@@ -238,5 +238,26 @@
         echo "</div>\n";
       }
     }
+
+
+    // PRIVATE
+    // In: an HTML-escaped url, and HTML-escaped param and value
+    // Out: an HTML-escaped url with a GET parameter added
+    function AddParam($url, $param, $value=NULL)
+    {
+      if (strpos($url, '?') !== FALSE)
+        $cameralife->Error('Bad URL', __FILE__, __LINE__);
+
+      if (strpos($url, '&#63;') !== FALSE)
+        $url .= "&amp;$param";
+      else
+        $url .= "&#63;$param";
+
+      if ($value !==NULL)
+        $url .= "=$value";
+
+      return $url;
+    }
+
   }
 ?>

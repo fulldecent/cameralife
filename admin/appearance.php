@@ -135,7 +135,7 @@
       <input type="hidden" name="param3" value="owner_email" />
       <input type=text name="value3" size=30 value="<?= $cameralife->GetPref('owner_email') ?>">
   <tr>
-    <td>Use pretty URL's (requires mod rewrite)
+    <td>Use pretty URL's (requires mod rewrite, and please edit .htaccess)
     <td>
       <input type="hidden" name="module4" value="CameraLife" />
       <input type="hidden" name="param4" value="rewrite" />
