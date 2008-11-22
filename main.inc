@@ -29,7 +29,7 @@
       $this->base_dir = dirname(__FILE__);
       $this->base_url = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']),'/');
 
-      $this->version = '2.6.2b10';
+      $this->version = '2.6.2rc1';
 
       // Load preferences
       $this->GetFeature('core');
@@ -52,6 +52,7 @@
 
       $this->preferences[] = array('name'=>'rewrite', 'type'=>'yesno', 'default'=>'no');
       $this->preferences[] = array('name'=>'iphone', 'type'=>'yesno', 'default'=>'yes');
+      $this->preferences[] = array('name'=>'tempdir', 'type'=>'string', 'default'=>'/tmp');
     }  
       
     function RelativeInclude($file)

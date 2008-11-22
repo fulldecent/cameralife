@@ -1,4 +1,5 @@
 SVN  Will Entriken <cameralife AT phor.net>
+* Website update, thanks to Rajesh Sundaram
 * Security updates, thanks to Omer Singer and BackDoor
 * Merge themes
 * Fix some XSS and injection exploits

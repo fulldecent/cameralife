@@ -17,12 +17,15 @@ RELEASE HOWTO
 
 # Change this first line, then paste in to terminal...
 
-VERSION='2.6.2b10' # this..version CHANGE THIS LINE!!!
-sed "/this..version/s/'.*'/'$VERSION'/" -i main.inc TODO
+VERSION='2.6.2rc1' # this..version CHANGE THIS LINE!!!
+sed "/this..version/s/'2.6.2rc1'/" -i main.inc TODO
 svn commit -m "Releasing version $VERSION"
 phpdoc -o HTML:frames:earthli -d . -t ../docs
 rsync --delete -ave ssh ../docs fulldecent,fdcl@web.sf.net:htdocs
 pushd /tmp
+echo "<?php \$VERSION=\"$VERSION\" ?>" > version.php
+rsync -ave ssh version.php fulldecent,fdcl@web.sf.net:htdocs
+rm version.php
 svn export https://entriken@fdcl.svn.sourceforge.net/svnroot/fdcl/trunk cameralife
 touch cameralife/deleted.log
 chmod 777 cameralife/ cameralife/images/ cameralife/images/* cameralife/deleted.log

@@ -50,7 +50,7 @@ $menu = array();
                         'small-folder');
 
   if (count($sections) > 0)
-    $cameralife->Theme->MultiSection($sections, array('path'=>htmlentities($folder->Path()));
+    $cameralife->Theme->MultiSection($sections, array('path'=>htmlentities($folder->Path())));
   else
   {
     $cameralife->Error('This folder does not exist.');

@@ -107,9 +107,9 @@ class Photo extends View
     $this->LoadImage($original);
     $imagesize = $this->image->GetSize();
 
-    $scaled = tempnam('/tmp', 'cameralife_S');
+    $scaled = tempnam($cameralife->GetPref('tempdir'), 'cameralife_S');
     $this->image->Resize($scaled, 600);
-    $thumbnail = tempnam('/tmp', 'cameralife_T');
+    $thumbnail = tempnam($cameralife->GetPref('tempdir'), 'cameralife_T');
     $thumbsize = $this->image->Resize($thumbnail, 150);
     $cameralife->PhotoStore->PutThumbnails($this, $scaled, $thumbnail);
     @unlink($scaled);
@@ -130,7 +130,7 @@ class Photo extends View
     $this->LoadImage();
     $this->image->Rotate($angle);
 
-    $temp = tempnam('/tmp', 'cameralife_');
+    $temp = tempnam($cameralife->GetPref('tempdir'), 'cameralife_');
     $this->image->Save($temp);
     $cameralife->PhotoStore->ModifyFile($this, $temp); # $temp is unlinked by ModifyFile
     $this->record['mtime'] = time();
