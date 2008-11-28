@@ -30,43 +30,44 @@
 
 <?php
   if (file_exists('../.svn'))
-  {
     $svn = exec('svnversion '.$cameralife->base_dir);
-    if ($svn != 'not versioned')
+  else
+    $svn = 'not versioned';
+  
+  if ($svn != 'not versioned')
+  {
+    echo "Camera Life version <strong>svn:$svn</strong> | ";
+
+    if (!$_GET['svn'])
     {
-      echo "Camera Life version <strong>svn:$svn</strong> | ";
+      echo " <a href=\"?svn=yes\">check for svn update</a>";
+    } 
+    else 
+    {
+      $newest = file_get_contents('http://fdcl.svn.sourceforge.net/svnroot/fdcl/');
+      ereg('Revision ([0-9]+):', $newest, $regs);
+      echo "Latest is <strong>".$regs[1]."</strong> ";
+      echo "<a href=\"http://fdcl.svn.sourceforge.net/viewvc/fdcl/trunk/?view=log#rev80\">view diffs</a>";
 
-      if (!$_GET['svn'])
-      {
-        echo " <a href=\"?svn=yes\">check for svn update</a>";
-      } 
-      else 
-      {
-        $newest = file_get_contents('http://fdcl.svn.sourceforge.net/svnroot/fdcl/');
-        ereg('Revision ([0-9]+):', $newest, $regs);
-        echo "Latest is <strong>".$regs[1]."</strong> ";
-        echo "<a href=\"http://fdcl.svn.sourceforge.net/viewvc/fdcl/trunk/?view=log#rev80\">view diffs</a>";
-
-        echo "<pre>";
-#        passthru('svn log '.$cameralife->base_dir.' -r base:head');
-        echo "</pre>";
-      }
+      echo "<pre>";
+       passthru('svn log '.$cameralife->base_dir.' -r base:head');
+      echo "</pre>";
     }
-    else
-    {
-      echo "Camera Life version <strong>".$cameralife->version."</strong> | ";
+  }
+  else
+  {
+    echo "Camera Life version <strong>".$cameralife->version."</strong> | ";
 
-      if (!$_GET['svn'])
-      {
-        echo " <a href=\"?svn=yes\">check latest version</a>";
-      } 
-      else 
-      {
-        # We collect your ip and version
-        $newest = file_get_contents('http://fdcl.sourceforge.net/download.php?getrelease=true&version='.$cameralife->version);
-        echo "Latest is <strong>".$newest."</strong> ";
-        echo "<a href=\"http://fdcl.sourceforge.net\">get it</a>";
-      }
+    if (!$_GET['svn'])
+    {
+      echo " <a href=\"?svn=yes\">check latest version</a>";
+    } 
+    else 
+    {
+      # We collect your ip and version
+      $newest = file_get_contents('http://fdcl.sourceforge.net/check.php?a='.$cameralife->version);
+      echo "Latest is <strong>".$newest."</strong> ";
+      echo "<a href=\"http://fdcl.sourceforge.net\">get it</a>";
     }
   }
 ?>

@@ -11,10 +11,7 @@
 Project goals:
  - Release often
  - Document code
- - Polish the install process
-
-Strategic goals:
- - Support new databases and image libraries
+ - Add themes
  - Integrate with CMS's
 
 Cool stuff:

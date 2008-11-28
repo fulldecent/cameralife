@@ -177,7 +177,35 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
         {
           echo "<font color=green>Configured correctly</font>";
         }
+
+  if (!file_exists('../.svn'))
+  {
+
       ?>
+  <tr>
+    <td>
+      Checking package version...
+    <td>
+      <?php
+        $main = file('../main.inc');
+        $versionline = preg_grep('/this..version/', $main);
+        preg_match("/'(.*)'/", join($versionline), $matches);
+
+        # We collect your ip and version
+        $newest = file_get_contents('http://fdcl.sourceforge.net/check.php?i='.$matches[1]);
+
+        if ($matches[1] == $newest)
+          echo "<font color=green>You have ".$matches[1]."</font>";
+        else
+        {
+          echo "<font color=red>Error</font>
+                <tr><td colspan=2><p class='important'>You are installing Camera Life ".$matches[1].", but the 
+                  latest released version is $newest. The latest version can be downloaded 
+                  at <a href=\"http://fdcl.sourceforge.net\">http://fdcl.sourceforge.net</a>.</p>";
+        }
+  }
+      ?>
+
 </table>
 
 <?php

@@ -2,23 +2,16 @@
 TODO For the 2.6.2 Realease Cycle
 ----------------------------------
 
-. use AddParam()
-use a TEMPDIR to fix the dreamhost probrem
-
-website: 
-  update buildscript for version number displayed on website
-  rename to cameralife.sf.net
-  update the admin/index phone-home version script
+Any bugs left?
 
 
 ===================
 RELEASE HOWTO
+edit the first line, then paste into a terminal...
 -------------------
 
-# Change this first line, then paste in to terminal...
-
-VERSION='2.6.2rc1' # this..version CHANGE THIS LINE!!!
-sed "/this..version/s/'2.6.2rc1'/" -i main.inc TODO
+VERSION='2.6.2' # this..version CHANGE THIS LINE!!!
+sed "/this..version/s/'[0.9].*'/'$VERSION'/" -i main.inc TODO
 svn commit -m "Releasing version $VERSION"
 phpdoc -o HTML:frames:earthli -d . -t ../docs
 rsync --delete -ave ssh ../docs fulldecent,fdcl@web.sf.net:htdocs
@@ -36,13 +29,15 @@ scp cameralife-* fulldecent@frs.sourceforge.net:uploads
 rm -rf cameralife*
 popd
 
-http://sourceforge.net/project/admin/newrelease.php?package_id=70316&group_id=70910
-http://freshmeat.net/add-release/34159/36247/
+#GOTO  http://sourceforge.net/project/admin/newrelease.php?package_id=70316&group_id=70910
+#GOTO  http://freshmeat.net/add-release/34159/36247/
 
 ===========================
 TODO AFTER 2.6.2
 note: bleeding edge ideas are at: http://camera.phor.net/TODO
 ----------------------------
+http://blathersource.org/blog/
+
 find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
 ! grep GET  -r modules/theme/*/*inc
 ! grep PHP_SELF  -r modules/theme/*/*inc
@@ -57,7 +52,7 @@ an option to use SSL for private photos
 
 Email upload photos, like flickr # http://www.phpclasses.org/browse/file/3.html
 
-Theme bounty! iPod Nano / shuffle
+Theme bounty! iPod Nano / shuffle?
 
 
 #vim setup/install.mysql

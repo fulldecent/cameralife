@@ -1,4 +1,4 @@
-SVN  Will Entriken <cameralife AT phor.net>
+2.6.2  Will Entriken <cameralife AT phor.net>
 * Website update, thanks to Rajesh Sundaram
 * Security updates, thanks to Omer Singer and BackDoor
 * Merge themes
@@ -11,7 +11,7 @@ SVN  Will Entriken <cameralife AT phor.net>
 * Fixed gallery API (iPhoto support)
 * Separated filesystem calls and preferences into modules
 * Check for update from the admin interface
-* Start decoupling theme API from the rest of the functionality
+* Moved all theme to its own separate API
 * Automatically updates when the photos directory is changed 
 * Renames and flags can be undone immediately (a la gmail)
 * PNG support
