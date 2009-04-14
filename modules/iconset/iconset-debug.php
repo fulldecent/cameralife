@@ -1,4 +1,19 @@
 <?php
+/**
+*Enables
+*<ul>
+*<li>Setting up of icons</li>
+*<li>Debugging errors related with icons</li></ul>
+*@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  *@link http://fdcl.sourceforge.net
+  */
+  /**
+  *
+  */
+
   $required_images =
     array('main','small-main','topic','small-topic','album','small-album',
           'photo','small-photo','folder','small-folder',

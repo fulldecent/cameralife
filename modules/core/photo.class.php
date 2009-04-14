@@ -1,9 +1,26 @@
 <?php
-  # the class for getting and using photos
-  
+
+
+  /**Class Photo enables you to  get the photos
+  *@link  http://fdcl.sourceforge.net/
+    *@version 2.6.2
+    *@author Will Entriken <cameralife@phor.net>
+    *@access public
+    *@copyright © 2001-2009 Will Entriken
+  */
+   /**
+   *This class is for getting and using photos
+   *@var mixed $context an Album, Search or Folder from where the user retrieved the photo
+     *@var mixed $contextPhotos the photos from the 'context', that is an Album ,a Folder or a Search result
+     *@var mixed $contextPrev the previous photo in the 'context'
+  *@var mixed $contextNext the next photo in the 'context'
+   */
+
 class Photo extends View
 {
   var $record, $image;
+
+
   var $context; // an Album, Search or Folder of where the user came from to get to this photo
   var $contextPhotos; // photos from context
   var $contextPrev; // the previous photo in context
@@ -20,6 +37,15 @@ class Photo extends View
   #   If making a new file, the caller is responsible for putting the
   #   new file in the photostore if it is not already there. Do that
   #   after instantiating this class
+  /**
+  *To get an empty Photo pass nothing ie NULL
+  *To load a photo pass a photo ID
+  *<code> elseif (is_numeric($original)) </code>
+  *To create a photo pass an array
+  *<code>elseif(is_array($original))</code>
+ *<b>Required fields Filename,path of file ,and username</b>
+ *Optional fields Status ,description and file size
+ */
   function Photo($original = NULL)
   {
     global $cameralife;
@@ -71,7 +97,10 @@ class Photo extends View
     $cameralife->Database->Update('photos', array($key=>$value), 'id='.$this->record['id']);
     return $receipt;
   }
-
+/**@ todo Do you think we need to destroy the original?We look forward to your feedback
+*If you can guarantee record['modified'] is false, set $original to TRUE
+ *If ORIGINAL is set, we can collect and use some extra metadata
+*/
   function Get($key)
   {
     return $this->record[$key];
@@ -94,12 +123,16 @@ class Photo extends View
 
     $this->image = $cameralife->ImageProcessing->CreateImage($file);
     if (!$this->image->Check()) $cameralife->Error("Bad photo processing: $origphotopath",__FILE__,__LINE__);
-   
+
     if ($temp) unlink($file);
   }
 
   // If you can guarantee record['modified'] is false, set $original to TRUE
   // this is the cheapest/laziest way to get the metadata into the system
+  /**
+  *If you can guarantee record['modified'] is false, set $original to TRUE
+  * this is the cheapest/laziest way to get the metadata into the system
+  */
   function GenerateThumbnail($original = FALSE)
   {
     global $cameralife;
@@ -134,7 +167,7 @@ class Photo extends View
     $this->image->Save($temp);
     $cameralife->PhotoStore->ModifyFile($this, $temp); # $temp is unlinked by ModifyFile
     $this->record['mtime'] = time();
-    
+
     $this->record['modified'] = 1;
     $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
   }
@@ -152,7 +185,7 @@ class Photo extends View
 
     $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
   }
- 
+
   function Erase()
   {
     global $cameralife;
@@ -199,6 +232,9 @@ class Photo extends View
   }
 
   // small or large
+  /**
+  *Enables you to set icon size as large or small
+  */
   function GetIcon($size='large')
   {
     global $cameralife;
@@ -208,12 +244,12 @@ class Photo extends View
                  'context'=>$this->record['hits'],
                  'width'=>$this->record['tn_width'],
                  'height'=>$this->record['tn_height']);
-    
+
     if ($cameralife->GetPref('rewrite') == 'yes')
       $retval['href'] = $cameralife->base_url.'/photos/'.$this->record['id'];
     else
       $retval['href'] = $cameralife->base_url.'/photo.php&#63;id='.$this->record['id'];
- 
+
     return $retval;
   }
 
@@ -276,8 +312,8 @@ class Photo extends View
         if ($exif['COMPUTED']['CCDWidth'])
         $ccd = str_replace('mm','',$exif['COMPUTED']['CCDWidth']);
         $fov = round(2*rad2deg(atan($ccd/2/$focallength)),2);
-        // http://www.rags-int-inc.com/PhotoTechStuff/Lens101/
-        
+        //@link http://www.rags-int-inc.com/PhotoTechStuff/Lens101/
+
         $retval["Field of view"]="${fov}&deg; horizontal";
       }
       if ($focallength && $exposuretime)
@@ -289,7 +325,7 @@ class Photo extends View
         {
           if (ereg('([0-9]+)/([0-9]+)', $exposuretime, $regs));
             $exposuretime = $regs[1] / $regs[2];
-    
+
           $ev = pow(str_replace('f/','',$fnumber),2) / $iso / $exposuretime;
           if ($ev > 10)
             $light = 'Probably outdoors';
@@ -311,6 +347,22 @@ class Photo extends View
   // one of them will have $icon['class'] = 'referer'
   // We use the page's referer to find which is the referer
   // also sets $this->context
+
+  /**The function Get Related returns an array of icons of possible views related to a photo.
+  *One of the icon will be denoted as $icon['class']='referer'
+  *The page's referer will be used to find the referer
+  *The function also sets $this->context
+  *
+  *<code>if (eregi ("album.php\?id=([0-9]*)",$_SERVER['HTTP_REFERER'],$regs) || eregi("albums/([0-9]+)",$_SERVER['HTTP_REFERER'],$regs))</code>
+  *The above line of code finds if the referer is an album
+  *<code>$result = $cameralife->Database->Select('albums','id,name',"'".addslashes($this->Get('description'))."' LIKE CONCAT('%',term,'%')");</code>
+  *Find all albums that contain this photo(this is incomplete and will be updated in the upcoming version)
+  *<code> if (eregi ("q=([^&]*)",$_SERVER['HTTP_REFERER'],$regs))</code>
+  *Checks if retrieved from a search
+  *<code>$search = new Search($this->Get('description'));</code>
+  *Search for photos named as a user given description
+*/
+
   function GetRelated()
   {
     global $_SERVER, $cameralife;
@@ -321,7 +373,7 @@ class Photo extends View
     if (eregi ("start=([0-9]*)",$_SERVER['HTTP_REFERER'],$regs))
       $extrasearch = "&amp;start=".$regs[1];
 
-    // Find if the referer is an album 
+    // Find if the referer is an album
     if (eregi ("album.php\?id=([0-9]*)",$_SERVER['HTTP_REFERER'],$regs) || eregi("albums/([0-9]+)",$_SERVER['HTTP_REFERER'],$regs))
     {
       $album = new Album($regs[1]);
@@ -350,6 +402,7 @@ class Photo extends View
     }
 
     // Did they come from a search??
+
     if (eregi ("q=([^&]*)",$_SERVER['HTTP_REFERER'],$regs))
     {
       $search = new Search($regs[1]);
@@ -363,6 +416,8 @@ class Photo extends View
     else
     {
       // Find all photos named exactly like this
+
+
       $search = new Search($this->Get('description'));
       $counts = $search->GetCounts();
 
@@ -392,6 +447,10 @@ class Photo extends View
   }
 
   // PRIVATE
+  /**
+  *@access private
+  */
+
   function GetContext()
   {
     if (!$this->context)
@@ -401,7 +460,7 @@ class Photo extends View
     {
       $this->context->SetPage(0,99);
 
-      $this->contextPhotos = $this->context->GetPhotos(); /* Using the base class, how sexy is that? */
+      $this->contextPhotos = $this->context->GetPhotos(); /* Using the base class, how sexy is that? Uses base class ;a useful and convinient feature*/
       $last = new Photo();
       foreach ($this->contextPhotos as $cur)
       {
@@ -417,6 +476,10 @@ class Photo extends View
   }
 
   // returns the previous photo or false if none exists
+  /**Returns previous photo
+  *else false if none exists
+  */
+
   function GetPrevious()
   {
     if (!count($this->contextPhotos))

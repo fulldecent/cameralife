@@ -7,6 +7,22 @@
     Uses the database to store all this
   */
 
+/** Incorporates standard security implementaion. 
+*
+*@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  *@link http://fdcl.sourceforge.net
+*/
+/**The security feature implements the features-password ,cookie,permission determining groups and a database
+*<ul>
+*<li>A password to authenticate</li>
+*<li>A cookie to handle "sessions"</li>
+*<li>Groups to determine permissions</li>
+*<li>A database to store the above three features</li>
+*</ul>
+*/
   class DefaultSecurity extends SecurityModule
   {
     var $curuser;
@@ -45,6 +61,8 @@
     }
   
     /* Return TRUE or a string that is an error message */
+    /**@return TRUE | a string that is an error message
+    */
     function Login ($username, $password)
     {
       global $cameralife;
@@ -71,6 +89,8 @@
     }
 
     /* Return TRUE + cookie or a string that is an error message */
+    /**@return TRUE,cookie|an error message string
+    */
     function Register ($username, $password, $email = '')
     {
       global $cameralife;
@@ -100,6 +120,10 @@
     }
 
     /* Logs the user out. Returns true  or and exit url if you really want to */
+    /**Logs the user out 
+    *@return true | exit URL if you really want to quit the cameralife site
+    */
+    
     function Logout ()
     {
       global $cameralife;
@@ -110,6 +134,11 @@
     /* Provides a URL, that the user can
     ** go to, to administer users and permissions. Or returns FALSE, if the 
     ** user is not allowed to administer.
+    */
+    /**.
+   * Provides a URL, that the user can go to, to administer users and permissions    
+  *  Or 
+  *@return FALSE if the user is not allowed to administer.
     */
     function AdministerURL () 
     { 
@@ -123,6 +152,8 @@
     }
 
     /* Returns the current user's name or the empty string if not logged in */
+    /**@return the current user's name or the empty string if not logged in 
+    */
     function GetName () 
     { 
       if (!isset ($this->curuser))
@@ -133,6 +164,9 @@
 
 //TODO is this mecessary? -- use REMOTE_ADDR or GetAddr consistently
     /* Returns the current user's IP address */
+    /**@return the current user's IP address 
+    */
+    
     function GetAddr () 
     {
       global $_SERVER;
@@ -144,6 +178,10 @@
     ** This function must at least support the actions named in the README
     ** file, of the directory of the file you are currently reading at this
     ** time.
+    */
+    /**Determines if the user is authoried to performed the named action;if REQUIRED is set, nonauthorization is a fatal error.
+    * This function must at least support the actions named in the README file, of the directory of the file you are currently reading at this
+    * time.
     */
     function Authorize ($auth_name, $required=false) 
     {

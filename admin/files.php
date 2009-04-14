@@ -2,6 +2,18 @@
   # Handle file things
   # BEWARE: DUMP YOUR DATABASE BEFORE FUCKING AROUND HERE!
   # ... if only I had told myself that earlier today :-(
+  /**
+  *Handles files and its parameters
+  *<b>Note:Save your database before making changes to the code here</b>
+
+  *@link http://fdcl.sourceforge.net
+ *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+*/
+/**
+*/
 
   @ini_set('max_execution_time',9000);
 
@@ -27,6 +39,8 @@
 
   // Returns an array of files starting at $path
   // in the form 'path'=>basename(path)
+  /** Returns an array of files starting at $path in the form 'path'=>basename(path)
+  */
   function walk_dir($path)
   {
     $retval = array();
@@ -70,7 +84,7 @@
   $home = $cameralife->GetIcon('small');
   echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
 ?> |
-<a href="index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a> 
+<a href="index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>
 </div>
 
 <form method="post" action="http://<?= $_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'] ?>&#63;page=<?= $_GET['page']?>">
@@ -109,6 +123,10 @@
     $search = new Search('');
 //TODO wow!
     // You know code is a hack when you use a SQL injection attack against yourself.
+    /**@todo
+    */
+    /**
+    */
     $search->mySearchPhotoCondition = "status=$target_status OR 0";
     $search->SetPage(0, 9999);
     $photos = $search->GetPhotos();

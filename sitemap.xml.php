@@ -1,7 +1,16 @@
 <?php
   # A sitemap for search engines
   # breaks things down into 1000 piece bite sizes
+/**Creates sitemap for search engines - breaks each photo into 1000 byte sized pieces
+*@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+*/
 
+/**
+*/
   $features=array('database', 'security');
   require "main.inc";
 

@@ -1,4 +1,18 @@
 <?php
+/**
+  * Establishes path of the photos folder
+  *
+  *<b>Note</b>  $cameralife and $folder are set by ShowPage()
+  *
+  Magic vars GET:start, GET/POST:sort are handled in search.class.php
+  *@link http://fdcl.sourceforge.net/
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@access public
+  *@copyright © 2001-2009 Will Entriken
+  */
+  /**
+  */
   # $cameralife and $folder are set by ShowPage()
   $cameralife->GetFeature('security');
   $cameralife->GetFeature('photostore');

@@ -5,10 +5,26 @@
   *  Private files are delivered through this server.
   *  Lazy thumbnailing is not supported.
   *
+  *
+  */
+  /**This module stores files on a remote filesystem.The remote server must support public HTTP.
+  *Note
+  * <ul>
+  *<li>Private files are delivered through this server.</li>
+  * <li>Lazy thumbnailing is not supported</li>
+  *</ul>
+  *@link http://fdcl.sourceforge.net/
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@access public
+  *@copyright © 2001-2009 Will Entriken
+  */
+  /**
   */
 
   require dirname(__FILE__) . '/phpFlickr-2.2.0/phpFlickr.php';
-
+/**Linking Flickr to the cameralife photostore - the backend photo storage
+*/
   class FlickrPhotoStore extends PhotoStore
   {
     function FlickrPhotoStore() 
@@ -166,6 +182,8 @@
 
 //TODO...
     # hm??? any thounght?
+    /**@todo Do send in your ideas .We look forward to your inputs
+    */
     function SetPermissions() {}
 
     /**

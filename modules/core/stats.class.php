@@ -1,6 +1,18 @@
 <?php
   # the class for getting and using photos
-  
+  /**
+  *Class Stats enables you to  get and use photos
+  *@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  */
+  /**
+  *For getting and using the photos
+  */
+
+
 class Stats
 {
   var $counts;

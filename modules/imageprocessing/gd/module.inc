@@ -1,5 +1,13 @@
 <?php
- /* GD image functinos
+ //GD image functions
+ /**Processing GD images
+ *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  *@link http://fdcl.sourceforge.net
+  */
+  /** Carries functions to create and process images
   */
 
   class GDImageProcessing extends ImageProcessingModule
@@ -9,6 +17,8 @@
       return new GDImageProcessingImage($filename);
     }
   }
+  /**Carries functions that enable image editing 
+  */
 
   class GDImageProcessingImage extends ImageProcessingImage
   {
@@ -61,6 +71,15 @@
       SIZE is the diagonal of the new image size
       returns the dimensions of the new image
     */
+    /**Resizes this image and saves to this new file
+     * SIZE is the diagonal of the new image size
+     * 
+     *
+     *  If you have already resized the image to something larger than you want
+     * you can rescale it. This is much faster than scaling the original, larger, image again. 
+     *@return float array - dimensions new width and height
+    */
+    
     function Resize($filename, $newSize, $quality = 91) 
     {
       /* If we have already resized this image to something larger than we want
@@ -109,7 +128,8 @@
 
       return array($new_width, $new_height);
     }
-
+/**Rotate the image a 90, 180 or 270 degrees
+*/
     /* Rotate this image a number of degrees, 90, 180 or 270
     */
     function Rotate($degrees) 
@@ -129,6 +149,8 @@
 
     /* Save the image at original resolution
     */
+    /**Saves the image at orginal resolution
+    */
     function Save($filename, $quality = 91) 
     {
       if ($this->extension=='jpeg' || $this->extension=='jpg' || $this->extension=='') # on a limb...
@@ -145,6 +167,9 @@
       return array($new_width, $new_height);
     }
   }
+  /**@var $srcX dimension of source image
+  *@var $srcY dimension of source image
+  */
 
   function ImageRotateRightAngle( $imgSrc, $angle )
   {

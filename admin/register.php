@@ -1,6 +1,16 @@
 <?php
   # Allow you to submit information about your site to me
-
+/**Enables you to email the lead developer of CameraLife
+*
+*You may send us your feedbacks and if you like we may list your site on our homepage.
+*@link http://fdcl.sourceforge.net
+ *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+*/
+/**
+*/
   $features=array('database','security');
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
@@ -27,7 +37,7 @@
 </div>
 
 <p>
-  We would appreciate if you mail this to cameralife@phor.net with 
+  We would appreciate if you mail this to cameralife@phor.net with
   the subject CAMERALIFE-FEEDBACK including any of your feedback.
 </p>
 
@@ -52,7 +62,7 @@
   <strong>Your Name</strong><br>
   <?= $cameralife->GetPref('owner_email') ?><br>
 </p>
-  
+
 </body>
 </html>
 

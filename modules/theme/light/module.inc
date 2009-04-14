@@ -1,6 +1,17 @@
-<?php
+<?p hp
 #TODO: more alt = basename(img)
+/**
+*Theme name - Light
+*@link http://fdcl.sourceforge.net
+*@version 2.6.2
+*@author Will Entriken<cameralife@phor.net>
+*@access public
+*@copyright © 2001-2009 Will Entriken
+*@todo more alt=basename(img)
+*/
 
+/**Carries functions that develop the page with light theme features
+*/
   class LightTheme extends ThemeModule
   {
     function LightTheme() 

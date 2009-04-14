@@ -1,4 +1,18 @@
 <?php
+/**Implements various search options
+*The following variables are set by ShowPage()
+*<ul>
+*<li>$cameralife</li>
+*<li>$search </li>
+*</ul>
+*@link http://fdcl.sourceforge.net
+    *@version 2.6.2
+    *@author Will Entriken <cameralife@phor.net>
+    *@copyright © 2001-2009 Will Entriken
+    *@access public
+    */
+/**
+*/
   # $cameralife and $search are set by ShowPage()
 
   $cameralife->GetFeature('security');

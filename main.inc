@@ -2,6 +2,16 @@
 #if (strpos($_SERVER['REMOTE_ADDR'], '192.168') === false)
 #die('site down 4 maintenance');
 
+/**Carries classes CameraLife,CameraLife Module and View
+*@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+*/
+/**
+*/
+
   // Is this the first run?
   if (file_exists(dirname(__FILE__).'/modules/config.inc'))
   {
@@ -208,6 +218,11 @@
 
   // In: an HTML-escaped url, and HTML-escaped param and value
   // Out: an HTML-escaped url with a get parameter added
+  /**@param mixed $url an HTML-escaped url 
+  *@param mixed $param HTML-escaped param 
+  *@param  string $value HTML-escaped value
+  *@return mixed $url an HTML-escaped url with a get parameter added
+  */
   function AddParam($url, $param, $value=NULL)
   {
     if ((strpos($url, '&#63;') !== FALSE) || (strpos($url, '?') !== FALSE))

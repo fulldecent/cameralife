@@ -1,6 +1,14 @@
 <?php
-  # Create RSS feeds for all kinds of stuff
 
+/**Creates RSS feed of photos
+@link http://fdcl.sourceforge.net
+*@version 2.6.2
+*@author Will Entriken <cameralife@phor.net>
+*@copyright © 2001-2009 Will Entriken
+*@access public
+*/
+/**
+*/
   $features=array('database','theme','security', 'photostore');
   require "main.inc";
 

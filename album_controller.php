@@ -8,7 +8,23 @@
   # param2 = extra info...
   # param3 = extra info...
   # target = the exit URL, or 'ajax' for an ajax call
-
+  /**
+  *Handles all POST form actions from album.php
+   *Pass the following variables
+   *<ul><li>id = the album id</li>
+  *<li>action = the action to be performed on the album</li>
+  *<li>param1 = extra info</li>
+  *<li>param2 = extra info</li>
+  *<li>param3 = extra info</li>
+  *<li>target = the exit URL, or 'ajax' for an ajax call</li></ul>
+*@link http://fdcl.sourceforge.net
+*@version 2.6.2
+*@author Will Entriken <cameralife@phor.net>
+*@copyright © 2001-2009 Will Entriken
+*@access public
+*/
+/**
+*/
   $features=array('database','security');
   require "main.inc";
 
@@ -63,7 +79,7 @@
 
     if ($_POST['target'] != 'ajax')
     {
-      // Are there other albums in this topic? 
+      // Are there other albums in this topic?
       $total = $cameralife->Database->SelectOne('albums','COUNT(*)',"topic='".$album->Get('topic')."'");
       if ($total)
         $_POST['target'] = $cameralife->base_url.'/topic.php?name='.$album->Get('topic');

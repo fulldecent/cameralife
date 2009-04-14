@@ -1,4 +1,21 @@
 <?php
+/**Enables 
+*<ul>
+*<li>displaying/viewing of photos</li>
+*<li>editing of photos</li>
+*<li>linking to relevant locations for further operations </li>
+*</ul>
+*<b>$cameralife and $photo are set by ShowPage()</b>
+*@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  */
+/**
+*/
+/**
+*/
   # $cameralife and $photo are set by ShowPage()
 
   $cameralife->GetFeature('security');

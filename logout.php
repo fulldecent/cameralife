@@ -1,4 +1,14 @@
 <?php
+/**A security feature that enables you log out of CameraLife
+*@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+*/
+/**
+*/
+
   $features=array('security');
   require "main.inc";
 

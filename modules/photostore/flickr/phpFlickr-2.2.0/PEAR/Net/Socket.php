@@ -1,4 +1,12 @@
 <?php
+/**@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  *@link http://fdcl.sourceforge.net
+  */
+  /**
+  */
 //
 // +----------------------------------------------------------------------+
 // | PHP Version 4                                                        |
@@ -25,8 +33,9 @@ define('NET_SOCKET_READ',  1);
 define('NET_SOCKET_WRITE', 2);
 define('NET_SOCKET_ERROR', 3);
 
+
 /**
- * Generalized Socket class.
+ * Generalized Socket class
  *
  * @version 1.1
  * @author Stig Bakken <ssb@php.net>

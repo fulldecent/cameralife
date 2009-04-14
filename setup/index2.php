@@ -1,5 +1,21 @@
 <?php
   // Pretend like the user will authenticate by giving them a cookie.
+  /**This file accepts information from user and uses the information to
+  *<ul>
+  *<li>Connect to the database</li>
+  *<li>Create tables</li>
+  *<li>Setup CameraLife </li>
+  *</ul>
+  *<b>Note</b> The user will "authenticate"the provided information by enabling a cookie.
+  *@link http://fdcl.sourceforge.net
+*@version 2.6.2
+*@author Will Entriken <cameralife@phor.net>
+*@copyright © 2001-2009 Will Entriken
+*@access public
+*/
+/**
+*/
+
 
   setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
 ?>

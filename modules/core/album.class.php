@@ -1,15 +1,32 @@
 <?php
   # the class for getting and using albums
-  
+/**
+*Enables you to get albums
+*@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  */
+  /**
+  *For getting and using albums
+  */
+
 class Album extends Search
 {
   var $record;
-
+  /**
+  *
+  *<code>is_array($orginal)</code> will be a new album given in parts
+  *<code>is_numeric($original)</code> is an ID
+  *
+  *@param mixed $original A unique ID
+  */
   function Album($original)
   {
     global $cameralife;
 
-    if(is_array($original)) # A new album, given by parts 
+    if(is_array($original)) # A new album, given by parts
     {
       $search = new Search($original['term']);
       $count = $search->GetCounts();
@@ -84,6 +101,8 @@ class Album extends Search
     $cameralife->Database->Delete('albums','id='.$this->record['id']);
     $cameralife->Database->Delete('logs',"record_type='album' AND record_id=".$this->record['id']);
   }
+  /** @param string $size size of the image (large)
+  */
 
   function GetIcon($size='large')
   {
@@ -95,7 +114,7 @@ class Album extends Search
       $retval['href'] = $cameralife->base_url.'/albums/'.$this->record['id'];
     else
       $retval['href'] = $cameralife->base_url.'/album.php&#63;id='.$this->record['id'];
- 
+
     if ($size == 'large')
     {
       $photo = new Photo($this->record['poster_id']);

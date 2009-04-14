@@ -1,5 +1,19 @@
 <?php
 #returns a rotated thumbnail
+/**Returns a rotated thumbnail
+*The following lines of code compute the dimension of the source image
+*<code>
+* $srcX = imagesx( $imgSrc );
+* $srcY = imagesy( $imgSrc );
+*</code>
+*@link http://fdcl.sourceforge.net
+*@version 2.6.2
+*@author Will Entriken <cameralife@phor.net>
+*@copyright © 2001-2009 Will Entriken
+*@access public
+*/
+/**
+*/
 
   $features=array('database','security','imageprocessing', 'photostore');
   require "../main.inc";
@@ -36,7 +50,7 @@
     $srcX = imagesx( $imgSrc );
     $srcY = imagesy( $imgSrc );
     $imgDest = imagecreatetruecolor( $srcY, $srcX );
-  
+
     if ($angle == 90)
     {
       for( $x=0; $x<$srcX; $x++ )
@@ -47,9 +61,9 @@
           for( $y=0; $y<$srcY; $y++ )
               imagecopy($imgDest, $imgSrc, $y, $srcX-$x-1, $x, $y, 1, 1);
     }
-  
+
     return( $imgDest );
-  } 
+  }
 
   if (function_exists('imagerotate'))
     $rotated = imagerotate($original_image, -$degrees, 0);
@@ -58,7 +72,7 @@
     if ($degrees==0) $rotated = $original_image;
     elseif ($degrees==90 || $degrees==270)
       $rotated = ImageRotateRightAngle($original_image, $degrees);
-    else 
+    else
     {
       $rotated = ImageRotateRightAngle($original_image, 90);
       $rotated = ImageRotateRightAngle($rotated, 90);

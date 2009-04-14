@@ -1,4 +1,22 @@
+
 <?php
+/**
+*This file
+*<ul>
+*<li>Implements security feature - which albums are authorized for view</li>
+*<li>Creates albums</li>
+*<li>Displays and sorts albums</li>
+*</ul>
+*
+*<b>Note :</b> $cameralife and $topic are set by ShowPage()
+  *@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  */
+  /**
+  */
   # $cameralife and $topic are set by ShowPage()
 
   $cameralife->GetFeature('security');
@@ -92,3 +110,14 @@
 <?php
   $cameralife->Theme->Footer();
 ?>
+
+
+
+
+
+
+
+
+
+
+

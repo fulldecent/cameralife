@@ -1,4 +1,17 @@
 <?php
+/** Indexing of photos
+*
+*Page appears after successful installation and prompts the user to add photos
+*
+*<b>Note</b> $cameralife set by ShowPage()
+*@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+*/
+/**
+*/
   # $cameralife set by ShowPage()
 
   $cameralife->GetFeature('security');
@@ -50,7 +63,7 @@
                       'image'=>'small-admin');
     if ($cameralife->Security->authorize('admin_customize'))
       $menu[] = array('name'=>'Customize this page',
-                      'href'=>'admin/customize.php',
+                      'href'=>'admin/appearance.php',
                       'section'=>'Welcome '.$cameralife->Security->GetName(),
                       'image'=>'small-admin');
   }

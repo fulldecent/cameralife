@@ -2,15 +2,35 @@
 
   # An implementation of the Gallery Remote API version 2.3
   # http://svn.sourceforge.net/viewvc/*checkout*/gallery/trunk/gallery_remote/gal_remote_proto-2.html
-
+/**
+*An implementation of the Gallery Remote API version 2.3
+*http://codex.gallery2.org/Gallery_Remote:Protocol
+*
+*Since the gallery remote api was inadequate to encode a photos media type we extended it.See the following code.
+ *<code>{
+   * list($photoid, $type) = split('XXX', $_GET['redirect']);
+   * $photo = new Photo($photoid);
+   * header('Location: '.html_entity_decode($photo->GetMedia($type)));
+   * exit(0);
+ * }
+*</code>
+*@link http://fdcl.sourceforge.net
+*@version 2.6.2
+*@author Will Entriken <cameralife@phor.net>
+*@copyright © 2001-2009 Will Entriken
+*@access public
+*/
+/**
+*/
   $features=array('database', 'security', 'imageprocessing', 'photostore');
   require "main.inc";
 
 # try something
-session_start();  
+session_start();
 
 
   # gallery remote api is inadequate!
+
   if ($_GET['redirect'])
   {
     list($photoid, $type) = split('XXX', $_GET['redirect']);
@@ -24,7 +44,11 @@ session_start();
     return is_dir($path) || mkdir_p(dirname($path)) && mkdir($path);
   }
 
-  # hoping noone uses that string normally
+
+/**We use an alternate string encoding method
+*If any bugs are found, we can switch to G2's original implementation
+*/
+
   function escapeforgr($string)
   {
     $escape = '1q2w3e';
@@ -188,6 +212,8 @@ session_start();
   }
 
   // come up with a enumerated list of folders
+  /**@return int $retval a enumerated list of folders
+  */
   function folder_search($folder, $i=1)
   {
     $retval = array();
@@ -217,7 +243,7 @@ session_start();
     $description = $_POST['caption'];
     #extrafield.fieldname=fieldvalue [optional, since 2.3]
 
-    if ($_FILES) 
+    if ($_FILES)
     {
       $condition = "filename='".$filename."' and fsize=".$_FILES['userfile']['size'];
       $cameralife->Database->SelectOne('photos','COUNT(*)',$condition)

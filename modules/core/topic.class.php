@@ -1,6 +1,18 @@
 <?php
   # the class for getting and using topics
-  
+
+
+    /**
+    *for the homepage visit @link  http://fdcl.sourceforge.net/
+    *@package
+    *@version 2.6.2
+    *@author Will Entriken <WillEntriken @gmail.com>
+    *@access public
+    *@copyright © 2001-2009 Will Entriken
+    */
+     /**
+      *This class is for getting and using topics
+      */
 class Topic extends Search
 {
   var $name;
@@ -40,6 +52,9 @@ class Topic extends Search
   }
 
   # STATIC
+  /**
+  *This function is a static function
+  */
   function GetTopics()
   {
     global $cameralife;

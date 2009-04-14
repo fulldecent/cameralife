@@ -1,6 +1,14 @@
 <?php
   # Sets the options for your site...
-
+ /**Enables you set options for your site
+  *@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+*/
+/**
+*/
   $features=array('database','security','theme', 'photostore');
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
@@ -29,7 +37,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
   <script language="javascript">
   <!--
-    function toggleElement(a,b) 
+    function toggleElement(a,b)
     {
       document.getElementById(a).style.display = 'block'
       document.getElementById(b).style.display = 'none'
@@ -74,7 +82,7 @@
     <td>Choose a photo storage engine
     <td>
       <select name="value1">
-      <?php 
+      <?php
         $themes = glob($cameralife->base_dir."/modules/photostore/*");
         foreach($themes as $theme)
         {
@@ -85,7 +93,7 @@
             echo "<option selected value=\"".basename($theme)."\">\n";
           else
             echo "<option value=\"".basename($theme)."\">\n";
-    
+
           echo basename($theme);
           echo "</option>\n";
           flush();
@@ -94,7 +102,7 @@
       ?>
       </select>
     <td><input type="submit" value="Choose">
-  
+
 </table>
 </form>
 </div>
@@ -116,7 +124,7 @@
 
     $value = $cameralife->PhotoStore->GetPref($pref['name']);
 
-    if ($pref['type'] == 'number' || $pref['type'] == 'string' || $pref['type'] == 'directory') 
+    if ($pref['type'] == 'number' || $pref['type'] == 'string' || $pref['type'] == 'directory')
     {
       echo "      <input type=\"text\" name=\"value$prefnum\" value=\"$value\" />\n";
     }

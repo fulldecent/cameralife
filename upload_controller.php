@@ -7,6 +7,21 @@
   # userfile = encoded file to upload, JPG or ZIP
   # target = the exit URL, or 'ajax' for an ajax call
 
+/**Handles the POST form action from upload.php
+*Pass the following variables
+*<ul>
+*<li>path = the upload path</li>
+*<li>description = the photo(s) description</li>
+*<li>userfile = encoded file to upload, JPG or ZIP</li>
+*<li>target = the exit URL, or 'ajax' for an ajax call</li></ul>
+*@link  http://fdcl.sourceforge.net/
+    *@version 2.6.2
+    *@author Will Entriken <cameralife@phor.net>
+    *@access public
+    *@copyright © 2001-2009 Will Entriken
+*/
+/**
+*/
   @ini_set('max_execution_time',9000);
   $features = array('database', 'security', 'imageprocessing', 'theme', 'photostore');
   require 'main.inc';
@@ -15,6 +30,16 @@
   // Precondition: the images exists at $file
   // Postcondition: image is added to the photostore at $path . $filename
   // Return: 0 = success; or a string describing the error
+  /**Adds a file to the system
+  *
+  *Precondition - the images exists at $file
+  *
+  *Postcondition: image is added to the photostore at $path$filename
+  *
+  *@return int 0|string describing the error
+  *@internal <code>$status = $cameralife->Security->authorize('admin_file') ? 0 : 3;</code>
+  *use this line to make user uploads be reviewed by an admin before they go live. To see them, Administration->Files->Uploads
+  */
   function add_image($path, $filename, $file, $description = 'unnamed', $status = 0)
   {
     global $cameralife;
@@ -85,6 +110,9 @@ if ( !function_exists('sys_get_temp_dir') )
 {
     // Based on http://www.phpit.net/
     // article/creating-zip-tar-archives-dynamically-php/2/
+    /**@link http://www.phpit.net/article/creating-zip-tar-archives-dynamically-php/2/
+    */
+
     function sys_get_temp_dir()
     {
         // Try to get from environment variable

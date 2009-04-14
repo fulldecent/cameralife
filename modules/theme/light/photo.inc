@@ -1,4 +1,41 @@
 <?php
+/**Enables 
+*<ul>
+*<li>displaying/viewing of photos</li>
+*<li>editing of photos</li>
+*<li>linking to relevant locations for further operations </li>
+*<li>caching of most likely viewed pictures</li>
+* if ($photoNext)
+ * {
+ *   echo '<img style="display:none" src="'.$photoNext->GetMedia('scaled').'" alt="hidden photo">';
+ * }
+*</ul>
+*<b>Note</b>$cameralife and $photo are set by ShowPage()
+* <code>
+*if (!$cameralife->Security->GetName())
+   * {
+   *   $condition = "user_ip='".$cameralife->Security->GetAddr()."' AND user_name=''";
+  *    $count_edits = $cameralife->Database->SelectOne('logs','COUNT(*)',$condition);
+  *    if ($count_edits % 3 == 0)
+    *    $ask_user_to_login = true;
+    *}
+*</code>The above code prompts if user is doing useful edits prompts them to log in or register 
+ 
+ * <code>
+ *if ($photoNext)
+ * {
+ *   echo '<img style="display:none" src="'.$photoNext->GetMedia('scaled').'" alt="hidden photo">';
+ * }
+ *</code>
+ *Caches the next image the user is likely to look at
+*@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  */
+  /**
+  */
   # $cameralife and $photo are set by ShowPage()
   # Display a photo, edit a photo, link to relevant places
 

@@ -1,6 +1,18 @@
 <?php
-  # In charge of monitoring users and security settings
-
+  /** Enables administration of site activities and settings
+  *
+  *<ul>
+  *<li>Allows monitoring of user activities</li>
+  *<li>Enables editing of security settings</li>
+  *</ul>
+   *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  *@link http://fdcl.sourceforge.net
+  */
+  /**
+*/
   $features=array('database','security');
   require "../../../main.inc";
   $cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
@@ -87,7 +99,7 @@
 </h2>
 
 <?php
-  if ($_GET['page'] == 'users' ) 
+  if ($_GET['page'] == 'users' )
   {
 ?>
     <form method="post" action="<?= $PHP_SELF ?>">
@@ -106,7 +118,7 @@
       {
         $count_actions = $cameralife->Database->SelectOne('logs','COUNT(*)',"user_name='".$curuser["username"]."'");
         $count_photos = $cameralife->Database->SelectOne('photos','COUNT(*)',"username='".$curuser["username"]."'");
-  
+
         echo "<tr><td>\n";
         echo '<img src="'.$cameralife->IconURL('small-login').'">';
         echo $curuser["username"]."\n";
@@ -177,7 +189,7 @@
         <td>Upper administation (users, customize, register...)
         <td><?php html_select_auth("auth_admin_customize") ?>
     </table>
-<?php } ?> 
+<?php } ?>
 
 <p>
   <input type="submit" value="Commit Changes">

@@ -1,12 +1,38 @@
 <?php
-  /*
-  *  This module stores files on the local filesystem, and delivers them
-  *  via another script. The user doesn't see the filename, so they can't
-  *  (easily) guess what a private filename would be. Also, access to 
-  *  private photos is authenticated.
-  *
-  */
-
+/**
+*<b>Secured method for storing and sharing your photos</b>
+*
+*Enables you to
+*<ul>
+*<li>Protect your photos database</li>
+*<li>Allow viewing of only those photos authorized by you.
+*Friends on your photo share list don't see the filename, so they can't guess a private filename. </li>
+*<li>Allow authorized access to private photos.</li>
+*</ul>
+*Implementation Note : This module stores files on the local filesystem, and delivers them via another script.
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  *@link http://fdcl.sourceforge.net
+*/
+/**
+*<b>This class belongs to module.inc. Stores photos on your local machine(laptop,desktop,server)</b>
+*@todo To make this platform-independent
+*<code>if (preg_match('|^/|', $this->GetPref('photo_dir')))
+* $this->PhotoDir = rtrim($this->GetPref('photo_dir'), '/');
+ *else
+*  $this->PhotoDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('photo_dir'), '/');
+ *if (preg_match('|^/|', $this->GetPref('cache_dir')))
+  *  $this->CacheDir = rtrim($this->GetPref('cache_dir'), '/');
+  *else
+  *  $this->CacheDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('cache_dir'), '/');
+  * if (preg_match('|^/|', $this->GetPref('deleted_dir')))
+  *    $this->DeletedDir = rtrim($this->GetPref('deleted_dir'), '/');
+  *  else
+  *    $this->DeletedDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('deleted_dir'), '/');
+  * </code>
+ */
   class LocalPhotoStore extends PhotoStore
   {
     function LocalPhotoStore() 
@@ -18,57 +44,62 @@
       $this->preferences[] = array('name'=>'photo_dir', 'desc'=>'Main photo directory', 'type'=>'directory', 'default'=>'images/photos');
       $this->preferences[] = array('name'=>'cache_dir', 'desc'=>'Camera Life data directory', 'type'=>'directory', 'default'=>'images/cache');
       $this->preferences[] = array('name'=>'deleted_dir', 'desc'=>'Deleted photos (...where they go when you "erase" them)', 'type'=>'directory', 'default'=>'images/deleted');
-
-//TODO make this platform-independent
-      if (preg_match('|^/|', $this->GetPref('photo_dir')))
-        $this->PhotoDir = rtrim($this->GetPref('photo_dir'), '/');
-      else
-        $this->PhotoDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('photo_dir'), '/');
-
-      if (preg_match('|^/|', $this->GetPref('cache_dir')))
+if (preg_match('|^/|', $this->GetPref('photo_dir')))
+ $this->PhotoDir = rtrim($this->GetPref('photo_dir'), '/');
+ else
+  $this->PhotoDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('photo_dir'), '/');
+ if (preg_match('|^/|', $this->GetPref('cache_dir')))
         $this->CacheDir = rtrim($this->GetPref('cache_dir'), '/');
       else
         $this->CacheDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('cache_dir'), '/');
 
-      if (preg_match('|^/|', $this->GetPref('deleted_dir')))
+     if (preg_match('|^/|', $this->GetPref('deleted_dir')))
         $this->DeletedDir = rtrim($this->GetPref('deleted_dir'), '/');
       else
         $this->DeletedDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('deleted_dir'), '/');
+        
+
     } 
 
-    /**
-    *  GetURL
+    /** 
+    *	Gets a URL for your friends to access a photo as authorized by you.
+    * <ul>
+    * <li> If FALSE is returned, the caller must construct a URL to media.php</li>     
+    * <li> That page will call function GetFile()and display the photo to the user.</li>
+    * </ul>
+    *  
+    * <b> Note </b>
+    * DO NOT assign  publicly accessible urls to non-public photos 
+    * @see photstore/module.php
     *
-    *  Gets a URL for the client to access the selected resource.
-    *  (Implementation note: make sure non-public photos do not have 
-    *  publicly accessible urls)
-    *
-    *  @param $photo - a target photo obeject
-    *  @param $type - one of ('photo', 'scaled', 'thumbnail')
-    *
-    *  @return a URL
+    *  @param mixed $photo - A target photo object
+    *  @param string $type - Choose amongst('photo', 'scaled', 'thumbnail')
+    *  @return string URL or boolean FALSE
+    *  @see media.php
     */
+    
+    
     function GetURL($photo, $type='photo') 
     {
-      return FALSE; // this request will be handled through media.php
-      // see note in photstore/module.php
+    
+      return FALSE; 
+      
     }
 
     /**
-    *  GetFile
-    *
-    *  Gets a filename for the requested resource. It is downloaded if necessary.
-    *
-    *  @param $photo - a target photo object
-    *  @param $type - one of ('photo', 'original', 'modified', 'scaled', 'thumbnail')
-    *    'photo' refers to the modified (if exists) otherwise original
-    *
-    *  @return an array with three elements:
-    *     filename - string - the local file you requested
-    *     temporary - boolean
-    *     mtime ...
-    *
-    *  If temporary is set, the caller is responsible for deleting this file when done.
+      *Gets the filename for the photo as stored on your local machine.
+      *If the photo does not exist on your local machine it is downloaded from the cameralife server 
+      *'photo' refers to the modified (if exists) otherwise original
+     *@return an array with three elements
+    *<ul>
+    *<li>string filename - The local file you requested</li>
+    *<li>boolean temporary</li>
+    *<li>integer mtime - Time at which a photo was last modified</li>
+    *</ul>
+    * If temporary is set, the caller is responsible for deleting this file when done.
+    *@param mixed  $photo - A target photo object
+    *@param string $type - One of ('photo', 'original', 'modified', 'scaled', 'thumbnail')
+    *@return mixed array with three elements
     */
     function GetFile($photo, $type='photo') 
     {
@@ -103,12 +134,15 @@
     }
 
     /**
-    *  PutFile
+    *  Function PutFile
     *
-    *  Puts a new photo into the photostore. 
-    *
-    *  @param $photo - a target photo object
-    *  @param $filename - the local filesystem file that we are putting
+    *  <ul>
+    *	<li>-Puts a new photo into the photostore.</li>
+    *	<li>-Appropriate permissions should be set up for the photo.</li>
+    *   <li>-The file $filename does not get modified or deleted.<li>
+    * </ul>
+    *  @param $photo - A target photo object
+    *  @param $filename - The local filesystem file that we are assigning
     *
     *  @return none
     */
@@ -123,13 +157,13 @@
     }
 
     /**
-    *  PutThumbnails
+    
     *
     *  Puts a scaled photo and thumbnail into the photostore. 
     *
-    *  @param $photo - a target photo object
-    *  @param $scaled - the file to insert
-    *  @param $thumbnail - the file to insert
+    *  @param mixed $photo - A target photo object
+    *  @param string $scaled - The file to insert
+    *  @param mixed $thumbnail - The file to insert
     *
     *  @return none
     */
@@ -145,17 +179,15 @@
       chmod($this->CacheDir .'/'. $photo->Get('id').'_150.'.$extension, 0666);
     }
 
-    # unnessary, user does not access files directly
+   // @internal unnessary, user does not access files directly
     function SetPermissions() {}
 
     /**
-    *  CheckThumbnails
+     *  Ensures that thumbnails exist
     *
-    *  Ensures that thumbnails exist
+    *  @param mixed $photo A target photo object
     *
-    *  @param $photo - a target photo object
-    *
-    *  @return true if work was done
+    *  @return boolean TRUE On successful completion of task
     */
     function CheckThumbnails($photo) 
     {
@@ -174,13 +206,14 @@
     }
 
     /**
-    *  ModifyFile
+        *  Puts a modified version of a photo into the photostore. 
     *
-    *  Puts a modified version of a photo into the photostore. Passing
-    *  NULL for the filename will revert the photo.
-    *
-    *  @param $photo - a target photo object
-    *  @param $filename - the local filesystem file that we are putting
+    *<ul>
+    *<li>-Passing NULL for the filename deletes cached copies of the photo.</li>
+    *<li>-All further changes will utilize the orginal photo on the cameralife server</li>
+    *</ul>
+    *  @param mixed $photo - A target photo object
+    *  @param $filename - The local filesystem file that we are assigning
     *
     *  @return none
     */
@@ -204,11 +237,9 @@
 
 
     /**
-    *  EraseFile
+     *  Erase a photo and associated scaled photos from the system
     *
-    *  Erase a photo and associated scaled photos from the system
-    *
-    *  @param $photo - a target photo object
+    *  @param mixed $photo A target photo object
     *
     *  @return none
     */
@@ -228,9 +259,7 @@
     }
 
     /**
-    *  ListFiles
-    *
-    *  Returns a list of all files in the photostore
+         *  Returns a list of all files in the photostore
     *
     *  @return an array of files, in the form 'path'=>basename(path)
     */
@@ -266,8 +295,8 @@
       return $retval;
     }
 
-    ##### PRIVATE
-
+   
+ #private
     function mkdir_recursive($pathname, $mode=0777)
     {
       is_dir(dirname($pathname)) || $this->mkdir_recursive(dirname($pathname), $mode);

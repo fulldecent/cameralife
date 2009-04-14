@@ -1,6 +1,16 @@
 <?php
   # Part of the user manager section:
   # Log analyzer - analyze all logs
+  /**This is a part of the user manager section
+  *The log analyzer analyzes all the logs
+  *@link http://fdcl.sourceforge.net
+   *@version 2.6.2
+    *@author Will Entriken <cameralife@phor.net>
+    *@copyright © 2001-2009 Will Entriken
+    *@access public
+  */
+  /**
+  */
 
   $features=array('database','security');
   require "../main.inc";
@@ -55,7 +65,7 @@
 
   <script language="javascript">
   <!--
-    function toggleParts(a,b) 
+    function toggleParts(a,b)
     {
       document.getElementById(a).style.display = 'block'
       document.getElementById(b).style.display = 'none'
@@ -65,7 +75,7 @@
       document.getElementById('showpreferences').checked = 'true'
       return false;
     }
-    function toggleUsers(a,b) 
+    function toggleUsers(a,b)
     {
       document.getElementById(a).style.display = 'block'
       document.getElementById(b).style.display = 'none'
@@ -175,7 +185,7 @@
       <th colspan=2>Results
   <?php
     $condition = "(0 ";
-    if ($_POST['showphotos']) 
+    if ($_POST['showphotos'])
       $condition .= "OR record_type = 'photo' ";
     if ($_POST['showalbums'])
       $condition .= "OR record_type = 'album' ";
@@ -185,11 +195,11 @@
       $condition .= "OR record_type = 'preference' ";
 
     $condition .= ") AND (0 ";
-    if ($_POST['showme']) 
+    if ($_POST['showme'])
       $condition .= "OR user_name = '".$cameralife->Security->GetName()."' ";
-    if ($_POST['showreg']) 
+    if ($_POST['showreg'])
       $condition .= "OR (user_name LIKE '_%' AND user_name != '".$cameralife->Security->GetName()."')";
-    if ($_POST['showunreg']) 
+    if ($_POST['showunreg'])
       $condition .= "OR user_name = '' ";
     $condition .= ") ";
 

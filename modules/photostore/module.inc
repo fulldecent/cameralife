@@ -12,6 +12,21 @@
   *  Implementation note: for all files passed in, you are responsible for 
   *  chmodding as necessary.
   */
+  /** A photostore is a backend for storing photos. Its responsibilities are:
+  *<ul>
+  * <li>  putting and getting photo files</li>
+  * <li> taking photos and making scaled/thumbnailed versions</li>
+  * <li> making these files accessible by a URL</li>
+  *</ul>
+  *Generally, you will update the photo object and then call the functions.
+    *The photostore will look at the photo object to find the post condition and then carry out the intended task.
+  *@version 2.6.2
+  *@author Will Entriken<cameralife@phor.net>
+  *@access public
+  *@copyright © 2001-2009 Will Entriken
+*/
+/**Carries functions that carry out operations on photo files
+*/
 
   class PhotoStore extends CameraLifeModule
   {

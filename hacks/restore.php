@@ -1,4 +1,16 @@
 <?php
+/**Photo Restore -
+*This tool will restore your backed up photos.
+*<b>Note:Use absolute paths </b>
+*@link http://fdcl.sourceforge.net
+ *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+*/
+
+/**
+*/
   @ini_set('max_execution_time',9000);
 
   $features=array('database','security','imageprocessing', 'photostore');
@@ -34,7 +46,7 @@
   $home = $cameralife->GetIcon('small');
   echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
 ?> |
-<a href="../admin/index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a> 
+<a href="../admin/index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>
 </div>
 
 <?php
@@ -63,7 +75,7 @@
       while ($photo = $photos->FetchAssoc())
       {
 
-        if($photo['modified']) 
+        if($photo['modified'])
         {
 //TODO fix hardcoded file format
 // this first one could be /dev/null?
@@ -73,7 +85,7 @@
         $ticket = $cameralife->PhotoStore->PutFile(new Photo($photo['id']), $_REQUEST['photodir'] . '/' . $photo['path'] . $photo['filename']);
 
 //TODO doing this twice is not efficient!
-        if($photo['modified']) 
+        if($photo['modified'])
         {
 //TODO fix hardcoded file format
           $cameralife->PhotoStore->ModifyFile(new Photo($photo['id']), $_REQUEST['moddir'] . '/' . $photo['id'] . '_mod.jpg');
@@ -112,7 +124,7 @@
   <tr>
     <td><td><input type="submit" value="Restore">
 </table>
-   
+
   </form>
 
 <?php

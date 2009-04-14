@@ -1,5 +1,27 @@
 <?php
   # Admin tool to batch rename unnamed photos
+  /**An adminisitrative tool-Batch Renamer that names unnamed photos in a batch
+  *
+  *The following code handles form actions
+  *<code>$curphoto = FALSE;
+  *foreach ($_POST as $key=>$val)
+  *{
+  *  list($cmd, $id) = split('_', $key);
+   * if ($id == FALSE) continue;
+   * if (!$curphoto || $id != $curphoto->Get('id'))
+  *  {
+   *   $curphoto = new Photo($id);
+   * }
+   *</code>
+  *@link http://fdcl.sourceforge.net
+   *@version 2.6.2
+    *@author Will Entriken <cameralife@phor.net>
+    *@copyright © 2001-2009 Will Entriken
+    *@access public
+*/
+
+  /**
+  */
 
   $features=array('database','theme','security','imageprocessing','photostore' );
   require "../main.inc";
@@ -11,7 +33,7 @@
   $perpage = $_POST['perpage'] or $perpage = 12;
 
   // Handle form actions
-  $curphoto = FALSE;
+    $curphoto = FALSE;
   foreach ($_POST as $key=>$val)
   {
     list($cmd, $id) = split('_', $key);

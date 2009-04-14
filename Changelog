@@ -1,3 +1,6 @@
+2.6.2svn  Will Entriken <cameralife AT phor.net>
+* Huge documentation update by Aysha Mohamed Rafiq
+
 2.6.2  Will Entriken <cameralife AT phor.net>
 * Website update, thanks to Rajesh Sundaram
 * Security updates, thanks to Omer Singer and BackDoor
@@ -25,7 +28,6 @@
 * Checkpoints allow you to review and approve changes to the site
 * Comments and ratings
 * Order prints online
-
 * Allow multiple photos with same file name!
 * Photos may be in a directory not accessible from the web
 * More fun stats

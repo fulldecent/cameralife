@@ -1,7 +1,23 @@
 <?php
   # Part of the user manager section:
   # Log analyzer - analyze all logs
-
+/**This is a part of the user manager section.
+*Displays the administration page for user input from both registered and unregistered users
+*The log analyzer -analyzes all the logs.
+*It shows changes since
+  *<ul><li>Last checkpoint</li>
+  * <li>A week ago</li>
+  * <li>A month ago</li>
+    *<li> The last 100 changes</li>
+    *</ul>
+*@link http://fdcl.sourceforge.net
+ *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  */
+  /**
+  */
   $features=array('database','security', 'photostore');
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
@@ -35,7 +51,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
   <script language="javascript">
   <!--
-    function toggleUsers(a,b) 
+    function toggleUsers(a,b)
     {
       document.getElementById(a).style.display = 'block'
       document.getElementById(b).style.display = 'none'
@@ -106,11 +122,11 @@
       <th colspan=2>Results
   <?php
     $condition = "(0 ";
-    if ($_POST['showme']) 
+    if ($_POST['showme'])
       $condition .= "OR username = '".$cameralife->Security->GetName()."' ";
-    if ($_POST['showreg']) 
+    if ($_POST['showreg'])
       $condition .= "OR (username LIKE '_%' AND username != '".$cameralife->Security->GetName()."')";
-    if ($_POST['showunreg']) 
+    if ($_POST['showunreg'])
       $condition .= "OR username = '' ";
     $condition .= ") ";
 

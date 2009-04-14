@@ -1,6 +1,19 @@
 <?php
 #TODO: more alt = basename(img)
 
+
+/**The module carries the iphone theme
+*
+*@todo more alt= basename(img)
+*@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  *@link http://fdcl.sourceforge.net
+*/
+/**Carries the functions that develop the iphone theme
+*/
+
   class iPhoneTheme extends ThemeModule
   {
     function iPhoneTheme() 
@@ -120,6 +133,8 @@
     }
 
     // query is an array of Icons, or and array of classes that have Icons
+    /**Query is an array of Icons, or and array of classes that have Icons
+    */
     function Grid($query) 
     {
       echo "  <table width='100%' class='grid' align=center cellspacing=3 cellpadding=3>\n";

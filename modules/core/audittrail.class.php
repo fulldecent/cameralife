@@ -1,6 +1,21 @@
 <?php
   # The class for logging and reverting changes to the site
-  
+  /**Logging and reverting changes to the site
+  *
+  *@version 2.6.2
+    *@author Will Entriken <cameralife@phor.net>
+    *@copyright © 2001-2009 Will Entriken
+    *@access public
+  *@link http://fdcl.sourceforge.net
+  */
+  /**
+  *<b>For editing the site</b>
+  *The class enables you to
+  *<ul><li>Make changes to the site</li><li>Undo the changes</li>
+  *</ul>
+
+  */
+
 class AuditTrail
 {
   function AuditTrail()
@@ -10,19 +25,20 @@ class AuditTrail
 
 
 /**
- *  db_log
  *
- *  Logs changes to the database. Information about the user is saved with information below
- *  this allows changes to be rolled back later.
  *
- *  @param $record_type - string - one of ('photo','album','preference','user')
- *  @param $record_id - int - id of the record being changed
- *  @param $value_field - string - field being changed
- *  @param $value_old - string - old field value
- *  @param $value_new - string - new field value
+ *  db_log - Logs changes to the database. Information about the user is saved with information below This allows changes to be rolled back later.
  *
- *  @return none
+ * @param string $record_type one of ('photo','album','preference','user')
+ * @param int $record_id id of the record being changed
+ * @param string $value_field field being changed
+ * @param string $value_old old field value
+ * @param string $value_new new field value
  */
+
+
+
+
   function Log($record_type, $record_id, $value_field, $value_old, $value_new)
   {
     global $user, $_SERVER, $cameralife;
@@ -41,6 +57,9 @@ class AuditTrail
     return new Receipt($id);
   }
 }
+/**
+*<b>Acknowledges the changes </b>
+*/
 
 class Receipt
 {
@@ -54,7 +73,7 @@ class Receipt
     {
       $result = $cameralife->Database->Select('logs', '*', 'id='.$id);
       $this->myRecord = $result->FetchAssoc();
-    }    
+    }
   }
 
   function IsValid()
@@ -90,6 +109,12 @@ class Receipt
   }
 
   // invalidates this receipt
+  /**
+  *Invalidates this receipt
+  *
+  *Gets the old records
+  *<code> $result = $cameralife->Database->Select('logs', '*', $condition, 'ORDER BY id DESC LIMIT 2');</code>
+  */
   function Undo()
   {
     global $cameralife;
@@ -114,7 +139,7 @@ class Receipt
       $cameralife->Error('You did not make this change, so you cannot undo it.', __FILE__, __LINE__);
       return FALSE;
     }
-    
+
     $old = $result->FetchAssoc();
     if(is_array($old) && isset($old['value_new']))
     {

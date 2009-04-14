@@ -1,6 +1,16 @@
 <?php
 #TODO: more alt = basename(img)
+/**
+*@link http://fdcl.sourceforge.net
+*@version 2.6.2
+*@author Will Entriken<cameralife@phor.net>
+*@access public
+*@copyright © 2001-2009 Will Entriken
+*@todo more alt= basename(img)
+*/
 
+/**Carries functions that enable creation of a sidebar with features such as url ,image url,titlebar,selection,multiselection etc
+*/
   class SidebarTheme extends ThemeModule
   {
     function SidebarTheme() 
@@ -121,6 +131,9 @@
     }
 
     // query is an array of Icons, or and array of classes that have Icons
+    /**
+    *@param mixed $query an array of Icons, or and array of classes that have Icons
+    */
     function Grid($query) 
     {
       echo "  <table width='100%' class='grid' align=center cellspacing=3 cellpadding=3>\n";
@@ -243,6 +256,13 @@
     // PRIVATE
     // In: an HTML-escaped url, and HTML-escaped param and value
     // Out: an HTML-escaped url with a GET parameter added
+    
+    /**
+    *In: an HTML-escaped url, and HTML-escaped param and value
+    *Out: an HTML-escaped url with a GET parameter added
+    *
+    *@access private
+    */
     function AddParam($url, $param, $value=NULL)
     {
       if (strpos($url, '?') !== FALSE)

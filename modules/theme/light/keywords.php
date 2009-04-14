@@ -1,6 +1,16 @@
 <?php
-  # Output a javascript file to use in conjunction with 
+  # Output a javascript file to use in conjunction with
   # the keyword tagging system
+  /**Output a javascript file to use in conjunction with the keyword tagging system
+  *@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  */
+
+  /**
+  */
   $features=array('database', 'security');
   require "../../../main.inc";
 
@@ -24,6 +34,8 @@
   header("Expires: ".gmdate("D, d M Y H:i:s", time() + 3600)." GMT"); // One hour
 
   echo "var tags=({";
+  /**Need description for function balls
+  */
   function balls($key, $count) { return "\"$key\":$count"; }
   echo join(array_map('balls', array_keys($keys),array_values($keys)),',');
   echo "})";

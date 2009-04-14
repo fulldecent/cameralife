@@ -1,11 +1,31 @@
 <?php
-  # 
+  #
   # Displays a photo
   # The file is got from the photostore "the hard" way and printed out
   # This file makes asset security possible since the user does not directly access the photos.
   #
   # Required GET variables: id, format (one of 'photo', 'thumbnail', 'scaled'), ver (mtime)
   #
+  /**Displays a photo.
+  *
+  *This file makes asset security possible since the user does not directly access the photos.
+  *The file is requested from the photostore and returned to the browser.
+  *
+  *<b>Note:</b>Alternatively the photostore could have sent the client to another URL to request the
+  *file directly but that would be a less secured method.
+  *Required GET variables
+  *<ul>
+  *<li>id</li>
+  *<li>format - 'photo', 'thumbnail'or 'scaled')</li>
+  *<li>ver (mtime)</li>
+  *@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  */
+  /**
+  */
 
   $features=array('database','security','imageprocessing', 'photostore');
   require "main.inc";
@@ -44,8 +64,8 @@
 # header('Cache-Control: '.($photo['status'] > 0) ? 'private' : 'public');
   header('Content-Length: '.filesize($file));
 
-  header("Date: ".gmdate("D, d M Y H:i:s", filemtime($file))." GMT");
-  header("Last-Modified: ".gmdate("D, d M Y H:i:s", filemtime($file))." GMT");
+  header("Date: ".gmdate("D, d M Y H:i:s", $mtime)." GMT");
+  header("Last-Modified: ".gmdate("D, d M Y H:i:s", $mtime)." GMT");
   header("Expires: ".gmdate("D, d M Y H:i:s", time() + 2592000)." GMT"); // One month
 
   readfile($file);

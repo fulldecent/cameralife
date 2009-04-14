@@ -1,17 +1,26 @@
 <?php
+/** Setting up the theme
+*
+  *@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  */
+  /**
+  */
+  /**The base class for themes
+ */ 
+
   class ThemeModule extends CameraLifeModule
   {
     function ThemeModule() {}
 
     /**
-    *  ShowPage
-    *
     *  Displays all HTML to the user given the specified name and associated data
     *
-    *  @param $name - the name of the page
-    *  @param $object - any extra data
-    *
-    *  @return none
+    *  @param string $name the name of the page
+    *  @param mixed $object any extra data
     */
     function ShowPage($name, $object=NULL) {}
   }

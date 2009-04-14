@@ -1,4 +1,16 @@
 <?php
+///Creates a backup copy of all photos in the photostore.
+// Note:Scaled and thumbnail photos will not be copied
+/**Creates a backup copy of all photos in the photostore.
+*<b>Note:</b>Scaled and thumbnail photos will not be copied
+*@link http://fdcl.sourceforge.net
+ *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+*/
+/**
+*/
   @ini_set('max_execution_time',9000);
 
   $features=array('database','security','imageprocessing', 'photostore');
@@ -34,7 +46,7 @@
   $home = $cameralife->GetIcon('small');
   echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
 ?> |
-<a href="../admin/index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a> 
+<a href="../admin/index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>
 </div>
 
 <?php
@@ -68,7 +80,7 @@
         if ($temp)
           unlink($file);
 
-        if($photo['modified']) 
+        if($photo['modified'])
         {
 //TODO fix hardcoded file format
           list ($file, $temp, $tmp) = $cameralife->PhotoStore->Getfile(new Photo($photo['id']), 'modified');
@@ -103,7 +115,7 @@
   <tr>
     <td><td><input type="submit" value="Backup">
 </table>
-   
+
   </form>
 
 <?php

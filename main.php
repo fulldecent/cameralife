@@ -2,7 +2,17 @@
 
   # This is a hack to be compatible with Gallery 2 for:
   #   the remote API
+/**
+*This hack will be compatible with Gallery 2 for a remote API
+*@link http://fdcl.sourceforge.net
+*@version 2.6.2
+*@author Will Entriken <cameralife@phor.net>
+*@copyright © 2001-2009 Will Entriken
+*@access public
+*/
 
+/**
+*/
   $old = $_POST;
   unset($_POST);
   $_POST = $old['g2_form'];

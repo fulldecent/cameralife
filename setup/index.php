@@ -1,4 +1,16 @@
+
 <?php
+/**
+* Displays post installation notifcation messages
+*@link http://fdcl.sourceforge.net
+*@version 2.6.2
+*@author Will Entriken <cameralife@phor.net>
+*@copyright © 2001-2009 Will Entriken
+*@access public
+*/
+/**
+*/
+
   $version = '2.6.0b3';
   $continue = true;
 
@@ -49,7 +61,7 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
     <td>
       Checking for GD support...
     <td>
-      <?php 
+      <?php
         if (function_exists('gd_info'))
           echo "<font color=green>Installed</font>";
         else
@@ -63,7 +75,7 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
   <tr>
     <td>
       Checking for JPEG support...
-    <td>      
+    <td>
       <?php
         $info = gd_info();
 
@@ -99,7 +111,7 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
       <?php
         $url = 'http://' . $_SERVER['HTTP_HOST'] . ($_SERVER['SERVER_PORT'] == 80 ? '' : ':'.$_SERVER['SERVER_PORT']). str_replace('index.php','',$_SERVER['PHP_SELF']) . 'images/blank.gif';
         $fh = fopen($url, 'r');
-        while (!feof($fh)) 
+        while (!feof($fh))
         {
           $data .= fread($fh, 8192);
         }
@@ -122,7 +134,7 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
       <?php
         $url = 'http://' . $_SERVER['HTTP_HOST'] . ($_SERVER['SERVER_PORT'] == 80 ? '' : ':'.$_SERVER['SERVER_PORT']). str_replace('index.php','',$_SERVER['PHP_SELF']) . '../testrewrite';
         $fh = @fopen($url, 'r');
-        while ($fh && !feof($fh)) 
+        while ($fh && !feof($fh))
         {
           $data2 .= fread($fh, 8192);
         }
@@ -143,26 +155,26 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
         if (!is_writable('../modules/'))
         {
           echo "<font color=orange>Warning</font>
-                <tr><td colspan=2><p class='important'>The directory modules/  
-                is not writable by the webserver. If you fix this, setup will be faster, otherwise, 
+                <tr><td colspan=2><p class='important'>The directory modules/
+                is not writable by the webserver. If you fix this, setup will be faster, otherwise,
                 you will need to manually paste a file in there later. <a href =\"index.php\">Check again</a>";
         }
         elseif (!is_writable('../images/photos/'))
         {
           echo "<font color=orange>Warning</font>
-                <tr><td colspan=2><p class='important'>The directory image/photos/  
+                <tr><td colspan=2><p class='important'>The directory image/photos/
                 is not writable by the webserver. If you fix this, setup will be faster <a href =\"index.php\">Check again</a>";
         }
         elseif (!is_writable('../images/cache/'))
         {
           echo "<font color=orange>Warning</font>
-                <tr><td colspan=2><p class='important'>The directory image/cache/  
+                <tr><td colspan=2><p class='important'>The directory image/cache/
                 is not writable by the webserver. If you fix this, setup will be faster <a href =\"index.php\">Check again</a>";
         }
         elseif (!is_writable('../images/deleted/'))
         {
           echo "<font color=orange>Warning</font>
-                <tr><td colspan=2><p class='important'>The directory image/deleted/  
+                <tr><td colspan=2><p class='important'>The directory image/deleted/
                 is not writable by the webserver. If you fix this, setup will be faster <a href =\"index.php\">Check again</a>";
         }
         elseif(!file_exists('../.htaccess'))

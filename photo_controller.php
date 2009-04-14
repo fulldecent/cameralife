@@ -7,13 +7,28 @@
   # param1 = extra info
   # param2 = extra info...
   # target = the exit URL, or 'ajax' for an ajax call
-
+/**Handles the POST form action from photo.php
+*Pass the following variables
+*<ul>
+*<li>id = the photo id</li>
+  *<li>action = the action to perform on the photo</li>
+  *<li>param1 = extra info</li>
+  *<li> param2 = extra info</li>
+*<li>target = the exit URL, or 'ajax' for an ajax call</li></ul>
+*@link  http://fdcl.sourceforge.net/
+    *@version 2.6.2
+    *@author Will Entriken <cameralife@phor.net>
+    *@access public
+    *@copyright © 2001-2009 Will Entriken
+*/
+/**
+*/
   $features=array('database', 'imageprocessing', 'security', 'photostore');
   require "main.inc";
 
   $photo = new Photo($_POST['id'])
     or $cameralife->Error('this photo does not exist');
-  if ($photo->Get['status'] != 0) 
+  if ($photo->Get['status'] != 0)
     $cameralife->Security->authorize('admin_file', 'This file has been flagged or marked private');
 
   if ($_POST['action'] == 'flag')
@@ -89,7 +104,7 @@
       echo '<?xml version="1.0" ?><receipt><id>'.$receipt->Get('id')."</id></receipt>\n";
     }
     exit(0);
-  } 
+  }
  else
     header("Location: ".$_POST['target']);
 ?>

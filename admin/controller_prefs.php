@@ -7,7 +7,24 @@
   # param1 = site_name
   # value1 = Camera Life
   # target = admin/customize.php
- 
+ /**Handles a POST FORM and lets you set/edit the site preferences and then redirects you to the target page
+ *
+ *Pass variables such as the following
+ *<ul>
+ *<li>module1 = CameraLife</li>
+ * <li>param1 = site_name</li>
+ *<li> value1 = Camera Life</li>
+  *<li>target = admin/customize.php</li>
+  *</ul>
+ *@link http://fdcl.sourceforge.net
+ *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  */
+
+ /**
+ */
   $features=array('database','theme','security');
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
@@ -32,7 +49,7 @@
       $cameralife->userpreferences[$pref['module']][$pref['param']] = $pref['value'];
       $cameralife->SavePreferences();
     }
-    else 
+    else
       die ('passed wrong');
   }
 

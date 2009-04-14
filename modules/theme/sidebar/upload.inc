@@ -1,5 +1,20 @@
 <?php
-  # $cameralife set by ShowPage()
+
+  /**Enables photo upload
+  *
+  *<ul>
+   * <li>You can upload a photo in JPEG format or a ZIP of JPEG photos</li>
+   * <li>The maximum file size is 20MB</li>
+  *</ul>
+  *@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  */
+  /**
+  */
+ #$cameralife set by ShowPage()
 
   $cameralife->GetFeature('security');
   $cameralife->GetFeature('photostore');

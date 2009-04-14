@@ -6,6 +6,21 @@
   *  Lazy thumbnailing is not supported.
   *
   */
+  /**
+  *This module stores files on a remote filesystem.
+   *@link http://fdcl.sourceforge.net/
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@access public
+  *@copyright © 2001-2009 Will Entriken
+  */
+  
+  /**This remotely located filesystem supports public HTTP
+  *
+  *  Private files are delivered through this server.
+  *
+  *  Lazy thumbnailing is not supported.
+  */
 
   class RemoteServerPhotoStore extends PhotoStore
   {
@@ -24,13 +39,12 @@
     *  GetURL
     *
     *  Gets a URL for the client to access the selected resource.
-    *  (Implementation note: make sure non-public photos do not have 
-    *  publicly accessible urls)
+    *  (Implementation note: make sure non-public photos do not have publicly accessible urls)
     *
     *  @param $photo - a target photo obeject
     *  @param $type - one of ('photo', 'scaled', 'thumbnail')
     *
-    *  @return a URL
+    *  @return  URL
     */
     function GetURL($photo, $type='photo') 
     {
@@ -62,13 +76,12 @@
     *  Gets a filename for the requested resource. It is downloaded if necessary.
     *
     *  @param $photo - a target photo object
-    *  @param $type - one of ('photo', 'original', 'modified', 'scaled', 'thumbnail')
-    *    'photo' refers to the modified (if exists) otherwise original
+    *  @param $type - one of ('photo', 'original', 'modified', 'scaled', 'thumbnail').  'photo' refers to the modified (if exists) otherwise original
     *
     *  @return an array with two elements:
     *     filename - string - the local file you requested
     *     temporary - boolean
-    *     mtime ...
+    *     mtime - the time a file was last modified
     *
     *  If temporary is set, the caller is responsible for deleting this file when done.
     */
@@ -105,7 +118,7 @@
       return array($file, FALSE, @filemtime($file));
     }
 
-    /**
+    /*
     *  PutFile
     *
     *  Puts a new photo into the photostore. 
@@ -115,6 +128,14 @@
     *
     *  @return none
     */
+    /**
+        *  Puts a new photo into the photostore. 
+        *
+        *  @param $photo - a target photo object
+        *  @param $filename - the local filesystem file that we are putting
+        *
+        */
+    
     function PutFile($photo, $filename) 
     {
       global $cameralife;
@@ -127,7 +148,7 @@
 #      chmod($this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'), 0666);
     }
 
-    /**
+    /*
     *  PutThumbnails
     *
     *  Puts a a scaled photo and thumbnail into the photostore. 
@@ -137,6 +158,18 @@
     *  @param $thumbnail - the file to insert
     *
     *  @return none
+    */
+    
+        /**
+        *  PutThumbnails
+        *
+        *  Puts a a scaled photo and thumbnail into the photostore. 
+        *
+        *  @param mixed $photo - a target photo object
+        *  @param mixed $scaled - the file to insert
+        *  @param mixed $thumbnail - the file to insert
+        *
+        *  
     */
     function PutThumbnails($photo, $scaled, $thumbnail) 
     {
@@ -164,7 +197,7 @@
     *
     *  Ensures that thumbnails exist
     *
-    *  @param $photo - a target photo object
+    *  @param mixed $photo - a target photo object
     *
     *  @return true if work was done
     */
@@ -183,7 +216,7 @@
         return FALSE;
     }
 
-    /**
+    /*
     *  ModifyFile
     *
     *  Puts a modified version of a photo into the photostore. Passing
@@ -193,6 +226,16 @@
     *  @param $filename - the local filesystem file that we are putting
     *
     *  @return none
+    */
+     /*
+        *  ModifyFile
+        *
+        *  Puts a modified version of a photo into the photostore. Passing NULL for the filename will revert the photo.
+        *
+        *  @param $photo - a target photo object
+        *  @param $filename - the local filesystem file that we are putting
+        *
+        *  @return none
     */
     function ModifyFile($photo, $filename) 
     {
@@ -214,7 +257,7 @@
     }
 
 
-    /**
+    /*
     *  EraseFile
     *
     *  Erase a photo and associated scaled photos from the system
@@ -223,6 +266,15 @@
     *
     *  @return none
     */
+    
+        /**
+        * 
+        *  Erase a photo and associated scaled photos from the system
+        *
+        *  @param mixed $photo - a target photo object
+        *
+        *  
+        */
     function EraseFile($photo) 
     {
       global $cameralife;
@@ -238,12 +290,17 @@
       unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
     }
 
-    /**
+    /*
     *  ListFiles
     *
     *  Returns a list of all files in the photostore
     *
     *  @return an array of files, in the form 'path'=>basename(path)
+    */
+     /**
+        *  Returns a list of all files in the photostore
+        *
+        *  @return an array of files, in the form 'path'=>basename(path)
     */
     function ListFiles($path = '', $recur=TRUE)
     {

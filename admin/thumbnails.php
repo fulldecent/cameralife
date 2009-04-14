@@ -1,6 +1,17 @@
 <?php
-  # Admin tool to update thumbnails since they are lazily created
+  #Admin tool to update thumbnails since they are lazily created
 
+
+
+/**A administrative tool that updates thumbnails
+  *@link http://fdcl.sourceforge.net
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+*/
+/**
+*/
   @ini_set('max_execution_time',9000);
   $features=array('database','theme','security','imageprocessing', 'photostore');
   require "../main.inc";
@@ -9,7 +20,7 @@
 
   $cameralife->Security->authorize('admin_file', 1); // Require
 
-  $lastdone = $_GET['lastdone'] 
+  $lastdone = $_GET['lastdone']
     or $lastdone = -1;
   $starttime = $_GET['starttime']
     or $starttime = time();
@@ -63,7 +74,7 @@
 
   $next1000 = $cameralife->Database->Select('photos', 'id', "id > $lastdone", 'ORDER BY id LIMIT 500');
   $fixed = 0;
-  
+
   while(($next = $next1000->FetchAssoc()) && ($fixed < 10))
   {
     $curphoto = new Photo($next['id']);

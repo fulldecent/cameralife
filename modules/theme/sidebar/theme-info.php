@@ -1,4 +1,19 @@
 <?php
+/**Sidebar theme
+*
+*<b>Note</b> Most images are distributed as png, gif, and svg files, for maximum reusability.
+* <ul>
+*<li>Theme version- 1.0.2</li>
+*<li>Theme date-5/1/2005</li>
+*</ul>
+*@link http://fdcl.sourceforge.net
+*@version 2.6.2
+*@author Will Entriken<cameralife@phor.net>
+*@access public
+*@copyright © 2001-2009 Will Entriken
+*/
+/**
+*/
  $theme_name    = 'Sidebar';
  $theme_author  = 'Will Entriken';
  $theme_email   = 'cameralife@phor.net';

@@ -1,4 +1,16 @@
 <?php
+  /**
+  *Editing an album
+  *
+  *<b>Note</b> $cameralife and $album are set by ShowPage()
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+  *@link http://fdcl.sourceforge.net
+  */
+  /**
+  */
   # $cameralife and $album are set by ShowPage()
 
   $cameralife->GetFeature('security');

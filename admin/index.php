@@ -1,6 +1,15 @@
 <?php
   # Provides a menu to choose administrative options
-
+/**Displays the main admin page
+*Provides a menu to choose administrative options
+*@link http://fdcl.sourceforge.net
+ *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright © 2001-2009 Will Entriken
+  *@access public
+*/
+/**
+*/
   $features=array('database','security', 'photostore');
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
@@ -42,7 +51,7 @@
     {
       echo " <a href=\"?svn=yes\">check for svn update</a>";
     } 
-    else 
+    else
     {
       $newest = file_get_contents('http://fdcl.svn.sourceforge.net/svnroot/fdcl/');
       ereg('Revision ([0-9]+):', $newest, $regs);
@@ -62,7 +71,7 @@
     {
       echo " <a href=\"?svn=yes\">check latest version</a>";
     } 
-    else 
+    else
     {
       # We collect your ip and version
       $newest = file_get_contents('http://fdcl.sourceforge.net/check.php?a='.$cameralife->version);
@@ -81,15 +90,15 @@
     echo "<p>Choose a theme and iconset</p>\n";
 
     # Upgrade hack
-    if (is_dir($cameralife->base_dir."/images/scaled/")) 
+    if (is_dir($cameralife->base_dir."/images/scaled/"))
     {
       echo "<p class=\"alert\">Note: images/scaled is no longer used, scaled photos now go in your \"Automatically cached photos\" folder.</p>\n";
     }
-    if (is_dir($cameralife->base_dir."/images/thumbnail/")) 
+    if (is_dir($cameralife->base_dir."/images/thumbnail/"))
     {
       echo "<p class=\"alert\">Note: images/thumbnail is no longer used, thumbnails now go in your \"Automatically cached photos\" folder.</p>\n";
     }
-    if (is_dir($cameralife->base_dir."/images/modified/")) 
+    if (is_dir($cameralife->base_dir."/images/modified/"))
     {
       echo "<p class=\"alert\">Note: images/modified is no longer used, modified photos now go in your \"Automatically cached photos\" folder. Make sure you Update Your Database first (in File Manager), so your modified files are copied over.</p>\n";
     }

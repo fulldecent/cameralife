@@ -1,6 +1,17 @@
 <?php
   # the class for getting and using search
-  
+  /**Class Search enables you to get and use the search facility
+    *@link http://fdcl.sourceforge.net/
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@access public
+  *@copyright © 2001-2009 Will Entriken
+  */
+  /**
+  *The class for getting and using search
+  */
+
+
 class Search extends View
 {
   var $mySearchPhotoCondition;
@@ -36,9 +47,9 @@ class Search extends View
 
     if ($this->mySort = $_POST['sort'])
       setcookie("sort",$this->mySort);
-    elseif 
+    elseif
       ($this->mySort = $_GET['sort']);
-    elseif 
+    elseif
       ($this->mySort = $_COOKIE['sort']);
     else
       $this->mySort = 'newest';
@@ -79,7 +90,7 @@ class Search extends View
     $folders = $cameralife->Database->SelectOne('photos', 'COUNT(DISTINCT path)', $this->mySearchFolderCondition.' AND status=0');
 
     return array('photos'=>$photos, 'albums'=>$albums, 'folders'=>$folders);
-  }  
+  }
 
   function SetPage($start, $pagesize=12)
   {
