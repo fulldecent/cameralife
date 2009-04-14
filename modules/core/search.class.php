@@ -11,7 +11,7 @@ class Search extends View
   var $mySql;
   var $myQuery;
 
-  function Search($query)
+  function Search($query = '')
   {
     global $cameralife, $_POST, $_GET;
 

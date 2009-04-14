@@ -472,7 +472,6 @@ pe: {$file_type}\r\nContent-Length: {$file_length}\r\nDate: $dt\r\nAuthorization
 
       $aws_key = $this->GetPref('accesskey');
       $aws_bucket = $this->GetPref('photobucket'); // AWS bucket 
-      $aws_object = urlencode($photo->Get('path').$photo->Get('filename'));         // AWS object name (file name)
 
       // opening HTTP connection to Amazon S3
       $fp = fsockopen("s3.amazonaws.com", 80, $errno, $errstr, 30);

@@ -5,6 +5,15 @@ TODO For the 2.6.2 Realease Cycle
 Any bugs left?
 
 
+ Also, I had a bit of a
+struggle getting photos to upload.  Seems that the /images/photos/upload/
+directory did't get created during the install process and the mkdir
+function couldn't create the /images/photos/upload/admin directory that it
+wanted to use.  I finally tracked it all down and created the directories
+manually and everything is good.  Not sure if that's a bug or not.  Looks
+like great software.  Thanks in advance for your help.
+
+
 ===================
 RELEASE HOWTO
 edit the first line, then paste into a terminal...
