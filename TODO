@@ -2,10 +2,21 @@
 TODO For the 2.6.2 Realease Cycle
 ----------------------------------
 
+FIX THEME FOR MSIE!
+
+fix transactions: each fdcl install get a random number (secret). This i hashed with the user's senssion cookie and put on all forms.
+when receiving the form, validate the hash.
+
+this prevents XSS...
+
+
 media.php -- redirect to external URL reported by the photostore, if available
   -- this will allow pretty URLs even if the photos are hosted elsewhere
   -- but NOT priravte photos, those are hosted locally
   -- maybe use &rewrite=yes from the .htaccess file?
+
+create help pages at http://fdcl.sourceforge.net/wiki/index.php/Main_Page
+  and link to them from inside CL
 
 Any bugs left?
 
@@ -18,6 +29,11 @@ wanted to use.  I finally tracked it all down and created the directories
 manually and everything is good.  Not sure if that's a bug or not.  Looks
 like great software.  Thanks in advance for your help.
 
+i18n ??
+
+use working copy for SVN export
+
+rent a coder - get new themes?
 
 ===================
 RELEASE HOWTO
