@@ -6,7 +6,7 @@
 *@version 2.6.2
 *@author Will Entriken<cameralife@phor.net>
 *@access public
-*@copyright © 2001-2009 Will Entriken
+*@copyright Copyright (c) 2001-2009 Will Entriken
 *@todo more alt=basename(img)
 */
 

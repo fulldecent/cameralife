@@ -8,7 +8,7 @@
     *@version 2.6.2
     *@author Will Entriken <WillEntriken @gmail.com>
     *@access public
-    *@copyright © 2001-2009 Will Entriken
+    *@copyright Copyright (c) 2001-2009 Will Entriken
     */
      /**
       *This class is for getting and using topics
