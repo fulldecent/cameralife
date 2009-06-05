@@ -21,7 +21,7 @@
 
  C. The hard way - if auto install fails
 
-   If using tablename prefixes: edit setup/install.mysql and add the 
+   Note: If using tablename prefixes: edit setup/install.mysql and add the 
    prefix to each table in each INSERT and CREATE statement
 
    Using linux:

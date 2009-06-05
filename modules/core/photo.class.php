@@ -1,6 +1,4 @@
 <?php
-
-
   /**Class Photo enables you to  get the photos
   *@link  http://fdcl.sourceforge.net/
     *@version 2.6.2
@@ -19,7 +17,6 @@
 class Photo extends View
 {
   var $record, $image;
-
 
   var $context; // an Album, Search or Folder of where the user came from to get to this photo
   var $contextPhotos; // photos from context
@@ -57,8 +54,7 @@ class Photo extends View
     elseif (is_numeric($original)) # This is an ID
     {
       $result = $cameralife->Database->Select('photos','*', "id=$original");
-      $this->record = $result->FetchAssoc()
-      ;
+      $this->record = $result->FetchAssoc();
 #        or $cameralife->Error("Cannot load photo: $original", __FILE__, __LINE__);
     }
     elseif(is_array($original)) # A new image, given by an array
@@ -140,13 +136,24 @@ class Photo extends View
     $this->LoadImage($original);
     $imagesize = $this->image->GetSize();
 
-    $scaled = tempnam($cameralife->GetPref('tempdir'), 'cameralife_S');
-    $this->image->Resize($scaled, 600);
-    $thumbnail = tempnam($cameralife->GetPref('tempdir'), 'cameralife_T');
-    $thumbsize = $this->image->Resize($thumbnail, 150);
-    $cameralife->PhotoStore->PutThumbnails($this, $scaled, $thumbnail);
-    @unlink($scaled);
-    @unlink($thumbnail);
+    $sizes = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
+    $sizes[] = $cameralife->GetPref('thumbsize');
+    $sizes[] = $cameralife->GetPref('scaledsize');
+    sort ($sizes);
+    $files = array();
+
+    while ($cursize = array_pop($sizes))
+    {
+      $tempfile = tempnam($cameralife->GetPref('tempdir'), 'cameralife_'.$cursize);
+      $dims = $this->image->Resize($tempfile, $cursize);
+      $files[$cursize] = $tempfile;
+      if ($cursize == $cameralife->GetPref('thumbsize'))
+        $thumbsize = $dims;
+    }
+
+    $cameralife->PhotoStore->PutThumbnails($this, $files);
+    foreach ($files as $size=>$file)
+      @unlink($file);
 
     $this->record['width'] = $imagesize[0];
     $this->record['height'] = $imagesize[1];

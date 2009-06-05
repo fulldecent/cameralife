@@ -20,7 +20,7 @@
           'login','small-login','admin','small-admin','stats','',
           'admin-item','search','icon-folder');
 
-  if (!$_GET['theme'] || eregi('/',$_GET['theme']))
+  if (!$_GET['theme'] || eregi('[/\\]',$_GET['theme']))
   {
     echo "<h1>Select a theme to examine</h1><ul>";
     $fd = opendir('.');

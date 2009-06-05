@@ -1,38 +1,14 @@
 <?php
 /**
-*<b>Secured method for storing and sharing your photos</b>
+* An implementation of PhotoStore that stores photos on your local filesystem. 
+* @see PhotoStore
 *
-*Enables you to
-*<ul>
-*<li>Protect your photos database</li>
-*<li>Allow viewing of only those photos authorized by you.
-*Friends on your photo share list don't see the filename, so they can't guess a private filename. </li>
-*<li>Allow authorized access to private photos.</li>
-*</ul>
-*Implementation Note : This module stores files on the local filesystem, and delivers them via another script.
-  *@version 2.6.2
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-  *@link http://fdcl.sourceforge.net
+* @version 2.6.2
+* @author Will Entriken <cameralife@phor.net>
+* @copyright Copyright (c) 2001-2009 Will Entriken
+* @access public
+* @link http://fdcl.sourceforge.net
 */
-/**
-*<b>This class belongs to module.inc. Stores photos on your local machine(laptop,desktop,server)</b>
-*@todo To make this platform-independent
-*<code>if (preg_match('|^/|', $this->GetPref('photo_dir')))
-* $this->PhotoDir = rtrim($this->GetPref('photo_dir'), '/');
- *else
-*  $this->PhotoDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('photo_dir'), '/');
- *if (preg_match('|^/|', $this->GetPref('cache_dir')))
-  *  $this->CacheDir = rtrim($this->GetPref('cache_dir'), '/');
-  *else
-  *  $this->CacheDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('cache_dir'), '/');
-  * if (preg_match('|^/|', $this->GetPref('deleted_dir')))
-  *    $this->DeletedDir = rtrim($this->GetPref('deleted_dir'), '/');
-  *  else
-  *    $this->DeletedDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('deleted_dir'), '/');
-  * </code>
- */
   class LocalPhotoStore extends PhotoStore
   {
     function LocalPhotoStore() 
@@ -44,46 +20,26 @@
       $this->preferences[] = array('name'=>'photo_dir', 'desc'=>'Main photo directory', 'type'=>'directory', 'default'=>'images/photos');
       $this->preferences[] = array('name'=>'cache_dir', 'desc'=>'Camera Life data directory', 'type'=>'directory', 'default'=>'images/cache');
       $this->preferences[] = array('name'=>'deleted_dir', 'desc'=>'Deleted photos (...where they go when you "erase" them)', 'type'=>'directory', 'default'=>'images/deleted');
-if (preg_match('|^/|', $this->GetPref('photo_dir')))
- $this->PhotoDir = rtrim($this->GetPref('photo_dir'), '/');
- else
-  $this->PhotoDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('photo_dir'), '/');
- if (preg_match('|^/|', $this->GetPref('cache_dir')))
-        $this->CacheDir = rtrim($this->GetPref('cache_dir'), '/');
-      else
-        $this->CacheDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('cache_dir'), '/');
 
-     if (preg_match('|^/|', $this->GetPref('deleted_dir')))
-        $this->DeletedDir = rtrim($this->GetPref('deleted_dir'), '/');
-      else
-        $this->DeletedDir = rtrim($cameralife->base_dir .'/'. $this->GetPref('deleted_dir'), '/');
-        
-
+      $prevdir = getcwd();
+      chdir($cameralife->base_dir);
+      $this->PhotoDir = rtrim(realpath($this->GetPref('photo_dir')), '/');
+      $this->CacheDir = rtrim(realpath($this->GetPref('cache_dir')), '/');
+      $this->DeletedDir = rtrim(realpath($this->GetPref('deleted_dir')), '/');
+      chdir($prevdir);
     } 
 
     /** 
-    *	Gets a URL for your friends to access a photo as authorized by you.
-    * <ul>
-    * <li> If FALSE is returned, the caller must construct a URL to media.php</li>     
-    * <li> That page will call function GetFile()and display the photo to the user.</li>
-    * </ul>
-    *  
-    * <b> Note </b>
-    * DO NOT assign  publicly accessible urls to non-public photos 
-    * @see photstore/module.php
-    *
-    *  @param mixed $photo - A target photo object
-    *  @param string $type - Choose amongst('photo', 'scaled', 'thumbnail')
-    *  @return string URL or boolean FALSE
-    *  @see media.php
+    * LocalPhotoStore does not have special URLs to access the photos. By returning FALSE, the photo will be delivered via media.php
+    * @see PhotoStore::GetURL()
+    * @see media.php
+    * @param mixed $photo - A target photo object
+    * @param string $type - Choose amongst('photo', 'scaled', 'thumbnail')
+    * @return string URL or boolean FALSE
     */
-    
-    
     function GetURL($photo, $type='photo') 
     {
-    
       return FALSE; 
-      
     }
 
     /**
@@ -119,9 +75,13 @@ if (preg_match('|^/|', $this->GetPref('photo_dir')))
       elseif ($type == 'modified')
         $file = $this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension;
       elseif ($type == 'scaled')
-        $file = $this->CacheDir .'/'.$photo->Get('id').'_600.'.$extension;
+        $file = $this->CacheDir .'/'.$photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension;
       elseif ($type == 'thumbnail')
-        $file = $this->CacheDir .'/'.$photo->Get('id').'_150.'.$extension;
+        $file = $this->CacheDir .'/'.$photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension;
+      elseif (is_numeric($type))
+      {
+        $file = $this->CacheDir .'/'.$photo->Get('id').'_'.$type.'.'.$extension;
+      }
 
       if (!file_exists($file))
       {
@@ -162,21 +122,21 @@ if (preg_match('|^/|', $this->GetPref('photo_dir')))
     *  Puts a scaled photo and thumbnail into the photostore. 
     *
     *  @param mixed $photo - A target photo object
-    *  @param string $scaled - The file to insert
-    *  @param mixed $thumbnail - The file to insert
+    *  @param array $thumbs - (size, file)
     *
     *  @return none
     */
-    function PutThumbnails($photo, $scaled, $thumbnail) 
+    function PutThumbnails($photo, $thumbs) 
     {
       global $cameralife;
 
       $extension = $photo->extension;
 
-      @rename($scaled, $this->CacheDir .'/'. $photo->Get('id').'_600.'.$extension);
-      chmod($this->CacheDir .'/'. $photo->Get('id').'_600.'.$extension, 0666);
-      @rename($thumbnail, $this->CacheDir .'/'. $photo->Get('id').'_150.'.$extension);
-      chmod($this->CacheDir .'/'. $photo->Get('id').'_150.'.$extension, 0666);
+      foreach ($thumbs as $size=>$file)
+      {
+        @rename($file, $this->CacheDir .'/'. $photo->Get('id').'_'.$size.'.'.$extension);
+        chmod($this->CacheDir .'/'. $photo->Get('id').'_'.$size.'.'.$extension, 0666);
+      }
     }
 
    // @internal unnessary, user does not access files directly
@@ -195,8 +155,8 @@ if (preg_match('|^/|', $this->GetPref('photo_dir')))
 
       $extesnion = $photo->extension;
 
-      if (!file_exists($this->CacheDir .'/'. $photo->Get('id').'_600.'.$extension) ||
-          !file_exists($this->CacheDir .'/'. $photo->Get('id').'_150.'.$extension) ||
+      if (!file_exists($this->CacheDir .'/'. $photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension) ||
+          !file_exists($this->CacheDir .'/'. $photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension) ||
           $photo->Get('modified') && !file_exists($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension))
       {
         $photo->GenerateThumbnail();
@@ -231,8 +191,8 @@ if (preg_match('|^/|', $this->GetPref('photo_dir')))
       }
       elseif (file_exists($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension))
         unlink($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension);
-      @unlink($this->CacheDir .'/'. $photo->Get('id').'_600.'.$extension);
-      @unlink($this->CacheDir .'/'. $photo->Get('id').'_150.'.$extension);
+      @unlink($this->CacheDir .'/'. $photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension);
+      @unlink($this->CacheDir .'/'. $photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension);
     }
 
 
@@ -254,8 +214,8 @@ if (preg_match('|^/|', $this->GetPref('photo_dir')))
 
       if ($photo->Get('modified'))
         @unlink($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension);
-      @unlink($this->CacheDir .'/'. $photo->Get('id').'_600.'.$extension);
-      @unlink($this->CacheDir .'/'. $photo->Get('id').'_150.'.$extension);
+      @unlink($this->CacheDir .'/'. $photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension);
+      @unlink($this->CacheDir .'/'. $photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension);
     }
 
     /**

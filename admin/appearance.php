@@ -173,6 +173,24 @@
         <option <?= $cameralife->GetPref('iphone') == 'yes' ? 'selected="selected"':'' ?>>yes</option>
       </select>
   <tr>
+    <td>Size for thumbnails (in pixels)
+    <td>
+      <input type="hidden" name="module6" value="CameraLife" />
+      <input type="hidden" name="param6" value="thumbsize" />
+      <input type=text name="value6" size=10 value="<?= $cameralife->GetPref('thumbsize') ?>">
+  <tr>
+    <td>Size for scaled images (in pixels)
+    <td>
+      <input type="hidden" name="module7" value="CameraLife" />
+      <input type="hidden" name="param7" value="scaledsize" />
+      <input type=text name="value7" size=10 value="<?= $cameralife->GetPref('scaledsize') ?>">
+  <tr>
+    <td>Additional sizes for the user to view photos. Comma separated. You can also leave this blank.
+    <td>
+      <input type="hidden" name="module8" value="CameraLife" />
+      <input type="hidden" name="param8" value="optionsizes" />
+      <input type=text name="value8" size=30 value="<?= join(',',preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'))) ?>">
+  <tr>
     <td><td><input type="submit" value="Save changes" />
 </table>
 </form>

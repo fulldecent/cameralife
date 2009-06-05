@@ -114,6 +114,17 @@
   echo "       <li><a rel=\"nofollow\" href=\"".$photo->GetMedia('photo')."\">
                View full-sized (".$photo->Get('width')." x ".$photo->Get('height').")</a></li>\n";
 
+  $sizes = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
+  sort($sizes);
+  if (count($sizes)) foreach ($sizes as $size)
+  {
+    echo " <li>";
+    echo " <a rel=\"nofollow\" href=\"".$photo->GetMedia($size)."\">";
+    $cameralife->Theme->Image('small-photo',array('align'=>'middle'));
+    echo " View at ${size}px</a>\n";
+    echo "</li>";
+  }
+
   // Show all the tasks the user can do (if they're allowed)
   if ($cameralife->Security->authorize('photo_rename'))
   {

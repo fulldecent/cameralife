@@ -3,7 +3,7 @@
   *  A photostore is a backend for storing photos. Its responsibilities are:
   *    - putting and getting photo files
   *    - taking photos and making scaled/thumbnailed versions
-  *    - making thes files accessible by a URL
+  *    - making thes files accessible by a URL (optional)
   *
   *  Generally, you will update the photo object and then call these functions.
   *  The photostore will look at the photo object to find the postcondition
@@ -43,7 +43,7 @@
     *  publicly accessible urls)
     *
     *  @param $photo - a target photo obeject
-    *  @param $type - one of ('photo', 'scaled', 'thumbnail')
+    *  @param $type - one of ('photo', 'scaled', 'thumbnail', a number)
     *
     *  @return a URL or FALSE
     */
@@ -55,7 +55,7 @@
     *  Gets a filename for the requested resource. It is downloaded if necessary.
     *
     *  @param $photo - a target photo object
-    *  @param $type - one of ('photo', 'original', 'modified', 'scaled', 'thumbnail')
+    *  @param $type - one of ('photo', 'original', 'modified', 'scaled', 'thumbnail', a number)
     *    'photo' refers to the active one of (original or modified)
     *
     *  @return an array with these elements:
@@ -86,12 +86,11 @@
     *  Puts a a scaled photo and thumbnail into the photostore. Photo should be put with appropriate permissions
     *
     *  @param $photo - a target photo object
-    *  @param $scaled - the file to insert
-    *  @param $thumbnail - the file to insert
+    *  @param array $thumbs - an array of (imagesize, filename) to insert
     *
     *  @return none
     */
-    function PutThumbnails($photo, $scaled, $thumbnail) {}
+    function PutThumbnails($photo, $thumbs) {}
 
     /**
     *  SetPermissions

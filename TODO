@@ -2,6 +2,12 @@
 TODO For the 2.6.2 Realease Cycle
 ----------------------------------
 
+Use glob() for delete files
+the photostore should not care about thumbnail or scaled, it just needs the image size -- but what about flickr???
+function GenerateThumbnail($original = FALSE) // remove param
+
+
+
 FIX THEME FOR MSIE!
 
 fix transactions: each fdcl install get a random number (secret). This i hashed with the user's senssion cookie and put on all forms.

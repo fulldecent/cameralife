@@ -62,9 +62,9 @@
             return $this->GetPref('photo_dir_url').'/'.$photo->Get('path').$photo->Get('filename');
         }
         elseif ($type=='scaled')
-          return $this->GetPref('cache_dir_url').'/'.$photo->Get('id').'_600.'.$extension;
+          return $this->GetPref('cache_dir_url').'/'.$photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension;
         else // ($type=='thumbnail')
-          return $this->GetPref('cache_dir_url').'/'.$photo->Get('id').'_150.'.$extension;
+          return $this->GetPref('cache_dir_url').'/'.$photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension;
       }
 
       return FALSE; # request handled through media.php
@@ -103,9 +103,9 @@
       elseif ($type == 'modified')
         $file = $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension;
       elseif ($type == 'scaled')
-        $file = $this->GetPref('cache_dir').'/'.$photo->Get('id').'_600.'.$extension;
+        $file = $this->GetPref('cache_dir').'/'.$photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension;
       elseif ($type == 'thumbnail')
-        $file = $this->GetPref('cache_dir').'/'.$photo->Get('id').'_150.'.$extension;
+        $file = $this->GetPref('cache_dir').'/'.$photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension;
 
 /* assume consistent state
       if (!file_exists($file))
@@ -154,38 +154,23 @@
     *  Puts a a scaled photo and thumbnail into the photostore. 
     *
     *  @param $photo - a target photo object
-    *  @param $scaled - the file to insert
-    *  @param $thumbnail - the file to insert
+    *  @param $thumbs - array of (size, file)
     *
     *  @return none
     */
-    
-        /**
-        *  PutThumbnails
-        *
-        *  Puts a a scaled photo and thumbnail into the photostore. 
-        *
-        *  @param mixed $photo - a target photo object
-        *  @param mixed $scaled - the file to insert
-        *  @param mixed $thumbnail - the file to insert
-        *
-        *  
-    */
-    function PutThumbnails($photo, $scaled, $thumbnail) 
+    function PutThumbnails($photo, $thumbs) 
     {
       global $cameralife;
 
       $extesnion = $photo->extension;
 
       $this->mkdir_recursive($this->GetPref('cache_dir'));
-      @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
-      copy($scaled, $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
-#      unlink($scaled);
-#      chmod($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension, 0666);
-      @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
-      copy($thumbnail, $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
-#      unlink($thumbnail);
-#      chmod($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension, 0666);
+
+      foreach ($thumbs as $size=>$file)
+      {
+        @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_'.$size.'.'.$extension);
+        copy($file, $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_'.$size.'.'.$extension);
+      }
     }
 
 //TODO
@@ -207,7 +192,7 @@
 
       $extesnion = $photo->extension;
 
-      if(!file_exists($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension))
+      if(!file_exists($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension))
       {
         $photo->GenerateThumbnail();
         return TRUE;
@@ -249,8 +234,8 @@
       elseif (file_exists($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension))
         unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
       @chmod($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension, 0666);
-      @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
-      @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
+      @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension);
+      @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension);
       unlink($filename);
 
       $photo->GenerateThumbnail($filename == NULL); // if we are reverting, let Generate know
@@ -286,8 +271,8 @@
 
       if ($photo->Get('modified'))
         unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
-      unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_600.'.$extension);
-      unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_150.'.$extension);
+      unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension);
+      unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension);
     }
 
     /*

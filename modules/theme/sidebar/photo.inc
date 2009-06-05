@@ -427,6 +427,18 @@
         </a>
       </div>
       <?php
+        $sizes = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
+        sort($sizes);
+        if (count($sizes)) foreach ($sizes as $size)
+        {
+          echo " <div class=\"context\">"; 
+          echo " <a rel=\"nofollow\" href=\"".$photo->GetMedia($size)."\">";
+          $cameralife->Theme->Image('small-photo',array('align'=>'middle'));
+          echo " View at ${size}px</a>\n";
+          echo "</div>";
+        }
+      ?>
+      <?php
         if ($photo->Get('username'))
         {
           echo '<div class="context">';

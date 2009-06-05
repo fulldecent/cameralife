@@ -32,7 +32,9 @@
 
   $photo = new Photo($_GET['id']);
   $format = $_GET['format'];
-  if (!is_numeric($_GET['ver'])) $cameralife->Error('Required number ver missing! Expected a number, got: '.htmlentities($_GET['ver']));
+  if (!is_numeric($_GET['ver'])) 
+    $cameralife->Error('Required number ver missing! Expected a number, got: '.htmlentities($_GET['ver']));
+
   $extension = $photo->extension;
 
   if (!$cameralife->Security->authorize('admin_file'))
@@ -50,6 +52,14 @@
     list($file, $temp, $mtime) = $cameralife->PhotoStore->GetFile($photo, $format);
   elseif ($format == 'thumbnail')
     list($file, $temp, $mtime) = $cameralife->PhotoStore->GetFile($photo, $format);
+  elseif (is_numeric($format))
+  {
+    $valid = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
+    if (in_array($format, $valid))
+      list($file, $temp, $mtime) = $cameralife->PhotoStore->GetFile($photo, $format);
+    else
+      $cameralife->Error('This image size has not been allowed');
+  }
   else
     $cameralife->Error('Bad format parameter');
 

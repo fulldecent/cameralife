@@ -122,9 +122,9 @@
             return 'http://s3.amazonaws.com/'.$this->GetPref('photobucket').'/'.$photo->Get('path').$photo->Get('filename');
         }
         elseif ($type=='scaled')
-          return 'http://s3.amazonaws.com/'.$this->GetPref('cachebucket').'/'.$photo->Get('id').'_600.'.$extension;
+          return 'http://s3.amazonaws.com/'.$this->GetPref('cachebucket').'/'.$photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension;
         else // ($type=='thumbnail')
-          return 'http://s3.amazonaws.com/'.$this->GetPref('cachebucket').'/'.$photo->Get('id').'_150.'.$extension;
+          return 'http://s3.amazonaws.com/'.$this->GetPref('cachebucket').'/'.$photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension;
       }
 
       return FALSE; # request handled through media.php
@@ -168,9 +168,9 @@
       elseif ($type == 'modified')
         $file = $this->GetPref('cachebucket') .'/'. $photo->Get('id').'_mod.'.$extension;
       elseif ($type == 'scaled')
-        $file = $this->GetPref('cachebucket').'/'.$photo->Get('id').'_600.'.$extension;
+        $file = $this->GetPref('cachebucket').'/'.$photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension;
       elseif ($type == 'thumbnail')
-        $file = $this->GetPref('cachebucket').'/'.$photo->Get('id').'_150.'.$extension;
+        $file = $this->GetPref('cachebucket').'/'.$photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension;
 
       $aws_key = $this->GetPref('accesskey');
       $aws_secret = $this->GetPref('secretaccesskey');
@@ -261,72 +261,50 @@
     /**
     *  PutThumbnails
     *
-    *  Flickr does thumbnails for us
-    *
     *  @return none
     */
-    function PutThumbnails($photo, $scaled, $thumbnail) 
+    function PutThumbnails($photo, $thumbs) 
     {
       global $cameralife;
 
       $extesnion = $photo->extension;
 
-#######
       $aws_key = $this->GetPref('accesskey');
       $aws_secret = $this->GetPref('secretaccesskey');
-      $source_file = $scaled; // file to upload to S3
-      $file_type = mime_content_type($source_file);  // or other file type like "image/jpeg" for JPEG image, 
-      $aws_bucket = $this->GetPref('cachebucket'); // AWS bucket 
-      $aws_object = urlencode($photo->Get('id').'_600.'.$extension);     // AWS object name (file name)
 
-      $file_data = file_get_contents($source_file);
-      if ($file_data == false) 
-        $cameralife->Error("Failed to read file ".$source_file, __FILE__, __LINE__);
+      foreach ($thumbs as $size=>$file)
+      {
+        $source_file = $file; // file to upload to S3
+        $file_type = mime_content_type($source_file);  // or other file type like "image/jpeg" for JPEG image, 
+        $aws_bucket = $this->GetPref('cachebucket'); // AWS bucket 
+        $aws_object = urlencode($photo->Get('id').'_'.$size.'.'.$extension);     // AWS object name (file name)
 
-      $file_length = strlen($file_data); // for Content-Length HTTP field 
+        $file_data = file_get_contents($source_file);
+        if ($file_data == false) 
+          $cameralife->Error("Failed to read file ".$source_file, __FILE__, __LINE__);
 
-      // opening HTTP connection to Amazon S3
-      $fp = fsockopen("s3.amazonaws.com", 80, $errno, $errstr, 30);
-      if (!$fp)
-        $cameralife->Error("Cannot connect to AWS: $errstr ($errno)\n");
+        $file_length = strlen($file_data); // for Content-Length HTTP field 
 
-      $dt = gmdate('r'); // GMT based timestamp
+        // opening HTTP connection to Amazon S3
+        $fp = fsockopen("s3.amazonaws.com", 80, $errno, $errstr, 30);
+        if (!$fp)
+          $cameralife->Error("Cannot connect to AWS: $errstr ($errno)\n");
 
-      $access = $photo->Get('status') == 0 ? 'public-read' : 'private';
+        $dt = gmdate('r'); // GMT based timestamp
 
-      // preparing String to Sign    (see AWS S3 Developer Guide)
-      $string2sign = "PUT\n\n{$file_type}\n{$dt}\nx-amz-acl:{$access}\n/{$aws_bucket}/{$aws_object}";
+        $access = $photo->Get('status') == 0 ? 'public-read' : 'private';
 
-      // preparing HTTP PUT query
-      $query = "PUT /{$aws_bucket}/{$aws_object} HTTP/1.1\r\nHost: s3.amazonaws.com\r\nx-amz-acl: ${access}\r\nConnection: keep-alive\r\nContent-Type: {$file_type}\r\nContent-Length: {$file_length}\r\nDate: $dt\r\nAuthorization: AWS {$aws_key}:".$this->amazon_hmac($string2sign)."\r\n\r\n";
-      $query .= $file_data;
+        // preparing String to Sign    (see AWS S3 Developer Guide)
+        $string2sign = "PUT\n\n{$file_type}\n{$dt}\nx-amz-acl:{$access}\n/{$aws_bucket}/{$aws_object}";
 
-      $resp = $this->sendREST($fp, $query);
-      if (strpos($resp, '<Error>') !== false)
-        $cameralife->Error("AWS put failed: $resp", __FILE__, __LINE__);
-####
-      $source_file = $thumbnail; // file to upload to S3
-      $file_type = mime_content_type($source_file);  // or other file type like "image/jpeg" for JPEG image, 
-      $aws_object = urlencode($photo->Get('id').'_150.'.$extension);     // AWS object name (file name)
+        // preparing HTTP PUT query
+        $query = "PUT /{$aws_bucket}/{$aws_object} HTTP/1.1\r\nHost: s3.amazonaws.com\r\nx-amz-acl: ${access}\r\nConnection: keep-alive\r\nContent-Type: {$file_type}\r\nContent-Length: {$file_length}\r\nDate: $dt\r\nAuthorization: AWS {$aws_key}:".$this->amazon_hmac($string2sign)."\r\n\r\n";
+        $query .= $file_data;
 
-      $file_data = file_get_contents($source_file);
-      if ($file_data == false)
-        $cameralife->Error("Failed to read file ".$source_file, __FILE__, __LINE__);
-      $file_length = strlen($file_data); // for Content-Length HTTP field 
-
-      $dt = gmdate('r'); // GMT based timestamp
-
-      // preparing String to Sign    (see AWS S3 Developer Guide)
-      $string2sign = "PUT\n\n{$file_type}\n{$dt}\nx-amz-acl:{$access}\n/{$aws_bucket}/{$aws_object}";
-
-      // preparing HTTP PUT query
-      $query = "PUT /{$aws_bucket}/{$aws_object} HTTP/1.1\r\nHost: s3.amazonaws.com\r\nx-amz-acl: ${access}\r\nConnection: keep-alive\r\nContent-Type: {$file_type}\r\nContent-Length: {$file_length}\r\nDate: $dt\r\nAuthorization: AWS {$aws_key}:".$this->amazon_hmac($string2sign)."\r\n\r\n";
-      $query .= $file_data;
-
-      $resp = $this->sendREST($fp, $query);
-      if (strpos($resp, '<Error>') !== false)
-        $cameralife->Error("AWS put failed: $resp", __FILE__, __LINE__);
-####
+        $resp = $this->sendREST($fp, $query);
+        if (strpos($resp, '<Error>') !== false)
+          $cameralife->Error("AWS put failed: $resp", __FILE__, __LINE__);
+      }
       fclose($fp);
     }
 
@@ -460,7 +438,7 @@ pe: {$file_type}\r\nContent-Length: {$file_length}\r\nDate: $dt\r\nAuthorization
         $cameralife->Error("AWS delete failed: $resp", __FILE__, __LINE__);
 #######
       $aws_bucket = $this->GetPref('cachebucket'); // AWS bucket 
-      $aws_object = urlencode($photo->Get('id').'_600.'.$extension);         // AWS object name (file name)
+      $aws_object = urlencode($photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension);         // AWS object name (file name)
       $dt = gmdate('r'); // GMT based timestamp
 
       // preparing String to Sign    (see AWS S3 Developer Guide)

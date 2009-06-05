@@ -67,19 +67,13 @@
       return array($this->width, $this->height); 
     }
 
-    /* Resizes this image and saves to this new file
-      SIZE is the diagonal of the new image size
-      returns the dimensions of the new image
-    */
     /**Resizes this image and saves to this new file
      * SIZE is the diagonal of the new image size
      * 
-     *
      *  If you have already resized the image to something larger than you want
      * you can rescale it. This is much faster than scaling the original, larger, image again. 
      *@return float array - dimensions new width and height
     */
-    
     function Resize($filename, $newSize, $quality = 91) 
     {
       /* If we have already resized this image to something larger than we want
@@ -128,9 +122,8 @@
 
       return array($new_width, $new_height);
     }
-/**Rotate the image a 90, 180 or 270 degrees
-*/
-    /* Rotate this image a number of degrees, 90, 180 or 270
+
+    /**Rotate the image a 90, 180 or 270 degrees
     */
     function Rotate($degrees) 
     {
