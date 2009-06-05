@@ -5,7 +5,7 @@ TODO For the 2.6.2 Realease Cycle
 Use glob() for delete files
 the photostore should not care about thumbnail or scaled, it just needs the image size -- but what about flickr???
 function GenerateThumbnail($original = FALSE) // remove param
-
+update $version in all the files
 
 
 FIX THEME FOR MSIE!
