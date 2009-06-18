@@ -35,14 +35,12 @@ class Photo extends View
   #   new file in the photostore if it is not already there. Do that
   #   after instantiating this class
   /**
-  *To get an empty Photo pass nothing ie NULL
-  *To load a photo pass a photo ID
-  *<code> elseif (is_numeric($original)) </code>
-  *To create a photo pass an array
-  *<code>elseif(is_array($original))</code>
- *<b>Required fields Filename,path of file ,and username</b>
- *Optional fields Status ,description and file size
- */
+  * To get an empty Photo pass nothing ie NULL
+  * To load a photo pass a photo ID
+  * To create a photo pass an array
+  * <b>Required fields Filename, path of file, and username</b>
+  * Optional fields Status, description, and file size
+  */
   function Photo($original = NULL)
   {
     global $cameralife;

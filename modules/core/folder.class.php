@@ -33,7 +33,7 @@ class Folder extends Search
       if (strpos($original, '..') !== false)
         $cameralife->Error('Tried to access a path which contains  ..', __FILE__, __LINE__);
 
-      $this->path = stripslashes($original);
+      $this->path = $original;
     }
     elseif(get_class($original) == 'Photo') # Extract the path from this Photo
     {
@@ -128,7 +128,7 @@ class Folder extends Search
       $retval['href'] = $cameralife->base_url.'/folder.php&#63;path='.$this->path;
 
     if (basename($this->path))
-      $retval['name'] = basename($this->path);
+      $retval['name'] = $this->Basename();
     else
       $retval['name'] = '(Top level)';
 
@@ -144,20 +144,19 @@ class Folder extends Search
 
   function Path()
   {
-    return $this->path;
+    return htmlentities($this->path);
   }
 
   function Basename()
   {
-    return basename($this->path);
+    return basename(htmlentities($this->path));
   }
 
   function Dirname()
   {
-    return dirname($this->path);
+    return dirname(htmlentities($this->path));
   }
 
-  // Private
   /**
   *@access private
   */

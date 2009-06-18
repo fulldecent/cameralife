@@ -7,6 +7,50 @@ the photostore should not care about thumbnail or scaled, it just needs the imag
 function GenerateThumbnail($original = FALSE) // remove param
 update $version in all the files
 
+****
+add exif feature:
+
+<?php
+$exif = exif_read_data($filename);
+$ort = $exif['IFD0']['Orientation'];
+    switch($ort)
+    {
+        case 1: // nothing
+        break;
+
+        case 2: // horizontal flip
+            $image->flipImage($public,1);
+        break;
+                               
+        case 3: // 180 rotate left
+            $image->rotateImage($public,180);
+        break;
+                   
+        case 4: // vertical flip
+            $image->flipImage($public,2);
+        break;
+               
+        case 5: // vertical flip + 90 rotate right
+            $image->flipImage($public, 2);
+                $image->rotateImage($public, -90);
+        break;
+               
+        case 6: // 90 rotate right
+            $image->rotateImage($public, -90);
+        break;
+               
+        case 7: // horizontal flip + 90 rotate right
+            $image->flipImage($public,1);   
+            $image->rotateImage($public, -90);
+        break;
+               
+        case 8:    // 90 rotate left
+            $image->rotateImage($public, 90);
+        break;
+    }
+
+?>
+***
 
 FIX THEME FOR MSIE!
 
@@ -17,17 +61,17 @@ this prevents XSS...
 
 
 media.php -- redirect to external URL reported by the photostore, if available
-  -- this will allow pretty URLs even if the photos are hosted elsewhere
-  -- but NOT priravte photos, those are hosted locally
-  -- maybe use &rewrite=yes from the .htaccess file?
+-- this will allow pretty URLs even if the photos are hosted elsewhere
+-- but NOT priravte photos, those are hosted locally
+-- maybe use &rewrite=yes from the .htaccess file?
 
 create help pages at http://fdcl.sourceforge.net/wiki/index.php/Main_Page
-  and link to them from inside CL
+and link to them from inside CL
 
 Any bugs left?
 
 
- Also, I had a bit of a
+Also, I had a bit of a
 struggle getting photos to upload.  Seems that the /images/photos/upload/
 directory did't get created during the install process and the mkdir
 function couldn't create the /images/photos/upload/admin directory that it
@@ -66,7 +110,7 @@ rm -rf cameralife*
 popd
 
 #GOTO  http://sourceforge.net/project/admin/newrelease.php?package_id=70316&group_id=70910
-#GOTO  http://freshmeat.net/add-release/34159/36247/
+#GOTO  http://freshmeat.net/projects/fdcl/releases/new
 
 ===========================
 TODO AFTER 2.6.2
@@ -102,7 +146,7 @@ Regression: microformats, sitemaps, rss, gallery API, OpenSearch, hacks
 update module API's and documentation
 photostore does not fully protect private photos
 harden against malicio us user inputs and sql inj ection -- you like that anti-grep obfuscation?
-  and uploading non-images
+and uploading non-images
 
 picasa compatibility
 
@@ -124,17 +168,17 @@ Upload to flickr - set tags, asbums, directory...
 
 -- Things that will break the API --
 * Change photos.mtime to photos.filter
-  - This will use a modification string like in picasa.ini
+- This will use a modification string like in picasa.ini
 * Add a photo modification optimization engine to photo.class.php
-  - It takes the existing photo and filter
-  - Considers the new filter
-  - Deletes stale caches
-  - Acts in the best possible way
-    . Rotate existing photo
-    . Or start from scratch
-    . Chooses to work off original or scaled image
-  - Result: editing a photo will not require modifying the full sized image (takes forever) unless the user loads that full size image, in which case it is cached.
-  - Admin may update these cache at their whim via the Update Database in Files in Admin
+- It takes the existing photo and filter
+- Considers the new filter
+- Deletes stale caches
+- Acts in the best possible way
+. Rotate existing photo
+. Or start from scratch
+. Chooses to work off original or scaled image
+- Result: editing a photo will not require modifying the full sized image (takes forever) unless the user loads that full size image, in which case it is cached.
+- Admin may update these cache at their whim via the Update Database in Files in Admin
 ? logs.value_old is techically unnecessary
 * Enumerate the photos.status and other columns
 * A standard way of getting information about modules, and loading them (compare to theme-info.php)
