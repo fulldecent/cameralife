@@ -175,7 +175,7 @@ class Search extends View
 
   function GetIcon($size='large')
   {
-    return array('name'=>'Search for '.$this->myQuery,
+    return array('name'=>'Search for '.htmlentities($this->myQuery),
                  'href'=>"search.php&#63;q=".urlencode($this->myQuery),
                  'image'=>($size=='large')?'search':'small-search');
   }

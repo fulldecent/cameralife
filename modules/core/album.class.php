@@ -48,7 +48,7 @@ class Album extends Search
     }
     else
     {
-      $comeralife->Error("Invalid album", __FILE__, __LINE__);
+      $cameralife->Error("Invalid album", __FILE__, __LINE__);
     }
 
     Search::Search($this->record['term']);

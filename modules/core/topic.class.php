@@ -1,6 +1,4 @@
 <?php
-  # the class for getting and using topics
-
 
     /**
     *for the homepage visit @link  http://fdcl.sourceforge.net/
@@ -29,7 +27,7 @@ class Topic extends Search
 
   function GetName()
   {
-    return $this->name;
+    return htmlentities($this->name);
   }
 
   function Get($item)
@@ -42,9 +40,9 @@ class Topic extends Search
     global $cameralife;
 
     if ($cameralife->GetPref('rewrite') == 'yes')
-      $href = $cameralife->base_url.'/topics/'.$this->name;
+      $href = $cameralife->base_url.'/topics/'.htmlentities($this->name);
     else
-      $href = $cameralife->base_url.'/topic.php&#63;name='.$this->name;
+      $href = $cameralife->base_url.'/topic.php&#63;name='.htmlentities($this->name);
 
     return array('href'=>$href,
                  'name'=>htmlentities($this->name),

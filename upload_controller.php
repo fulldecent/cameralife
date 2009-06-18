@@ -44,6 +44,9 @@
   {
     global $cameralife;
 
+    if (strpos(mime_content_type($file), 'image/') != 0)
+      $camerlife->Error("Invalid mimetype for uploaded file");
+      
     if (!$description) $description = 'unnamed';
     $filesize = filesize($file);
 

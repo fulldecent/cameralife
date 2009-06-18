@@ -13,6 +13,7 @@
   require "main.inc";
 
   $search = new Search($_GET['q']);
+  $searchicon = $search->GetIcon();
   $search->SetSort('newest');
   $photos = $search->GetPhotos();
 
@@ -21,9 +22,9 @@
 ?>
 <rss version="2.0">
   <channel>
-    <title><![CDATA[<?= $cameralife->GetPref('sitename') ?> - <?= $_GET['q'] ?>]]></title>
+    <title><![CDATA[<?= $cameralife->GetPref('sitename') ?> - <?= $searchicon['name'] ?>]]></title>
     <link><?= $cameralife->base_url ?></link>
-    <description>Search results for '<? $_GET['q'] ?>'</description>
+    <description>'<? $searchicon['name'] ?>'</description>
     <language>en-us</language>
 <?php
   foreach($photos as $photo)

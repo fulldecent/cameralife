@@ -31,7 +31,7 @@
   }
   else
   {
-    $theme = $_GET['theme'];
+    $theme = htmlentities($_GET['theme']);
 
     $fd_image = opendir("$theme");
     while ($image = readdir($fd_image))

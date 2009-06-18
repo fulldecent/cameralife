@@ -1,18 +1,20 @@
 <?php
   # A sitemap for search engines
   # breaks things down into 1000 piece bite sizes
-/**Creates sitemap for search engines - breaks each photo into 1000 byte sized pieces
-*@link http://fdcl.sourceforge.net
-  *@version 2.6.2
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-*/
-
 /**
-*/
+ * Creates sitemap for search engines - breaks each photo into 1000 bite sized pieces
+ * @link http://fdcl.sourceforge.net
+ * @version 2.6.2
+ * @author Will Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @access public
+ */
+
   $features=array('database', 'security');
   require "main.inc";
+
+  $page = $_GET['page'];
+  $id = (int) $_GET['id'];
 
   $baseurl = $cameralife->base_url;
   $stats = new Stats;
@@ -23,7 +25,7 @@
 
   $nodes = array();
 
-  if (!isset($_GET['page']))
+  if (!isset($page))
   {
     $lastphoto = $cameralife->Database->SelectOne('photos', 'MAX(id)', 'status=0');
     $lastalbum = $cameralife->Database->SelectOne('albums', 'MAX(id)');
@@ -59,29 +61,28 @@
     echo "</sitemapindex>\n";
     exit(0);
   }
-  elseif ($_GET['page'] == 'common')
+  elseif ($page == 'common')
   {
     $nodes[] = array($baseurl.'/index.php', '1.0');
     $nodes[] = array($baseurl.'/login.php', '0.8');
     $nodes[] = array($baseurl.'/stats.php', '0.8');
   }
-  elseif ($_GET['page'] == 'albums')
+  elseif ($page == 'albums')
   {
     $result = $cameralife->Database->Select('albums', 'id, hits');
 
     while($record = $result->FetchAssoc())
       $nodes[] = array($baseurl.'/album.php?id='.$record['id'], round(log($record['hits']+1,$counts['maxalbumhits']+1), 4));
   }
-  elseif ($_GET['page'] == 'topics')
+  elseif ($page == 'topics')
   {
     $result = $cameralife->Database->Select('albums', 'DISTINCT(topic)');
 
     while($record = $result->FetchAssoc())
       $nodes[] = array($baseurl.'/topic.php?name='.urlencode($record['topic']));
   }
-  elseif ($_GET['page'] == 'photos')
+  elseif ($page == 'photos')
   {
-    $id = $_GET['id'];
     $result = $cameralife->Database->Select('photos', 'id, hits', 'status = 0 AND id>='.$id.' AND id<'.($id+1000), 'ORDER BY id');
 
     while($record = $result->FetchAssoc())
