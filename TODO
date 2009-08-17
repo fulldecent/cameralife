@@ -93,7 +93,7 @@ edit the first line, then paste into a terminal...
 VERSION='2.6.2' # this..version CHANGE THIS LINE!!!
 sed "/this..version/s/'[0.9].*'/'$VERSION'/" -i main.inc TODO
 svn commit -m "Releasing version $VERSION"
-phpdoc -o HTML:frames:earthli -d . -t ../docs -i *phpFlickr-2.2.0* -i *php-openid-1.2.3*
+phpdoc -c phpdoc.ini
 rsync --delete -ave ssh ../docs fulldecent,fdcl@web.sf.net:htdocs
 pushd /tmp
 echo "<?php \$VERSION=\"$VERSION\" ?>" > version.php
