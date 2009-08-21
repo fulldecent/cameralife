@@ -79,7 +79,7 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
       <?php
         $info = gd_info();
 
-        if ($info['JPG Support'])
+        if ($info['JPG Support'] || $info['JPEG Support'])
           echo "<font color=green>GD supports JPEG</font>";
         else
         {
