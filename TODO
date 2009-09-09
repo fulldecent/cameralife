@@ -95,21 +95,26 @@ sed "/this..version/s/'[0.9].*'/'$VERSION'/" -i main.inc
 svn commit -m "Releasing version $VERSION"
 phpdoc -c phpdoc.ini
 rsync --delete -ave ssh ../docs fulldecent,fdcl@web.sf.net:htdocs
-pushd /tmp
+pushd $(mktemp -d)
 echo "<?php \$VERSION=\"$VERSION\" ?>" > version.php
 rsync -ave ssh version.php fulldecent,fdcl@web.sf.net:htdocs
 rm version.php
+mkdir $VERSION
+cd $VERSION
 svn export https://entriken@fdcl.svn.sourceforge.net/svnroot/fdcl/trunk cameralife
 touch cameralife/deleted.log
 chmod 777 cameralife/ cameralife/images/ cameralife/images/* cameralife/deleted.log
 zip -r cameralife-${VERSION}.zip cameralife/
 tar -czf cameralife-${VERSION}.tgz cameralife/
 tar -cjf cameralife-${VERSION}.tar.bz2 cameralife/
-scp cameralife-* fulldecent@frs.sourceforge.net:uploads
-rm -rf cameralife*
+cd ..
+scp -r "$VERSION" fulldecent,fdcl@frs.sourceforge.net:'/home/frs/project/f/fd/fdcl/'
+rm -rf cameralife-*
 popd
 
-#GOTO  http://sourceforge.net/project/admin/newrelease.php?package_id=70316&group_id=70910
+#GOTO  https://sourceforge.net/project/admin/explorer.php?group_id=70910
+#  move folder into Camera Life directory
+#  edit files to add properties
 #GOTO  http://freshmeat.net/projects/fdcl/releases/new
 
 ===========================
