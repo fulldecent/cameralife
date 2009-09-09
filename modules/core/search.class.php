@@ -2,7 +2,7 @@
   # the class for getting and using search
   /**Class Search enables you to get and use the search facility
     *@link http://fdcl.sourceforge.net/
-  *@version 2.6.2
+  *@version 2.6.3b3
   *@author Will Entriken <cameralife@phor.net>
   *@access public
   *@copyright Copyright (c) 2001-2009 Will Entriken

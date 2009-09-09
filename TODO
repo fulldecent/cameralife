@@ -5,7 +5,6 @@ TODO For the 2.6.2 Realease Cycle
 Use glob() for delete files
 the photostore should not care about thumbnail or scaled, it just needs the image size -- but what about flickr???
 function GenerateThumbnail($original = FALSE) // remove param
-update $version in all the files
 
 ****
 add exif feature:
@@ -92,6 +91,9 @@ edit the first line, then paste into a terminal...
 
 VERSION='2.6.3b3' # edit this line, save TODO, then paste this script
 sed "/this..version/s/'[0.9].*'/'$VERSION'/" -i main.inc 
+grep -lIr . . | grep -v '\.svn' | # no binary, no svn
+xargs sed "1,10 s/@\(\W*\)version\W*[0-9.a-z]\+/@\1version $VERSION/" -i
+
 svn commit -m "Releasing version $VERSION"
 phpdoc -c phpdoc.ini
 rsync --delete -ave ssh ../docs fulldecent,fdcl@web.sf.net:htdocs

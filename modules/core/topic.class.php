@@ -2,7 +2,7 @@
 
     /**
     *for the homepage visit @link  http://fdcl.sourceforge.net/
-    *@version 2.6.2
+    *@version 2.6.3b3
     *@author Will Entriken <WillEntriken @gmail.com>
     *@access public
     *@copyright Copyright (c) 2001-2009 Will Entriken

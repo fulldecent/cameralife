@@ -2,7 +2,7 @@
   # Sets the options for your site...
  /**Enables you set options for your site
   *@link http://fdcl.sourceforge.net
-  *@version 2.6.2
+  *@version 2.6.3b3
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public
