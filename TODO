@@ -90,8 +90,8 @@ RELEASE HOWTO
 edit the first line, then paste into a terminal...
 -------------------
 
-VERSION='2.6.2' # this..version CHANGE THIS LINE!!!
-sed "/this..version/s/'[0.9].*'/'$VERSION'/" -i main.inc TODO
+VERSION='2.6.3b3' # edit this line, save TODO, then paste this script
+sed "/this..version/s/'[0.9].*'/'$VERSION'/" -i main.inc 
 svn commit -m "Releasing version $VERSION"
 phpdoc -c phpdoc.ini
 rsync --delete -ave ssh ../docs fulldecent,fdcl@web.sf.net:htdocs
