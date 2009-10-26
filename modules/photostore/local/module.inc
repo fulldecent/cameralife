@@ -144,20 +144,21 @@
 
     /**
      *  Ensures that thumbnails exist
-    *
-    *  @param mixed $photo A target photo object
-    *
-    *  @return boolean TRUE On successful completion of task
-    */
+     *
+     *  @param mixed $photo A target photo object
+     *
+     *  @return boolean TRUE if thumbnails were created
+     */
     function CheckThumbnails($photo) 
     {
       global $cameralife;
 
-      $extesnion = $photo->extension;
+      $extension = $photo->extension;
 
+      ///TODO why are there NULLs and 0s in the database?
       if (!file_exists($this->CacheDir .'/'. $photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension) ||
           !file_exists($this->CacheDir .'/'. $photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension) ||
-          $photo->Get('modified') && !file_exists($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension))
+          (($photo->Get('modified')!=NULL&&($photo->Get('modified')>0)) && !file_exists($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension)))
       {
         $photo->GenerateThumbnail();
         return TRUE;

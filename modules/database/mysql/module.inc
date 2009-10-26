@@ -113,9 +113,8 @@
         or die (mysql_error()."<br>\nSQL: ".$sql);
 
       $rows = mysql_affected_rows();
-      if ($rows == 0)
-#        return FALSE;
-        die ("No rows affected in Mysql::Insert, SQL:<b>$sql</b>");
+#      if ($rows == 0)
+#        die ("No rows affected in Mysql::Insert, SQL:<b>$sql</b>");
       return mysql_insert_id($this->myConnection);
     }
 

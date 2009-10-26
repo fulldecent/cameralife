@@ -1,12 +1,6 @@
 <?php
-/** 
- * An administrative tool that updates thumbnails
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
- * @version 2.6.2
- * @access public
- * @todo Uses non-public database access
- */
+
+  // Recaches EXIF data
 
   @ini_set('max_execution_time',9000);
   $features=array('database','theme','security','imageprocessing', 'photostore');
@@ -33,13 +27,11 @@
 <body>
 
 <div id="header">
-  <h1>Site Administration &ndash; Thumbnailer</h1>
+  <h1>Hacks &ndash; EXIF recache</h1>
   <a href="<?= $home['href'] ?>"><img src="<?= $cameralife->IconURL('small-main')?>"><?= $home['name'] ?></a>
   <a href="index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>
 </div>
 
-
-<form id="form1" method="get">
 
 <?php
   $total = $cameralife->Database->SelectOne('photos', 'count(*)');
@@ -47,7 +39,7 @@
   $todo = $cameralife->Database->SelectOne('photos', 'count(*)', "id > $lastdone");
   $timeleft = ceil((time()-$starttime) * $todo / ($numdone + $done/500 + 1) / 60);
 
-  echo "<p>We are now caching thumbnails. This avoids a delay when a photo is viewed for the first time.</p>\n";
+  echo "<p>Reloads EXIF data for all your photos. Photos with the rotation flag which have not been edited are rotated.</p>\n";
   echo "<h3>Progress: $done of $total done";
   if ($done != $total)
     echo " (about $timeleft minutes left)";
@@ -57,15 +49,43 @@
   echo "</div></p>\n";
   flush();
 
-  $next1000 = $cameralife->Database->Select('photos', 'id', "id > $lastdone", 'ORDER BY id LIMIT 500');
+  $next1000 = $cameralife->Database->Select('photos', 'id', "id > $lastdone", 'ORDER BY id LIMIT 100');
   $fixed = 0;
 
-  while(($next = $next1000->FetchAssoc()) && ($fixed < 10))
+  while(($next = $next1000->FetchAssoc()) && ($fixed < 20))
   {
     $curphoto = new Photo($next['id']);
-    if ($cameralife->PhotoStore->CheckThumbnails($curphoto))
+    if ($curphoto->Get('modified') == NULL || $curphoto->Get('modified') == 0)
     {
-      echo "Updated #".$next['id']."<br>\n";
+/// UPDATE THIS LINE TO SKIP EXISTING EXIF DATA
+      if (count($curphoto->GetEXIF()) && 0)
+      {
+        echo "Skipped #".$next['id']."<br>\n";
+      }
+      else
+      {
+        $curphoto->LoadImage(/*onlyWantEXIF=*/true);
+        $EXIF = $curphoto->GetEXIF();
+        if ($EXIF['Orientation'] == 3)
+        {
+          $curphoto->Rotate(180);
+          echo "Rotated #".$next['id']." 180 degrees<br>\n";
+        }
+        elseif ($EXIF['Orientation'] == 6)
+        {
+          $curphoto->Rotate(90);
+          echo "Rotated #".$next['id']." 90 degrees<br>\n";
+        }
+        elseif ($EXIF['Orientation'] == 8)
+        {
+          $curphoto->Rotate(270);
+          echo "Rotated #".$next['id']." 270 degrees<br>\n";
+        }
+        else
+        {
+          echo "Updated #".$next['id']."<br>\n";
+        }
+      }
       flush();
       $fixed++;
     }
@@ -76,8 +96,8 @@
   $numdone += $fixed;
   if ($todo > 0)
   {
-    echo "<script language='javascript'>window.setTimeout('window.location=\"thumbnails.php?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\"',1000)</script>\n" ;
-    echo "<p><a href=\"thumbnails.php?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\">Click here to continue</a> if the Javascript redirect doesn't work.</p>\n";
+    echo "<script language='javascript'>window.setTimeout('window.location=\"exif.php?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\"',100)</script>\n" ;
+    echo "<p><a href=\"exif.php?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\">Click here to continue</a> if the Javascript redirect doesn't work.</p>\n";
   }
 ?>
 

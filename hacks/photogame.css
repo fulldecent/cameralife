@@ -1,0 +1,23 @@
+body
+{
+  background: gray;
+  font-family: sans-serif;
+}
+
+div
+{
+}
+
+div div
+{
+  padding-top: -50%;
+  width: 25%;
+  float: left;
+  vertical-align: bottom;
+}
+
+div div a img
+{
+  width: 95%;
+  border: 0;
+}

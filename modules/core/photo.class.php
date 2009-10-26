@@ -1,18 +1,20 @@
 <?php
-  /**Class Photo enables you to  get the photos
-  *@link  http://fdcl.sourceforge.net/
-    *@version 2.6.3b3
-    *@author Will Entriken <cameralife@phor.net>
-    *@access public
-    *@copyright Copyright (c) 2001-2009 Will Entriken
-  */
-   /**
-   *This class is for getting and using photos
-   *@var mixed $context an Album, Search or Folder from where the user retrieved the photo
-     *@var mixed $contextPhotos the photos from the 'context', that is an Album ,a Folder or a Search result
-     *@var mixed $contextPrev the previous photo in the 'context'
-  *@var mixed $contextNext the next photo in the 'context'
-   */
+  
+/**
+ * Class Photo provides a front end to working with photos
+ * @author Will Entriken <cameralife@phor.net>
+ * @access public
+ * @version 2.6.2
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ */
+   
+/**
+ * This class is for getting and using photos
+ * @var mixed $context an Album, Search or Folder from where the user retrieved the photo
+ * @var mixed $contextPhotos the photos from the 'context', that is an Album ,a Folder or a Search result
+ * @var mixed $contextPrev the previous photo in the 'context'
+ * @var mixed $contextNext the next photo in the 'context'
+ */
 
 class Photo extends View
 {
@@ -24,22 +26,12 @@ class Photo extends View
   var $contextNext; // the next photo in contex
   var $extension;
 
-  # Pass nothing to get an empty Photo, or
-  # Pass a photo ID to load a photo, or
-  # Pass an array to create a photo:
-  #
-  #   Required fields: filename, path, username
-  #   Optional fields: status, description, fsize, created
-  #
-  #   If making a new file, the caller is responsible for putting the
-  #   new file in the photostore if it is not already there. Do that
-  #   after instantiating this class
   /**
   * To get an empty Photo pass nothing ie NULL
   * To load a photo pass a photo ID
   * To create a photo pass an array
-  * <b>Required fields Filename, path of file, and username</b>
-  * Optional fields Status, description, and file size
+  * <b>Required fields <var>filename</var>, <var>path</var>, <var>username</var></b>
+  * Optional fields <var>status</var>, <var>description</var>, <var>fsize</var>, <var>created</var>
   */
   function Photo($original = NULL)
   {
@@ -91,56 +83,49 @@ class Photo extends View
     $cameralife->Database->Update('photos', array($key=>$value), 'id='.$this->record['id']);
     return $receipt;
   }
-/**@ todo Do you think we need to destroy the original?We look forward to your feedback
-*If you can guarantee record['modified'] is false, set $original to TRUE
- *If ORIGINAL is set, we can collect and use some extra metadata
-*/
+
   function Get($key)
   {
     return $this->record[$key];
   }
 
-//TODO kill original?
-  // If you can guarantee record['modified'] is false, set $original to TRUE
-  // If ORIGINAL is set, we can collect and use some extra metadata
-  function LoadImage($original = FALSE)
+  /// Initialize the <var>$this->image</var> variable and collect fsize and $this->LoadEXIF if possible
+  function LoadImage($onlyWantEXIF = false)
   {
     global $cameralife;
 
     if (isset($this->image)) return;
     list ($file, $temp, $this->record['mtime']) = $cameralife->PhotoStore->GetFile($this);
-    if ($this->record['original'])
+    if ($this->record['modified'] == NULL || $this->record['modified'] == 0)
     {
       $this->record['fsize'] = filesize($file);
       $this->LoadEXIF($file);
     }
 
-    $this->image = $cameralife->ImageProcessing->CreateImage($file);
-    if (!$this->image->Check()) $cameralife->Error("Bad photo processing: $origphotopath",__FILE__,__LINE__);
-
+    if (!$onlyWantEXIF)
+    {
+      $this->image = $cameralife->ImageProcessing->CreateImage($file);
+      if (!$this->image->Check()) $cameralife->Error("Bad photo processing: $origphotopath",__FILE__,__LINE__);
+    }
     if ($temp) unlink($file);
   }
 
-  // If you can guarantee record['modified'] is false, set $original to TRUE
-  // this is the cheapest/laziest way to get the metadata into the system
-  /**
-  *If you can guarantee record['modified'] is false, set $original to TRUE
-  * this is the cheapest/laziest way to get the metadata into the system
-  */
-  function GenerateThumbnail($original = FALSE)
+  /// Scale image to all needed sizes and save in photostore, update image/tn sizes
+  /// also update fsize if this is unmodified.
+  function GenerateThumbnail()
   {
     global $cameralife;
 
-    $this->LoadImage($original);
+    $this->LoadImage();
     $imagesize = $this->image->GetSize();
 
     $sizes = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
     $sizes[] = $cameralife->GetPref('thumbsize');
     $sizes[] = $cameralife->GetPref('scaledsize');
-    sort ($sizes);
     $files = array();
+    rsort($sizes);
 
-    while ($cursize = array_pop($sizes))
+    foreach ($sizes as $cursize)
     {
       $tempfile = tempnam($cameralife->GetPref('tempdir'), 'cameralife_'.$cursize);
       $dims = $this->image->Resize($tempfile, $cursize);
@@ -338,6 +323,10 @@ class Photo extends View
             $light = 'Probably indoors';
         }
         $retval["Lighting"]=$light;
+      }
+      if ($orient = $exif['IFD0']['Orientation'])
+      {
+        $retval["Orientation"]=$orient;
       }
     }
 
