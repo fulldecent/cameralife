@@ -52,7 +52,7 @@
 
       if ($photo->Get('status') == 0) #public
       {
-        $extesnion = $photo->extension;
+        $extension = $photo->extension;
 
         if ($type=='photo')
         {  
@@ -89,30 +89,47 @@
     {
       global $cameralife;
 
-      $extesnion = $photo->extension;
+      $extension = $photo->extension;
 
       if ($type == 'photo')
       {
         if ($photo->Get('modified'))
-          $file = $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension;
+        {
+          $file = $this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension;
+          $type = 'modified';
+        }
         else
-          $file = $this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename');
+        {
+          $file = $this->PhotoDir .'/'. $photo->Get('path').$photo->Get('filename');
+          $type = 'original';
+        }
       }
       elseif ($type == 'original')
-        $file = $this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename');
+        $file = $this->PhotoDir .'/'. $photo->Get('path').$photo->Get('filename');
       elseif ($type == 'modified')
-        $file = $this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension;
+        $file = $this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension;
       elseif ($type == 'scaled')
-        $file = $this->GetPref('cache_dir').'/'.$photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension;
+        $file = $this->CacheDir .'/'.$photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension;
       elseif ($type == 'thumbnail')
-        $file = $this->GetPref('cache_dir').'/'.$photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension;
+        $file = $this->CacheDir .'/'.$photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension;
+      elseif (is_numeric($type))
+      {
+        $file = $this->CacheDir .'/'.$photo->Get('id').'_'.$type.'.'.$extension;
+      }
 
-/* assume consistent state
+/* assume consistent state (famous last words?)
       if (!file_exists($file))
       {
         if ($type == 'original')
           $cameralife->Error("The photo <b>$file</b> cannot be found");
-        $photo->GenerateThumbnail();
+        if ($type == 'modified')
+        {
+          $photo->Revert();
+          $file = $this->PhotoDir .'/'. $photo->Get('path').$photo->Get('filename');
+          if (!file_exists($file))
+            $cameralife->Error("The photo <b>$file</b> cannot be found");
+        }
+        $photo->GenerateThumbnail($photo->Get('modified') ? 'FALSE' : 'TRUE');
       }
 */
       return array($file, FALSE, @filemtime($file));
@@ -162,7 +179,7 @@
     {
       global $cameralife;
 
-      $extesnion = $photo->extension;
+      $extension = $photo->extension;
 
       $this->mkdir_recursive($this->GetPref('cache_dir'));
 
@@ -190,7 +207,7 @@
     {
       global $cameralife;
 
-      $extesnion = $photo->extension;
+      $extension = $photo->extension;
 
       if(!file_exists($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension))
       {
@@ -226,7 +243,7 @@
     {
       global $cameralife;
 
-      $extesnion = $photo->extension;
+      $extension = $photo->extension;
 
       @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_mod.'.$extension);
       if ($filename)
@@ -264,7 +281,7 @@
     {
       global $cameralife;
 
-      $extesnion = $photo->extension;
+      $extension = $photo->extension;
 
       $this->mkdir_recursive($this->GetPref('deleted_dir') .'/'. $photo->Get('path'));
       rename ($this->GetPref('photo_dir') .'/'. $photo->Get('path').$photo->Get('filename'), $this->GetPref('deleted_dir') .'/'. $photo->Get('path').$photo->Get('filename'));

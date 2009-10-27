@@ -66,9 +66,15 @@
       if ($type == 'photo')
       {
         if ($photo->Get('modified'))
+        {
           $file = $this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension;
+          $type = 'modified';
+        }
         else
+        {
           $file = $this->PhotoDir .'/'. $photo->Get('path').$photo->Get('filename');
+          $type = 'original';
+        }
       }
       elseif ($type == 'original')
         $file = $this->PhotoDir .'/'. $photo->Get('path').$photo->Get('filename');
@@ -87,6 +93,13 @@
       {
         if ($type == 'original')
           $cameralife->Error("The photo <b>$file</b> cannot be found");
+        if ($type == 'modified')
+        {
+          $photo->Revert();
+          $file = $this->PhotoDir .'/'. $photo->Get('path').$photo->Get('filename');
+          if (!file_exists($file))
+            $cameralife->Error("The photo <b>$file</b> cannot be found");
+        }
         $photo->GenerateThumbnail($photo->Get('modified') ? 'FALSE' : 'TRUE');
       }
 
@@ -208,7 +221,7 @@
     {
       global $cameralife;
 
-      $extesnion = $photo->extension;
+      $extension = $photo->extension;
 
       $this->mkdir_recursive($this->DeletedDir .'/'. $photo->Get('path'));
       @rename ($this->PhotoDir .'/'. $photo->Get('path').$photo->Get('filename'), $this->DeletedDir .'/'. $photo->Get('path').$photo->Get('filename'));

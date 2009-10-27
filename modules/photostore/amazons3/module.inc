@@ -112,7 +112,7 @@
 
       if ($photo->Get('status') == 0) #public
       {
-        $extesnion = $photo->extension;
+        $extension = $photo->extension;
 
         if ($type=='photo')
         {
@@ -154,7 +154,7 @@
     {
       global $cameralife;
 
-      $extesnion = $photo->extension;
+      $extension = $photo->extension;
 
       if ($type == 'photo')
       {
@@ -171,6 +171,9 @@
         $file = $this->GetPref('cachebucket').'/'.$photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension;
       elseif ($type == 'thumbnail')
         $file = $this->GetPref('cachebucket').'/'.$photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension;
+
+      ///THIS CODE ASSUMES that the bucket remains in a consistent state (famous last words?)
+      // if you can ensure that, see code from local photostore
 
       $aws_key = $this->GetPref('accesskey');
       $aws_secret = $this->GetPref('secretaccesskey');
@@ -267,7 +270,7 @@
     {
       global $cameralife;
 
-      $extesnion = $photo->extension;
+      $extension = $photo->extension;
 
       $aws_key = $this->GetPref('accesskey');
       $aws_secret = $this->GetPref('secretaccesskey');
@@ -335,7 +338,7 @@
     */
     function ModifyFile($photo, $filename) 
     {
-      $extesnion = $photo->extension;
+      $extension = $photo->extension;
 
       if($filename)
       {
@@ -375,7 +378,7 @@ pe: {$file_type}\r\nContent-Length: {$file_length}\r\nDate: $dt\r\nAuthorization
       }
       else
       {
-        $extesnion = $photo->extension;
+        $extension = $photo->extension;
         $aws_key = $this->GetPref('accesskey');
         $aws_bucket = $this->GetPref('photobucket'); // AWS bucket 
         $aws_object = urlencode($photo->Get('id').'_mod.'.$extension);         // AWS object name (file name)
@@ -414,7 +417,7 @@ pe: {$file_type}\r\nContent-Length: {$file_length}\r\nDate: $dt\r\nAuthorization
     {
       global $cameralife;
 
-      $extesnion = $photo->extension;
+      $extension = $photo->extension;
 #######
       $aws_key = $this->GetPref('accesskey');
       $aws_bucket = $this->GetPref('photobucket'); // AWS bucket 

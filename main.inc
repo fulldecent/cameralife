@@ -62,6 +62,7 @@
 
       $this->preferences[] = array('name'=>'rewrite', 'type'=>'yesno', 'default'=>'no');
       $this->preferences[] = array('name'=>'iphone', 'type'=>'yesno', 'default'=>'yes');
+      $this->preferences[] = array('name'=>'autorotate', 'type'=>'yesno', 'default'=>'yes');
       $this->preferences[] = array('name'=>'tempdir', 'type'=>'string', 'default'=>'/tmp');
       $this->preferences[] = array('name'=>'thumbsize', 'type'=>'number', 'default'=>'150');
       $this->preferences[] = array('name'=>'scaledsize', 'type'=>'number', 'default'=>'600');

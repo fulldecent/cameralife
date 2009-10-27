@@ -52,9 +52,10 @@
   $next1000 = $cameralife->Database->Select('photos', 'id', "id > $lastdone", 'ORDER BY id LIMIT 100');
   $fixed = 0;
 
-  while(($next = $next1000->FetchAssoc()) && ($fixed < 20))
+  while(($next = $next1000->FetchAssoc()) && ($fixed < 30))
   {
     $curphoto = new Photo($next['id']);
+
     if ($curphoto->Get('modified') == NULL || $curphoto->Get('modified') == 0)
     {
 /// UPDATE THIS LINE TO SKIP EXISTING EXIF DATA
@@ -65,21 +66,22 @@
       else
       {
         $curphoto->LoadImage(/*onlyWantEXIF=*/true);
+
         $EXIF = $curphoto->GetEXIF();
         if ($EXIF['Orientation'] == 3)
         {
-          $curphoto->Rotate(180);
-          echo "Rotated #".$next['id']." 180 degrees<br>\n";
+          $cameralife->PhotoStore->ModifyFile($curphoto, NULL);
+          echo "Flagged #".$next['id']." for rotation<br>\n";
         }
         elseif ($EXIF['Orientation'] == 6)
         {
-          $curphoto->Rotate(90);
-          echo "Rotated #".$next['id']." 90 degrees<br>\n";
+          $cameralife->PhotoStore->ModifyFile($curphoto, NULL);
+          echo "Flagged #".$next['id']." for rotation<br>\n";
         }
         elseif ($EXIF['Orientation'] == 8)
         {
-          $curphoto->Rotate(270);
-          echo "Rotated #".$next['id']." 270 degrees<br>\n";
+          $cameralife->PhotoStore->ModifyFile($curphoto, NULL);
+          echo "Flagged #".$next['id']." for rotation<br>\n";
         }
         else
         {
@@ -99,6 +101,8 @@
     echo "<script language='javascript'>window.setTimeout('window.location=\"exif.php?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\"',100)</script>\n" ;
     echo "<p><a href=\"exif.php?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\">Click here to continue</a> if the Javascript redirect doesn't work.</p>\n";
   }
+  else
+    echo "<p>All photos updated. Now you can <a href=\"../admin/thumbnails.php\">update thumbnail caches</a>.</p>\n"
 ?>
 
 </body>

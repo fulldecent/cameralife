@@ -173,6 +173,15 @@
         <option <?= $cameralife->GetPref('iphone') == 'yes' ? 'selected="selected"':'' ?>>yes</option>
       </select>
   <tr>
+    <td>Use photo metadata to autorotate photos? (update existing photos with hacks/exif.php)
+    <td>
+      <input type="hidden" name="module5" value="CameraLife" />
+      <input type="hidden" name="param5" value="autorotate" />
+      <select name="value5">
+        <option <?= $cameralife->GetPref('autorotate') == 'no' ? 'selected="selected"':'' ?>>no</option>
+        <option <?= $cameralife->GetPref('autorotate') == 'yes' ? 'selected="selected"':'' ?>>yes</option>
+      </select>
+  <tr>
     <td>Size for thumbnails (in pixels)
     <td>
       <input type="hidden" name="module6" value="CameraLife" />

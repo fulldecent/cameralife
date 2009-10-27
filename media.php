@@ -46,6 +46,15 @@
     if ($reason) $cameralife->Error("Photo access denied: $reason");
   }
 
+  //TODO add a really rool hack here:
+  //  if photostore==local && fmt==thumbnail && doesnotexist && extension==jpeg && modified == 0orNULL && exif(rotate)==none
+  //  then resizetosizeofThumbnail(imagecreatefromstring(readexif(file)))
+  //
+  //  and if ... && exif(rotate)>1
+  //  then rotate and serve.
+  //
+  // however, this code may belong in localphotostore, so he can cache it
+
   if ($format == 'photo')
     list($file, $temp, $mtime) = $cameralife->PhotoStore->GetFile($photo, $format);
   elseif ($format == 'scaled')

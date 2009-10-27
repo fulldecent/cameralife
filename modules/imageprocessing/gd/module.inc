@@ -133,9 +133,12 @@
         $rotated = imagerotate($this->original_image, -$degrees, 0);
       else
         $rotated = ImageRotateRightAngle($this->original_image, $degrees);
-      $oldwidth = $this->width;
-      $this->width = $this->height;
-      $this->height = $oldwidth;
+      if ($degrees == 90 || $degrees == 270)
+      {
+        $oldwidth = $this->width;
+        $this->width = $this->height;
+        $this->height = $oldwidth;
+      }
       $this->Destroy();
       $this->original_image = $rotated;
     }
@@ -172,7 +175,7 @@
     if ($angle==90 || $angle==270)
       $imgDest = imagecreatetruecolor( $srcY, $srcX );
     else
-      $imgDest = imagecreatetruecolor( $srcY, $srcX );
+      $imgDest = imagecreatetruecolor( $srcX, $srcY );
       
     if ($angle == 90)
     {

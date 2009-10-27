@@ -53,8 +53,8 @@ class Photo extends View
       $this->record['status'] = '0';
       $this->record['fsize'] = filesize($fullpath);
       $this->record['created'] = date('Y-m-d');
-      $this->recode['modified'] = '0';
-      $this->recode['mtime'] = '0';
+      $this->record['modified'] = '0';
+      $this->record['mtime'] = '0';
       $this->record = array_merge($this->record, $original);
 
       $this->record['id'] = $cameralife->Database->Insert('photos', $this->record);
@@ -65,6 +65,7 @@ class Photo extends View
     $this->contextPrev = false;
     $this->contextNext = false;
     $this->contextPhotos = array();
+    $this->EXIF = array();
 
     $path_parts = pathinfo($this->record['filename']);
     $this->extension = strtolower($path_parts['extension']);
@@ -116,7 +117,22 @@ class Photo extends View
   {
     global $cameralife;
 
-    $this->LoadImage();
+    $this->LoadImage(); // sets $this->EXIF
+    if (($cameralife->GetPref('autorotate') == 'yes') && ($this->record['modified'] == NULL || $this->record['modified'] == 0))
+    {
+      if ($this->EXIF['Orientation'] == 3)
+      {
+        $this->Rotate(180);
+      }
+      elseif ($this->EXIF['Orientation'] == 6)
+      {
+        $this->Rotate(90);
+      }
+      elseif ($this->EXIF['Orientation'] == 8)
+      {
+        $this->Rotate(270);
+      } 
+    }
     $imagesize = $this->image->GetSize();
 
     $sizes = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
@@ -247,16 +263,16 @@ class Photo extends View
   {
     global $cameralife;
 
-    $retval = array();
+    $this->EXIF = array();
     $query = $cameralife->Database->Select('exif', '*', "photoid=".$this->record['id']);
 
     while($row = $query->FetchAssoc())
     {
       if ($row['tag'] == 'empty') continue;
-      $retval[$row['tag']] = $row['value'];
+      $this->EXIF[$row['tag']] = $row['value'];
     }
 
-    return $retval;
+    return $this->EXIF;
   }
 
   function LoadEXIF($file)
@@ -264,37 +280,37 @@ class Photo extends View
     global $cameralife;
 
     $exif = @exif_read_data($file, 'IFD0', true);
-    $retval = array();
+    $this->EXIF = array();
 
-    if ($exif===false) return $retval;
-
+    if ($exif===false) 
+      return $retval;
     else
     {
       if ($exif['EXIF']['DateTimeOriginal'])
       {
-        $retval["Date taken"]=$exif['EXIF']['DateTimeOriginal'];
+        $this->EXIF["Date taken"]=$exif['EXIF']['DateTimeOriginal'];
       }
       if ($model = $exif['IFD0']['Model'])
       {
-        $retval["Camera Model"]=$model;
+        $this->EXIF["Camera Model"]=$model;
       }
       if ($fnumber = $exif['COMPUTED']['ApertureFNumber'])
       {
-        $retval["Aperture"]=$fnumber;
+        $this->EXIF["Aperture"]=$fnumber;
       }
       if ($exposuretime = $exif['EXIF']['ExposureTime'])
       {
-        $retval["Speed"]=$exposuretime;
+        $this->EXIF["Speed"]=$exposuretime;
       }
       if ($iso = $exif['EXIF']['ISOSpeedRatings'])
       {
-        $retval["ISO"]=$iso;
+        $this->EXIF["ISO"]=$iso;
       }
       if ($focallength = $exif['EXIF']['FocalLength'])
       {
         if(ereg('([0-9]+)/([0-9]+)', $focallength, $regs))
         $focallength = $regs[1] / $regs[2];
-        $retval["Focal distance"]="${focallength}mm";
+        $this->EXIF["Focal distance"]="${focallength}mm";
       }
       if ($focallength)
       {
@@ -304,7 +320,7 @@ class Photo extends View
         $fov = round(2*rad2deg(atan($ccd/2/$focallength)),2);
         //@link http://www.rags-int-inc.com/PhotoTechStuff/Lens101/
 
-        $retval["Field of view"]="${fov}&deg; horizontal";
+        $this->EXIF["Field of view"]="${fov}&deg; horizontal";
       }
       if ($focallength && $exposuretime)
       {
@@ -322,18 +338,18 @@ class Photo extends View
           else
             $light = 'Probably indoors';
         }
-        $retval["Lighting"]=$light;
+        $this->EXIF["Lighting"]=$light;
       }
       if ($orient = $exif['IFD0']['Orientation'])
       {
-        $retval["Orientation"]=$orient;
+        $this->EXIF["Orientation"]=$orient;
       }
     }
 
-    if (!count($retval)) $retval=array('empty'=>'true');
+    if (!count($this->EXIF)) $this->EXIF=array('empty'=>'true');
 
     $cameralife->Database->Delete('exif', 'photoid='.$this->record['id']);
-    foreach ($retval as $tag=>$value)
+    foreach ($this->EXIF as $tag=>$value)
       $cameralife->Database->Insert('exif', array('photoid'=>$this->record['id'], 'tag'=>$tag, 'value'=>$value));
   }
 
