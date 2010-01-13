@@ -111,7 +111,7 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
       <?php
         $url = 'http://' . $_SERVER['HTTP_HOST'] . ($_SERVER['SERVER_PORT'] == 80 ? '' : ':'.$_SERVER['SERVER_PORT']). str_replace('index.php','',$_SERVER['PHP_SELF']) . 'images/blank.gif';
         $fh = fopen($url, 'r');
-        while (!feof($fh))
+        while ($fh && !feof($fh))
         {
           $data .= fread($fh, 8192);
         }

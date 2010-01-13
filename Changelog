@@ -4,6 +4,7 @@
 * Add options for image sizes
 * Resolve issue at http://www.xssed.com/mirror/55648/
 * Resolve issues at http://secunia.com/advisories/31234/
+* Fix install issue, thanks Eoin McLoughlin
 
 2.6.2  Will Entriken <cameralife AT phor.net>
 * Website update, thanks to Rajesh Sundaram
