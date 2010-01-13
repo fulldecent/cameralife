@@ -6,7 +6,7 @@
 *<li>$iconset_date    = '5/1/2005';</li>
 *</ul>
 *<b>Note</b>:Most images are distributed as png, gif, and svg files
-*@version 2.6.3b3
+*@version 2.6.3b4
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public
