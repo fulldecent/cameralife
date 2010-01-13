@@ -48,12 +48,12 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
     <td width="30%">
       <?php
         if (function_exists('mysql_query'))
-          echo "<font color=green>Installed</font>";
+          echo "<font color=green>Installed</font>\n";
         else
         {
           echo "<font color=red>Error</font>
                 <tr><td colspan=2><p class='important'>You do not appear to have MySQL installed, ".
-               "see http://php.net/manual/en/ref.mysql.php for more info</p>";
+               "see http://php.net/manual/en/ref.mysql.php for more info</p>\n";
           $continue = false;
         }
       ?>
@@ -63,12 +63,12 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
     <td>
       <?php
         if (function_exists('gd_info'))
-          echo "<font color=green>Installed</font>";
+          echo "<font color=green>Installed</font>\n";
         else
         {
           echo "<font color=red>Error</font>
                 <tr><td colspan=2><p class='important'>You do not appear to have GD installed, ".
-               "see http://php.net/manual/en/ref.image.php for more info, or on Ubuntu use: apt-get install php5-gd; reboot</p>";
+               "see http://php.net/manual/en/ref.image.php for more info, or on Ubuntu use: apt-get install php5-gd; reboot</p>\n";
           $continue = false;
         }
       ?>
@@ -80,13 +80,13 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
         $info = gd_info();
 
         if ($info['JPG Support'] || $info['JPEG Support'])
-          echo "<font color=green>GD supports JPEG</font>";
+          echo "<font color=green>GD supports JPEG</font>\n";
         else
         {
           echo "<font color=red>Error</font>
                 <tr><td colspan=2><p class='important'>Your version of GD does not support JPEG, see ".
               "http://us4.php.net/manual/en/ref.image.php for more info here's some ".
-              "info about your GD, I hope it helps:</p><br><pre>".print_r($info,true)."</pre>";
+              "info about your GD, I hope it helps:</p><br><pre>".print_r($info,true)."</pre>\n";
           $continue = false;
         }
       ?>
@@ -96,12 +96,12 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
     <td>
       <?php
         if (get_magic_quotes_gpc())
-          echo "<font color=green>Configured correctly</font>";
+          echo "<font color=green>Configured correctly</font>\n";
         else
         {
           echo "<font color=orange>Warning</font>
                 <tr><td colspan=2><p class='important'>Magic quotes are disabled, you may want this, see ".
-               "http://us4.php.net/manual/en/ref.info.php#ini.magic-quotes-gpc for more info</font>";
+               "http://us4.php.net/manual/en/ref.info.php#ini.magic-quotes-gpc for more info</font>\n";
         }
       ?>
   <tr>
@@ -117,13 +117,13 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
         }
 
         if (md5($data) == 'accba0b69f352b4c9440f05891b015c5')
-          echo "<font color=green>Configured</font>";
+          echo "<font color=green>Configured correctly</font>\n";
         else
         {
           echo "<font color=red>Error</font>
                 <tr><td colspan=2><p class='important'>Your server doesn't appear to support
                 CONTENT NEGOTIATION, or is not allowing HTACCESS OVERRIDES. Or maybe the file .htaccess
-                was not copied. You're going to need to fix that before you continue.</p>";
+                was not copied. You're going to need to fix that before you continue.</p>\n";
           $continue = false;
         }
       ?>
@@ -139,12 +139,12 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
           $data2 .= fread($fh, 8192);
         }
         if (md5($data2) == 'accba0b69f352b4c9440f05891b015c5')
-          echo "<font color=green>Configured</font>";
+          echo "<font color=green>Configured correctly</font>\n";
         else
         {
-          echo "<font color=red>Error</font>
+          echo "<font color=orange>Warning</font>
                 <tr><td colspan=2><p class='important'>Your server doesn't appear to support
-                MOD REWRITE. This is not required, but if you add it, you can have pretty URL's.</p>";
+                MOD REWRITE. This is not required, but if you add it, you can have pretty URL's.</p>\n";
         }
       ?>
   <tr>
@@ -152,32 +152,55 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
       Checking package permissions...
     <td>
       <?php
-        if (!is_writable('../modules/'))
+        $writable = array();
+        $writable[] = array('modules','you will need to manually paste a file in there later',1);
+        $writable[] = array('images/photos','you will not be able to upload photos from inside Camera Life',1);
+        $writable[] = array('images/cache','',2);
+        $writable[] = array('images/deleted','',2);
+        $allerrors = 0;
+        $unwritable = array();
+
+        foreach ($writable as $a)
         {
-          echo "<font color=orange>Warning</font>
-                <tr><td colspan=2><p class='important'>The directory modules/
-                is not writable by the webserver. If you fix this, setup will be faster, otherwise,
-                you will need to manually paste a file in there later. <a href =\"index.php\">Check again</a>";
+          if(!is_writable(dirname(dirname(__FILE__)).'/'.$a[0]))
+          {
+            $allerrors = max($allerrors, $a[2]);
+            $unwritable[] = $a;
+          }
         }
-        elseif (!is_writable('../images/photos/'))
+
+        if ($allerrors == 2)
         {
-          echo "<font color=orange>Warning</font>
-                <tr><td colspan=2><p class='important'>The directory image/photos/
-                is not writable by the webserver. If you fix this, setup will be faster <a href =\"index.php\">Check again</a>";
+          echo "<font color=red>Error</font>";
+          $continue = false;
         }
-        elseif (!is_writable('../images/cache/'))
+        elseif ($allerrors == 1)
         {
-          echo "<font color=orange>Warning</font>
-                <tr><td colspan=2><p class='important'>The directory image/cache/
-                is not writable by the webserver. If you fix this, setup will be faster <a href =\"index.php\">Check again</a>";
+          echo "<font color=orange>Warning</font>";
         }
-        elseif (!is_writable('../images/deleted/'))
+
+        if (count($unwritable))
         {
-          echo "<font color=orange>Warning</font>
-                <tr><td colspan=2><p class='important'>The directory image/deleted/
-                is not writable by the webserver. If you fix this, setup will be faster <a href =\"index.php\">Check again</a>";
+          echo "<tr><td colspan=2><p class='important'>Some directories should be editable but aren't (mouseover each for details): ";
+          foreach ($unwritable as $a)
+          {
+            if ($i++) echo ', ';
+            if ($a[2] == 1)
+              echo "<a title=\"(optional) if you don't fix this ".$a[1]."\">".$a[0]."</a>";
+            if ($a[2] == 2)
+              echo "<a title=\"you must fix this to continue\">".$a[0]."</a>";
+          }
+          echo ". <a href =\"index.php\">Check again</a>. <br />";
+          foreach ($unwritable as $a)
+            echo "<br /><tt>chmod 777 ".dirname(dirname(__FILE__)).'/'.$a[0]."</tt>\n";
         }
-        elseif(!file_exists('../.htaccess'))
+?>
+  <tr>
+    <td>
+      Checking package contents...
+    <td>
+<?php
+        if(!file_exists('../.htaccess'))
         {
           echo "<font color=orange>Error</font>
                 <tr><td colspan=2><p class='important'>You are missing the file <b>.htaccess</b> from the
@@ -216,6 +239,33 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
                   at <a href=\"http://fdcl.sourceforge.net\">http://fdcl.sourceforge.net</a>.</p>";
         }
   }
+
+  if (!file_exists('../.svn'))
+  {
+
+      ?>
+  <tr>
+    <td>
+      Checking package version...
+    <td>
+      <?php
+        $main = file('../main.inc');
+        $versionline = preg_grep('/this..version/', $main);
+        preg_match("/'(.*)'/", join($versionline), $matches);
+
+        # We collect your ip and version
+        $newest = file_get_contents('http://fdcl.sourceforge.net/check.php?i='.$matches[1]);
+
+        if ($matches[1] == $newest)
+          echo "<font color=green>You have ".$matches[1]."</font>";
+        else
+        {
+          echo "<font color=red>Error</font>
+                <tr><td colspan=2><p class='important'>You are installing Camera Life ".$matches[1].", but the 
+                  latest released version is $newest. The latest version can be downloaded 
+                  at <a href=\"http://fdcl.sourceforge.net\">http://fdcl.sourceforge.net</a>.</p>";
+        }
+  }
       ?>
 
 </table>
@@ -223,7 +273,7 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
 <?php
         if ($continue == false)
         {
-          echo "<p class='important'>The prerequisites have not been met. Fix them, and reload this page.</p>";
+          echo "<p class='important'>The prerequisites have not been met. Fix them, and <a href =\"index.php\">Check again</a>.</p>";
         }else{
           echo '<p align=center>
                 <a class="pagelink" href="index2.php">Continue --&gt;</a>

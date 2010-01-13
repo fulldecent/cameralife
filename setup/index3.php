@@ -5,6 +5,7 @@
 *@author Will Entriken <cameralife@phor.net>
 *@copyright Copyright (c) 2001-2009 Will Entriken
 *@access public
+*/
 ?>
 <html>
 <head>
@@ -36,7 +37,7 @@ Collect some photos that you would like to use with the site. Now, either:
 
 <h2>Cover me, I'm going in</h2>
 
-You are now logged into your new site as <i>admin</i> with full privileges.
+You are now logged into your new site as <b>admin</b> with full privileges.
 Perform these quick tasks to bring your site up to date. This also counts as
 a tutorial on how your site works.
 

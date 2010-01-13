@@ -48,7 +48,7 @@
   <ul>
     <li><a target="_new" href="http://<?= $_SERVER['HTTP_HOST'] ?>/cpanel">Login to cPanel</a></li>
     <li>Click <a target="_new" href="http://<?= $_SERVER['HTTP_HOST'] ?>:2082/frontend/x3/sql/index.html">MySQL Databases</a></li>
-    <li>Create Database: cameralife, go back</li>
+    <li>Create Database: enter <b>cameralife</b>, read what your database is actually named, go back</li>
     <li>Add New User: <b>username</b> <b>password</b></li>
     <li>Add User To Database: select your user and database, and tick ALL PRIVILEGES</li>
     <li>Note, your cPanel account name will proceed your database and user names below. For example, your database name will be mycpanelname_cameralife</li>
@@ -70,7 +70,7 @@
   <tr><td>Database pass:<td> <input type="password" name="pass" value="">
   <tr><td>Database table name prefix (optional):<td> <input type="text" name="prefix" value="">
   <tr><td>&nbsp;
-  <tr><td>Camera Life admin password:<td> <input type="password" name="sitepass" value="">
+  <tr><td>New password for Camera Life <b>admin</b> user:<td> <input type="password" name="sitepass" value="">
   </table>
 
 <?php
