@@ -1,10 +1,11 @@
-2.6.3svn  Will Entriken <cameralife AT phor.net>
+2.6.3svnandbetas  Will Entriken <cameralife AT phor.net>
 * Huge documentation update by Aysha Mohamed Rafiq
 * Add the widget hack
 * Add options for image sizes
 * Resolve issue at http://www.xssed.com/mirror/55648/
 * Resolve issues at http://secunia.com/advisories/31234/
 * Fix install issue, thanks Eoin McLoughlin
+* Update install documentation
 
 2.6.2  Will Entriken <cameralife AT phor.net>
 * Website update, thanks to Rajesh Sundaram

@@ -1,21 +1,19 @@
 <?php
   // Pretend like the user will authenticate by giving them a cookie.
-  /**This file accepts information from user and uses the information to
+
+ /**This file accepts information from user and uses the information to
   *<ul>
   *<li>Connect to the database</li>
   *<li>Create tables</li>
   *<li>Setup CameraLife </li>
   *</ul>
-  *<b>Note</b> The user will "authenticate"the provided information by enabling a cookie.
+  *<b>Note</b> The user will "authenticate" the provided information by enabling a cookie.
   *@link http://fdcl.sourceforge.net
-*@version 2.6.2
-*@author Will Entriken <cameralife@phor.net>
-*@copyright Copyright (c) 2001-2009 Will Entriken
-*@access public
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright Copyright (c) 2001-2009 Will Entriken
+  *@access public
 */
-/**
-*/
-
 
   setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
 ?>
@@ -36,12 +34,9 @@
 
   <p>For Linux:</p>
 
-  <pre class="code">
-  $ su
-  # mysqladmin create <b>cameralife</b>
-  # mysql
-  mysql&lt; grant all privileges on <b>cameralife</b>.* to <b>cameralifeuser</b>@<b>localhost</b> identified by '<b>password</b>';
-  </pre>
+  <pre class="code">$ sudo mysql
+mysql&lt; CREATE DATABASE <b>cameralife</b>;
+mysql&lt; GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '<b>pass</b>';</pre>
 
   <p>Using cPanel:</p>
 
@@ -52,6 +47,16 @@
     <li>Add New User: <b>username</b> <b>password</b></li>
     <li>Add User To Database: select your user and database, and tick ALL PRIVILEGES</li>
     <li>Note, your cPanel account name will proceed your database and user names below. For example, your database name will be mycpanelname_cameralife</li>
+  </ul>
+
+  <p>Using phpMyAdmin or MAMP</p>
+  <ul>
+    <li>If using MAMP, set the MySQL port to 3306 standard</li>
+    <li>Login to phpMyAdmin</li>
+    <li>Click SQL along the top, then paste in:
+      <pre class="code">CREATE DATABASE <b>cameralife</b>;
+GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '<b>pass</b>';</pre>
+    </li>
   </ul>
 
   <p>Note: If you setup Camera Life on a different system, please tell us about it at cameralife@phor.net</p>
@@ -66,7 +71,7 @@
   <form action="index2.php" method=POST>
   <tr><td>Database server:<td> <input type="text" name="host" value="localhost">
   <tr><td>Database name:<td> <input type="text" name="name" value="cameralife">
-  <tr><td>Database user:<td> <input type="text" name="user" value="cameralifeuser">
+  <tr><td>Database user:<td> <input type="text" name="user" value="user">
   <tr><td>Database pass:<td> <input type="password" name="pass" value="">
   <tr><td>Database table name prefix (optional):<td> <input type="text" name="prefix" value="">
   <tr><td>&nbsp;
@@ -259,10 +264,8 @@
     $config[] = "\$db_prefix = '".$_POST['prefix']."';\n";
     $config[] = "?>\n";
 
-    if (is_writable('../modules'))
+    if ($fd = fopen('../modules/config.inc','x'))
     {
-      $fd = fopen('../modules/config.inc','x')
-        or die('Cannot open ../modules/config.inc for writing');
       foreach ($config as $line)
         fwrite ($fd, $line);
       fclose($fd);

@@ -18,6 +18,7 @@ pre.code
   border: 1px solid #888888;
   background: $dddddd;
   font-size: small;
+  padding: 1em;
 }
 
 p.important
