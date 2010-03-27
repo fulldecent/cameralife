@@ -13,5 +13,7 @@
   require "main.inc";
 
   $album = new Album($_GET['id']);
+  $album->Set('hits', $album->Get('hits') + 1);
+
   $album->ShowPage();
 ?>

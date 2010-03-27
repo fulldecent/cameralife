@@ -18,7 +18,6 @@
 
   $start = $_GET['start'] + 0;
 
-  $album->Set('hits', $album->Get('hits') + 1);
   $results = $album->GetPhotos();
   $counts = $album->GetCounts();
   $icon = $album->GetIcon();

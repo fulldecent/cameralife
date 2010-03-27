@@ -1,59 +1,45 @@
 <?php
-  /*
-  *  A photostore is a backend for storing photos. Its responsibilities are:
-  *    - putting and getting photo files
-  *    - taking photos and making scaled/thumbnailed versions
-  *    - making thes files accessible by a URL (optional)
-  *
-  *  Generally, you will update the photo object and then call these functions.
-  *  The photostore will look at the photo object to find the postcondition
-  *  and then make it happen.
-  *
-  *  Implementation note: for all files passed in, you are responsible for 
-  *  chmodding as necessary.
-  */
-  /** A photostore is a backend for storing photos. Its responsibilities are:
-  *<ul>
-  * <li>  putting and getting photo files</li>
-  * <li> taking photos and making scaled/thumbnailed versions</li>
-  * <li> making these files accessible by a URL</li>
-  *</ul>
-  *Generally, you will update the photo object and then call the functions.
-    *The photostore will look at the photo object to find the post condition and then carry out the intended task.
-  *@version 2.6.2
-  *@author Will Entriken<cameralife@phor.net>
-  *@access public
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-*/
-/**Carries functions that carry out operations on photo files
-*/
+/**
+ * A photostore can store and retrieve photos to a filesystem. Also,
+ * the photostore knows about thumbnails/modifications of a photo.
+ *
+ * (Optional) The photostore can also provide a URL for resources so the
+ * website visitor can access resources directly.
+ *
+ * A photo "added" to a photostore will have its CHMOD set correctly.
+ * 
+ * Generally, you will update the photo object and then call the functions.
+ * @version 2.6.2
+ * @author Will Entriken<cameralife@phor.net>
+ * @access public
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ */
+class PhotoStore extends CameraLifeModule
+{
+  function PhotoStore() {}
 
-  class PhotoStore extends CameraLifeModule
+  /**
+   * Gets a URL for the client to access the selected resource. Or return FALSE.
+   * If FALSE, the caller must construct a URL to media.php
+   * That page will GetFile() the photo and display it to the user.
+   * 
+   * (Implementation note: make sure non-public photos do not have 
+   * publicly accessible urls)
+   *
+   * @param $photo - a target photo obeject
+   * @param $type - one of ('photo', 'scaled', 'thumbnail', a number)
+   * @return a URL or FALSE
+   */
+  function GetURL($photo, $type='photo') 
   {
-    function PhotoStore() {}
+    return FALSE;
+  }
 
-    /**
-    *  GetURL
-    *
-    *  Gets a URL for the client to access the selected resource. Or return FALSE.
-    *  If FALSE, the caller must construct a URL to media.php
-    *  That page will GetFile() the photo and display it to the user.
-    * 
-    *  (Implementation note: make sure non-public photos do not have 
-    *  publicly accessible urls)
-    *
-    *  @param $photo - a target photo obeject
-    *  @param $type - one of ('photo', 'scaled', 'thumbnail', a number)
-    *
-    *  @return a URL or FALSE
-    */
-    function GetURL($photo, $type='photo') {}
-
-    /**
-    *  GetFile
-    *
-    *  Gets a filename for the requested resource. It is downloaded if necessary.
-    *
+  /**
+  *  GetFile
+  *
+  *  Gets a filename for the requested resource. It is downloaded if necessary.
+  *
     *  @param $photo - a target photo object
     *  @param $type - one of ('photo', 'original', 'modified', 'scaled', 'thumbnail', a number)
     *    'photo' refers to the active one of (original or modified)

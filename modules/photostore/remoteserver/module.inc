@@ -129,7 +129,7 @@
           if (!file_exists($file))
             $cameralife->Error("The photo <b>$file</b> cannot be found");
         }
-        $photo->GenerateThumbnail($photo->Get('modified') ? 'FALSE' : 'TRUE');
+        $photo->GenerateThumbnail();
       }
 */
       return array($file, FALSE, @filemtime($file));
@@ -255,7 +255,7 @@
       @unlink($this->GetPref('cache_dir') .'/'. $photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension);
       unlink($filename);
 
-      $photo->GenerateThumbnail($filename == NULL); // if we are reverting, let Generate know
+      $photo->GenerateThumbnail();
     }
 
 

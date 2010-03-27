@@ -470,7 +470,7 @@ class Folder extends Search
     {
       if (preg_match("/^picasa.ini|digikam3.db$/i",$newbase))
         continue;
-      if (!preg_match("/.jpg$|.jpeg$|.png$/i",$newbase))
+      if (!preg_match("/.jpg$|.jpeg$|.png$|.gif$/i",$newbase))
       {
         $retval[] = "Skipped $new_file because it is not a JPEG or PNG file";
         continue;
@@ -565,7 +565,7 @@ class Folder extends Search
     $fsphotos = $fsdirs = array();
     foreach ($files as $file)
     {
-      if (preg_match("/.jpg$|.jpeg$|.png$/i",$file))
+      if (preg_match("/.jpg$|.jpeg$|.png$|.gif$/i",$file))
         $fsphotos[] = $file;
       else
       {

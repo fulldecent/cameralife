@@ -42,6 +42,8 @@
         $this->original_image = imagecreatefromjpeg($filename);
       elseif ($this->extension=='png')
         $this->original_image = imagecreatefrompng($filename);
+      elseif ($this->extension=='gif')
+        $this->original_image = imagecreatefromgif($filename);
       else
         $cameralife->Error('Trying to process image of unknown file format: '.$filename, __FILE__, __LINE__);
       $this->width = imagesx($this->original_image);
@@ -115,6 +117,11 @@
       elseif ($this->extension=='png')
       {
         @imagepng($new_image, $filename, 9-$quality/11)
+          or $cameralife->Error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
+      }
+      elseif ($this->extension=='gif')
+      {
+        @imagegif($new_image, $filename, 9-$quality/11)
           or $cameralife->Error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
       }
 

@@ -39,8 +39,6 @@
   else
     $hrefinquery = $icon['href'] . '&#63;';
 
-  $photo->Set('hits', $photo->Get('hits') + 1);
-
   $menu = array();
   $menu[] = $cameralife->GetIcon('small');
 

@@ -13,5 +13,7 @@
   require "main.inc";
 
   $photo = new Photo($_GET['id']);
+  $photo->Set('hits', $photo->Get('hits') + 1);
+
   $photo->ShowPage();
 ?>

@@ -12,6 +12,7 @@
   $features=array('database','theme','photostore', 'imageprocessing');
   require "main.inc";
 
-  $folder = new Folder(stripslashes($_GET['path']), TRUE);
+  ##TODO: make the second param true there
+  $folder = new Folder(stripslashes($_GET['path']), false);
   $folder->ShowPage();
 ?>

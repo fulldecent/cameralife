@@ -75,7 +75,6 @@
         $ask_user_to_login = true;
     }
 */
-  $photo->Set('hits', $photo->Get('hits') + 1);
 
   $menu = array();
   $menu[] = $cameralife->GetIcon('small');

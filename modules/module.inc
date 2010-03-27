@@ -15,15 +15,14 @@
 
     /**@var mixed $preferences 
      *
-     * in the format:
+     * An array having arrays of:
      * <ul>
-     *<li>  an array of:</li>
-     *<li> an named array with:</li>
-     *<li>  name -- string</li>
-     *<li> desc -- string</li>
-     *<li>  type -- directory, string, number, yesno ('0' or '1'), or an array of possible values (enum)</li>
-     *<li>   default -- the default value</li>   
-     *</ul>
+     *  <li> an named array with:</li>
+     *  <li> 'name' => string</li>
+     *  <li> 'desc' => string</li>
+     *  <li> 'type' => 'directory', 'directoryrw' (must be read/writeable), 'string', 'number', 'yesno' ('0' or '1'), or an array of possible values (enum)</li>
+     *  <li> 'default' => the default value</li>   
+     * </ul>
      */
     var $preferences;
 

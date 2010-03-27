@@ -1,65 +1,36 @@
 <?php
-  # Handle file things
-  # BEWARE: DUMP YOUR DATABASE BEFORE FUCKING AROUND HERE!
-  # ... if only I had told myself that earlier today :-(
-  /**
-  *Handles files and its parameters
-  *<b>Note:Save your database before making changes to the code here</b>
-
-  *@link http://fdcl.sourceforge.net
- *@version 2.6.3b4
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-*/
 /**
-*/
+ * Handle file things
+ * BEWARE: BACKUP YOUR DATABASE BEFORE MESSING AROUND HERE!
+ * if only I had told myself that earlier today :-(
+ *
+ * @link http://fdcl.sourceforge.net
+ * @version 2.6.3b3
+ * @author Will Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @access public
+ */
+@ini_set('max_execution_time',9000);
 
-  @ini_set('max_execution_time',9000);
+$features=array('database','security','imageprocessing', 'photostore');
+require "../main.inc";
+$cameralife->base_url = dirname($cameralife->base_url);
+chdir ($cameralife->base_dir);
+$cameralife->Security->authorize('admin_file', 1); // Require
 
-  $features=array('database','security','imageprocessing', 'photostore');
-  require "../main.inc";
-  $cameralife->base_url = dirname($cameralife->base_url);
-  chdir ($cameralife->base_dir);
+$_GET['page'] or $_GET['page'] = 'flagged';
 
-  $cameralife->Security->authorize('admin_file', 1); // Require
+// Handle form actions
+foreach ($_POST as $key=>$val)
+{
+  if (!is_int($key)) continue;
+  $curphoto = new Photo($key);
+  if ($val>=0 && $val<=3)
+    $curphoto->Set('status', $val);
+  else // Erased file
+    $curphoto->Erase();
+}
 
-  $_GET['page'] or $_GET['page'] = 'flagged';
-
-  // Handle form actions
-  foreach ($_POST as $key=>$val)
-  {
-    if (!is_int($key)) continue;
-    $curphoto = new Photo($key);
-    if ($val>=0 && $val<=3)
-      $curphoto->Set('status', $val);
-    else // Erased file
-      $curphoto->Erase();
-  }
-
-  // Returns an array of files starting at $path
-  // in the form 'path'=>basename(path)
-  /** Returns an array of files starting at $path in the form 'path'=>basename(path)
-  */
-  function walk_dir($path)
-  {
-    $retval = array();
-    if ($dir = opendir($path)) {
-      while (false !== ($file = readdir($dir)))
-      {
-        if ($file[0]==".") continue;
-        if (is_dir($path."/".$file))
-          $retval = array_merge($retval,walk_dir($path."/".$file));
-        else if (is_file($path."/".$file))
-          if (preg_match("/.jpg$/i",$file))
-            $retval[$path."/".$file] = $file;
-          else
-            echo "Skipped $path/$file, not a JPEG file<br>\n";
-      }
-      closedir($dir);
-    }
-    return $retval;
-  }
 ?>
 <html>
 <head>
@@ -121,12 +92,7 @@
     echo '</select></p>';
 
     $search = new Search('');
-//TODO wow!
-    // You know code is a hack when you use a SQL injection attack against yourself.
-    /**@todo
-    */
-    /**
-    */
+    ### @todo You know code is a hack when you use a SQL injection attack against yourself.
     $search->mySearchPhotoCondition = "status=$target_status OR 0";
     $search->SetPage(0, 9999);
     $photos = $search->GetPhotos();
@@ -162,7 +128,7 @@
   }
   else // Update DB
   {
-    echo "<p>Updating the database to reflect any changes to the photos directory...</p>\n<ol>\n";
+    echo "<p>Updating the database to reflect any changes to tue PhotoStore...</p>\n<ol>\n";
     flush();
 
     $output = Folder::Update();

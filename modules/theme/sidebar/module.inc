@@ -87,7 +87,7 @@
         echo '<ul>';
         foreach ($menu as $link)
         {
-          if ($lastsection != $link['section'])
+          if (isset($link['section']) && $lastsection != $link['section'])
           {
             echo '</ul>';
             $this->Section($link['section']);
@@ -99,17 +99,17 @@
             echo "<a href=\"".$link["href"]."\"";
             if (strstr($link['href'], 'action='))
               echo ' rel="nofollow"';
-            if ($link['onclick'])
+            if (isset($link['onclick']))
               echo ' onclick="'.$link['onclick'].'"';
-            if ($link['rel'])
+            if (isset($link['rel']))
               echo ' rel="'.$link['rel'].'"';
-            if ($link['rev'])
+            if (isset($link['rev']))
               echo ' rev="'.$link['rev'].'"';
             echo '>';
           }
           if ($link['image']) $this->Image($link['image'],array('align'=>'middle','height'=>20));
 
-          if ($link['class']=='referer')
+          if (isset($link['class']) && $link['class']=='referer')
             echo '<b>'.$link["name"].'</b>';
           else
             echo $link["name"];

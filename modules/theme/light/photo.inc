@@ -71,8 +71,6 @@
         $ask_user_to_login = true;
     }
 */
-  $photo->Set('hits', $photo->Get('hits') + 1);
-
   ## Extra header...
   $headers = '<link rel="stylesheet" type="text/css" href="delicious.css">';
   

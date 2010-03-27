@@ -1,60 +1,53 @@
 <?php
 /**
-* An implementation of PhotoStore that stores photos on your local filesystem. 
-* @see PhotoStore
-*
-* @version 2.6.3b4
-* @author Will Entriken <cameralife@phor.net>
-* @copyright Copyright (c) 2001-2009 Will Entriken
-* @access public
-* @link http://fdcl.sourceforge.net
-*/
-  class LocalPhotoStore extends PhotoStore
+ * An implementation of PhotoStore that stores photos on your local filesystem. 
+ * @see PhotoStore
+ *
+ * @version 2.6.3b3
+ * @author Will Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @access public
+ * @link http://fdcl.sourceforge.net
+ */
+class LocalPhotoStore extends PhotoStore
+{
+  function LocalPhotoStore() 
   {
-    function LocalPhotoStore() 
-    {
-      global $cameralife;
+    global $cameralife;
 
-      $this->name = 'Local';
+    $this->name = 'Local';
 
-      $this->preferences[] = array('name'=>'photo_dir', 'desc'=>'Main photo directory', 'type'=>'directory', 'default'=>'images/photos');
-      $this->preferences[] = array('name'=>'cache_dir', 'desc'=>'Camera Life data directory', 'type'=>'directory', 'default'=>'images/cache');
-      $this->preferences[] = array('name'=>'deleted_dir', 'desc'=>'Deleted photos (...where they go when you "erase" them)', 'type'=>'directory', 'default'=>'images/deleted');
+    $this->preferences[] = array('name'=>'photo_dir', 'desc'=>'Main photo directory', 'type'=>'directory', 'default'=>'images/photos');
+    $this->preferences[] = array('name'=>'cache_dir', 'desc'=>'Camera Life data directory', 'type'=>'directoryrw', 'default'=>'images/cache');
+    $this->preferences[] = array('name'=>'deleted_dir', 'desc'=>'Deleted photos (...where they go when you "erase" them)', 'type'=>'directoryrw', 'default'=>'images/deleted');
 
-      $prevdir = getcwd();
-      chdir($cameralife->base_dir);
-      $this->PhotoDir = rtrim(realpath($this->GetPref('photo_dir')), '/');
-      $this->CacheDir = rtrim(realpath($this->GetPref('cache_dir')), '/');
-      $this->DeletedDir = rtrim(realpath($this->GetPref('deleted_dir')), '/');
-      chdir($prevdir);
-    } 
+    $prevdir = getcwd();
+    chdir($cameralife->base_dir);
+    $this->PhotoDir = rtrim(realpath($this->GetPref('photo_dir')), '/');
+    $this->CacheDir = rtrim(realpath($this->GetPref('cache_dir')), '/');
+    $this->DeletedDir = rtrim(realpath($this->GetPref('deleted_dir')), '/');
+    chdir($prevdir);
+  } 
 
-    /** 
-    * LocalPhotoStore does not have special URLs to access the photos. By returning FALSE, the photo will be delivered via media.php
-    * @see PhotoStore::GetURL()
-    * @see media.php
-    * @param mixed $photo - A target photo object
-    * @param string $type - Choose amongst('photo', 'scaled', 'thumbnail')
-    * @return string URL or boolean FALSE
-    */
-    function GetURL($photo, $type='photo') 
-    {
-      return FALSE; 
-    }
+  /** 
+   * GetURL
+   * LocalPhotoStore does not have special URLs to access the photos. 
+   * The parent class defaults to returning FALSE.
+   */
 
-    /**
-      *Gets the filename for the photo as stored on your local machine.
-      *If the photo does not exist on your local machine it is downloaded from the cameralife server 
-      *'photo' refers to the modified (if exists) otherwise original
-     *@return an array with three elements
-    *<ul>
-    *<li>string filename - The local file you requested</li>
-    *<li>boolean temporary</li>
-    *<li>integer mtime - Time at which a photo was last modified</li>
-    *</ul>
-    * If temporary is set, the caller is responsible for deleting this file when done.
-    *@param mixed  $photo - A target photo object
-    *@param string $type - One of ('photo', 'original', 'modified', 'scaled', 'thumbnail')
+  /**
+   * Gets the filename for the photo as stored on your local machine.
+   * If the photo does not exist on your local machine it is downloaded from the cameralife server 
+   * 'photo' refers to the modified (if exists) otherwise original
+   * @return an array with three elements
+   *<ul>
+   *<li>string filename - The local file you requested</li>
+   *<li>boolean temporary</li>
+   *<li>integer mtime - Time at which a photo was last modified</li>
+   *</ul>
+   * If temporary is set, the caller is responsible for deleting this file when done.
+   *@param mixed  $photo - A target photo object
+   *@param string $type - One of ('photo', 'original', 'modified', 'scaled', 'thumbnail')
     *@return mixed array with three elements
     */
     function GetFile($photo, $type='photo') 
@@ -100,7 +93,7 @@
           if (!file_exists($file))
             $cameralife->Error("The photo <b>$file</b> cannot be found");
         }
-        $photo->GenerateThumbnail($photo->Get('modified') ? 'FALSE' : 'TRUE');
+        $photo->GenerateThumbnail();
       }
 
       return array($file, FALSE, filemtime($file));
@@ -240,6 +233,10 @@
     function ListFiles($path = '', $recur=TRUE)
     {
       global $cameralife;
+
+      #FEATURE // add " NOCL" to the end of a folder to exclude it
+      if (strpos($path, ' NOCL') !== FALSE)
+        return array();
   
       $retval = array();
       $prefix = $this->PhotoDir;

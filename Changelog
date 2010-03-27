@@ -4,6 +4,8 @@
 * Add options for image sizes
 * Resolve issue at http://www.xssed.com/mirror/55648/
 * Resolve issues at http://secunia.com/advisories/31234/
+* Add autorotate for new and existing photos
+* Added search like on php.net: http://example.com/cameralife/SEARCHTERM
 * Fix install issue, thanks Eoin McLoughlin
 * Update install documentation
 

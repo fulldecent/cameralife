@@ -18,6 +18,7 @@
 
   $cameralife->GetFeature('security');
   $cameralife->GetFeature('photostore');
+  global $counts, $search;
 
   $start = $_GET['start'] + 0;
   $search->SetPage($start);

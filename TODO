@@ -1,74 +1,11 @@
 ==================================
-TODO For the 2.6.2 Release Cycle
+BLOCKERS for the 2.6.3 release
 ----------------------------------
 
-Use glob() for delete files
-the photostore should not care about thumbnail or scaled, it just needs the image size -- but what about flickr???
-function GenerateThumbnail($original = FALSE) // remove param
-
-****
-add exif feature:
-
-<?php
-$exif = exif_read_data($filename);
-$ort = $exif['IFD0']['Orientation'];
-    switch($ort)
-    {
-        case 1: // nothing
-        break;
-
-        case 2: // horizontal flip
-            $image->flipImage($public,1);
-        break;
-                               
-        case 3: // 180 rotate left
-            $image->rotateImage($public,180);
-        break;
-                   
-        case 4: // vertical flip
-            $image->flipImage($public,2);
-        break;
-               
-        case 5: // vertical flip + 90 rotate right
-            $image->flipImage($public, 2);
-                $image->rotateImage($public, -90);
-        break;
-               
-        case 6: // 90 rotate right
-            $image->rotateImage($public, -90);
-        break;
-               
-        case 7: // horizontal flip + 90 rotate right
-            $image->flipImage($public,1);   
-            $image->rotateImage($public, -90);
-        break;
-               
-        case 8:    // 90 rotate left
-            $image->rotateImage($public, 90);
-        break;
-    }
-
-?>
-***
-
-FIX THEME FOR MSIE!
-
-fix transactions: each fdcl install get a random number (secret). This i hashed with the user's senssion cookie and put on all forms.
-when receiving the form, validate the hash.
-
-this prevents XSS...
-
-
-media.php -- redirect to external URL reported by the photostore, if available
--- this will allow pretty URLs even if the photos are hosted elsewhere
--- but NOT priravte photos, those are hosted locally
--- maybe use &rewrite=yes from the .htaccess file?
-
-create help pages at http://fdcl.sourceforge.net/wiki/index.php/Main_Page
-and link to them from inside CL
+! FIX THEME FOR MSIE!
+! look at bugs on sf.net ADD LINK IN THIS FILE
 
 Any bugs left?
-
 
 Also, I had a bit of a
 struggle getting photos to upload.  Seems that the /images/photos/upload/
@@ -78,32 +15,40 @@ wanted to use.  I finally tracked it all down and created the directories
 manually and everything is good.  Not sure if that's a bug or not.  Looks
 like great software.  Thanks in advance for your help.
 
-i18n ??
-
-use working copy for SVN export
-
-rent a coder - get new themes?
 
 ===================
 RELEASE HOWTO
+-------------------
+
+! Regression testing / validation:
+  Regression: microformats, sitemaps, rss, gallery API, OpenSearch, hacks
+  update module API's and documentation
+  photostore does not fully protect private photos
+  harden against malicio us user inputs and sql inj ection -- you like that anti-grep obfuscation?
+  and uploading non-images
+  #vim setup/install.mysql
+
+-------------------
+AUTOMATED RELEASE
 edit the first line, then paste into a terminal...
 -------------------
 
-VERSION='2.6.3b4' # edit this line, save TODO, then paste this script
-sed "/this..version/s/'[0-9].*'/'$VERSION'/" -i main.inc 
+VERSION='2.6.3b3' # edit this line, save TODO, then paste this script
+sed -i '' "/this..version/s/'.*'/'$VERSION'/" main.inc
 grep -lIr . . | grep -v '\.svn' | # no binary, no svn
 xargs sed "1,10 s/@\(\W*\)version\W*[0-9.a-z]\+/@\1version $VERSION/" -i
 
 svn commit -m "Releasing version $VERSION"
 phpdoc -c phpdoc.ini
 rsync --delete -ave ssh ../docs fulldecent,fdcl@web.sf.net:htdocs
+BASE=$PWD
 pushd $(mktemp -d)
 echo "<?php \$VERSION=\"$VERSION\" ?>" > version.php
 rsync -ave ssh version.php fulldecent,fdcl@web.sf.net:htdocs
 rm version.php
 mkdir $VERSION
 cd $VERSION
-svn export https://entriken@fdcl.svn.sourceforge.net/svnroot/fdcl/trunk cameralife
+svn export $BASE cameralife
 touch cameralife/deleted.log
 chmod 777 cameralife/ cameralife/images/ cameralife/images/* cameralife/modules/ cameralife/deleted.log
 zip -r cameralife-${VERSION}.zip cameralife/
@@ -121,58 +66,46 @@ popd
 #GOTO  http://freshmeat.net/projects/fdcl/releases/new
 
 ===========================
-TODO AFTER 2.6.2
+TODO AFTER THE NEXT RELEASE
 note: bleeding edge ideas are at: http://camera.phor.net/TODO
 ----------------------------
-http://blathersource.org/blog/
-
-find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
-! grep GET  -r modules/theme/*/*inc
-! grep PHP_SELF  -r modules/theme/*/*inc
-! grep Database -r modules/theme/*/*inc
-
-move Image stuff further out into ImageProcessing
-
-generalize photo metadata: exif, comments, ratings, flickr backup/restore hack
-don't handle hits in the theme(), do it before the showpage();
-
-an option to use SSL for private photos
-
-Email upload photos, like flickr # http://www.phpclasses.org/browse/file/3.html
-
-Theme bounty! iPod Nano / shuffle?
-
-
-#vim setup/install.mysql
-
-folders is very slow...
-
-edit rename hack - allow it to work on all files in a given path
-
-Validate
-Regression: microformats, sitemaps, rss, gallery API, OpenSearch, hacks
-update module API's and documentation
-photostore does not fully protect private photos
-harden against malicio us user inputs and sql inj ection -- you like that anti-grep obfuscation?
-and uploading non-images
-
-picasa compatibility
-
-grep '\./' */*php | grep -v requ
-
-Upload to flickr - set tags, asbums, directory...
 
 !=need to do, *=todo, ?=waste of time
 
-! OpenID providers: (yahoo, blogger, AIM, LiveJournal, myspace)
-* Google friendconnect
+? change photostore to be a true FileStore, no knowledge of what's a thumbnail
+! create help pages at http://fdcl.sourceforge.net/wiki/index.php/Main_Page and link to them from inside CL
+  -- which pages?
+! switch to smarty
+  -- use rentacoder or a themes contest
+* Should throm 404s from topic and folder.php
+! http://blathersource.org/blog/
+! Make more secure 
+  ! find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
+  ! grep GET  -r modules/theme/*/*inc
+  ! grep PHP_SELF  -r modules/theme/*/*inc
+  ! grep Database -r modules/theme/*/*inc
+  ! grep '\./' */*php | grep -v requ
+! harden against XSRF: 
+  ! fix transactions: each fdcl install get a random number (secret). This i hashed with the user's senssion cookie and put on all forms.
+  ! when receiving the form, validate the hash.
+! move Image stuff further out into ImageProcessing
+* generalize photo metadata: exif, comments, ratings, flickr backup/restore hack
+? an option to use SSL for private photos
+? Email upload photos, like flickr # http://www.phpclasses.org/browse/file/3.html
+! Theme bounty! iPod Nano / shuffle?
+! folders is very slow...
+* hacks/rename.php - allow it to work on all files in a given path
+* picasa compatibility - for photo modification string
+* OpenID providers: (yahoo, blogger, AIM, LiveJournal, myspace)
 * VALID HTML STRICT!!!
 * fdcl.sf.net analytics
+? PHP E_ALL strict?
 
 -- The big picture --
 ! Integrate with CMS's like Phpnuke!?
 ! Fantastico
 ? Gallery theme compatibility
+! i18n
 
 -- Things that will break the API --
 * Change photos.mtime to photos.filter

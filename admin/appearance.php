@@ -18,6 +18,7 @@
   * requires the template main.inc
   */
   require "../main.inc";
+  require "admin.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
 
   $cameralife->Security->authorize('admin_customize', 1); // Require
@@ -204,44 +205,7 @@
 </table>
 </form>
 
-
-<form method="post" action="controller_prefs.php">
-<input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'].'&#63;page='.$_GET['page'] ?>" />
-<h2>Settings for <?= $cameralife->GetPref('theme') ?></h2>
-<table>
-<?php
-  $prefnum=0;
-  foreach ($cameralife->Theme->preferences as $pref)
-  {
-    $prefnum++;
-    echo "  <tr><td>".$pref['desc']."\n";
-    echo "    <td>\n";
-    echo "      <input type=\"hidden\" name=\"module$prefnum\" value=\"".get_class($cameralife->Theme)."\" />\n";
-    echo "      <input type=\"hidden\" name=\"param$prefnum\" value=\"".$pref['name']."\" />\n";
-
-    $value = $cameralife->Theme->GetPref($pref['name']);
-
-    if ($pref['type'] == 'number' || $pref['type'] == 'string')
-    {
-      echo "      <input type=\"text\" name=\"value$prefnum\" value=\"$value\" />\n";
-    }
-    elseif (is_array($pref['type'])) // enumeration
-    {
-      echo "      <select name=\"value$prefnum\" />\n";
-      foreach($pref['type'] as $index=>$desc)
-      {
-        if ($index == $value)
-          echo "        <option selected value=\"$index\">$desc</option>\n";
-        else
-          echo "        <option value=\"$index\">$desc</option>\n";
-      }
-      echo "      </select />\n";
-    }
-  }
-?>
-  <tr><td><td><input type="submit" value="Save changes" />
-</table>
-</form>
+<?php renderPrefsAsHTML($cameralife->Theme) ?>
 
 </body>
 </html>

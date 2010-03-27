@@ -135,7 +135,9 @@ class Photo extends View
     }
     $imagesize = $this->image->GetSize();
 
-    $sizes = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
+    preg_match_all('/[0-9]+/',$cameralife->GetPref('optionsizes'), $sizes);
+    $sizes = $sizes[0];
+    if ($sizes == "") $sizes = array();
     $sizes[] = $cameralife->GetPref('thumbsize');
     $sizes[] = $cameralife->GetPref('scaledsize');
     $files = array();

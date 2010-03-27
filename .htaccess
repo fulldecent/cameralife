@@ -32,3 +32,6 @@ Deny from all
 #Order allow,deny
 #Deny from All
 #</Files>
+
+ErrorDocument 404 /cameralife/search.php
+

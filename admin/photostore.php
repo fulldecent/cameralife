@@ -11,23 +11,12 @@
 */
   $features=array('database','security','theme', 'photostore');
   require "../main.inc";
+  require "admin.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
 
   $cameralife->Security->authorize('admin_file', 1); // Require
 
   $_GET['page'] or $_GET['page'] = 'setup';
-
-  function check_dir($dir)
-  {
-    global $cameralife;
-
-    if ($dir[0] != '/')
-      $dir = $cameralife->base_dir."/$dir/";
-    if (!is_dir($dir) )
-      echo "<p class=\"alert\">WARNING: $dir is not a directory!</p>";
-	elseif (!is_writable($dir))
-      echo "<p class=\"alert\">WARNING: $dir is not writable!</p>";
-  }
 ?>
 
 <html>
@@ -107,57 +96,7 @@
 </form>
 </div>
 
-<form method="post" action="controller_prefs.php">
-<input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] ?>" />
-<h2>Settings for <?= $cameralife->GetPref('photostore') ?></h2>
-<p><?= $cameralife->PhotoStore->about ?></p>
-<table>
-<?php
-  $prefnum=0;
-  foreach ($cameralife->PhotoStore->preferences as $pref)
-  {
-    $prefnum++;
-    echo "  <tr><td>".$pref['desc']."\n";
-    echo "    <td>\n";
-    echo "      <input type=\"hidden\" name=\"module$prefnum\" value=\"".get_class($cameralife->PhotoStore)."\" />\n";
-    echo "      <input type=\"hidden\" name=\"param$prefnum\" value=\"".$pref['name']."\" />\n";
-
-    $value = $cameralife->PhotoStore->GetPref($pref['name']);
-
-    if ($pref['type'] == 'number' || $pref['type'] == 'string' || $pref['type'] == 'directory')
-    {
-      echo "      <input type=\"text\" name=\"value$prefnum\" value=\"$value\" />\n";
-    }
-    elseif (is_array($pref['type'])) // enumeration
-    {
-      echo "      <select name=\"value$prefnum\" />\n";
-      foreach($pref['type'] as $index=>$desc)
-      {
-        if ($index == $value)
-          echo "        <option selected value=\"$index\">$desc</option>\n";
-        else
-          echo "        <option value=\"$index\">$desc</option>\n";
-      }
-      echo "      </select />\n";
-    }
-    elseif ($pref['type'] == 'yesno')
-    {
-      echo "      <select name=\"value$prefnum\" />\n";
-      foreach(array('1'=>'Yes', '0'=>'No') as $index=>$desc)
-      {
-        if ($index == $value)
-          echo "        <option selected value=\"$index\">$desc</option>\n";
-        else
-          echo "        <option value=\"$index\">$desc</option>\n";
-      }
-      echo "      </select />\n";
-    }
-  }
-?>
-  <tr><td><td><input type="submit" value="Save changes" />
-</table>
-</form>
-
+<?php renderPrefsAsHTML($cameralife->PhotoStore); ?>
 
 </body>
 </html>
