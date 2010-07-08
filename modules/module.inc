@@ -1,13 +1,11 @@
 <?php
- /** Retrieving of preferences
+/** Base class for all modules -- Retrieving of preferences
  *@link http://fdcl.sourceforge.net
-  *@version 2.6.3b4
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-  */
-  /**Base class for all modules
-  */
+ *@version 2.6.3b4
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+ */
 
   class CameraLifeModule
   {
@@ -30,18 +28,18 @@
     {
       global $cameralife;
 
-      $set = $cameralife->userpreferences[get_class($this)][$key];
-      if (isset($set)) return $set;
+      if (isset($cameralife->userpreferences[get_class($this)][$key]))
+        return $cameralife->userpreferences[get_class($this)][$key];
 
       foreach ($this->preferences as $pref)
         if($pref['name'] == $key) return $pref['default'];
 
       $cameralife->error('Unable to retreive preference: '. get_class($this) .' '.$key, __FILE__, __LINE__);
     }
-/**
-*NULL value gets reset to default
-*/
-// NULL value resets to the default
+
+    /**
+     * Pass VALUE=NULL to reset to default
+     */
     function SetPref($key, $value)
     {
       global $cameralife;

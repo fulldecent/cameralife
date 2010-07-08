@@ -10,6 +10,10 @@
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public
  */
+#error_reporting(E_ALL);
+error_reporting(E_ALL ^ E_NOTICE);
+ini_set('display_errors', '1');
+
 
 // Is this the first run?
 if (file_exists(dirname(__FILE__).'/modules/config.inc'))
@@ -75,14 +79,12 @@ class CameraLife extends CameraLifeModule # and View
 
   function GetFeature($feature)
   {
-    if (isset($this->loaded_features[$feature]))
-    {
-      if ($this->loaded_features[$feature]=='loaded')
+    if (!isset($this->loaded_features[$feature]))
+      $loaded_features[$feature]='loading';
+    elseif ($this->loaded_features[$feature]=='loaded')
         return true;
-      if ($this->loaded_features[$feature]=='loading')
+    elseif ($this->loaded_features[$feature]=='loading')
         $this->Error('Circular reference in features :-(');
-    }
-    $loaded_features[$feature]='loading';
 
     $this->RelativeInclude("modules/$feature/module.inc");
     $allfeatures = array('core'=>NULL, 'database'=>'Database', 'imageprocessing'=>'ImageProcessing', 'security'=>'Security', 'theme'=>'Theme', 'photostore'=>'PhotoStore');
@@ -180,22 +182,26 @@ class CameraLife extends CameraLifeModule # and View
     if ($cameralife->Security && $cameralife->Security->authorize('admin_customize'))
     {
       echo "You can have the details, since you are an admin:<pre>\n";
-#        var_dump(debug_backtrace());
       echo "</pre>\n";
       $calls = debug_backtrace();
       echo "<dl>\n";
       foreach ($calls as $call)
       {
         echo "<dt>{$call['file']}:{$call['line']}<br />\n";
-        if ($call['class'])
-          echo $call['class'].'::';
-        echo $call['function']."</dt>";
-        echo '<dd><pre>';
-        var_dump($call['args']);
-        echo '</pre></dd>';
-        echo '<dd><p>For object details view source...</p><!--<pre>';
-        var_dump($call['object']);
-        echo '--></pre></dd>';
+        $url = "http://fdcl.sourceforge.net/docs/cameralife/{$call['class']}.html#{$call['function']}";
+        echo "<a target=\"_new\" href=\"$url\">".$call['class'].'::'.$call['function']."</a>()</dt>";
+        echo '<dd><ul>';
+        if(count($call['args']))
+          foreach($call['args'] as $callarg) 
+          {
+            echo "<li><pre>";
+            var_dump($callarg);
+            echo "</pre></li>";
+          }
+        echo '</ul></dd>';
+#       echo '<dd><p>For object details view source...</p><!--<pre>';
+#       var_dump($call['object']);
+#       echo '--></pre></dd>';
       }
       echo "</dl>\n";
 

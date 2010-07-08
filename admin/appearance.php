@@ -1,35 +1,33 @@
- <?php
+<?php
 /**Modify the Look of Your Site
  *
  * You can set
  *<ul>
  *<li>Icons </li>
  *<li>Themes</li>
-*</ul>
-*
+ *</ul>
+ *
  *@link http://fdcl.sourceforge.net
  *@version 2.6.2
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-*/
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+ */
   $features=array('database','security','theme');
-  /**
-  * requires the template main.inc
-  */
   require "../main.inc";
   require "admin.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
 
   $cameralife->Security->authorize('admin_customize', 1); // Require
 
-  $_GET['page'] or $_GET['page'] = 'setup';
+  if(!isset($_GET['page'])) $_GET['page'] = 'setup';
+
 /**
-*Function to check if a directory exists or a directory is writable
+ *Function to check if a directory exists or a directory is writable
  *
  * This function accepts one argument,a string value for file directory name
  *@param string $dir directory
-*/
+ */
   function check_dir($dir)
   {
     global $cameralife;

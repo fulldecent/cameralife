@@ -46,14 +46,18 @@
   if ($photo->Get('status') != 0) 
     $cameralife->Security->authorize('admin_file', 'This file has been flagged or marked private');
 
-  if ($_GET['referer'])
+  if (isset($_GET['referer']))
     $_SERVER['HTTP_REFERER'] = $_GET['referer'];
-  $_SERVER['HTTP_REFERER'] = str_replace($cameralife->base_url,'', $_SERVER['HTTP_REFERER']);
-  $_SERVER['HTTP_REFERER'] = preg_replace('|^/|', '', $_SERVER['HTTP_REFERER']);
+  if (isset($_SERVER['HTTP_REFERER']))
+  {
+    $_SERVER['HTTP_REFERER'] = str_replace($cameralife->base_url,'', $_SERVER['HTTP_REFERER']);
+    $_SERVER['HTTP_REFERER'] = preg_replace('|^/|', '', $_SERVER['HTTP_REFERER']);
+  }
 
   # Handy stuff
   $icon = $photo->GetIcon('small');
-  $icon['href'] .= (strpos($icon['href'], '&#63;') ? '&amp;' : '&#63;') . 'referer='.urlencode($_SERVER['HTTP_REFERER']);
+  if (isset($_SERVER['HTTP_REFERER']))
+    $icon['href'] .= (strpos($icon['href'], '&#63;') ? '&amp;' : '&#63;') . 'referer='.urlencode($_SERVER['HTTP_REFERER']);
   $photoPrev = $photo->GetPrevious();
   $photoNext = $photo->GetNext();
 
@@ -96,8 +100,8 @@
   $headers .= '<script type="text/javascript">';
 
   $suggestions = $photo->Get('path');
-  foreach (split('/', $suggestions) as $keyword)
-    $keys['"'.eregi_replace('[^a-z0-9]','',$keyword).'"']=1;
+  foreach (explode('/', $suggestions) as $keyword)
+    $keys['"'.preg_replace('/[^a-z0-9]/i','',$keyword).'"']=1;
   $headers .= 'var copytags=['.implode(',',array_keys($keys))."]\n";
   $headers .= 'var rating='.($rating+0)."\n";
   $headers .= 'var cameralifebaseurl="'.$cameralife->base_url.'"';
@@ -139,7 +143,9 @@
     $href = $icon['href'].'&amp;action=modify';
     echo "       <li><a href=\"$href\" onClick=\"document.getElementById('modify').style.display='';return false\">Modify (rotate, revert, ...)</a></li>\n";
   }
-  if ($cameralife->Security->authorize('admin_albums') && (eregi ("album.php\?id=([0-9]+)",$_SERVER['HTTP_REFERER'],$regs) || eregi("albums/([0-9]+)",$_SERVER['HTTP_REFERER'],$regs)))
+  if ($cameralife->Security->authorize('admin_albums') && 
+      isset($_SERVER['HTTP_REFERER']) && 
+      (eregi ("album.php\?id=([0-9]+)",$_SERVER['HTTP_REFERER'],$regs) || eregi("albums/([0-9]+)",$_SERVER['HTTP_REFERER'],$regs)))
   {
 #TODO a separate controller?
     $album = new Album($regs[1]);
@@ -201,7 +207,7 @@
     <input type="hidden" name="target" value="<?= $icon['href'] ?>">
     <input type="hidden" name="action" value="rename">
 
-    <div style="<?=($_GET['action'] == 'rename')?'':'display:none'?>" class="administrative" align=center id="rename">
+    <div style="<?=(isset($_GET['action']) && $_GET['action'] == 'rename')?'':'display:none'?>" class="administrative" align=center id="rename">
       <table>
         <tr><td colspan=3><p>This <b>Title</b> will be shown on this page and on thumbnails of this photo elsewhere. <b>Keywords</b> will never be displayed. Searches and Albums both use the <b>Title</b> and <b>Keywords</b> to find photos.</p>
         <tr><td>Title:<td colspan=2><input id="formtitle" style="width: 100%;" type="text" name="param1" value="<?= htmlentities($photo->Get('description')) ?>">
@@ -209,7 +215,7 @@
         $origname = ucwords($photo->Get('filename'));
         $origname = preg_replace('/.[^.]+$/', '', $origname);
 
-        if (!eregi('^dscn', $origname) && !eregi('^im', $origname)) // useless filename
+        if (!preg_match('/^dscn/i', $origname) && !preg_match('/^im/i', $origname)) // useless filename
           echo '<tr><td><td><input type="button" onclick="javascript:set(\''.addslashes($origname).'\')" value="Set name to '.$origname.'">';
       ?>
         <tr><td>Keywords:
@@ -251,7 +257,7 @@
     {
       $target = $prevhref;
     }
-    elseif ($_SERVER['HTTP_REFERER'])
+    elseif (isset($_SERVER['HTTP_REFERER']))
       $target = $cameralife->base_url.'/'.$_SERVER['HTTP_REFERER'];
     else
       $target = $cameralife->base_url.'/index.php';

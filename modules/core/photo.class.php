@@ -67,8 +67,10 @@ class Photo extends View
     $this->contextPhotos = array();
     $this->EXIF = array();
 
-    $path_parts = pathinfo($this->record['filename']);
-    $this->extension = strtolower($path_parts['extension']);
+    if(isset($this->record['filename']))
+      $path_parts = pathinfo($this->record['filename']);
+    if(isset($path_parts['extension']))
+      $this->extension = strtolower($path_parts['extension']);
   }
 
   function Set($key, $value)
@@ -310,7 +312,7 @@ class Photo extends View
       }
       if ($focallength = $exif['EXIF']['FocalLength'])
       {
-        if(ereg('([0-9]+)/([0-9]+)', $focallength, $regs))
+        if(preg_match('#([0-9]+)/([0-9]+)#', $focallength, $regs))
         $focallength = $regs[1] / $regs[2];
         $this->EXIF["Focal distance"]="${focallength}mm";
       }
@@ -331,7 +333,7 @@ class Photo extends View
         $light = 'Flash';
         else
         {
-          if (ereg('([0-9]+)/([0-9]+)', $exposuretime, $regs));
+          if (preg_match('#([0-9]+)/([0-9]+)#', $exposuretime, $regs));
             $exposuretime = $regs[1] / $regs[2];
 
           $ev = pow(str_replace('f/','',$fnumber),2) / $iso / $exposuretime;
@@ -382,11 +384,13 @@ class Photo extends View
     $retval = array();
     $this->context = false;
 
-    if (eregi ("start=([0-9]*)",$_SERVER['HTTP_REFERER'],$regs))
+    if (isset($_SERVER['HTTP_REFERER']) &&
+        preg_match("/start=([0-9]*)/",$_SERVER['HTTP_REFERER'],$regs))
       $extrasearch = "&amp;start=".$regs[1];
 
     // Find if the referer is an album
-    if (eregi ("album.php\?id=([0-9]*)",$_SERVER['HTTP_REFERER'],$regs) || eregi("albums/([0-9]+)",$_SERVER['HTTP_REFERER'],$regs))
+    if (isset($_SERVER['HTTP_REFERER']) && 
+        (preg_match("#album.php\?id=([0-9]*)#",$_SERVER['HTTP_REFERER'],$regs) || preg_match("#albums/([0-9]+)#",$_SERVER['HTTP_REFERER'],$regs)))
     {
       $album = new Album($regs[1]);
 
@@ -415,7 +419,8 @@ class Photo extends View
 
     // Did they come from a search??
 
-    if (eregi ("q=([^&]*)",$_SERVER['HTTP_REFERER'],$regs))
+    if (isset($_SERVER['HTTP_REFERER']) &&
+        preg_match("#q=([^&]*)#",$_SERVER['HTTP_REFERER'],$regs))
     {
       $search = new Search($regs[1]);
       $icon = $search->GetIcon('small');

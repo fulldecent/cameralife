@@ -1,4 +1,4 @@
-<?p hp
+<?php
 #TODO: more alt = basename(img)
 /**
 *Theme name - Light
@@ -44,12 +44,12 @@
 
     function Image($name, $extra=array()) 
     {
-      if (eregi('src="([^"]*)"', $name)) # HTML IMG
+      if (preg_match('/src="([^"]*)"/i', $name)) # HTML IMG
       {
         $image['src'] = $regs[1];
         $image['alt'] = basename($image['src']);
       }
-      else if (eregi('\.|/', $name)) # Image URL
+      else if (preg_match('#\.|/#', $name)) # Image URL
       {
         $image['src'] = $name;
         $image['alt'] = basename($image['src']);
@@ -137,7 +137,7 @@ echo $title.'</strong></div>
         <br/><br/>
         Type here to search by photo description, keywords, albums and more
         <form action="'.$cameralife->base_url.'/search.php" method="get">
-          <input name="q" value="'.$_GET['q'].'" size="20" type="text">
+          <input name="q" value="'.(isset($_GET['q'])?$_GET['q']:'').'" size="20" type="text">
           <input src="'.$cameralife->IconURL('search').'" value="search" type="image">
         </form>
       </div>

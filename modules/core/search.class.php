@@ -1,17 +1,11 @@
 <?php
-  # the class for getting and using search
-  /**Class Search enables you to get and use the search facility
-    *@link http://fdcl.sourceforge.net/
-  *@version 2.6.3b4
-  *@author Will Entriken <cameralife@phor.net>
-  *@access public
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  */
-  /**
-  *The class for getting and using search
-  */
-
-
+/**Class Search enables you to get and use the search facility
+ *@link http://fdcl.sourceforge.net/
+ *@version 2.6.3b4
+ *@author Will Entriken <cameralife@phor.net>
+ *@access public
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ */
 class Search extends View
 {
   var $mySearchPhotoCondition;
@@ -45,17 +39,22 @@ class Search extends View
     $this->mySearchAlbumCondition = implode(' AND ', $searchAlbumConditions);
     $this->mySearchFolderCondition = implode(' AND ', $searchFolderConditions);
 
-    if ($this->mySort = $_POST['sort'])
+    if (isset($_POST['sort']))
+    {
+      $this->mySort = $_POST['sort'];
       setcookie("sort",$this->mySort);
-    elseif
-      ($this->mySort = $_GET['sort']);
-    elseif
-      ($this->mySort = $_COOKIE['sort']);
+    }
+    elseif (isset($_GET['sort']))
+      $this->mySort = $_GET['sort'];
+    elseif (isset($_COOKIE['sort']))
+      $this->mySort = $_COOKIE['sort'];
     else
       $this->mySort = 'newest';
 
-    $start = $_GET['start']
-      or $start = 0;
+    if (isset($_GET['start']))
+      $start = $_GET['start'];
+    else
+      $start = 0;
     $this->myLimit = "LIMIT $start, 12";
   }
 

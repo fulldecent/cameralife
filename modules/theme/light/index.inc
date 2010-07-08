@@ -27,12 +27,13 @@
 his site. For more information on setting up this site and adding photos, see <a href="setup/index3.php"><strong>the Setup page</s
 trong></a>.</div>';
 
-  list($sort,$type) = explode('-', $_GET['page']);
+  if (isset($_GET['page']))
+    list($sort,$type) = explode('-', $_GET['page']);
 
   $search->SetPage(0, $cameralife->Theme->GetPref('main_thumbnails_n'));
   $search->SetSort('rand'); # rand, newest, newest-folders, unpopular
 
-  if ($type == 'folders')
+  if (isset($type) && $type == 'folders')
     $results = $search->GetFolders();
   else
     $results = $search->GetPhotos();

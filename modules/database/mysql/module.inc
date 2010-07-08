@@ -39,7 +39,7 @@
     {
       if ($condition == '') $condition = '1';
 
-      $tables = split('[,]+', $table);
+      $tables = preg_split('/[, ]+/', $table);
       #foreach ($tables as &$table) $table = $this->myPrefix.$table; #PHP 5 only
       foreach ($tables as $key=>$table) $tables[$key] = $this->myPrefix.trim($table);
       $table = implode(', ', $tables);
@@ -67,6 +67,7 @@
     
     function Update ($table, $values, $condition='1', $extra='')
     {
+      $setstring = '';
       foreach($values as $key => $value)
       {
         if (is_string($value))
