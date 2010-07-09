@@ -65,7 +65,7 @@
     $curphoto = new Photo($next['id']);
     if ($cameralife->PhotoStore->CheckThumbnails($curphoto))
     {
-      echo "Updated #".$next['id']."<br>\n";
+      echo "<div>Updated #".$next['id']."</div>\n";
       flush();
       $fixed++;
     }

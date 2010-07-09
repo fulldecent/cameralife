@@ -25,7 +25,7 @@
   $albums = $topic->GetAlbums();
   $counts = $topic->GetCounts();
 
-  $cameralife->Theme->Header($cameralife->GetPref('sitename').' : '.htmlentities($topic->GetName()), ' topic');
+  $cameralife->Theme->Header($cameralife->GetPref('sitename').' : '.htmlentities($topic->GetName()), 'topic');
 ?>
 <div id="text">
 <form name="form1" method=post action="album_controller.php">

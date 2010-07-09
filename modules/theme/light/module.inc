@@ -1,16 +1,15 @@
 <?php
-#TODO: more alt = basename(img)
 /**
-*Theme name - Light
-*@link http://fdcl.sourceforge.net
-*@version 2.6.3b4
-*@author Will Entriken<cameralife@phor.net>
-*@access public
-*@copyright Copyright (c) 2001-2009 Will Entriken
-*@todo more alt=basename(img)
-*/
+ *Theme name - Light
+ *@link http://fdcl.sourceforge.net
+ *@version 2.6.3b4
+ *@author Will Entriken<cameralife@phor.net>
+ *@access public
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@todo make this HTML valid
+ */
 
-/**Carries functions that develop the page with light theme features
+/** Implements a ThemeModule
 */
   class LightTheme extends ThemeModule
   {
@@ -22,8 +21,9 @@
       $this->preferences[] = array('name'=>'main_thumbnails_n', 'desc'=>'... N=', 'type'=>'number', 'default'=>'4');
       $this->preferences[] = array('name'=>'main_topics', 'desc'=>'Photo album topics', 'type'=>array('0'=>"Don't show",'1'=>'Show all topics','2'=>"Show all topics, and N albums each"), 'default'=>'2');
       $this->preferences[] = array('name'=>'main_topics_n', 'desc'=>'... N=', 'type'=>'number', 'default'=>'3');
-      $this->preferences[] = array('name'=>'main_folders', 'desc'=>'Folders on main page', 'type'=>array('0'=>"Don't show",'1'=>'Show N random folders'), 'default'=>'1');
+      $this->preferences[] = array('name'=>'main_folders', 'desc'=>'Folders on main page', 'type'=>array('0'=>"Don't show",'1'=>'Show N random folders, M photos each'), 'default'=>'1');
       $this->preferences[] = array('name'=>'main_folders_n', 'desc'=>'... N=', 'type'=>'number', 'default'=>'5');
+      $this->preferences[] = array('name'=>'main_folders_m', 'desc'=>'... M=', 'type'=>'number', 'default'=>'5');
     }
 
     function ShowPage($name, $object=NULL)
@@ -69,7 +69,7 @@
       echo ">\n";
     }
 
-    function Header($title, $image=FALSE, $extrahead='', $onload='')
+    function Header($title, $image=FALSE, $extrahead='', $onload='', $extratitle='')
     {
       global $cameralife;
 
@@ -127,18 +127,17 @@ echo '
   </div>
   <div id="logo">';
 
-echo '    <div id="slogan" style="padding: 0">';
-
-      if ($image) $this->Image($image);
-echo '    <strong id="title">';
+echo '    <div id="slogan">';
+      if (isset($image)) $this->Image($image);
+echo '    <strong id="title">'.$extratitle;
 echo $title.'</strong></div>
       <div id="logo_text">
         <a href="#">Search</a>
         <br/><br/>
         Type here to search by photo description, keywords, albums and more
-        <form action="'.$cameralife->base_url.'/search.php" method="get">
+        <form action="'.$cameralife->base_url.'/search.php" method="get" style="margin: 1em 0">
           <input name="q" value="'.(isset($_GET['q'])?$_GET['q']:'').'" size="20" type="text">
-          <input src="'.$cameralife->IconURL('search').'" value="search" type="image">
+          <input value="search" type="submit">
         </form>
       </div>
     </div>
@@ -187,14 +186,14 @@ Design by <a href="http://www.realitysoftware.ca" title="Website Design"><strong
         if ($i%4==0) echo "    <tr>\n";
           $i++;
 
-        echo "      <td align='center' width='25%'>".
+        echo "      <td align='center' width='25%' class='border'>".
              "<a href=\"".$icon["href"]."\">\n";
         $imageattrs = array('alt'=>'thumb', 'width'=>$icon['width'], 'height'=>$icon['height']);
         $this->Image($icon["image"], $imageattrs);
         echo "</a><br>".$icon['name'];
         if ($icon['context'])
           echo " <i><font size='-2'>(".$icon['context'].")</font></i>";
-        echo "\n";
+        echo "</td>\n";
       }
       echo "  </table>\n";
     }

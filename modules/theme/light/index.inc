@@ -1,22 +1,18 @@
 <?php
 /** Indexing of photos
-*
-*Page appears after successful installation and prompts the user to add photos
-*
-*<b>Note</b> $cameralife set by ShowPage()
-*@link http://fdcl.sourceforge.net
-  *@version 2.6.3b4
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-*/
-/**
-*/
-  # $cameralife set by ShowPage()
+ *
+ *Page appears after successful installation and prompts the user to add photos
+ *
+ *<b>Note</b> $cameralife set by ShowPage()
+ *@link http://fdcl.sourceforge.net
+ *@version 2.6.3b4
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+ */
 
   $cameralife->GetFeature('security');
   $cameralife->GetFeature('photostore');
-
   $cameralife->Theme->Header($cameralife->GetPref('sitename'), 'main');
 
   $search = new Search('');
@@ -48,19 +44,51 @@ trong></a>.</div>';
   {
     $icon = $result->GetIcon();
     echo '<div class="item"><a href="'.$icon['href'].'"><img src="'.$icon['image'].'" alt="'.$icon['name'].'" /></a>';
-    echo '<a style="clear: left" href="'.$icon['href'].'">'.$result->Get('created').'</a><span class="description">'.$icon['name'].'</span></div>';
-#var_dump($icon);
+    echo '<a style="clear: left" href="'.$icon['href'].'">'.$icon['name'].'</a>';
+    echo '<span class="description">'.$result->Get('created').'</span></div>';
   }
 ?>
 </div>
 
-          <div id="text" >
-                <h1>Photo Albums</h1>
-                <p>Find interesting photo quickly by looking under these topics. 
-<?php if ($cameralife->Security->authorize('admin_albums')) echo "<a href=\"search.php&#63;albumhelp=1\">Create a new album</a>."; ?> 
-</p>
 
-                <ul>
+  <div id="text" >
+
+    <h1>Random Folders</h1>
+    <ul>
+<?php
+        $root = new Folder();
+        $root->SetSort('newest');
+        $folders = $root->GetDescendants($cameralife->Theme->GetPref('main_folders_n'));
+
+        foreach ($folders as $folder)
+        {
+          $icon = $folder->GetIcon('small');
+          echo "<h3><a href=\"".$icon['href']."\"> ";
+          echo $icon['name']."</a></h3>\n";
+
+          $folder->SetSort('rand');
+          $folder->SetPage(0, $cameralife->Theme->GetPref('main_folders_m'));
+          $photos = $folder->GetPhotos();
+          echo "<div>";
+          foreach($photos as $result)
+          {
+            $icon = $result->GetIcon();
+            echo '<div class="framemini" style="-moz-transform:rotate('.rand(-10,10).'deg); -webkit-transform:rotate('.rand(-10,10).'deg);"><a href="'.$icon['href'].'"><img width="'.($icon['width']/2).'" src="'.$icon['image'].'" alt="'.$icon['name'].'" /></a></div>';
+          }
+          echo "</div>";
+        }
+        $root = new Folder('');
+        $icon = $root->GetIcon();
+        echo "<h3><a href=\"".$icon['href']."\">... show all folders</a></h3>";
+?>
+    </ul>
+
+    <h1>Photo Albums</h1>
+    <p>Find interesting photo quickly by looking under these topics. 
+    <?php if ($cameralife->Security->authorize('admin_albums')) echo "<a href=\"search.php&#63;albumhelp=1\">Create a new album</a>."; ?> 
+    </p>
+
+    <ul>
 <?php
 
         foreach (Topic::GetTopics() as $thetopic)
@@ -90,28 +118,9 @@ trong></a>.</div>';
         }
 
 ?>
-                </ul>
-                <h1>Browse Folders</h1>
-                <p>You can browse photos here in heirarichal order.</p>
-                <ul>
+    </ul>
 
-<?php
-        $root = new Folder();
-        $folders = $root->GetDescendants($cameralife->Theme->GetPref('main_folders_n'));
-
-        foreach ($folders as $folder)
-        {
-          $icon = $folder->GetIcon('small');
-          echo "<li><a href=\"".$icon['href']."\"> ";
-          echo $icon['name']."</a></li>\n";
-        }
-        $root = new Folder('');
-        $icon = $root->GetIcon();
-        echo "<li><a href=\"".$icon['href']."\">... show all folders</a></li>";
-?>
-        </ul>
-
-        <h1>Upload</h1>
+    <h1>Upload</h1>
 <?php
       if ($cameralife->Security->authorize('photo_upload'))
       {

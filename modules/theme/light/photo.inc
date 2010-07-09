@@ -145,7 +145,7 @@
   }
   if ($cameralife->Security->authorize('admin_albums') && 
       isset($_SERVER['HTTP_REFERER']) && 
-      (eregi ("album.php\?id=([0-9]+)",$_SERVER['HTTP_REFERER'],$regs) || eregi("albums/([0-9]+)",$_SERVER['HTTP_REFERER'],$regs)))
+      (preg_match ("#album.php\?id=([0-9]+)#",$_SERVER['HTTP_REFERER'],$regs) || preg_match("#albums/([0-9]+)#",$_SERVER['HTTP_REFERER'],$regs)))
   {
 #TODO a separate controller?
     $album = new Album($regs[1]);

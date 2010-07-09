@@ -1,11 +1,11 @@
 <?php
- /** Common features in the admin/ directory
-  *@link http://fdcl.sourceforge.net
-  *@version 2.6.3b3
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-*/
+/** Common features in the admin/ directory
+ *@link http://fdcl.sourceforge.net
+ *@version 2.6.3b3
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+ */
 
 /**
  * Reads module preferences (format defined in 
@@ -23,6 +23,9 @@ function renderPrefsAsHTML($module)
   echo "<table>\n";
 
   $prefnum=0;
+  if (!count($module->preferences))
+    echo "<tr><td>(no settings for this module)</td></tr>\n";
+  else
   foreach ($module->preferences as $pref)
   {
     $prefnum++;
@@ -67,7 +70,8 @@ function renderPrefsAsHTML($module)
     }
   }
 
-  echo "<tr><td><td><input type=\"submit\" value=\"Save changes\" />\n";
+  if (count($module->preferences))
+    echo "<tr><td><td><input type=\"submit\" value=\"Save changes\" />\n";
   echo "</table>\n";
   echo "</form>\n";
 }

@@ -37,15 +37,21 @@ class Topic extends Search
   function GetIcon($size='large')
   {
     global $cameralife;
+    $retval = array();
 
     if ($cameralife->GetPref('rewrite') == 'yes')
-      $href = $cameralife->base_url.'/topics/'.htmlentities($this->name);
+      $retval['href'] = $cameralife->base_url.'/topics/'.htmlentities($this->name);
     else
-      $href = $cameralife->base_url.'/topic.php&#63;name='.htmlentities($this->name);
+      $retval['href'] = $cameralife->base_url.'/topic.php&#63;name='.htmlentities($this->name);
 
-    return array('href'=>$href,
-                 'name'=>htmlentities($this->name),
-                 'image'=>($size=='large')?'topic':'small-topic');
+    $retval['name'] = htmlentities($this->name);
+
+    if ($size=='large')
+      $retval['image'] = $cameralife->IconURL('topic');
+    else
+      $retval['image'] = $cameralife->IconURL('small-topic');
+
+    return $retval;
   }
 
   # STATIC

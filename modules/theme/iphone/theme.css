@@ -1,4 +1,17 @@
 /*
   This file is part of the photogenic theme.
 */
-
+h1
+{
+  font-size: larger;
+  background: #ccc;
+  color: #000;
+  width: 100%; 
+  margin: 0.2em;
+  padding: 0;
+}
+ul
+{
+list-style-type: none;
+padding: 0;
+}

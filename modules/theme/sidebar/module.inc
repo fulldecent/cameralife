@@ -50,12 +50,12 @@
 
     function Image($name, $extra=array()) 
     {
-      if (eregi('src="([^"]*)"', $name)) # HTML IMG
+      if (preg_match('#src="([^"]*)"#', $name)) # HTML IMG
       {
         $image['src'] = $regs[1];
         $image['alt'] = basename($image['src']);
       }
-      else if (eregi('\.|/', $name)) # Image URL
+      else if (preg_match('#\.|/#', $name)) # Image URL
       {
         $image['src'] = $name;
         $image['alt'] = basename($image['src']);

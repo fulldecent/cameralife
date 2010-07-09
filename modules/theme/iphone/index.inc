@@ -1,18 +1,15 @@
 <?php
 /** Indexing of photos
-*
-*Page appears after successful installation and prompts the user to add photos
-*
-*<b>Note</b> $cameralife set by ShowPage()
-*@link http://fdcl.sourceforge.net
-  *@version 2.6.3b4
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-*/
-/**
-*/
-  # $cameralife set by ShowPage()
+ *
+ *Page appears after successful installation and prompts the user to add photos
+ *
+ *<b>Note</b> $cameralife set by ShowPage()
+ *@link http://fdcl.sourceforge.net
+ *@version 2.6.3b4
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+ */
 
   $cameralife->GetFeature('security');
   $cameralife->GetFeature('photostore');
@@ -45,10 +42,10 @@
 <body>
 
 <h1><?= $cameralife->GetPref('sitename') ?></h1>
-        <form action="search.php" method="get">
-          <input type="text" name="q" value="" size="20">
-          <input type="image" src="<?= $cameralife->Theme->ImageURL('search') ?>" value="search">
-        </form>
+<form action="search.php" method="get">
+  <input type="text" name="q" value="" size="20">
+  <input type="submit" value="search">
+</form>
 
 <?php
 
@@ -57,59 +54,46 @@
   if ($counts['photos'] == 0) 
     echo '<div class="administrative">Camera Life has been successfully installed on this site. There are currently no photos on this site. For more information on setting up this site and adding photos, see <a href="setup/index3.php"><strong>the Setup page</strong></a>.</div>';
 
-  if ($cameralife->Theme->GetPref('main_thumbnails')) 
-  {
-    $sections[] = array('name'=>'Newest Photos',
-                        'page_name'=>'newest',
-                        'image'=>'small-photo');
-    $sections[] = array('name'=>'Newest Folders',
-                        'page_name'=>'newest-folders',
-                        'image'=>'small-photo');
+  $sections[] = array('name'=>'Newest Photos',
+                      'page_name'=>'newest',
+                      'image'=>'small-photo');
+  $sections[] = array('name'=>'Newest Folders',
+                      'page_name'=>'newest-folders',
+                      'image'=>'small-photo');
 
-    $cameralife->Theme->MultiSection($sections);
+  $cameralife->Theme->MultiSection($sections);
 
-    $search->SetPage(0, $cameralife->Theme->GetPref('main_thumbnails_n'));
-    $search->SetSort($page == 'rand' ? 'rand' : 'newest');
+  $search->SetPage(0, 2);
+  $search->SetSort($page == 'rand' ? 'rand' : 'newest');
 
-    if ($page == 'newest-folders')
-      $results = $search->GetFolders();
-    else
-      $results = $search->GetPhotos();
+  if ($page == 'newest-folders')
+    $results = $search->GetFolders();
+  else
+    $results = $search->GetPhotos();
 
-    $cameralife->Theme->Grid($results);
-    
-  } // End main thumbnails 
+  $cameralife->Theme->Grid($results);
 ?>
   <table width="100%" cellpadding=0 cellspacing=0>
     <tr valign=top>
       <td width="49%">
-<?php if ($cameralife->Theme->GetPref('main_topics')) 
-      {
-        $cameralife->Theme->Section('Topics');
-  
+<?php
+        echo "<ul>";
         foreach (Topic::GetTopics() as $thetopic)
         {
           $topic = new Topic($thetopic);
           $icon = $topic->GetIcon('small');
-
-          echo "<div class='context'><a href=\"".$icon['href']."\">";
-          $cameralife->Theme->Image('small-topic', array('align'=>'left'));
-          echo $icon['name']."</a><br>\n";
-  
-          echo "</div>\n";
+          echo "<li><a href=\"".$icon['href']."\"> <img src=\"";
+          echo $icon['image']."\" alt=\"topic\"> ".$icon['name']."</a></li>\n";
         }
-      } /* end main_topics */ 
+        echo "</ul>";
 ?>
       <td width="2%">
       <td width="49%">
-<?php if ($cameralife->Theme->GetPref('main_folders') == 1) 
-      {
-
-        $cameralife->Theme->Section('Browse');
-  
+<?php 
         $root = new Folder();
-        $folders = $root->GetDescendants($cameralife->Theme->GetPref('main_folders_n'));
+        $folders = $root->GetDescendants(5);
 
+        echo "<ul>";
         foreach ($folders as $folder)
         {
           $icon = $folder->GetIcon('small');
@@ -117,12 +101,10 @@
           echo $icon['image']."\" alt=\"folder\"> ".$icon['name']."</a></li>\n";
         }
         $root = new Folder('');
-        $icon = $root->GetIcon();
-        echo "<div class='context'><a href=\"".$icon['href']."\">";
-        $cameralife->Theme->Image('small-folder', array('align'=>'middle'));
-        echo "... all folders</a></div>";
-      } /* end folders */
-  
+        $icon = $root->GetIcon('small');
+        echo "<li><a href=\"".$icon['href']."\"> <img src=\"";
+        echo $icon['image']."\" alt=\"folder\"> ... all folders".$icon['name']."</a></li>\n";
+        echo "</ul>";
 ?>
     </table>
   </body>

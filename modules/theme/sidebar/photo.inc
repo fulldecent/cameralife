@@ -104,7 +104,7 @@
                     'section'=>'Tasks',
                     'onclick'=>"document.getElementById('modify').style.display='';return false");
   }
-  if ($cameralife->Security->authorize('admin_albums') && (eregi ("album.php\?id=([0-9]+)",$_SERVER['HTTP_REFERER'],$regs) || eregi("albums/([0-9]+)",$_SERVER['HTTP_REFERER'],$regs)))
+  if ($cameralife->Security->authorize('admin_albums') && (preg_match("#album.php\?id=([0-9]+)#",$_SERVER['HTTP_REFERER'],$regs) || preg_match("#albums/([0-9]+)#",$_SERVER['HTTP_REFERER'],$regs)))
   {
     $album = new Album($regs[1]);
     $icon = $album->GetIcon('small');

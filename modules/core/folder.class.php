@@ -80,13 +80,25 @@ class Folder extends Search
   {
     global $cameralife;
 
-    $result = array();
-    $condition = "status=0 AND path LIKE '".$this->path."%/'";
-    $family = $cameralife->Database->Select('photos','DISTINCT path',$condition,"LIMIT $count");
-    while ($youngin = $family->FetchAssoc())
+    switch ($this->mySort)
     {
-      $result[] = new Folder($youngin['path'], FALSE);
+      case 'newest':    $sort = 'id desc'; break;
+      case 'oldest':    $sort = 'id'; break;
+      case 'az':        $sort = 'description'; break;
+      case 'za':        $sort = 'description desc'; break;
+      case 'popular':   $sort = 'hits desc'; break;
+      case 'unpopular': $sort = 'hits'; break;
+      case 'rand':      $sort = 'rand()'; break;
+      default:          $sort = 'id desc';
     }
+
+    $result = array();
+    $selection = 'DISTINCT path';
+    $condition = "status=0 AND path LIKE '".$this->path."%/'";
+    $extra =     "ORDER BY $sort LIMIT $count";
+    $family = $cameralife->Database->Select('photos', $selection, $condition, $extra);
+    while ($youngin = $family->FetchAssoc())
+      $result[] = new Folder($youngin['path'], FALSE);
     return $result;
   }
 
@@ -310,6 +322,8 @@ class Folder extends Search
             $retval[] = "$photopath was changed, flushing cache";
             $photoObj = new Photo($photo['id']);
             $photoObj->Revert();
+            $photoObj->LoadImage(true); // TRUE == onlyWantEXIF
+            $photoObj->Revert(); // saves $photo->record
             $photoObj->Destroy();
           }
         }

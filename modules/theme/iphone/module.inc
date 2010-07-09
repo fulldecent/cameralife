@@ -1,31 +1,21 @@
 <?php
 #TODO: more alt = basename(img)
 
-
 /**The module carries the iphone theme
-*
-*@todo more alt= basename(img)
-*@version 2.6.3b4
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-  *@link http://fdcl.sourceforge.net
-*/
-/**Carries the functions that develop the iphone theme
-*/
+ *
+ *@todo more alt= basename(img)
+ *@version 2.6.3b4
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+ *@link http://fdcl.sourceforge.net
+ */
 
   class iPhoneTheme extends ThemeModule
   {
     function iPhoneTheme() 
     {
       $this->name = 'iphone';
-
-      $this->preferences[] = array('name'=>'main_thumbnails', 'desc'=>'Show random, most popular, latest photos...', 'type'=>array('1'=>'Show N thumbnails','0'=>'No'), 'default'=>'1');
-      $this->preferences[] = array('name'=>'main_thumbnails_n', 'desc'=>'... N=', 'type'=>'number', 'default'=>'2');
-      $this->preferences[] = array('name'=>'main_topics', 'desc'=>'Photo album topics', 'type'=>array('0'=>"Don't show",'1'=>'Show all topics','2'=>"Show all topics, and N albums each"), 'default'=>'2');
-      $this->preferences[] = array('name'=>'main_topics_n', 'desc'=>'... N=', 'type'=>'number', 'default'=>'3');
-      $this->preferences[] = array('name'=>'main_folders', 'desc'=>'Folders on main page', 'type'=>array('0'=>"Don't show",'1'=>'Show N random folders'), 'default'=>'1');
-      $this->preferences[] = array('name'=>'main_folders_n', 'desc'=>'... N=', 'type'=>'number', 'default'=>'5');
     }
 
     function ShowPage($name, $object=NULL)
@@ -52,12 +42,12 @@
 
     function Image($name, $extra=array()) 
     {
-      if (eregi('src="([^"]*)"', $name)) # HTML IMG
+      if (preg_match('#src="([^"]*)"#', $name)) # HTML IMG
       {
         $image['src'] = $regs[1];
         $image['alt'] = basename($image['src']);
       }
-      else if (eregi('\.|/', $name)) # Image URL
+      else if (preg_match('#\.|/#', $name)) # Image URL
       {
         $image['src'] = $name;
         $image['alt'] = basename($image['src']);
@@ -199,55 +189,35 @@
     function PageSelector($start, $total, $per_page, $param = FALSE)
     {
       global $theme;
-    
-      if ($total > $per_page) // Refuse to only show one page
-      {
-        echo '<div class="pageselector">';
+   
+      if ($total < $per_page) // Refuse to only show one page
+        return;
 
-        if ($start==-1)
+      echo '<div class="pageselector">';
+
+      if ($start==-1)
+      {
+        echo "<span class='current'>Randomly showing <b>$per_page</b> of <b>$total</b></span> ";
+        echo "<a class='nextprev' href=\"".urlencode($_SERVER["PHP_SELF"])."&#63;$param\">More &#187;</a>";
+      }
+      else
+      {
+        $first=max($start-2*$per_page,0);
+        $last=min($first+4*$per_page,intval(($total-1)/$per_page)*$per_page);
+        $first=max($last-4*$per_page,0);
+        if ($last==0) $last=1;
+     
+        echo "<span>Page: </span>";
+ 
+        for ($i=$first; $i<=$last; $i+=$per_page)
         {
-          echo "<span class='current'>Randomly showing <b>$per_page</b> of <b>$total</b></span> ";
-          echo "<a class='nextprev' href=\"".urlencode($_SERVER["PHP_SELF"])."&#63;$param\">More &#187;</a>";
-        }
-        else
-        {
-          $first=max($start-2*$per_page,0);
-          $last=min($first+4*$per_page,intval(($total-1)/$per_page)*$per_page);
-          $first=max($last-4*$per_page,0);
-          if ($last==0) $last=1;
-      
-          if ($first != $start)
-            echo "<a class='nextprev' href=\"".urlencode($_SERVER["PHP_SELF"])."&#63;$param&amp;start=".($start-$per_page)."\">";
-          else
-            echo "<span class='nextprev'>";
-          echo '&#171; Previous';
-          if ($first != $start)
-            echo "</a>";
-          else
-            echo "</span>";
-  
-          for ($i=$first; $i<=$last; $i+=$per_page)
-          {
-            if ($i==$start)
-            {
+          if ($i==$start)
             echo "<span class='current'>".($i/$per_page+1)."</span> ";
-            }
-            else
-            {
-              echo "<a href=\"".urlencode($_SERVER["PHP_SELF"])."&#63;$param&amp;start=$i\">";
-              echo ($i/$per_page+1)."</a> ";
-            }
+          else
+          {
+            echo "<a href=\"&#63;$param&amp;start=$i\">";
+            echo ($i/$per_page+1)."</a> ";
           }
-  
-          if ($last != $start)
-            echo "<a class='nextprev' href=\"".urlencode($_SERVER["PHP_SELF"])."&#63;$param&amp;start=".($start+$per_page)."\">";
-          else
-            echo "<span class='nextprev'>";
-          echo 'Next &#187;';
-          if ($last != $start)
-            echo "</a>";
-          else
-            echo "</span>\n";
         }
         echo "</div>\n";
       }

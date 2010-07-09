@@ -72,7 +72,7 @@
     /**Resizes this image and saves to this new file
      * SIZE is the diagonal of the new image size
      * 
-     *  If you have already resized the image to something larger than you want
+     * If you have already resized the image to something larger than you want
      * you can rescale it. This is much faster than scaling the original, larger, image again. 
      *@return float array - dimensions new width and height
     */

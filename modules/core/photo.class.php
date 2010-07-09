@@ -44,8 +44,8 @@ class Photo extends View
     elseif (is_numeric($original)) # This is an ID
     {
       $result = $cameralife->Database->Select('photos','*', "id=$original");
-      $this->record = $result->FetchAssoc();
-#        or $cameralife->Error("Cannot load photo: $original", __FILE__, __LINE__);
+      $this->record = $result->FetchAssoc()
+        or $cameralife->Error("Photo #$original not found", __FILE__, __LINE__);
     }
     elseif(is_array($original)) # A new image, given by an array
     {
@@ -59,7 +59,7 @@ class Photo extends View
 
       $this->record['id'] = $cameralife->Database->Insert('photos', $this->record);
       // Generate the thumbnail later, when requested
-      //$this->GenerateThumbnail(); // Sets mtime, sizes, fsize
+      //$this->GenerateThumbnail(); // Sets mtime, width, height, fsize
     }
     $this->context = false;
     $this->contextPrev = false;
@@ -99,16 +99,17 @@ class Photo extends View
 
     if (isset($this->image)) return;
     list ($file, $temp, $this->record['mtime']) = $cameralife->PhotoStore->GetFile($this);
-    if ($this->record['modified'] == NULL || $this->record['modified'] == 0)
+    if (is_null($this->record['modified']) || $this->record['modified'] == 0 || $this->record['modified'] == '')
     {
       $this->record['fsize'] = filesize($file);
+      $this->record['created'] = date('Y-m-d', $this->record['mtime']);
       $this->LoadEXIF($file);
     }
 
     if (!$onlyWantEXIF)
     {
       $this->image = $cameralife->ImageProcessing->CreateImage($file);
-      if (!$this->image->Check()) $cameralife->Error("Bad photo processing: $origphotopath",__FILE__,__LINE__);
+      if (!$this->image->Check()) $cameralife->Error("Bad photo processing: $file",__FILE__,__LINE__);
     }
     if ($temp) unlink($file);
   }
@@ -119,7 +120,7 @@ class Photo extends View
   {
     global $cameralife;
 
-    $this->LoadImage(); // sets $this->EXIF
+    $this->LoadImage(); // sets $this->EXIF and $this-record
     if (($cameralife->GetPref('autorotate') == 'yes') && ($this->record['modified'] == NULL || $this->record['modified'] == 0))
     {
       if ($this->EXIF['Orientation'] == 3)
@@ -293,6 +294,8 @@ class Photo extends View
       if ($exif['EXIF']['DateTimeOriginal'])
       {
         $this->EXIF["Date taken"]=$exif['EXIF']['DateTimeOriginal'];
+        $exifPieces = explode(" ", $this->EXIF["Date taken"]);
+        $this->record['created'] = date("Y-m-d",strtotime(str_replace(":","-",$exifPieces[0])." ".$exifPieces[1]));
       }
       if ($model = $exif['IFD0']['Model'])
       {
