@@ -82,8 +82,8 @@ class Folder extends Search
 
     switch ($this->mySort)
     {
-      case 'newest':    $sort = 'id desc'; break;
-      case 'oldest':    $sort = 'id'; break;
+      case 'newest':    $sort = 'created desc'; break;
+      case 'oldest':    $sort = 'created'; break;
       case 'az':        $sort = 'description'; break;
       case 'za':        $sort = 'description desc'; break;
       case 'popular':   $sort = 'hits desc'; break;

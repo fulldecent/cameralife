@@ -21,10 +21,11 @@ fclose ($log_handle);
 
 $counts = $search->GetCounts();
 
+## You can search by going to http://camera.phor.net/SEARCHTERM
 if ($_SERVER['REDIRECT_STATUS'] == '404')
 {
   $webbase = preg_replace('|.*//.*?/|', '', $cameralife->base_url);
-  $query = substr($_SERVER["REQUEST_URI"], strlen($webbase)+2);
+  $query = preg_replace('|.*/|','',$_SERVER["REQUEST_URI"]);
   header('Location: '.$cameralife->base_url.'/search.php?q='.$query);
   exit(0);
 }

@@ -30,6 +30,7 @@
 # Check for unique valules, even if different case
   }
 
+  header("Content-type: text/javascript");
   header("Date: ".gmdate("D, d M Y H:i:s", time())." GMT");
   header("Expires: ".gmdate("D, d M Y H:i:s", time() + 3600)." GMT"); // One hour
 

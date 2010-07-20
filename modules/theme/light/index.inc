@@ -114,7 +114,7 @@ trong></a>.</div>';
                     $icon['name']."</a>";
             }
           }
-          echo ", ...</li>\n";
+          echo ", ...)</div></li>\n";
         }
 
 ?>

@@ -8,6 +8,7 @@
 * Added search like on php.net: http://example.com/cameralife/SEARCHTERM
 * Fix install issue, thanks Eoin McLoughlin
 * Update install documentation
+* Bugfixes
 
 2.6.2  Will Entriken <cameralife AT phor.net>
 * Website update, thanks to Rajesh Sundaram

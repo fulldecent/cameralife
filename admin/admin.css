@@ -29,3 +29,25 @@ img {
 .alert {
 	color: red;
 }
+
+table {
+	background: #f2f2ff;
+	border: 0.5em solid #ccf;
+}
+
+th {
+	background: #ddf;
+	font-family: sans-serif;
+	border: none;
+}
+
+td {
+	border: none;
+}
+
+tr:nth-child(even) {
+	background: #ddf;
+}
+
+
+

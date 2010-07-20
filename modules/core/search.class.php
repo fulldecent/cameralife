@@ -51,7 +51,7 @@ class Search extends View
     else
       $this->mySort = 'newest';
 
-    if (isset($_GET['start']))
+    if (isset($_GET['start']) && is_numeric($_GET['start']))
       $start = $_GET['start'];
     else
       $start = 0;

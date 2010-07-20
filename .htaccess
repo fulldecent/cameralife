@@ -14,9 +14,9 @@ RewriteBase /cameralife/
 RewriteRule ^photos/(\d+) photo.php?id=$1&%{QUERY_STRING}
 RewriteRule ^photos/([^/]+)/(\d+)-(\d+)\. media.php?format=$1&id=$2&ver=$3
 RewriteRule ^photos/([^/]+)/(\d+)\. media.php?format=$1&id=$2&ver=%{QUERY_STRING}
-RewriteRule ^folders/(.*) folder.php?path=$1
+RewriteRule ^folders/(.*) folder.php?path=$1&%{QUERY_STRING}
 RewriteRule ^albums/(\d+) album.php?id=$1&%{QUERY_STRING}
-RewriteRule ^topics/(.+) topic.php?name=$1
+RewriteRule ^topics/(.+) topic.php?name=$1&%{QUERY_STRING}
 RewriteRule ^testrewrite setup/images/clear.gif
 #
 # Note: these rewrites affect photo.class.php, who analyzes the HTTP referer

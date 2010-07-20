@@ -54,9 +54,9 @@
     else
     {
       $newest = file_get_contents('http://fdcl.svn.sourceforge.net/svnroot/fdcl/');
-      ereg('Revision ([0-9]+):', $newest, $regs);
+      preg_match('#Revision ([0-9]+):#', $newest, $regs);
       echo "Latest is <strong>".$regs[1]."</strong> ";
-      echo "<a href=\"http://fdcl.svn.sourceforge.net/viewvc/fdcl/trunk/?view=log#rev80\">view diffs</a>";
+      echo "<a href=\"http://fdcl.svn.sourceforge.net/viewvc/fdcl/trunk/?view=log\">view diffs</a>";
 
       echo "<pre>";
        passthru('svn log '.$cameralife->base_dir.' -r base:head');

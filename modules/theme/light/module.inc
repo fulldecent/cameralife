@@ -129,8 +129,10 @@ echo '
 
 echo '    <div id="slogan">';
       if (isset($image)) $this->Image($image);
-echo '    <strong id="title">'.$extratitle;
-echo $title.'</strong></div>
+echo '    <strong id="title">'.$title.'</strong>';
+      if (isset($extratitle))
+        echo "<br />".$extratitle;
+echo '      </div>
       <div id="logo_text">
         <a href="#">Search</a>
         <br/><br/>
@@ -208,31 +210,34 @@ Design by <a href="http://www.realitysoftware.ca" title="Website Design"><strong
       echo "  </div>\n";
     }
 
-    function MultiSection($sections, $http_get = FALSE)
+    /// Taken an Icon to make base url
+    function MultiSection($sections, $base_url, $conjunction='and')
     {
       global $_GET;
-      
-      echo "<ul id=\"multisection\">\n";
-    
+      $sectionhtml = array();
+      $finalhtml = '';
+
       foreach($sections as $section)
       {
-        echo '<li>';
-        echo "<a";
+        $html = "<a";
         if ($_GET['page'] == $section['page_name'])
-          echo ' id="current"';
-        echo " href=\"".urlencode($_SERVER['PHP_SELF'])."&#63;page=".$section['page_name'];
-        if ($http_get)
-          foreach($http_get as $var => $val)
-            echo "&amp;$var=$val";
-        echo "\">";
+          $html .= ' class="current"';
+        $html .= " href=\"".AddParam($base_url, 'page', $section['page_name'])."\">";
         #if ($section['image']) $this->Image($section['image'], array('align'=>'middle'));
-        echo $section['name'];
-        echo "</a>\n";
+        $html .= $section['name'];
+        $html .= "</a>";
+        $sectionhtml[] = $html;
       }
-      echo "</ul>\n";
+
+      $last = array_pop($sectionhtml);
+      if ($conjunction == 'and' || $conjunction == 'or')
+        $finalhtml = implode(', ', $sectionhtml);
+      else
+        $finalhtml = implode(" $conjunction ", $sectionhtml);
+      echo "$finalhtml $conjunction $last";
     }
 
-    function PageSelector($start, $total, $per_page, $param = FALSE)
+    function PageSelector($start, $total, $per_page, $url)
     {
       global $theme;
     
@@ -243,7 +248,7 @@ Design by <a href="http://www.realitysoftware.ca" title="Website Design"><strong
         if ($start==-1)
         {
           echo "<span class='current'>Randomly showing <b>$per_page</b> of <b>$total</b></span> ";
-          echo "<a class='nextprev' href=\"".urlencode($_SERVER["PHP_SELF"])."&#63;$param\">More &#187;</a>";
+          echo "<a class='nextprev' href=\"$url\">More &#187;</a>";
         }
         else
         {
@@ -253,7 +258,7 @@ Design by <a href="http://www.realitysoftware.ca" title="Website Design"><strong
           if ($last==0) $last=1;
       
           if ($first != $start)
-            echo "<a class='nextprev' href=\"".urlencode($_SERVER["PHP_SELF"])."&#63;$param&amp;start=".($start-$per_page)."\">";
+            echo "<a class='nextprev' href=\"".AddParam($url,'start',$start-$per_page)."\">";
           else
             echo "<span class='nextprev'>";
           echo '&#171; Previous';
@@ -270,13 +275,13 @@ Design by <a href="http://www.realitysoftware.ca" title="Website Design"><strong
             }
             else
             {
-              echo "<a href=\"".urlencode($_SERVER["PHP_SELF"])."&#63;$param&amp;start=$i\">";
+              echo "<a href=\"".AddParam($url,'start',"$i")."\">";
               echo ($i/$per_page+1)."</a> ";
             }
           }
   
           if ($last != $start)
-            echo "<a class='nextprev' href=\"".urlencode($_SERVER["PHP_SELF"])."&#63;$param&amp;start=".($start+$per_page)."\">";
+            echo "<a class='nextprev' href=\"".AddParam($url,'start',$start+$per_page)."\">";
           else
             echo "<span class='nextprev'>";
           echo 'Next &#187;';
