@@ -1,5 +1,5 @@
 body {
-	background: #eef;
+	background: #f0f0f0;
 }
 
 div#header, p, h2, table, ol, ul, h3 {
@@ -9,15 +9,20 @@ div#header, p, h2, table, ol, ul, h3 {
 }
 
 div#header {
-	background: #aab;
+	background: #d8d8d8;
 	padding: 1em;
 	border-top: 0.5em solid gray;
 	border-bottom: 0.5em solid gray;
 }
 
+h1 {
+	text-align: center;
+}
+
 h2 {
-	border-left: 1em solid #aea;
-	background: #aba;
+	text-indent: 20px;
+	border-left: .75em solid gray;
+	background: #d8d8d8;
 	font-size: large;
 	padding: 0.25em 0;
 }
@@ -48,6 +53,4 @@ td {
 tr:nth-child(even) {
 	background: #ddf;
 }
-
-
 
