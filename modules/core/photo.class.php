@@ -99,6 +99,7 @@ class Photo extends View
 
     if (isset($this->image)) return;
     list ($file, $temp, $this->record['mtime']) = $cameralife->PhotoStore->GetFile($this);
+///TODO there shouldnt be three cases here
     if (is_null($this->record['modified']) || $this->record['modified'] == 0 || $this->record['modified'] == '')
     {
       $this->record['fsize'] = filesize($file);
@@ -286,7 +287,6 @@ class Photo extends View
 
     $exif = @exif_read_data($file, 'IFD0', true);
     $this->EXIF = array();
-
     if ($exif===false) 
       return $retval;
     else
@@ -350,6 +350,32 @@ class Photo extends View
       if ($orient = $exif['IFD0']['Orientation'])
       {
         $this->EXIF["Orientation"]=$orient;
+      }
+      if ($exif['GPS'])
+      {
+        $lat = 0;
+        if (count($exif['GPS']['GPSLatitude']) > 0)
+          $lat += $this->GPS2num($exif['GPS']['GPSLatitude'][0]);
+        if (count($exif['GPS']['GPSLatitude']) > 1)
+          $lat += $this->GPS2num($exif['GPS']['GPSLatitude'][1]) / 60;
+        if (count($exif['GPS']['GPSLatitude']) > 2)
+          $lat += $this->GPS2num($exif['GPS']['GPSLatitude'][2]) / 3600;
+
+        $lon = 0;
+        if (count($exif['GPS']['GPSLongitude']) > 0)
+          $lon += $this->GPS2num($exif['GPS']['GPSLongitude'][0]);
+        if (count($exif['GPS']['GPSLongitude']) > 1)
+          $lon += $this->GPS2num($exif['GPS']['GPSLongitude'][1]) / 60;
+        if (count($exif['GPS']['GPSLongitude']) > 2)
+          $lon += $this->GPS2num($exif['GPS']['GPSLongitude'][2]) / 3600;
+
+        if ($exif['GPS']['GPSLatitudeRef'] == 'S')
+          $lat *= -1;
+        if ($exif['GPS']['GPSLongitudeRef'] == 'W')
+          $lon *= -1;
+
+        if ($lat != 0 && $lon != 0)
+          $this->EXIF["Location"] = sprintf("%.6f, %.6f",$lat, $lon);
       }
     }
 
@@ -470,6 +496,18 @@ class Photo extends View
   /**
   *@access private
   */
+
+  /// Convert "2/4" to 0.5 and "4" to 4
+  function GPS2num($num)
+  {
+    $parts = explode('/', $num);
+    if(count($parts) == 0)
+      return 0;
+    if(count($parts) == 1)
+      return $parts[0];
+    return floatval($parts[0]) / floatval($parts[1]);
+  }
+
 
   function GetContext()
   {

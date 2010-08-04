@@ -271,7 +271,7 @@ class LocalPhotoStore extends PhotoStore
     function mkdir_recursive($pathname, $mode=0777)
     {
       is_dir(dirname($pathname)) || $this->mkdir_recursive(dirname($pathname), $mode);
-      return is_dir($pathname) || @mkdir($pathname, $mode);
+      return is_dir($pathname) || mkdir($pathname, $mode);
     }
 
 

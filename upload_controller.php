@@ -41,8 +41,8 @@
     if ($exists)
       return "The photo <b>$filename</b> is already in the system. This photo was skipped from uploading.";
 
-    $im = @imagecreatefromstring($file);
-    $valid = ($im != FALSE);
+    $im = @imagecreatefromstring(file_get_contents($file));
+    $valid = ($im !== FALSE);
     @imagedestroy($im);
     if (!$valid)
       return "Not a valid image file.";
@@ -85,7 +85,7 @@
   $cameralife->Database->SelectOne('photos','COUNT(*)',$condition)
     and $cameralife->Error("The filename \"".$_FILES['userfile']['name']."\" is already used in system. Please rename the image and try uploading again.");
 
-  if (eregi('/',$_FILES['userfile']['name']))
+  if (preg_match('|/|',$_FILES['userfile']['name']))
     $cameralife->Error("It appears you are hacking, that is disallowed.", __FILE__, __LINE__);
 
   if ($_FILES['userfile']['size'] < 4096)
@@ -144,7 +144,7 @@ if ( !function_exists('sys_get_temp_dir') )
     }
 }
 
-  if (eregi ('\.zip$', $_FILES['userfile']['name']))
+  if (preg_match('|\.zip$|i', $_FILES['userfile']['name']))
   {
     //echo "Uploading ZIP file.<br>";
     $temp = tempnam('', 'cameralife_');
@@ -172,7 +172,7 @@ if ( !function_exists('sys_get_temp_dir') )
       }
     }
   }
-  elseif (eregi ('\.jpg$|\.png$|\.jpeg$', $_FILES['userfile']['name']))
+  elseif (preg_match(':\.jpg$|\.png$|\.jpeg$:i', $_FILES['userfile']['name']))
   {
     $temp = tempnam('', 'cameralife_');
 

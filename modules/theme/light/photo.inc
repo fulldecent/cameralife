@@ -376,7 +376,7 @@
   echo "</div>\n";
 ?>
 
-<table>
+<table width="100%">
   <tr valign=top>
     <td width="49%">
       <h2>Information</h2>
@@ -391,7 +391,10 @@
         {
           foreach ($exif as $key=>$val)
           {
-            echo "         <li>$key: $val</li>";
+            if ($key=="Location")
+              echo "         <li>$key: <a href=\"http://maps.google.com/maps?q=$val\">$val</a></li>";
+            else
+              echo "         <li>$key: $val</li>";
           }
         }
 

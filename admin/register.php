@@ -49,9 +49,9 @@
   To the Camera Life team,<br>
   &nbsp;<br>
   I have set up a site named <strong><?= $cameralife->GetPref('sitename') ?></strong> at <strong><?= str_replace('admin','',$cameralife->base_url) ?></strong> based on the <strong><?= $cameralife->version ?></strong> version of Camera Life.
-  It has been up for <strong><?= $counts['daysonline'] ?></strong> days, contains <strong><?= $counts['photos'] ?></strong> photos and is running on <strong><?= eregi_replace('server.*','',eregi_replace('<[^>]*>', '', $_SERVER['SERVER_SIGNATURE'])) ?></strong>.<br>
+  It has been up for <strong><?= $counts['daysonline'] ?></strong> days, contains <strong><?= $counts['photos'] ?></strong> photos and is running on <strong><?= preg_replace('/server.*/i','',preg_replace('|<[^>]*>|', '', $_SERVER['SERVER_SIGNATURE'])) ?></strong>.<br>
   &nbsp;<br>
-  You <strong>may/may not (pick one!)</strong> list my site on your Camera Life software demo page.<br>
+  You <strong>may/may not (pick one!)</strong> list my site on the Camera Life software demo page.<br>
   &nbsp;<br>
   I have some comments about the software, namely:<br>
   &nbsp;<br>
