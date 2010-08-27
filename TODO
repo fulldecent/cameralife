@@ -1,11 +1,11 @@
+!=need to do, *=todo, ?=waste of time
+
 ==================================
 BLOCKERS for the 2.6.3 release
 ----------------------------------
 
 ! FIX THEME FOR MSIE!
 ! look at bugs on sf.net ADD LINK IN THIS FILE
-
-Any bugs left?
 
 Also, I had a bit of a
 struggle getting photos to upload.  Seems that the /images/photos/upload/
@@ -33,7 +33,7 @@ AUTOMATED RELEASE
 edit the first line, then paste into a terminal...
 -------------------
 
-VERSION='2.6.3b3' # edit this line, save TODO, then paste this script
+VERSION='2.6.3b4' # edit this line, save TODO, then paste this script
 sed -i '' "/this..version/s/'.*'/'$VERSION'/" main.inc
 grep -lIr . . | grep -v '\.svn' | # no binary, no svn
 xargs sed "1,10 s/@\(\W*\)version\W*[0-9.a-z]\+/@\1version $VERSION/" -i
@@ -66,49 +66,56 @@ popd
 #GOTO  http://freshmeat.net/projects/fdcl/releases/new
 
 ===========================
-TODO AFTER THE NEXT RELEASE
-note: bleeding edge ideas are at: http://camera.phor.net/TODO
+TODO FOR 2.6.4 RELEASE
 ----------------------------
 
-!=need to do, *=todo, ?=waste of time
-
-? change photostore to be a true FileStore, no knowledge of what's a thumbnail
+! Video support
+! Search results in theme with Photos AND Folders AND Albums
 ! create help pages at http://fdcl.sourceforge.net/wiki/index.php/Main_Page and link to them from inside CL
-  -- which pages?
-! switch to smarty
-  -- use rentacoder or a themes contest
-* Should throm 404s from topic and folder.php
-! http://blathersource.org/blog/
+  -- which pages? setup/albums.html setup/checkpoints.html
+  -- can this wiki be migrated to a real server, like Google Hosting?
+* Integrate with facebook
+  -- send photos to facebook
+  -- retrieve comments from facebook
+  -- retrieve tags / who is in the photo from facebook
+  -- put into hacks
+! Should throw 404s from topic and folder.php
 ! Make more secure 
   ! find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
   ! grep GET  -r modules/theme/*/*inc
   ! grep PHP_SELF  -r modules/theme/*/*inc
   ! grep Database -r modules/theme/*/*inc
   ! grep '\./' */*php | grep -v requ
+* VALID HTML STRICT!!!
+? PHP E_ALL strict?
+* Admin->* "Changes Saved" should produce a message like Gmail as in Photo.php
+* theme -> more obvious tabs
+? Make Theme->AssetURL work if content negotiation is off
+
+===========================
+TODO AFTER 2.6.4 RELEASE
+---------------------------
+
+! Theme bounty! iPod Nano / shuffle?
+? change photostore to be a true FileStore, no knowledge of what's a thumbnail
 ! harden against XSRF: 
   ! fix transactions: each fdcl install get a random number (secret). This i hashed with the user's senssion cookie and put on all forms.
   ! when receiving the form, validate the hash.
 ! move Image stuff further out into ImageProcessing
 * generalize photo metadata: exif, comments, ratings, flickr backup/restore hack
-? an option to use SSL for private photos
 ? Email upload photos, like flickr # http://www.phpclasses.org/browse/file/3.html
-! Theme bounty! iPod Nano / shuffle?
-! folders is very slow...
 * hacks/rename.php - allow it to work on all files in a given path
 * picasa compatibility - for photo modification string
-* OpenID providers: (yahoo, blogger, AIM, LiveJournal, myspace)
-* VALID HTML STRICT!!!
+* OpenID providers: (yahoo, blogger, AIM, LiveJournal, myspace, facebook)
 * fdcl.sf.net analytics
-? PHP E_ALL strict?
+* Change photos.mtime to photos.filter
+? logs.value_old is techically unnecessary
 
 -- The big picture --
-! Integrate with CMS's like Phpnuke!?
-! Fantastico
 ? Gallery theme compatibility
 ! i18n
 
 -- Things that will break the API --
-* Change photos.mtime to photos.filter
 - This will use a modification string like in picasa.ini
 * Add a photo modification optimization engine to photo.class.php
 - It takes the existing photo and filter
@@ -120,14 +127,7 @@ note: bleeding edge ideas are at: http://camera.phor.net/TODO
 . Chooses to work off original or scaled image
 - Result: editing a photo will not require modifying the full sized image (takes forever) unless the user loads that full size image, in which case it is cached.
 - Admin may update these cache at their whim via the Update Database in Files in Admin
-? logs.value_old is techically unnecessary
+
 * Enumerate the photos.status and other columns
 * A standard way of getting information about modules, and loading them (compare to theme-info.php)
-
--- Features --
-* Admin->* "Changes Saved" should produce a message like Gmail as in Photo.php
-
--- UI (themes) --
-* theme -> more obvious tabs
-? Make Theme->AssetURL work if content negotiation is off
 

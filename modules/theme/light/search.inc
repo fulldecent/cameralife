@@ -36,7 +36,7 @@
     $results = $search->GetPhotos();
   }
 
-  $header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of'.htmlentities($search->GetQuery()).'" href="'.$camerasife->base_url.'/rss.php&#63;q='.urlencode($search->GetQuery()).'" />';
+  $header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of'.htmlentities($search->GetQuery()).'" href="'.$camerasife->base_url.'/rss.php?q='.urlencode($search->GetQuery()).'" />';
   $cameralife->Theme->Header('Site search', 'main', $header);
 ?>
 <div id="sidebar">
