@@ -33,7 +33,7 @@ AUTOMATED RELEASE
 edit the first line, then paste into a terminal...
 -------------------
 
-VERSION='2.6.3b4' # edit this line, save TODO, then paste this script
+VERSION='2.6.3b5' # edit this line, save TODO, then paste this script
 sed -i '' "/this..version/s/'.*'/'$VERSION'/" main.inc
 grep -lIr . . | grep -v '\.svn' | # no binary, no svn
 xargs sed "1,10 s/@\(\W*\)version\W*[0-9.a-z]\+/@\1version $VERSION/" -i

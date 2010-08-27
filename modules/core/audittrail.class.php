@@ -2,7 +2,7 @@
   # The class for logging and reverting changes to the site
   /**Logging and reverting changes to the site
   *
-  *@version 2.6.3b4
+  *@version 2.6.3b5
     *@author Will Entriken <cameralife@phor.net>
     *@copyright Copyright (c) 2001-2009 Will Entriken
     *@access public

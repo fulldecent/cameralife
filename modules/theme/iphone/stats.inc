@@ -2,7 +2,7 @@
 /**Displays popular photos and albums,and fun facts such as the amount of time a site has been online
 *
 * <b> Note </b> $cameralife and $album are set by ShowPage()
-*@version 2.6.3b4
+*@version 2.6.3b5
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public
