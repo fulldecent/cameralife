@@ -1,7 +1,7 @@
 2.6.3svnandbetas  Will Entriken <cameralife AT phor.net>
 * Huge documentation update by Aysha Mohamed Rafiq
 * Add the widget hack
-* Add options for image sizes
+* Add options for image sizes, thinks Jack Snodgrass
 * Resolve issue at http://www.xssed.com/mirror/55648/
 * Resolve issues at http://secunia.com/advisories/31234/
 * Add autorotate for new and existing photos
@@ -13,6 +13,7 @@
 * Supports GPS in photo metadata, links to Google maps
 * Cleaned up RSS feed
 * Return 404 code for unfound photos
+* Added documentation for an external thumbnailing server
 
 2.6.2  Will Entriken <cameralife AT phor.net>
 * Website update, thanks to Rajesh Sundaram

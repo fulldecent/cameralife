@@ -23,9 +23,9 @@ $features=array('database','security','imageprocessing', 'photostore');
 require "main.inc";
 
 $photo = new Photo($_GET['id']);
-$format = $_GET['format'];
+$format = $_GET['scale'];
 if (!is_numeric($_GET['ver'])) 
-  $cameralife->Error('Required number ver missing! Expected a number, got: '.htmlentities($_GET['ver']));
+  $cameralife->Error('Required number ver missing! Query string: '.htmlentities($_SERVER['QUERY_STRING']));
 
 $extension = $photo->extension;
 
@@ -47,8 +47,8 @@ if (!$cameralife->Security->authorize('admin_file'))
   //
   // however, this code may belong in localphotostore, so he can cache it
 
-if ($format == 'photo')
-  list($file, $temp, $mtime) = $cameralife->PhotoStore->GetFile($photo, $format);
+if ($format == 'photo' || $format == '')
+  list($file, $temp, $mtime) = $cameralife->PhotoStore->GetFile($photo, 'photo');
 elseif ($format == 'scaled')
   list($file, $temp, $mtime) = $cameralife->PhotoStore->GetFile($photo, $format);
 elseif ($format == 'thumbnail')
@@ -62,7 +62,7 @@ elseif (is_numeric($format))
     $cameralife->Error('This image size has not been allowed');
 }
 else
-  $cameralife->Error('Bad format parameter');
+  $cameralife->Error('Bad size parameter. Query string: '.htmlentities($_SERVER['QUERY_STRING']));
 
 if ($extension == 'jpg' || $extension == 'jpeg')
   header('Content-type: image/jpeg');

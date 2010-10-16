@@ -27,10 +27,10 @@ class PhotoStore extends CameraLifeModule
    * publicly accessible urls)
    *
    * @param $photo - a target photo obeject
-   * @param $type - one of ('photo', 'scaled', 'thumbnail', a number)
+   * @param $size - one of ('photo', 'scaled', 'thumbnail', a number)
    * @return a URL or FALSE
    */
-  function GetURL($photo, $type='photo') 
+  function GetURL($photo, $size='photo') 
   {
     return FALSE;
   }

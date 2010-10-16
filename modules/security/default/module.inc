@@ -68,7 +68,7 @@
       global $cameralife;
 
       $username = strtolower($username);
-      $username = eregi_replace('[^0-9a-z_]','',$username);
+      $username = preg_replace('/[^0-9a-z_]/','',$username);
       $password = crypt($password,$username);
 
       $result = $cameralife->Database->Select('users','*',"username='$username' AND password='$password'");

@@ -238,16 +238,16 @@ class Photo extends View
       $this->image->Destroy();
   }
 
-  function GetMedia($type='thumbnail')
+  function GetMedia($size='thumbnail')
   {
     global $cameralife;
-    if ($url = $cameralife->PhotoStore->GetURL($this, $type))
+    if ($url = $cameralife->PhotoStore->GetURL($this, $size))
       return $url;
 
     if ($cameralife->GetPref('rewrite') == 'yes')
-      return $cameralife->base_url."/photos/$type/".$this->record['id'].'.'.$this->extension.'?'.($this->record['mtime']+0);
+      return $cameralife->base_url."/photos/".$this->record['id'].'.'.$this->extension.'?'.($size=='photo'?'':'scale='.$size.'&amp;').'ver='.($this->record['mtime']+0);
     else
-      return $cameralife->base_url.'/media.php&#63;format='.$type.'&amp;id='.$this->record['id'].'&amp;ver='.($this->record['mtime']+0);
+      return $cameralife->base_url.'/media.php&#63;id='.$this->record['id']."&amp;size=$size&amp;ver=".($this->record['mtime']+0);
   }
 
   function GetFolder()

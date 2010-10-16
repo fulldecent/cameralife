@@ -187,7 +187,7 @@
       <input type="hidden" name="param6" value="thumbsize" />
       <input type=text name="value6" size=10 value="<?= $cameralife->GetPref('thumbsize') ?>">
   <tr>
-    <td>Size for scaled images (in pixels)
+    <td>Size for preview images (in pixels)
     <td>
       <input type="hidden" name="module7" value="CameraLife" />
       <input type="hidden" name="param7" value="scaledsize" />
