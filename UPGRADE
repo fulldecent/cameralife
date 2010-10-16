@@ -11,6 +11,7 @@
 Upgrading from an older version of Camera Life requires working knowledge of MySQL.
 Basically, it goes like this:
 
+  * Back up your database and photos
   * Look at your database structure
   * Look at the new database structure (in setup/install.mysql)
   * Update your tables to the new format

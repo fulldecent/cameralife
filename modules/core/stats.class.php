@@ -1,17 +1,12 @@
 <?php
-  # the class for getting and using photos
-  /**
-  *Class Stats enables you to  get and use photos
-  *@link http://fdcl.sourceforge.net
-  *@version 2.6.3b5
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-  */
-  /**
-  *For getting and using the photos
-  */
-
+/**
+*Class Stats enables you to get stat information about the whole photo collection
+*@link http://fdcl.sourceforge.net
+*@version 2.6.3b5
+*@author Will Entriken <cameralife@phor.net>
+*@copyright Copyright (c) 2001-2009 Will Entriken
+*@access public
+*/
 
 class Stats
 {
@@ -92,7 +87,7 @@ class Stats
                   '<strong>'.(round ($this->counts['photos'] / 64, 0)).' refrigerators</strong>.';
                   # Model General Electric GTS18FBSWW
     $funfacts[] = 'Postage for mailing a photo here to each of your friends (like you have that many) will cost '.
-                  '<strong>$'.(round ($this->counts['photos'] * 0.41, 2)).'</strong>.';
+                  '<strong>$'.(round ($this->counts['photos'] * 0.44, 2)).'</strong>.';
                   # http://www.usps.com/prices/welcome.htm
     return $funfacts;
   }

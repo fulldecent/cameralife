@@ -73,6 +73,18 @@ class Photo extends View
       $this->extension = strtolower($path_parts['extension']);
   }
 
+  static function PhotoExists($original) 
+  {
+    global $cameralife;
+  
+    if(!is_numeric($original))
+      $cameralife->Error("Input needs to be a number", __FILE__, __LINE__);
+
+    $result = $cameralife->Database->Select('photos','*', "id=$original");
+    $a = $result->FetchAssoc();
+    return $a != 0;
+  }
+
   function Set($key, $value)
   {
     global $cameralife;

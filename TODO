@@ -6,6 +6,7 @@ BLOCKERS for the 2.6.3 release
 
 ! FIX THEME FOR MSIE!
 ! look at bugs on sf.net ADD LINK IN THIS FILE
+! folder sorting based on time photo taken !!!!
 
 Also, I had a bit of a
 struggle getting photos to upload.  Seems that the /images/photos/upload/
@@ -15,6 +16,75 @@ wanted to use.  I finally tracked it all down and created the directories
 manually and everything is good.  Not sure if that's a bug or not.  Looks
 like great software.  Thanks in advance for your help.
 
+I'd read Lee Schlesinger's piece on Camera Life & thought I'd drop by. While there, I tried posting a comment and got the error message below. Anyway, good-looking project and it feels /snappy/ compared to our instance of coppermine.
+thx, -Craig
+Duplicate entry '0' for key 1 SQL: INSERT INTO comments SET photo_id = '664', user_ip = '71.135.37.43', comment = 'Spooky. Saw the same Batman 2 years earlier. Scared the kids.', date = '2010-02-09'
+
+1) support multiple picutre sizes... I know that there is 480px ! 360px one that shows when you view a page... and the 'original' size that goes with the picutre... but does it support other image sizes? I have a big monitor and fast connection and want to see pics at something like 1024x768. My parents have a slower connection so smaller pics is what they want.
+Is there a way to 1) have multiple image sizes and 2) let the user select which size they want to use when they are looking at the pics?
+Also... does the code support auto-rotation based on the exif data from the picutre? I see a bunch of pics that appear to be sideways... do I have to id each one and manually rotate it or is there a scrip option that will do that automatically?
+Thanks -jack snodgrass
+
+If I load:
+http://test.jacksnodgrass.com/cameralife/photo.php?id=396
+I see a web page with a pic.... 480px ! 360px
+I'd like to see that pic at 1024x768 and when I click on the 'next' or 'prev' image, I see that page: http://test.jacksnodgrass.com/cameralife/photo.php?id=395&referer= load the next pic at 1024x768 too....
+I guess on the 'first' one, I'd have to set a 'user' preference... maybe a cookie.... so that on the next page... and the next time I come back to the site... it 'knows' that I want to see bigger ( 1024x768 ) size pics. The first time user would see
+the pic at the standard 480x360 size... but if they decided that they wanted to see bigger picks, the would select a button that would give them the choice of something bigger for each new pic that they see.
+
+I have a web server ( used to display web pages ) and a compile sever ( a lot faster than the web server )
+I'd like to be able to do all re-size, thumbmail, etc transitions on a separate box and upload them to the web server... actually..... I have my web pages NFS mounted ( the web server is a vmware box ).
+jack
+http://fdcl.sourceforge.net/wiki/index.php/ThumbnailServer
+
+You can ask for a table prefix ( good thing ) but if you try and install a 2nd copy of cameralife and use a different prefix ( I have MAIN and I want to have TEST ) the script won't install the 2nd set of tables using the new TEST prefix. I'd like to have one db ( cameralife ) and have a MAIN and TEST set of tables.
+jack
+
+ have 2 boxes with fedora 10 on them. I installed cameralife on my first box ( my web server ) and everything is fine.
+I wanted to test some things on my text box so I installed it there.... the 'icons' don't show up on the 2nd box. I get the 'alt' tags. My log shows: [Tue Jun 02 04:02:47 2009] [error] [client 192.168.1.2] File does not exist: /opt/www/cameralife/modules/ iconset/cartoonic/search, referer: http://q6600/cameralife/search.php?page=p&sort=rand&q=
+... it's not using the .gif, .svg, or .jpg prefix... there are multiple versions of the icons ( search.gif, search.svg, etc ) but the request is not asking for any of them and it's not returning the icon image.
+What part of the cameralife code decides what type of icon ( .gif or .svg ) to send... and why does it work on on Fedora 10 box and not another?
+jack
+
+Ah, this looks like a content negotiation situation. I assume you are using apache. The .htaccess file or httpd.conf, or whatever they call that file these days, needs to have Options +Multiviews. I believe that the setup/index.php should have given you a warning about this, no?
+I don't know why this isn't default and will look into removing this assumption from the code.
+
+first of all merry xmas and thanks a lot for your great application.
+I have discovered problems with the Amazon S3 photo storage. when I try to "rescan" photos after I have setup my AWS account in cameralife I get the following error:
+Updating the database to reflect any changes to the photos directory...Fatal error: Call to a member function Get() on a non-object in /var/www/cameralife/modules/
+photostore/amazons3/module.inc on line 475I think it has something to do with the new URL structure of Amazon S3: a request should not use
+s3.amazon.com/bucketname , but bucketname.s3.amazon.com now.I dont want to mess around with the module.inc. Therefore help would be more than appriciated, because
+cameralife seems to be the one and only img galleries that supports S3
+Albrecht Senden
+
+I seen your project on Freshmeat.net and thought I would give it a go. I have a lot of pictures backed up on a remote server that I can access via ssh and your software listed that as a feature. I've been through the documentation and can't seem to find anything on how to set that up. Could you point me in the right direction? Also, I had a bit of a
+struggle getting photos to upload. Seems that the /images/photos/upload/ directory did't get created during the install process and the mkdir function couldn't create the /images/photos/upload/admin directory that it wanted to use. I finally tracked it all down and created the directories manually and everything is good. Not sure if that's a bug or not. Looks like great software. Thanks in advance for your help.
+Chris
+I don't have a 'Photostore' on the Admin page. I got Customize, User Manager, Log Viewer and so on. Can't find Photostore anywhere. Am I looking in the right place?
+I checked the cameralife folder after I untared it. There is no /images/photo/upload folder. I know very little about php, but what I looked up about the mkdir function is that it is not recursive. It won't create more than one level. So it might have created the admin folder if the upload folder was there. Didn't test that.
+Looks like I don't. I have 2.6. I think the link on your downloads page needs to be updated. I'll give the new version a whirl.
+I got the new version installed and running, but I don't think the remote storage thing is going to work for me. I have an rsync.net backup account I was hoping to use as the photostore, but there is no public URL to allow access to the photos. They support WebDAV, but that still requires you to log in with a password. Is my thinking correct here? Any suggetsions?
+I'm going to set up a test account with them and see what happens. If it doesn't work now, thanks for bringing this up - as remote storage is clearly one of our targets.
+
+please add in the default preferences from the file setup/index2.php
+I will make this automatic in the future, thanks!
+
+hi, tried twice now installing cameralife, but there are too many bugs! love the concept though.
+first time around, clean install, went to upload photos from the web interface, get an access error saying dir doesn't exist and it can't make one. chmod is 777 and it didn't matter. then ftp'd them into albums/photos, went ok for a few minutes then much grief trying to organize the pics, keep getting SQL errors, always looking something like:
+####################### Unknown column 'albums.id' in 'field list' SQL: SELECT CONCAT('media.php?format=thumbnail&id=',poster_id) AS tn, CONCAT('album.php?id=',albums.id) AS href, name AS description, hits AS comment FROM cl02_albums WHERE albums.topic = 'NO TOPIC' ORDER BY rand() LIMIT 0, 12 #######################
+sometimes something different, but always "Unknown column" then something else.
+
+I found a bug in your code and its pretty significant. line 177 of upload.php should read as follows:
+$result = add_image($path, $_FILES['userfile']['name'], $_FILES['userfile']['size'],$_POST['description'], $user['username'], $status);
+You neglected the file size parameter. You only had 5 parameters instead of the required 6 for the add_image function.
+I also have received a divide by zero error on your stats page. If you have a picture with no hits (hits=0), then you need to check variable contents before dividing for all variables in a divisor (bottom number in a division). I could not help but noticing the overall lack of error checking in your code. You may want to add some.
+
+Wow, I can't believe that upload bug slipped through alpha. Thanks for all your feedback, I just fixed these in SVN now. A focus in the current version is to employ proper string checking in all the different contexts. Numbers were completely overlooked.
+Thanks again! Will Entriken
+
+COMPARE TO FLICKR AND GOOGLE PICASA
+
+UPDATE POSTAGE RATE -- TELL CHRIS
 
 ===================
 RELEASE HOWTO
@@ -64,6 +134,7 @@ popd
 #  move folder into Camera Life directory
 #  edit files to add properties
 #GOTO  http://freshmeat.net/projects/fdcl/releases/new
+#MAIL people in the MAILINGLIST file
 
 ===========================
 TODO FOR 2.6.4 RELEASE
@@ -86,6 +157,7 @@ TODO FOR 2.6.4 RELEASE
   ! grep PHP_SELF  -r modules/theme/*/*inc
   ! grep Database -r modules/theme/*/*inc
   ! grep '\./' */*php | grep -v requ
+? HTML drag-n-drop file upload
 * VALID HTML STRICT!!!
 ? PHP E_ALL strict?
 * Admin->* "Changes Saved" should produce a message like Gmail as in Photo.php
@@ -97,9 +169,13 @@ TODO AFTER 2.6.4 RELEASE
 ---------------------------
 
 ! Theme bounty! iPod Nano / shuffle?
+   - Theme developer assistant
+   - Pre populates variables with example data
+   - Does not require CL install
 ? change photostore to be a true FileStore, no knowledge of what's a thumbnail
 ! harden against XSRF: 
   ! fix transactions: each fdcl install get a random number (secret). This i hashed with the user's senssion cookie and put on all forms.
+     * hash implementation -- http://pajhome.org.uk/crypt/md5/auth.html -- http://www.owasp.org/index.php/Main_Page -- http://www.owasp.org/index.php/Philadelphia
   ! when receiving the form, validate the hash.
 ! move Image stuff further out into ImageProcessing
 * generalize photo metadata: exif, comments, ratings, flickr backup/restore hack
@@ -110,6 +186,8 @@ TODO AFTER 2.6.4 RELEASE
 * fdcl.sf.net analytics
 * Change photos.mtime to photos.filter
 ? logs.value_old is techically unnecessary
+
+
 
 -- The big picture --
 ? Gallery theme compatibility

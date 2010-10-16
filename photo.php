@@ -9,6 +9,11 @@
   $features=array('database','theme');
   require "main.inc";
 
+  if (!Photo::PhotoExists($_GET['id'])) {
+    header("HTTP/1.0 404 Not Found");
+    $cameralife->Error("Photo #".($original+1)." not found.");
+  }
+
   $photo = new Photo($_GET['id']);
   $photo->Set('hits', $photo->Get('hits') + 1);
 
