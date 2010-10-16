@@ -57,7 +57,7 @@
 
     <p class="info" align=left>
       You are about to create an Album of photos whose descriptions contain "<b><?= htmlentities($_GET['term']) ?></b>".
-      <?php if (file_exists('setup/albums.html')) echo "<a href=\"".$cameralife->base_url."/setup/albums.html\">Click here for more information about albums</a>"; ?>
+      <a href="http://fdcl.sourceforge.net/wiki/index.php/Albums">Click here for more information about albums</a>
     </p>
     <table>
       <tr>

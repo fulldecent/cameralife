@@ -69,7 +69,7 @@
       echo ">\n";
     }
 
-    function Header($title, $image=FALSE, $extrahead='', $onload='', $extratitle='')
+    function Header($title, $image=FALSE, $extrahead='', $onload='', $extratitle='', $actiononclick)
     {
       global $cameralife;
 
@@ -129,7 +129,10 @@ echo '
 
 echo '    <div id="slogan">';
       if (isset($image)) $this->Image($image);
-echo '    <strong id="title">'.$title.'</strong>';
+if (isset($actiononclick))
+  echo '    <strong id="title" onClick="'.$actiononclick.'" onMouseOver="this.style.border=\'1px solid red\'" onMouseOut="this.style.border=\'none\'"">'.$title.'</strong>';
+else
+  echo '    <strong id="title">'.$title.'</strong>';
       if (isset($extratitle))
         echo "<br />".$extratitle;
 echo '      </div>
@@ -211,7 +214,7 @@ Design by <a href="http://www.realitysoftware.ca" title="Website Design"><strong
     }
 
     /// Taken an Icon to make base url
-    function MultiSection($sections, $base_url, $conjunction='and')
+    function MultiSection($sections, $base_url, $conjunction='and', $query=NULL)
     {
       global $_GET;
       $sectionhtml = array();
@@ -222,7 +225,12 @@ Design by <a href="http://www.realitysoftware.ca" title="Website Design"><strong
         $html = "<a";
         if ($_GET['page'] == $section['page_name'])
           $html .= ' class="current"';
-        $html .= " href=\"".AddParam($base_url, 'page', $section['page_name'])."\">";
+        $url = $base_url;
+        $url = AddParam($url, 'page', $section['page_name']);
+        if (isset($query))
+          foreach($query as $p => $v)
+            $url = AddParam($url, $p, $v);
+        $html .= " href=\"$url\">";
         #if ($section['image']) $this->Image($section['image'], array('align'=>'middle'));
         $html .= $section['name'];
         $html .= "</a>";

@@ -43,8 +43,11 @@ class Album extends Search
     elseif(is_numeric($original))  # This is an ID
     {
       $result = $cameralife->Database->Select('albums', '*', "id=$original");
-      $this->record = $result->FetchAssoc()
-        or die('Bad album :-(');
+      $this->record = $result->FetchAssoc();
+      if (!$this->record) {
+        header("HTTP/1.0 404 Not Found");
+        $cameralife->Error("Album #".($original+0)." not found.");
+      }
     }
     else
     {

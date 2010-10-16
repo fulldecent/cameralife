@@ -22,6 +22,8 @@ class Topic extends Search
 
     Search::Search('');
     $this->mySearchAlbumCondition = "topic = '".mysql_real_escape_string($this->name)."'";
+    $this->mySearchPhotoCondition = "FALSE";
+    $this->mySearchFolderCondition = "FALSE";
   }
 
   function GetName()

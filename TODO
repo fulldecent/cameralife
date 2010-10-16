@@ -77,6 +77,7 @@ RELEASE HOWTO
   #vim setup/install.mysql
   Is /images/photos/upload/ being created?
   Test with installing using 2 different table prefixes
+  Test Amazon S3 http://github.com/technoweenie/parkplace
 
 -------------------
 AUTOMATED RELEASE

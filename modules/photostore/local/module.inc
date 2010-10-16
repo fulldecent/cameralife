@@ -270,8 +270,9 @@ class LocalPhotoStore extends PhotoStore
  #private
     function mkdir_recursive($pathname, $mode=0777)
     {
+      global $cameralife;
       is_dir(dirname($pathname)) || $this->mkdir_recursive(dirname($pathname), $mode);
-      return is_dir($pathname) || mkdir($pathname, $mode);
+      return is_dir($pathname) || mkdir($pathname, $mode) || $cameralife->Error('Cannot make folder: '.htmlentities($pathname));
     }
 
 

@@ -79,7 +79,7 @@
       <?php $cameralife->Theme->Image('small-topic', array('align'=>'middle')) ?> A Topic is a logical collection of Albums. Ex: People, Places, Events<br>
       <?php $cameralife->Theme->Image('small-search', array('align'=>'middle')) ?> To create an album, perform a search, then choose "Create an album from these photos" on the toolbar.<br>
       <p>Note: In the future, you can simply perform a search, without pulling up these instructions.
-      <?php if (file_exists('setup/albums.html')) echo "<a href=\"setup/albums.html\">Click here for more information</a>"; ?></p>
+      <a href="http://fdcl.sourceforge.net/wiki/index.php/Albums">Click here for more information</a></p>
 <?php
     }
 

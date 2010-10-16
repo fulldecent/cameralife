@@ -13,5 +13,12 @@ require "main.inc";
 
 ##TODO: make the second param true there
 $folder = new Folder(stripslashes($_GET['path']), false);
+
+$count = array_sum($folder->GetCounts());
+if ($count == 0) {
+  header("HTTP/1.0 404 Not Found");
+  $cameralife->Error("This folder does not exist, or it is empty.");
+}
+
 $folder->ShowPage();
 ?>

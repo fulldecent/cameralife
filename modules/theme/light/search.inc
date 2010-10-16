@@ -20,6 +20,7 @@
 
   $start = $_GET['start'] + 0;
   $search->SetPage($start);
+  $counts = $search->GetCounts();
   if (($_GET['page'] == 'a') || (!isset($_GET['page']) && $counts['albums'] >0))
   {
     $_GET['page'] = 'a';
@@ -59,7 +60,7 @@ echo '</div><div id="text">';
       <?php $cameralife->Theme->Image('small-topic', array('align'=>'middle')) ?> A Topic is a logical collection of Albums. Ex: People, Places, Events<br>
       <?php $cameralife->Theme->Image('small-search', array('align'=>'middle')) ?> To create an album, perform a search, then choose "Create an album from these photos" on the toolbar.<br>
       <p>Note: In the future, you can simply perform a search, without pulling up these instructions.
-      <?php if (file_exists('setup/albums.html')) echo "<a href=\"setup/albums.html\">Click here for more information</a>"; ?></p>
+      <a href="http://fdcl.sourceforge.net/wiki/index.php/Albums">Click here for more information</a></p>
 <?php
     }
 
@@ -79,7 +80,7 @@ echo '</div><div id="text">';
                         'image'=>'small-topic');
 
   if (count($sections) > 0)
-    $cameralife->Theme->MultiSection($sections, array('q'=>htmlentities($search->GetQuery())));
+    $cameralife->Theme->MultiSection($sections, '', 'and', array('q'=>htmlentities($search->GetQuery())));
   else
     $cameralife->Theme->Section('Sorry, no results');
 

@@ -107,7 +107,7 @@
   $headers .= 'var cameralifebaseurl="'.$cameralife->base_url.'"';
   $headers .='</script>';
 
-  $cameralife->Theme->Header(htmlentities($photo->Get('description')), 'photo', $headers, 'init()');
+  $cameralife->Theme->Header(htmlentities($photo->Get('description')), 'photo', $headers, 'init()', '', "document.getElementById('rename').style.display='';focusTo(\$id('formtitle'),0);return false;");
 
   echo "     <div id=\"sidebar\">\n";
   echo "       <h1>Actions</h1>\n";

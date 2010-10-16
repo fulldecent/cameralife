@@ -46,6 +46,7 @@ class Folder extends Search
 
     Search::Search('');
     $this->mySearchPhotoCondition = "path='".mysql_real_escape_string($this->path)."'";
+    $this->mySearchAlbumCondition = "FALSE";
     $this->mySearchFolderCondition = "path LIKE '".mysql_real_escape_string($this->path)."%/' AND path NOT LIKE '".addslashes($this->path)."%/%/'";
   }
 

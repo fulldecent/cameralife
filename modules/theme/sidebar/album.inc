@@ -68,7 +68,7 @@
       <p class="info" align=left>
         You are editing the Album named <b><?= $album->Get('name') ?></b>, which is a collection of photos 
         whose descriptions contain "<b><?= $album->Get('term') ?></b>".
-        <?php if (file_exists('setup/albums.html')) echo "<a href=\"setup/albums.html\">Click here for more information about albums</a>"; ?>
+        <a href="http://fdcl.sourceforge.net/wiki/index.php/Albums">Click here for more information about albums</a>
       </p>
       <table>
         <tr>

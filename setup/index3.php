@@ -45,7 +45,7 @@ a tutorial on how your site works.
   <li>Go to your <a href="../admin/appearance.php" target="_blank">Site Setup</a> page and name your site, you can change your theme while you're there
   <li>Now go to your <a href="../admin/files.php" target="_blank">File Manager</a> page and Rescan Photos, do this whenever you add or change photos in your photo directory
   <li><a href="../search.php&#63;q=unnamed&amp;sort=photos.id" target="_blank">Search</a> for the unnamed pics you just imported and name some of them
-  <li><a href="albums.html" target="_blank">Learn about Albums</a>, and create a few
+  <li><a href="http://fdcl.sourceforge.net/wiki/index.php/Albums" target="_blank">Learn about Albums</a>, and create a few
 </ul>
 
 <h2>You're done</h2>

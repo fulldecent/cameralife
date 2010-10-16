@@ -15,6 +15,7 @@ class Search extends View
   var $mySort;
   var $mySql;
   var $myQuery;
+  var $myCounts;
 
   function Search($query = '')
   {
@@ -83,12 +84,16 @@ class Search extends View
   {
     global $cameralife;
 
-    $selection = "COUNT(DISTINCT id)";
-    $photos = $cameralife->Database->SelectOne('photos', 'COUNT(*)', $this->mySearchPhotoCondition.' AND status=0');
-    $albums = $cameralife->Database->SelectOne('albums', 'COUNT(*)', $this->mySearchAlbumCondition);
-    $folders = $cameralife->Database->SelectOne('photos', 'COUNT(DISTINCT path)', $this->mySearchFolderCondition.' AND status=0');
+    if (!isset($this->myCounts))
+    {
+      $this->myCounts = array();
+      $selection = "COUNT(DISTINCT id)";
+      $this->myCounts['photos'] = $cameralife->Database->SelectOne('photos', 'COUNT(*)', $this->mySearchPhotoCondition.' AND status=0');
+      $this->myCounts['albums'] = $cameralife->Database->SelectOne('albums', 'COUNT(*)', $this->mySearchAlbumCondition);
+      $this->myCounts['folders'] = $cameralife->Database->SelectOne('photos', 'COUNT(DISTINCT path)', $this->mySearchFolderCondition.' AND status=0');
+    }
 
-    return array('photos'=>$photos, 'albums'=>$albums, 'folders'=>$folders);
+    return $this->myCounts;
   }
 
   function SetPage($start, $pagesize=12)
