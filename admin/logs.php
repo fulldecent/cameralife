@@ -96,7 +96,7 @@
   echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
 ?> |
 <a href="index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>  |
-<a href="../setup/checkpoints.html">Help with checkpoints</a>
+<a href="http://fdcl.sourceforge.net/wiki/index.php/Checkpoints">Help with checkpoints</a>
 </div>
 
 <form method="post">
