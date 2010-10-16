@@ -30,7 +30,7 @@
 
 <h1>Welcome to Camera Life</h1>
 
-Thank you for choosing to install Camera Life. We hope you will find this project is easy to use and fun. This project is released under the terms of the GNU General Public License, version 2. If you need help, look in:
+Thank you for choosing to install Camera Life. We hope you will find this software is easy to use and fun. This project is released under the terms of the GNU General Public License, version 2. If you need help, look in:
 <ul>
 <li><a href="../README">The README</a>
 <li><a href="http://fdcl.sourceforge.net">The Camera Life project homepage</a>
