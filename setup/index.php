@@ -26,7 +26,7 @@
 </head>
 <body>
 
-<img src="images/cameralife.jpg">
+<img src="images/intro1.png" align=center>
 
 <h1>Welcome to Camera Life</h1>
 
