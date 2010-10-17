@@ -2,89 +2,34 @@
 BLOCKERS for the 2.6.3 release
 ----------------------------------
 
-FIX THEME FOR MSIE!
-
-first of all merry xmas and thanks a lot for your great application.
-I have discovered problems with the Amazon S3 photo storage. when I try to "rescan" photos after I have setup my AWS account in cameralife I get the following error:
-Updating the database to reflect any changes to the photos directory...Fatal error: Call to a member function Get() on a non-object in /var/www/cameralife/modules/
-photostore/amazons3/module.inc on line 475I think it has something to do with the new URL structure of Amazon S3: a request should not use
-s3.amazon.com/bucketname , but bucketname.s3.amazon.com now.I dont want to mess around with the module.inc. Therefore help would be more than appriciated, because
-cameralife seems to be the one and only img galleries that supports S3
-Albrecht Senden
-
-I seen your project on Freshmeat.net and thought I would give it a go. I have a lot of pictures backed up on a remote server that I can access via ssh and your software listed that as a feature. I've been through the documentation and can't seem to find anything on how to set that up. Could you point me in the right direction? Also, I had a bit of a
-struggle getting photos to upload. Seems that the /images/photos/upload/ directory did't get created during the install process and the mkdir function couldn't create the /images/photos/upload/admin directory that it wanted to use. I finally tracked it all down and created the directories manually and everything is good. Not sure if that's a bug or not. Looks like great software. Thanks in advance for your help.
-Chris
-I don't have a 'Photostore' on the Admin page. I got Customize, User Manager, Log Viewer and so on. Can't find Photostore anywhere. Am I looking in the right place?
-I checked the cameralife folder after I untared it. There is no /images/photo/upload folder. I know very little about php, but what I looked up about the mkdir function is that it is not recursive. It won't create more than one level. So it might have created the admin folder if the upload folder was there. Didn't test that.
-Looks like I don't. I have 2.6. I think the link on your downloads page needs to be updated. I'll give the new version a whirl.
-I got the new version installed and running, but I don't think the remote storage thing is going to work for me. I have an rsync.net backup account I was hoping to use as the photostore, but there is no public URL to allow access to the photos. They support WebDAV, but that still requires you to log in with a password. Is my thinking correct here? Any suggetsions?
-I'm going to set up a test account with them and see what happens. If it doesn't work now, thanks for bringing this up - as remote storage is clearly one of our targets.
-
-please add in the default preferences from the file setup/index2.php
-I will make this automatic in the future, thanks!
-
-hi, tried twice now installing cameralife, but there are too many bugs! love the concept though.
-first time around, clean install, went to upload photos from the web interface, get an access error saying dir doesn't exist and it can't make one. chmod is 777 and it didn't matter. then ftp'd them into albums/photos, went ok for a few minutes then much grief trying to organize the pics, keep getting SQL errors, always looking something like:
-####################### Unknown column 'albums.id' in 'field list' SQL: SELECT CONCAT('media.php?format=thumbnail&id=',poster_id) AS tn, CONCAT('album.php?id=',albums.id) AS href, name AS description, hits AS comment FROM cl02_albums WHERE albums.topic = 'NO TOPIC' ORDER BY rand() LIMIT 0, 12 #######################
-sometimes something different, but always "Unknown column" then something else.
-
-I found a bug in your code and its pretty significant. line 177 of upload.php should read as follows:
-$result = add_image($path, $_FILES['userfile']['name'], $_FILES['userfile']['size'],$_POST['description'], $user['username'], $status);
-You neglected the file size parameter. You only had 5 parameters instead of the required 6 for the add_image function.
-I also have received a divide by zero error on your stats page. If you have a picture with no hits (hits=0), then you need to check variable contents before dividing for all variables in a divisor (bottom number in a division). I could not help but noticing the overall lack of error checking in your code. You may want to add some.
-
-Wow, I can't believe that upload bug slipped through alpha. Thanks for all your feedback, I just fixed these in SVN now. A focus in the current version is to employ proper string checking in all the different contexts. Numbers were completely overlooked.
-Thanks again! Will Entriken
-
-COMPARE TO FLICKR AND GOOGLE PICASA
-
-UPDATE POSTAGE RATE -- TELL CHRIS
-
-http://gallery.menalto.com/wiki/Most_Requested_Features
-
+Fix theme for MSIE
 http://fdcl.sourceforge.net/wiki/index.php?title=Special:RecentChanges&feed=rss
-
-http://sourceforge.net/tracker/index.php?func=detail&aid=2468857&group_id=70910&atid=529445
-
---php
-$if_modified_since = preg_replace('/;.*$/', '', $HTTP_IF_MODIFIED_SINCE);
-
-$mtime = filemtime($SCRIPT_FILENAME);
-$gmdate_mod = gmdate('D, d M Y H:i:s', $mtime) . ' GMT';
-
-if ($if_modified_since == $gmdate_mod) {
-    header("HTTP/1.0 304 Not Modified");
-    exit;
-}
-header("Last-Modified: $gmdate_mod");
---
-
-http://fdcl.sourceforge.net/wiki/index.php?title=Special:RecentChanges&feed=rss
-
-http://sourceforge.net/tracker/?group_id=70910&atid=529445
+Automated database update
+Sorting/ paging
+Try to upload a non-image
 
 ===================
-RELEASE HOWTO
+RELEASE REGRESSION TEST
 -------------------
 
-! Regression testing / validation:
-  Regression: microformats, sitemaps, rss, gallery API, OpenSearch, hacks
-  update module API's and documentation
-  photostore does not fully protect private photos
-  harden against malicio us user inputs and sql inj ection -- you like that anti-grep obfuscation?
-  and uploading non-images
-  #vim setup/install.mysql
-  Is /images/photos/upload/ being created?
-  Test with installing using 2 different table prefixes
-  Test Amazon S3 http://github.com/technoweenie/parkplace
+Sitemaps: how to validate?
+OpenSearch: http://friendfeed.com/bgolub/5e56afb1/i-like-how-google-chrome-deals-with-opensearch
+Microformats: http://microformats.org/wiki/rel-tag
+RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/rss.php%3Fq%3Dwill
+Gallery API
+Try all the hacks
+Is /images/photos/upload/ being created?
+Test with installing using 2 different table prefixes
+Test Amazon S3 http://github.com/technoweenie/parkplace
+BUG http://sourceforge.net/tracker/index.php?func=detail&aid=2468857&group_id=70910&atid=529445
+Edit vim setup/install.mysql
 
 -------------------
 AUTOMATED RELEASE
-edit the first line, then paste into a terminal...
+edit the first line, save this file, then paste into a terminal...
 -------------------
 
-VERSION='2.6.3b5' # edit this line, save TODO, then paste this script
+VERSION='2.6.3b5' # <-- EDIT THIS
 sed -i '' "/this..version/s/'.*'/'$VERSION'/" main.inc
 grep -lIr . . | grep -v '\.svn' | # no binary, no svn
 xargs sed "1,10 s/@\(\W*\)version\W*[0-9.a-z]\+/@\1version $VERSION/" -i
@@ -118,81 +63,108 @@ popd
 #MAIL people in the MAILINGLIST file
 
 ===========================
-TODO FOR 2.6.4 RELEASE
 ----------------------------
 
-Update website to show off features better. 
+  Core modules
+!   modules/core/search.class.inc - Folder sorting based on time photo taken
 
-! folder sorting based on time photo taken !!!!
-remove content negotiation assumption from iconsets
-! Video support
-! Search results in theme with Photos AND Folders AND Albums
-! create help pages at http://fdcl.sourceforge.net/wiki/index.php/Main_Page and link to them from inside CL
-  -- which pages? setup/albums.html setup/checkpoints.html
-  -- can this wiki be migrated to a real server, like Google Hosting?
-* Integrate with facebook
-  -- send photos to facebook
-  -- retrieve comments from facebook
-  -- retrieve tags / who is in the photo from facebook
-  -- put into hacks
-! Should throw 404s from topic and folder.php
-! Make more secure 
-  ! find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
-  ! grep GET  -r modules/theme/*/*inc
-  ! grep PHP_SELF  -r modules/theme/*/*inc
-  ! grep Database -r modules/theme/*/*inc
-  ! grep '\./' */*php | grep -v requ
-? HTML drag-n-drop file upload
-* VALID HTML STRICT!!!
-? PHP E_ALL strict?
-* Admin->* "Changes Saved" should produce a message like Gmail as in Photo.php
-* theme -> more obvious tabs
-? Make Theme->AssetURL work if content negotiation is off
+  Remove content negotiation assumption from iconsets
 
-===========================
-TODO AFTER 2.6.4 RELEASE
----------------------------
+  Light theme
+!   Automatically choose a preview size a la Picasa Web, killer feature
+    Accelerator keys, left, right
+    Make Theme->AssetURL work if content negotiation is off
+    User can choose image size, persistent - Jack Snodgrass
 
-* Switch to Google Code hosting
-! Theme bounty! iPod Nano / shuffle?
-Consistently use user-chosen photo preview size - Jack Snodgrass
-   - Theme developer assistant
-   - Pre populates variables with example data
-   - Does not require CL install
-? change photostore to be a true FileStore, no knowledge of what's a thumbnail
-! harden against XSRF: 
-  ! fix transactions: each fdcl install get a random number (secret). This i hashed with the user's senssion cookie and put on all forms.
-     * hash implementation -- http://pajhome.org.uk/crypt/md5/auth.html -- http://www.owasp.org/index.php/Main_Page -- http://www.owasp.org/index.php/Philadelphia
-  ! when receiving the form, validate the hash.
-! move Image stuff further out into ImageProcessing
-* generalize photo metadata: exif, comments, ratings, flickr backup/restore hack
-? Email upload photos, like flickr # http://www.phpclasses.org/browse/file/3.html
-* hacks/rename.php - allow it to work on all files in a given path
-* picasa compatibility - for photo modification string
-* OpenID providers: (yahoo, blogger, AIM, LiveJournal, myspace, facebook)
-* fdcl.sf.net analytics
-* Change photos.mtime to photos.filter
-? logs.value_old is techically unnecessary
+! Update PhotoStores for separate photos and CL data
+    Abstract and add video support
+    Make a DatabasePhotoStore
+    Any other API updates
+      move Image stuff in Photo further out into ImageProcessing (???)
+    Create Theme developer assistant
+!   Theme bounty for iPod Nano
+
+  Update fdcl.sf.net
+    COMPARE TO FLICKR AND GOOGLE PICASA
+!   Add links to make a ticket and to SUBSCRIBE to project news
+    fdcl.sf.net analytics
+
+! Focus on security 
+    find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
+    grep GET  -r modules/theme/*/*inc
+    grep PHP_SELF  -r modules/theme/*/*inc
+    grep Database -r modules/theme/*/*inc
+    grep '\./' */*php | grep -v requ
+    harden against malicio us user inputs and sql inj ection -- you like that anti-grep obfuscation?
+    check for inputs as arrays!
+    fuzz testing
+    PHP E_ALL strict?
+    VALID HTML STRICT!!!
+    Check all inputs
+    Each CL install gets random secret number. All requests hash against secret. Protect XSRF
+      Is this a differentiator? Put on "Compare Us" page versus Picasa, Gallery, ...
+      Hash implementation -- http://pajhome.org.uk/crypt/md5/auth.html -- http://www.owasp.org/index.php/Main_Page -- http://www.owasp.org/index.php/Philadelphia
+    When receiving the form, validate the hash.
+    Login via OpenID / Facebook / Google / ...
+
+  Upload photos 
+    via email - http://www.phpclasses.org/browse/file/3.html
+    HTML5 drag-n-drop file upload
+
+  Update database
+    Normalize all metadata to one table
+      Beware the flickr hack for export/restore
+    Change audit trail
+    Update audit trail admin interface
+    Picasa compatibility - for photo modification string?
+    Update photos.mtime, make it photos."filter" like Picasa ???
+    Enumerate the photos.status and other columns
+
+  Integrate with facebook
+    send photos to facebook
+    retrieve comments from facebook
+    retrieve tags / who is in the photo from Facebook, 
+    put into hacks/
+
+?? Integrate with Picasa or iPhone or Facebook for face recognition
 
 
 
--- The big picture --
-? Gallery theme compatibility
-! i18n
 
--- Things that will break the API --
-- This will use a modification string like in picasa.ini
-* Add a photo modification optimization engine to photo.class.php
-- It takes the existing photo and filter
-- Considers the new filter
-- Deletes stale caches
-- Acts in the best possible way
-. Rotate existing photo
-. Or start from scratch
-. Chooses to work off original or scaled image
-- Result: editing a photo will not require modifying the full sized image (takes forever) unless the user loads that full size image, in which case it is cached.
-- Admin may update these cache at their whim via the Update Database in Files in Admin
+  http://gallery.menalto.com/wiki/Most_Requested_Features
 
-* Enumerate the photos.status and other columns
-* A standard way of getting information about modules, and loading them (compare to theme-info.php)
+  Hacks
+    hacks/rename.php - allow it to work on all files in a given path
 
+BETTER CACHING
+--php
+$if_modified_since = preg_replace('/;.*$/', '', $HTTP_IF_MODIFIED_SINCE);
+
+$mtime = filemtime($SCRIPT_FILENAME);
+$gmdate_mod = gmdate('D, d M Y H:i:s', $mtime) . ' GMT';
+
+if ($if_modified_since == $gmdate_mod) {
+    header("HTTP/1.0 304 Not Modified");
+    exit;
+}
+header("Last-Modified: $gmdate_mod");
+--
+
+  Make a module API compare to theme-info.php
+    Gallery theme compatibility
+  i18n
+  This will use a modification string like in picasa.ini
+    Add a photo modification optimization engine to photo.class.php
+    It takes the existing photo and filter
+    Considers the new filter
+    Deletes stale caches
+    Acts in the best possible way
+    Rotate existing photo
+    Or start from scratch
+    Chooses to work off original or scaled image
+    Result: editing a photo will not require modifying the full sized image (takes forever) unless the user loads that full size image, in which case it is cached.
+    Admin may update these cache at their whim via the Update Database in Files in Admin
+  
+  Move to Google Code Hosting
+    Add everything as a ticket
+    Edit code to point to new wiki
