@@ -19,7 +19,7 @@ RewriteRule ^photos/(\d+)\.([^?]+)$ media.php?id=$1&%{QUERY_STRING}
 RewriteRule ^folders/(.*) folder.php?path=$1&%{QUERY_STRING}
 RewriteRule ^albums/(\d+) album.php?id=$1&%{QUERY_STRING}
 RewriteRule ^topics/(.+) topic.php?name=$1&%{QUERY_STRING}
-RewriteRule ^testrewrite setup/images/clear.gif
+RewriteRule .*setup/images/clear.gif INVALID-RETURN-404 [F]
 #
 # Note: these rewrites affect photo.class.php, who analyzes the HTTP referer
 #

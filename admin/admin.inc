@@ -39,9 +39,9 @@ function renderPrefsAsHTML($module)
     if ($pref['type'] == 'number' || $pref['type'] == 'string' || $pref['type'] == 'directory' || $pref['type'] == 'directoryrw')
     {
       echo "      <input type=\"text\" name=\"value$prefnum\" value=\"$value\" />\n";
-      if (($pref['type'] == 'directory' || $pref['type'] == 'directoryrw' ) && !is_dir($value))
+      if (($pref['type'] == 'directory' || $pref['type'] == 'directoryrw' ) && !is_dir($value) && !is_dir($cameralife->base_dir."/$value"))
         echo "<br /><span class=\"alert\">This is not a directory</span>\n";
-      elseif ($pref['type'] == 'directoryrw'  && !is_writable($value))
+      elseif ($pref['type'] == 'directoryrw'  && !is_writable($value) && !is_writable($cameralife->base_dir."/$value"))
         echo "<br /><span class=\"alert\">This directory is not writable</span>\n";
     }
     elseif (is_array($pref['type'])) // enumeration
