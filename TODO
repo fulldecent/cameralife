@@ -3,17 +3,13 @@ BLOCKERS for the 2.6.3 release
 ----------------------------------
 
 Automated database update - Update UPGRADE
-Sorting/ paging
-  Automatic update htaccess for rewritebase
+Automatic update htaccess for rewritebase
 
 ===================
 RELEASE REGRESSION TEST
 -------------------
 
 Gallery API
-Test with installing using 2 different table prefixes
-Test Amazon S3 http://github.com/technoweenie/parkplace
-BUG http://sourceforge.net/tracker/index.php?func=detail&aid=2468857&group_id=70910&atid=529445
 Is /images/photos/upload/ being created?
 
 -------------------
@@ -65,6 +61,7 @@ popd
   Remove content negotiation assumption from iconsets
 
   Light theme
+    Sorting/ paging
 !   Automatically choose a preview size a la Picasa Web, killer feature
     Accelerator keys, left, right
     Make Theme->AssetURL work if content negotiation is off
@@ -175,4 +172,5 @@ Validate all HTML and CSS
 RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/rss.php%3Fq%3Dwill
 Try all the hacks
 mysqldump fdcl -d > setup/install.mysql
+Test Amazon S3 http://github.com/technoweenie/parkplace
 
