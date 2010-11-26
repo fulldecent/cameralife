@@ -2,22 +2,19 @@
 BLOCKERS for the 2.6.3 release
 ----------------------------------
 
-Automated database update - Update UPGRADE
-Automatic update htaccess for rewritebase
-
 ===================
 RELEASE REGRESSION TEST
 -------------------
-
-Gallery API
-Is /images/photos/upload/ being created?
 
 -------------------
 AUTOMATED RELEASE
 edit the first line, save this file, then paste into a terminal...
 -------------------
+### TOUCH HTACCESS, make it 777
+Is /images/photos/upload/ being created?
 
-VERSION='2.6.3b5' # <-- EDIT THIS
+
+VERSION='2.6.3b6' # <-- EDIT THIS
 sed -i '' "/this..version/s/'.*'/'$VERSION'/" main.inc
 grep -lIr . . | grep -v '\.svn' | # no binary, no svn
 xargs sed "1,10 s/@\(\W*\)version\W*[0-9.a-z]\+/@\1version $VERSION/" -i
@@ -171,6 +168,7 @@ Microformats: http://microformats.org/wiki/rel-tag
 Validate all HTML and CSS
 RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/rss.php%3Fq%3Dwill
 Try all the hacks
-mysqldump fdcl -d > setup/install.mysql
+mysqldump fdcl -d > setup/install.mysql # and add insert statements
 Test Amazon S3 http://github.com/technoweenie/parkplace
+Gallery API
 

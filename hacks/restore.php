@@ -3,7 +3,7 @@
 *This tool will restore your backed up photos.
 *<b>Note:Use absolute paths </b>
 *@link http://fdcl.sourceforge.net
- *@version 2.6.3b5
+ *@version 2.6.3b6
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public

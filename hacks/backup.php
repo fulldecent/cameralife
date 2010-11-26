@@ -2,7 +2,7 @@
 /**Creates a backup copy of all photos in the photostore.
  *<b>Note:</b>Scaled and thumbnail photos will not be copied
  *@link http://fdcl.sourceforge.net
- *@version 2.6.3b5
+ *@version 2.6.3b6
  *@author Will Entriken <cameralife@phor.net>
  *@copyright Copyright (c) 2001-2009 Will Entriken
  *@access public

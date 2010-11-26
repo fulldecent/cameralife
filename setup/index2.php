@@ -3,7 +3,7 @@
  * Accepts install parameters and perform the actual CL install
  *
  *@link http://fdcl.sourceforge.net
- *@version 2.6.2
+ *@version 2.6.3b6
  *@author Will Entriken <cameralife@phor.net>
  *@copyright Copyright (c) 2001-2009 Will Entriken
  *@access public
@@ -131,6 +131,9 @@
       or die(mysql_error() . ' ' . __LINE__);
 
     mysql_query("INSERT INTO `${prefix}preferences` VALUES('CameraLife','sitedate',NOW(),NOW())")
+      or die(mysql_error() . ' ' . __LINE__);
+
+    mysql_query("INSERT INTO `${prefix}preferences` VALUES('CameraLife','db_version','1','1')")
       or die(mysql_error() . ' ' . __LINE__);
 
     $SQL = "

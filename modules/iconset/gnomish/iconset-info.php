@@ -6,7 +6,7 @@
  *<li>$iconset_version = '1.0';</li>
  *<li>$iconset_date    = '1/14/2007';</li>
  *</ul>
- *@version 2.6.3b5
+ *@version 2.6.3b6
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public
