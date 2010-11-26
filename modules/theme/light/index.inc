@@ -63,7 +63,7 @@ trong></a>.</div>';
         foreach ($folders as $folder)
         {
           $icon = $folder->GetIcon('small');
-          echo "<h3><a href=\"".$icon['href']."\"> ";
+          echo "<li><h3><a href=\"".$icon['href']."\"> ";
           echo $icon['name']."</a></h3>\n";
 
           $folder->SetSort('rand');
@@ -75,11 +75,11 @@ trong></a>.</div>';
             $icon = $result->GetIcon();
             echo '<div class="framemini" style="-moz-transform:rotate('.rand(-10,10).'deg); -webkit-transform:rotate('.rand(-10,10).'deg);"><a href="'.$icon['href'].'"><img width="'.($icon['width']/2).'" src="'.$icon['image'].'" alt="'.$icon['name'].'" /></a></div>';
           }
-          echo "</div>";
+          echo "</div></li>";
         }
         $root = new Folder('');
         $icon = $root->GetIcon();
-        echo "<h3><a href=\"".$icon['href']."\">... show all folders</a></h3>";
+        echo "<li><h3><a href=\"".$icon['href']."\">... show all folders</a></h3></li>";
 ?>
     </ul>
 

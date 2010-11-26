@@ -66,10 +66,10 @@
       foreach ($image as $attr => $val)
         if ($val)  
           echo " $attr=\"$val\"";
-      echo ">\n";
+      echo " />\n";
     }
 
-    function Header($title, $image=FALSE, $extrahead='', $onload='', $extratitle='', $actiononclick)
+    function Header($title, $image=FALSE, $extrahead='', $onload='', $extratitle='', $actiononclick='')
     {
       global $cameralife;
 
@@ -78,6 +78,8 @@
 
       $body = $onload ? "<body onLoad=\"$onload\">" : '<body>';
 ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <!--
   Welcome to <?= $cameralife->GetPref('sitename') ?>!
@@ -129,7 +131,7 @@ echo '
 
 echo '    <div id="slogan">';
       if (isset($image)) $this->Image($image);
-if (isset($actiononclick))
+if (isset($actiononclick) && strlen($actionclick))
   echo '    <strong id="title" onClick="'.$actiononclick.'" onMouseOver="this.style.border=\'1px solid red\'" onMouseOut="this.style.border=\'none\'"">'.$title.'</strong>';
 else
   echo '    <strong id="title">'.$title.'</strong>';
@@ -141,8 +143,10 @@ echo '      </div>
         <br/><br/>
         Type here to search by photo description, keywords, albums and more
         <form action="'.$cameralife->base_url.'/search.php" method="get" style="margin: 1em 0">
-          <input name="q" value="'.(isset($_GET['q'])?$_GET['q']:'').'" size="20" type="text">
-          <input value="search" type="submit">
+          <p style="margin:0; padding:0">
+          <input name="q" value="'.(isset($_GET['q'])?$_GET['q']:'').'" size="20" type="text" />
+          <input value="search" type="submit" />
+          </p>
         </form>
       </div>
     </div>

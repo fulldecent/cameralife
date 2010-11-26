@@ -2,20 +2,13 @@
 BLOCKERS for the 2.6.3 release
 ----------------------------------
 
-Fix theme for MSIE
-http://fdcl.sourceforge.net/wiki/index.php?title=Special:RecentChanges&feed=rss
 Automated database update
 Sorting/ paging
-Try to upload a non-image
 
 ===================
 RELEASE REGRESSION TEST
 -------------------
 
-Sitemaps: how to validate?
-OpenSearch: http://friendfeed.com/bgolub/5e56afb1/i-like-how-google-chrome-deals-with-opensearch
-Microformats: http://microformats.org/wiki/rel-tag
-RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/rss.php%3Fq%3Dwill
 Gallery API
 Try all the hacks
 Is /images/photos/upload/ being created?
@@ -83,11 +76,6 @@ popd
       move Image stuff in Photo further out into ImageProcessing (???)
     Create Theme developer assistant
 !   Theme bounty for iPod Nano
-
-  Update fdcl.sf.net
-    COMPARE TO FLICKR AND GOOGLE PICASA
-!   Add links to make a ticket and to SUBSCRIBE to project news
-    fdcl.sf.net analytics
 
 ! Focus on security 
     find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
@@ -168,3 +156,20 @@ header("Last-Modified: $gmdate_mod");
   Move to Google Code Hosting
     Add everything as a ticket
     Edit code to point to new wiki
+    http://cameralife.org
+    Freshmeat
+    Use analytics
+
+
+========================
+  RELEASE GUIDE - Regression testing
+------------------------
+
+Check main theme in MSIE
+http://fdcl.sourceforge.net/wiki/index.php?title=Special:RecentChanges&feed=rss
+Try to upload a non-image
+OpenSearch: http://friendfeed.com/bgolub/5e56afb1/i-like-how-google-chrome-deals-with-opensearch
+Microformats: http://microformats.org/wiki/rel-tag
+Validate all HTML and CSS
+RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/rss.php%3Fq%3Dwill
+

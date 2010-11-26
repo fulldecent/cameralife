@@ -1,8 +1,7 @@
 <?php
-  # A sitemap for search engines
-  # breaks things down into 1000 piece bite sizes
 /**
- * Creates sitemap for search engines - breaks each photo into 1000 bite sized pieces
+ * Creates sitemap for search engines
+ * Includes a master index and indexs for each 1000 photos
  * @link http://fdcl.sourceforge.net
  * @version 2.6.3b5
  * @author Will Entriken <cameralife@phor.net>
@@ -64,8 +63,8 @@
   elseif ($page == 'common')
   {
     $nodes[] = array($baseurl.'/index.php', '1.0');
-    $nodes[] = array($baseurl.'/login.php', '0.8');
-    $nodes[] = array($baseurl.'/stats.php', '0.8');
+    $nodes[] = array($baseurl.'/login.php', '0.1');
+    $nodes[] = array($baseurl.'/stats.php', '0.1');
   }
   elseif ($page == 'albums')
   {
