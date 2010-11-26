@@ -32,7 +32,7 @@
 
 Thank you for choosing to install Camera Life. We hope you will find this software is easy to use and fun. This project is released under the terms of the GNU General Public License, version 2. If you need help, look in:
 <ul>
-<li><a href="../README">The README</a>
+<li><a href="../INSTALL">The INSTALL file</a>
 <li><a href="http://fdcl.sourceforge.net">The Camera Life project homepage</a>
 <li>Email <a href="mailto:cameralife<?php echo '@' ?>phor.net">cameralife<?php echo '@' ?>phor.net</a>
 </ul>
@@ -141,7 +141,7 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
         if (md5($data2) == 'accba0b69f352b4c9440f05891b015c5')
           echo "<font color=green>Configured correctly</font>\n";
         else
-        {
+        {var_dump($data2);
           echo "<font color=orange>Warning</font>
                 <tr><td colspan=2><p class='important'>Optional: Enable MOD REWRITE in your web server to use pretty URLs.</p>\n";
         }
@@ -176,6 +176,10 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
         elseif ($allerrors == 1)
         {
           echo "<font color=orange>Warning</font>";
+        }
+        else
+        {
+          echo "<font color=green>Configured correctly</font>";
         }
 
         if (count($unwritable))
