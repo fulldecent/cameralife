@@ -12,7 +12,7 @@
   foreach ($photos->GetPhotos() as $photo)
   {
     $icon = $photo->GetIcon();
-    echo "          <a href=\"".$icon['href']."\">\n";
+    echo "          <a href=\"".$icon['href']."\" target=\"_new\">\n";
     echo "            <img style=\"border:0\" src=\"".$icon['image']."\" width=\"".$icon['width']."\" height=\"".$icon['height
 ']."\" ".
                       " alt=\"".htmlentities($icon['name'])."\" />\n";

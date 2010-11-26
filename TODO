@@ -4,6 +4,7 @@ BLOCKERS for the 2.6.3 release
 
 Automated database update - Update UPGRADE
 Sorting/ paging
+  Automatic update htaccess for rewritebase
 
 ===================
 RELEASE REGRESSION TEST
@@ -57,6 +58,8 @@ popd
 
 ===========================
 ----------------------------
+
+  Remove support for strip slashes
 
   Core modules
 !   modules/core/search.class.inc - Folder sorting based on time photo taken

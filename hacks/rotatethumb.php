@@ -1,19 +1,16 @@
 <?php
-#returns a rotated thumbnail
 /**Returns a rotated thumbnail
-*The following lines of code compute the dimension of the source image
-*<code>
-* $srcX = imagesx( $imgSrc );
-* $srcY = imagesy( $imgSrc );
-*</code>
-*@link http://fdcl.sourceforge.net
-*@version 2.6.3b5
-*@author Will Entriken <cameralife@phor.net>
-*@copyright Copyright (c) 2001-2009 Will Entriken
-*@access public
-*/
-/**
-*/
+ *The following lines of code compute the dimension of the source image
+ *<code>
+ * $srcX = imagesx( $imgSrc );
+ * $srcY = imagesy( $imgSrc );
+ *</code>
+ *@link http://fdcl.sourceforge.net
+ *@version 2.6.3b5
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+ */
 
   $features=array('database','security','imageprocessing', 'photostore');
   require "../main.inc";
@@ -30,7 +27,10 @@
   if ($cameralife->GetPref('photostore')!='local')
     die('This hack demands a local photostore');
 
-  $file = $cameralife->base_dir.'/'.$cameralife->PhotoStore->GetPref('cache_dir').'/'.$photo['id'].'_150.jpg';
+  if (!is_dir($cameralife->PhotoStore->GetPref('cache_dir')))
+    die('This hack requires absolute pathnames for cache dir, photo dir, in Photostore preferences');
+
+  $file = $cameralife->PhotoStore->GetPref('cache_dir').'/'.$photo['id'].'_150.jpg';
   if (!file_exists($file))
   {
     $size = 150;

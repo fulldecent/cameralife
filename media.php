@@ -9,7 +9,7 @@
  * Required GET variables
  * <ul>
  *  <li>id</li>
- *  <li>format - ('photo', 'thumbnail', or 'scaled')</li>
+ *  <li>scale - ('photo', 'thumbnail', or 'scaled')</li>
  *  <li>ver (mtime)</li>
  * </ul>
  * @link http://fdcl.sourceforge.net

@@ -1,29 +1,25 @@
 <?php
-  # Admin tool to batch rename unnamed photos
-  /**An adminisitrative tool-Batch Renamer that names unnamed photos in a batch
-  *
-  *The following code handles form actions
-  *<code>$curphoto = FALSE;
-  *foreach ($_POST as $key=>$val)
-  *{
-  *  list($cmd, $id) = split('_', $key);
-   * if ($id == FALSE) continue;
-   * if (!$curphoto || $id != $curphoto->Get('id'))
-  *  {
-   *   $curphoto = new Photo($id);
-   * }
-   *</code>
-  *@link http://fdcl.sourceforge.net
-   *@version 2.6.2
-    *@author Will Entriken <cameralife@phor.net>
-    *@copyright Copyright (c) 2001-2009 Will Entriken
-    *@access public
-*/
+/**An adminisitrative tool-Batch Renamer that names unnamed photos in a batch
+ *
+ *The following code handles form actions
+ *<code>$curphoto = FALSE;
+ *foreach ($_POST as $key=>$val)
+ *{
+ *  list($cmd, $id) = split('_', $key);
+ * if ($id == FALSE) continue;
+ * if (!$curphoto || $id != $curphoto->Get('id'))
+ *  {
+ *   $curphoto = new Photo($id);
+ * }
+ *</code>
+ *@link http://fdcl.sourceforge.net
+ *@version 2.6.2
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+ */
 
-  /**
-  */
-
-  $features=array('database','theme','security','imageprocessing','photostore' );
+  $features=array('database','theme','security','imageprocessing','photostore');
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
 
@@ -36,7 +32,7 @@
     $curphoto = FALSE;
   foreach ($_POST as $key=>$val)
   {
-    list($cmd, $id) = split('_', $key);
+    list($cmd, $id) = explode('_', $key);
     if ($id == FALSE) continue;
     if (!$curphoto || $id != $curphoto->Get('id'))
     {
@@ -158,7 +154,7 @@
     if ($i++%2==0) echo "<tr>";
     echo "<td>";
     echo "<a href=\"../photo.php&#63;id=".$photo['id']."\">";
-    echo "<img id=\"img_".$photo['id']."\" src='../media.php&#63;format=thumbnail&amp;id=".$photo['id'].'&amp;ver='.$photo['mtime']."'></a>";
+    echo "<img id=\"img_".$photo['id']."\" src='../media.php&#63;scale=thumbnail&amp;id=".$photo['id'].'&amp;ver='.$photo['mtime']."'></a>";
     echo "<td width=\"50%\">";
     echo "<input id=\"desc_".$photo['id']."\" name=\"desc_".$photo['id']."\" value=\"".$photo['description']."\"><br>";
     echo "<input id=\"key_".$photo['id']."\" name=\"key_".$photo['id']."\" value=\"".$photo['keywords']."\"><br> ";
@@ -187,10 +183,15 @@
 ?>
 <p>
   <input type=submit value="Commit Changes">
-  <a href="&#63;page=<?= $_GET['page'] ?>&amp;start=<?= $start ?>">(Undo changes)</a>
+  <a href="&#63;start=<?= $start ?>">(Undo changes)</a>
 </p>
 <?php
-  $cameralife->Theme->PageSelector($start,$total,$perpage,"page=".$_GET["page"]);
+
+  for($i=max(0,(floor($_GET['start']/$perpage)-2)*$perpage); $i<min($total,$_GET['start']+3*$perpage); $i+=$perpage)
+    if ($i==$_GET['start'])
+      echo "Page ".($i/$perpage)." ";
+    else
+      echo "<a href=\"&#63;start=$i\">Page ".($i/$perpage)."</a>  ";
   echo "$total total photos."
 ?>
   </table>

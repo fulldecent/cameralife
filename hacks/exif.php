@@ -21,7 +21,7 @@
 <html>
 <head>
   <title><?= $cameralife->preferences['core']['sitename'] ?></title>
-  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="../admin/admin.css">
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 <body>
@@ -34,6 +34,7 @@
 
 
 <?php
+  flush();
   $total = $cameralife->Database->SelectOne('photos', 'count(*)');
   $done = $cameralife->Database->SelectOne('photos', 'count(*)', "id <= $lastdone");
   $todo = $cameralife->Database->SelectOne('photos', 'count(*)', "id > $lastdone");
@@ -98,7 +99,7 @@
   $numdone += $fixed;
   if ($todo > 0)
   {
-    echo "<script language='javascript'>window.setTimeout('window.location=\"exif.php?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\"',100)</script>\n" ;
+    echo "<script language='javascript'>window.setTimeout('window.location=\"exif.php?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\"',500)</script>\n" ;
     echo "<p><a href=\"exif.php?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\">Click here to continue</a> if the Javascript redirect doesn't work.</p>\n";
   }
   else

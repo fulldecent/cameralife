@@ -1,16 +1,12 @@
 <?php
-///Creates a backup copy of all photos in the photostore.
-// Note:Scaled and thumbnail photos will not be copied
 /**Creates a backup copy of all photos in the photostore.
-*<b>Note:</b>Scaled and thumbnail photos will not be copied
-*@link http://fdcl.sourceforge.net
+ *<b>Note:</b>Scaled and thumbnail photos will not be copied
+ *@link http://fdcl.sourceforge.net
  *@version 2.6.3b5
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-*/
-/**
-*/
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+ */
   @ini_set('max_execution_time',9000);
 
   $features=array('database','security','imageprocessing', 'photostore');
