@@ -1,20 +1,15 @@
 <?php
+/**
+ * Accepts install parameters and perform the actual CL install
+ *
+ *@link http://fdcl.sourceforge.net
+ *@version 2.6.2
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+ */
+
   // Pretend like the user will authenticate by giving them a cookie.
-
- /**This file accepts information from user and uses the information to
-  *<ul>
-  *<li>Connect to the database</li>
-  *<li>Create tables</li>
-  *<li>Setup CameraLife </li>
-  *</ul>
-  *<b>Note</b> The user will "authenticate" the provided information by enabling a cookie.
-  *@link http://fdcl.sourceforge.net
-  *@version 2.6.2
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-*/
-
   setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
 ?>
 <html>
@@ -24,74 +19,11 @@
 </head>
 <body>
 
-<h1>Database Setup</h1>
+<h1>Setting up Camera Life</h1>
 
-<?php if (!$_POST) { ?>
-
-  <h2>Create a database</h2>
-
-  We need a database to run. Here are instructions for setting that up, make substitutions as necessary.
-
-  <p>For Linux:</p>
-
-  <pre class="code">$ sudo mysql
-mysql&lt; CREATE DATABASE <b>cameralife</b>;
-mysql&lt; GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '<b>pass</b>';</pre>
-
-  <p>Using cPanel:</p>
-
-  <ul>
-    <li><a target="_new" href="http://<?= $_SERVER['HTTP_HOST'] ?>/cpanel">Login to cPanel</a></li>
-    <li>Click <a target="_new" href="http://<?= $_SERVER['HTTP_HOST'] ?>:2082/frontend/x3/sql/index.html">MySQL Databases</a></li>
-    <li>Create Database: enter <b>cameralife</b>, read what your database is actually named, go back</li>
-    <li>Add New User: <b>username</b> <b>password</b></li>
-    <li>Add User To Database: select your user and database, and tick ALL PRIVILEGES</li>
-    <li>Note, your cPanel account name will proceed your database and user names below. For example, your database name will be mycpanelname_cameralife</li>
-  </ul>
-
-  <p>Using phpMyAdmin or MAMP</p>
-  <ul>
-    <li>If using MAMP, set the MySQL port to 3306 standard</li>
-    <li>Login to phpMyAdmin</li>
-    <li>Click SQL along the top, then paste in:
-      <pre class="code">CREATE DATABASE <b>cameralife</b>;
-GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '<b>pass</b>';</pre>
-    </li>
-  </ul>
-
-  <p>Note: If you setup Camera Life on a different system, please tell us about it at cameralife@phor.net</p>
-
-  <h2>Initialize database</h2>
-
-  Provide the credentials you chose above so Camera Life may access your new database. Also choose the admin password for your new website.
-
-  <br><br>
-
-  <table>
-  <form action="index2.php" method=POST>
-  <tr><td>Database server:<td> <input type="text" name="host" value="localhost">
-  <tr><td>Database name:<td> <input type="text" name="name" value="cameralife">
-  <tr><td>Database user:<td> <input type="text" name="user" value="user">
-  <tr><td>Database pass:<td> <input type="password" name="pass" value="">
-  <tr><td>Database table name prefix (optional):<td> <input type="text" name="prefix" value="">
-  <tr><td>&nbsp;
-  <tr><td>New password for Camera Life <b>admin</b> user:<td> <input type="password" name="sitepass" value="">
-  </table>
+<h2>Setting up database</h2>
 
 <?php
-    if (!is_writable('../modules'))
-    {
-      echo "<p class='important'>If you make the folder modules/ writable by your webserver, I can set up your configuration file for you, otherwise you'll need to edit it later.</p>";
-    }
-?>
-  <center>
-    <input class="pagelink" type="submit" value="Continue --&gt;">
-  </center>
-  </form>
-
-<?php } else { ?>
-
-  <?php
     if (!$_POST['host'])
       die ("You didn't specify a server to connect to, <a href=\"index2.php\">go back</a> and try again");
     if (!$_POST['name'])
@@ -110,7 +42,7 @@ GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '
     @mysql_select_db($_POST['name'], $setup_link)
       or die ("I couldn't select that database, <a href=\"index2.php\">go back</a> and try again");
 
-    $result = mysql_query('SHOW TABLES FROM '.$_POST['name'],$setup_link);
+    $result = mysql_query('SHOW TABLES FROM '.$_POST['name'].' WHERE tables_in_'.$_POST['name'].' LIKE "'.$_POST['prefix'].'%"',$setup_link);
     if (mysql_fetch_array($result))
       die ("The database ".$_POST['name']." has tables in it. The installer will not change
             the existing tables! To upgrade, consult the <a href='../UPGRADE'>UPGRADE</a> file");
@@ -286,8 +218,6 @@ GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '
   <p align=center>
   <a class="pagelink" href="index3.php">Continue --&gt;</a>
   </p>
-
-<?php } ?>
 
 </body>
 </html>

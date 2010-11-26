@@ -50,8 +50,7 @@ a tutorial on how your site works.
 
 <h2>You're done</h2>
 
-Your site is now set up. Please let me know if this installer was helpful,
-email us at: <a href="mailto:cameralife<?php echo '@' ?>phor.net">cameralife<?php echo '@' ?>phor.net</a> (start subject with "CAMERALIFE-BUGS:").
+Your site is now set up. Please let us know how this installer can be improved and what type of system you installed Camera Life, email us at: <a href="mailto:cameralife<?php echo '@' ?>phor.net">cameralife<?php echo '@' ?>phor.net</a> (start subject with "CAMERALIFE-FEEDBACK:").
 Now run along and check out <a href="../index.php">your site</a>.
 
 </body>

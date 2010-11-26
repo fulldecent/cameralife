@@ -4,11 +4,11 @@ body {
   margin-right: auto;
 }
 
-h1 { border: 2px solid black; background: #eeeeee; }
+h1 { border: 2px solid black; background: #eeeeee; padding: 0 0.5em}
 
-h2 { border: 1px solid black; background: #eeeeee; }
+h2 { border: 1px solid black; background: #eeeeee; padding: 0 0.5em}
 
-.pagelink { border: 2px solid #777; padding: 0.5em; margin: auto; display: block; font-size: x-large }
+.pagelink { border: 2px solid #777; padding: 0.25em 2em; margin: 1em auto; display: block; font-size: x-large; cursor:pointer }
 
 .pagelink:hover { border: 2px solid black; background: #bfb}
 

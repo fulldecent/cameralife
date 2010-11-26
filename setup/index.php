@@ -30,7 +30,7 @@
 
 <h1>Welcome to Camera Life</h1>
 
-Thank you for choosing to install Camera Life. We hope you will find this software is easy to use and fun. This project is released under the terms of the GNU General Public License, version 2. If you need help, look in:
+Thank you for choosing to install Camera Life. We hope you will find this software is easy to use and fun. This project is licensed under the the GNU General Public License, version 2. If you need help, look in:
 <ul>
 <li><a href="../INSTALL">The INSTALL file</a>
 <li><a href="http://fdcl.sourceforge.net">The Camera Life project homepage</a>
@@ -95,13 +95,14 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
       Checking Magic Quotes...
     <td>
       <?php
-        if (get_magic_quotes_gpc())
-          echo "<font color=green>Configured correctly</font>\n";
+        if (get_magic_quotes_gpc() )
+          echo "<font color=orange>Warning</font>
+                <tr><td colspan=2><p class='important'>You have Magic quotes enabled. This is 
+                deprecated. For details, please see 
+                http://www.php.net/manual/en/info.configuration.php#ini.magic-quotes-gpc</font>\n";
         else
         {
-          echo "<font color=orange>Warning</font>
-                <tr><td colspan=2><p class='important'>Magic quotes are disabled, you may want this, see ".
-               "http://us4.php.net/manual/en/ref.info.php#ini.magic-quotes-gpc for more info</font>\n";
+          echo "<font color=green>Configured correctly</font>\n";
         }
       ?>
   <tr>
@@ -132,18 +133,13 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
       Checking for mod_rewrite...
     <td>
       <?php
-        $url = 'http://' . $_SERVER['HTTP_HOST'] . ($_SERVER['SERVER_PORT'] == 80 ? '' : ':'.$_SERVER['SERVER_PORT']). str_replace('index.php','',$_SERVER['PHP_SELF']) . '../testrewrite';
-        $fh = @fopen($url, 'r');
-        while ($fh && !feof($fh))
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . ($_SERVER['SERVER_PORT'] == 80 ? '' : ':'.$_SERVER['SERVER_PORT']). str_replace('index.php','',$_SERVER['PHP_SELF']) . 'images/clear.gif';
+        if(@fopen($url, 'r'))
         {
-          $data2 .= fread($fh, 8192);
-        }
-        if (md5($data2) == 'accba0b69f352b4c9440f05891b015c5')
-          echo "<font color=green>Configured correctly</font>\n";
-        else
-        {var_dump($data2);
           echo "<font color=orange>Warning</font>
                 <tr><td colspan=2><p class='important'>Optional: Enable MOD REWRITE in your web server to use pretty URLs.</p>\n";
+        } else {
+          echo "<font color=green>Configured correctly</font>\n";
         }
       ?>
   <tr>
@@ -274,14 +270,69 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
 </table>
 
 <?php
-        if ($continue == false)
-        {
-          echo "<p class='important'>The prerequisites have not been met. Fix them, and <a href =\"index.php\">Check again</a>.</p>";
-        }else{
-          echo '<p align=center>
-                <a class="pagelink" href="index2.php">Continue --&gt;</a>
-                </p>';
-        }
+  if ($continue == false)
+  {
+    echo "<p class='important'>The prerequisites have not been met. Fix them, and <a href =\"index.php\">Check again</a>.</p>";
+    echo "</body></html>";
+    exit(0);
+  }
 ?>
+
+  <h2>Create a database</h2> 
+ 
+  Please set up a MySQL database and create a user with ALL PRIVILEGES for Camera Life.
+ 
+  <p>For Linux:</p> 
+ 
+  <pre class="code">$ sudo mysql
+mysql&lt; CREATE DATABASE <b>cameralife</b>;
+mysql&lt; GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '<b>pass</b>';</pre> 
+ 
+  <p>Using cPanel:</p> 
+ 
+  <ul> 
+    <li><a target="_new" href="http://phor.net/cpanel">Login to cPanel</a></li> 
+    <li>Click <a target="_new" href="http://phor.net:2082/frontend/x3/sql/index.html">MySQL Databases</a></li> 
+    <li>Create Database: enter <b>cameralife</b>, read what your database is actually named, go back</li> 
+    <li>Add New User: <b>username</b> <b>password</b></li> 
+    <li>Add User To Database: select your user and database, and tick ALL PRIVILEGES</li> 
+    <li>Note, your cPanel account name will proceed your database and user names below. For example, your database name will be mycpanelname_cameralife</li> 
+  </ul> 
+ 
+  <p>Using phpMyAdmin or MAMP:</p> 
+  <ul> 
+    <li>If using MAMP, Preferences | Ports | Set MySQL to 3306 standard</li> 
+    <li>Login to phpMyAdmin (<a href="http://localhost/phpMyAdminForPHP5/">link for MAMP on localhost</a>)</li> 
+    <li>Click SQL along the top, then paste in:
+      <pre class="code">CREATE DATABASE <b>cameralife</b>;
+GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '<b>pass</b>';</pre> 
+    </li> 
+  </ul> 
+ 
+  <p>Note: If you setup Camera Life on a different system, please tell us about it at cameralife@phor.net</p> 
+ 
+  <h2>Initialize database</h2> 
+ 
+  Provide the credentials you chose above so Camera Life may access your new database. Also choose the admin password for your new website.
+ 
+  <br><br> 
+ 
+  <table> 
+  <form action="index2.php" method=POST> 
+  <tr><td>Database server:<td> <input type="text" name="host" value="localhost"> 
+  <tr><td>Database name:<td> <input type="text" name="name" value="cameralife"> 
+  <tr><td>Database user:<td> <input type="text" name="user" value="user"> 
+  <tr><td>Database pass:<td> <input type="password" name="pass" value=""> 
+  <tr><td>Database table name prefix (optional):<td> <input type="text" name="prefix" value=""> 
+  <tr><td>&nbsp;
+  <tr><td>New password for Camera Life <b>admin</b> user:<td> <input type="password" name="sitepass" value=""> 
+  </table> 
+ 
+  <center> 
+    <input class="pagelink" type="submit" value="Continue --&gt;"> 
+  </center> 
+  </form> 
+ 
+
 </body>
 </html>
