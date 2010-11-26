@@ -1,39 +1,38 @@
 <?php
-  /**This module stores files on a remote filesystem
-  *  .That remote server must support public HTTP.
-  *  Private files are delivered through this server.
-  *
-  *Does not support
-  *<ul>
-  *<li>Lazy thumbnailing</li>
-  *
-  *<li>The deleted dir</li></ul>
-  *@version 2.6.2
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-  *@link http://fdcl.sourceforge.net
-    */
-  /**Stores files remotely on the Amazon S3 cloud
-  *
-  *You can use an Amazon S3 account or 
-  *
-  *<a href="https://aws-portal.amazon.com/gp/aws/user/subscription/index.html?offeringCode=2CE0E367">sign up for Camera Life Photo Storage</a>.';
-  *   
-  *<code>$this->SetPref('created', '1');</code>'Initializes AWS buckets...';
-  *<code>$fp = fsockopen("s3.amazonaws.com", 80, $errno, $errstr, 30);
-  * if (!$fp)
-   * $cameralife->Error("Cannot connect to AWS: $errstr ($errno)\n");</code>Opens HTTP connection to Amazon S3
-    *<code>$aws_bucket = $this->GetPref('photobucket'); // AWS bucket 
-       * $dt = gmdate('r'); // GMT based timestamp 
-      *  $string2sign = "PUT\n\n\n{$dt}\nx-amz-acl:public-read\n/{$aws_bucket}";</code>Creates the first bucket
-      *<code>  $query = "PUT /{$aws_bucket} HTTP/1.1\r\nHost: s3.amazonaws.com\r\nx-amz-acl: public-read\r\nConnection: keep-alive\r\nDate: $dt\r\nAuthorization: AWS ".$this->GetPref('accesskey').":".$this->amazon_hmac($string2sign)."\r\n\r\n";
-*/<code> Prepares HTTP PUT query
-*<code>$aws_bucket = $this->GetPref('cachebucket'); // AWS bucket 
-     *   $dt = gmdate('r'); // GMT based timestamp 
-     *   $string2sign = "PUT\n\n\n{$dt}\nx-amz-acl:public-read\n/{$aws_bucket}";
-*/<code>Creates the second bucket
-  */
+/**This module stores files on a remote filesystem
+ *  .That remote server must support public HTTP.
+ *  Private files are delivered through this server.
+ *
+ *Does not support
+ *<ul>
+ *<li>Lazy thumbnailing</li>
+ *<li>The deleted dir</li></ul>
+ *@version 2.6.2
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+ *@link http://fdcl.sourceforge.net
+ */
+
+/**Stores files remotely on the Amazon S3 cloud
+ *
+ * You can use an Amazon S3 account or 
+ * Sign up for Camera Life Photo Storage - http://bit.ly/eP1vOJ 
+ *   
+ *<code>$this->SetPref('created', '1');</code>'Initializes AWS buckets...';
+ *<code>$fp = fsockopen("s3.amazonaws.com", 80, $errno, $errstr, 30);
+ * if (!$fp)
+ * $cameralife->Error("Cannot connect to AWS: $errstr ($errno)\n");</code>Opens HTTP connection to Amazon S3
+ *<code>$aws_bucket = $this->GetPref('photobucket'); // AWS bucket 
+ * $dt = gmdate('r'); // GMT based timestamp 
+ *  $string2sign = "PUT\n\n\n{$dt}\nx-amz-acl:public-read\n/{$aws_bucket}";</code>Creates the first bucket
+ *<code>  $query = "PUT /{$aws_bucket} HTTP/1.1\r\nHost: s3.amazonaws.com\r\nx-amz-acl: public-read\r\nConnection: keep-alive\r\nDate: $dt\r\nAuthorization: AWS ".$this->GetPref('accesskey').":".$this->amazon_hmac($string2sign)."\r\n\r\n";
+ *<code> Prepares HTTP PUT query
+ *<code>$aws_bucket = $this->GetPref('cachebucket'); // AWS bucket 
+ *   $dt = gmdate('r'); // GMT based timestamp 
+ *   $string2sign = "PUT\n\n\n{$dt}\nx-amz-acl:public-read\n/{$aws_bucket}";
+ *<code>Creates the second bucket
+*/
 
   class AmazonS3PhotoStore extends PhotoStore
   {

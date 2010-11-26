@@ -1,8 +1,8 @@
--- MySQL dump 10.11
+-- MySQL dump 10.13  Distrib 5.1.41, for debian-linux-gnu (i486)
 --
 -- Host: localhost    Database: fdcl
 -- ------------------------------------------------------
--- Server version	5.0.51a-3ubuntu5.1
+-- Server version	5.1.41-3ubuntu12.7
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -20,148 +20,148 @@
 --
 
 DROP TABLE IF EXISTS `albums`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `albums` (
-  `id` int(11) NOT NULL auto_increment,
-  `topic` varchar(20) NOT NULL default '',
-  `name` varchar(25) NOT NULL default '',
-  `term` varchar(20) NOT NULL default '',
-  `poster_id` int(11) NOT NULL default '0',
-  `hits` bigint(20) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=174 DEFAULT CHARSET=latin1 COMMENT='Sections of pictures';
-SET character_set_client = @saved_cs_client;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `topic` varchar(20) NOT NULL DEFAULT '',
+  `name` varchar(25) NOT NULL DEFAULT '',
+  `term` varchar(20) NOT NULL DEFAULT '',
+  `poster_id` int(11) NOT NULL DEFAULT '0',
+  `hits` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=175 DEFAULT CHARSET=latin1 COMMENT='Sections of pictures';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `comments`
 --
 
 DROP TABLE IF EXISTS `comments`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `comments` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `photo_id` int(11) NOT NULL,
   `username` varchar(30) NOT NULL,
   `user_ip` varchar(16) NOT NULL,
   `comment` varchar(255) NOT NULL,
   `date` datetime NOT NULL,
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`),
   KEY `id` (`photo_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=86 DEFAULT CHARSET=latin1;
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM AUTO_INCREMENT=326 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `exif`
 --
 
 DROP TABLE IF EXISTS `exif`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `exif` (
   `photoid` int(11) NOT NULL,
   `tag` varchar(50) NOT NULL,
   `value` varchar(255) NOT NULL,
-  PRIMARY KEY  (`photoid`,`tag`),
+  PRIMARY KEY (`photoid`,`tag`),
   KEY `photoid` (`photoid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-SET character_set_client = @saved_cs_client;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `likebetter`
 --
 
 DROP TABLE IF EXISTS `likebetter`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `likebetter` (
-  `id` int(11) default NULL,
-  `chosen` tinyint(1) default NULL,
-  `addr` int(10) unsigned default NULL,
+  `id` int(11) DEFAULT NULL,
+  `chosen` tinyint(1) DEFAULT NULL,
+  `addr` int(10) unsigned DEFAULT NULL,
   UNIQUE KEY `id_2` (`id`,`addr`,`chosen`),
   KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-SET character_set_client = @saved_cs_client;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `logs`
 --
 
 DROP TABLE IF EXISTS `logs`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `logs` (
-  `id` int(11) NOT NULL auto_increment,
-  `record_type` enum('album','photo','preference','user') NOT NULL default 'album',
-  `record_id` int(11) NOT NULL default '0',
-  `value_field` varchar(40) NOT NULL default '',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `record_type` enum('album','photo','preference','user') NOT NULL DEFAULT 'album',
+  `record_id` int(11) NOT NULL DEFAULT '0',
+  `value_field` varchar(40) NOT NULL DEFAULT '',
   `value_old` text NOT NULL,
   `value_new` text NOT NULL,
-  `user_name` varchar(30) NOT NULL default '',
-  `user_ip` varchar(16) NOT NULL default '',
-  `user_date` date NOT NULL default '0000-00-00',
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=17378 DEFAULT CHARSET=latin1 COMMENT='Logs modifications to the system';
-SET character_set_client = @saved_cs_client;
+  `user_name` varchar(30) NOT NULL DEFAULT '',
+  `user_ip` varchar(16) NOT NULL DEFAULT '',
+  `user_date` date NOT NULL DEFAULT '0000-00-00',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=17511 DEFAULT CHARSET=latin1 COMMENT='Logs modifications to the system';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `photos`
 --
 
 DROP TABLE IF EXISTS `photos`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `photos` (
-  `id` int(11) NOT NULL auto_increment,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `filename` varchar(255) NOT NULL,
-  `path` varchar(255) NOT NULL default '',
-  `description` varchar(255) NOT NULL default '',
-  `username` varchar(30) default NULL,
-  `status` int(11) NOT NULL default '0',
-  `flag` enum('indecent','photography','subject','bracketing') default NULL,
-  `width` int(11) default NULL,
-  `height` int(11) default NULL,
-  `tn_width` int(11) default NULL,
-  `tn_height` int(11) default NULL,
-  `hits` bigint(20) NOT NULL default '0',
-  `created` date default NULL,
-  `fsize` int(11) NOT NULL default '0',
-  `modified` int(1) default NULL,
-  `mtime` int(11) default NULL,
-  `keywords` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`id`),
+  `path` varchar(255) NOT NULL DEFAULT '',
+  `description` varchar(255) NOT NULL DEFAULT '',
+  `username` varchar(30) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
+  `flag` enum('indecent','photography','subject','bracketing') DEFAULT NULL,
+  `width` int(11) DEFAULT NULL,
+  `height` int(11) DEFAULT NULL,
+  `tn_width` int(11) DEFAULT NULL,
+  `tn_height` int(11) DEFAULT NULL,
+  `hits` bigint(20) NOT NULL DEFAULT '0',
+  `created` date DEFAULT NULL,
+  `fsize` int(11) NOT NULL DEFAULT '0',
+  `modified` int(1) DEFAULT NULL,
+  `mtime` int(11) DEFAULT NULL,
+  `keywords` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
   KEY `fingerprint` (`filename`,`fsize`),
   FULLTEXT KEY `description` (`description`)
-) ENGINE=MyISAM AUTO_INCREMENT=11559 DEFAULT CHARSET=latin1 COMMENT='Photos and their descriptions';
-SET character_set_client = @saved_cs_client;
+) ENGINE=MyISAM AUTO_INCREMENT=14725 DEFAULT CHARSET=latin1 COMMENT='Photos and their descriptions';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `preferences`
 --
 
 DROP TABLE IF EXISTS `preferences`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `preferences` (
-  `prefmodule` varchar(64) NOT NULL default 'core',
-  `prefkey` varchar(64) NOT NULL default '',
-  `prefvalue` varchar(255) NOT NULL default '',
-  `prefdefault` varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`prefmodule`,`prefkey`)
+  `prefmodule` varchar(64) NOT NULL DEFAULT 'core',
+  `prefkey` varchar(64) NOT NULL DEFAULT '',
+  `prefvalue` varchar(255) NOT NULL DEFAULT '',
+  `prefdefault` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`prefmodule`,`prefkey`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-SET character_set_client = @saved_cs_client;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `ratings`
 --
 
 DROP TABLE IF EXISTS `ratings`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ratings` (
   `id` int(11) NOT NULL,
-  `username` varchar(30) default NULL,
+  `username` varchar(30) DEFAULT NULL,
   `user_ip` varchar(16) NOT NULL,
   `rating` int(11) NOT NULL,
   `date` datetime NOT NULL,
@@ -170,34 +170,40 @@ CREATE TABLE `ratings` (
   KEY `id_2` (`id`,`username`,`user_ip`),
   KEY `id_4` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-SET character_set_client = @saved_cs_client;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `test`
+--
+
+DROP TABLE IF EXISTS `test`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `test` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `rec` int(11) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `users`
 --
 
 DROP TABLE IF EXISTS `users`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `username` varchar(30) NOT NULL default '',
-  `password` varchar(64) NOT NULL default '',
-  `auth` int(11) NOT NULL default '0',
-  `cookie` varchar(64) NOT NULL default '',
-  `last_online` date NOT NULL default '0000-00-00',
-  `last_ip` varchar(20) default NULL,
-  `email` varchar(80) default NULL,
-  PRIMARY KEY  (`username`),
+  `username` varchar(30) NOT NULL DEFAULT '',
+  `password` varchar(64) NOT NULL DEFAULT '',
+  `auth` int(11) NOT NULL DEFAULT '0',
+  `cookie` varchar(64) NOT NULL DEFAULT '',
+  `last_online` date NOT NULL DEFAULT '0000-00-00',
+  `last_ip` varchar(20) DEFAULT NULL,
+  `email` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`username`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Users of the system';
-SET character_set_client = @saved_cs_client;
-
-
-INSERT INTO `preferences` VALUES('CameraLife','sitedate',NOW(),NOW());
-/* Then create a user on the site */
-/* UPDATE USERS set auth=5; */
-
-
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -208,4 +214,4 @@ INSERT INTO `preferences` VALUES('CameraLife','sitedate',NOW(),NOW());
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2008-07-28 23:49:28
+-- Dump completed on 2010-11-26 16:47:04

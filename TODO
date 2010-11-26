@@ -11,12 +11,10 @@ RELEASE REGRESSION TEST
 -------------------
 
 Gallery API
-Try all the hacks
-Is /images/photos/upload/ being created?
 Test with installing using 2 different table prefixes
 Test Amazon S3 http://github.com/technoweenie/parkplace
 BUG http://sourceforge.net/tracker/index.php?func=detail&aid=2468857&group_id=70910&atid=529445
-Edit vim setup/install.mysql
+Is /images/photos/upload/ being created?
 
 -------------------
 AUTOMATED RELEASE
@@ -175,4 +173,6 @@ OpenSearch: http://friendfeed.com/bgolub/5e56afb1/i-like-how-google-chrome-deals
 Microformats: http://microformats.org/wiki/rel-tag
 Validate all HTML and CSS
 RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/rss.php%3Fq%3Dwill
+Try all the hacks
+mysqldump fdcl -d > setup/install.mysql
 
