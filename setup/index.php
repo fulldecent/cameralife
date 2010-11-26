@@ -196,10 +196,34 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
 ?>
   <tr>
     <td>
+      Checking .htaccess...
+    <td>
+<?php
+  if (file_exists('../.htaccess') && !is_writable('../.htaccess'))
+  {
+    echo "<font color=orange>Warning</font>
+          <tr><td colspan=2><p class='important'>Your file .htaccess exists but is not writable. Please fix this now, or you will have to edit the file manually later. <a href=\"index.php\">Check again</a>. ";
+    echo "<br /><br /><tt>chmod 777 ".dirname(dirname(__FILE__))."/.htaccess</tt>";
+    echo "</p>\n";
+  } elseif (!copy ('example.htaccess', '../.htaccess')) {
+    echo "<font color=orange>Warning</font>
+          <tr><td colspan=2><p class='important'>We cannot automatically edit .htaccess. Please fix this now, or you will have to edit the file manually later. <a href=\"index.php\">Check again</a>. ";
+    echo "<br /><br /><tt>cp ".dirname(__FILE__)."/example.htaccess ".dirname(dirname(__FILE__))."/.htaccess";
+    echo "<br />chmod 777 ".dirname(dirname(__FILE__))."/.htaccess</tt>";
+    echo "</p>\n";
+  } else {
+    echo "<font color=green>Configured correctly</font>\n";
+  }
+
+
+?>
+
+  <tr>
+    <td>
       Checking package contents...
     <td>
 <?php
-        if(!file_exists('../.htaccess'))
+        if(!file_exists('.htaccess'))
         {
           echo "<font color=orange>Error</font>
                 <tr><td colspan=2><p class='important'>You are missing the file <b>.htaccess</b> from the

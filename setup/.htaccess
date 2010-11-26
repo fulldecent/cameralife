@@ -1,0 +1,8 @@
+DirectoryIndex index.php
+Options -Indexes +MultiViews +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteBase /cameralife/
+RewriteRule .*clear.gif INVALID-RETURN-404 [F]
+</IfModule>

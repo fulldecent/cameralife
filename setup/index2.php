@@ -187,6 +187,8 @@
 
   ?>
 
+<h2>Writing configuration file</h2>
+
   <?php
     $config[] = "<?php\n";
     $config[] = "\$db_host = '".$_POST['host']."';\n";
@@ -203,7 +205,7 @@
       fclose($fd);
 
       echo "<p>Writing configuration file...</p>";
-      echo "<p>Setup is complete.</p>";
+      echo "<p>Configuration is complete.</p>";
     }
     else
     {
@@ -214,6 +216,42 @@
       echo "</pre></p>";
     }
   ?>
+
+<h2>Setting up .htaccess</h2>
+
+<?php
+  $htaccess = file('../.htaccess');
+  if (!$htaccess)
+    $htaccess = file('example.htaccess');
+  if (!$htaccess)
+    die('Serious error, could not read htaccess file from setup directory or base directory');
+
+  $fixed = 0;
+  $dir = dirname(dirname($_SERVER['PHP_SELF']));
+  $dir = trim($dir, '/');
+  $newht = preg_replace('/RewriteBase .*/',"RewriteBase /$dir/",$htaccess,1,$fixed);
+
+  if ($fd = fopen('../.htaccess','w+'))
+  {
+    foreach ($newht as $line)
+      fwrite ($fd, $line);
+    fclose($fd);
+
+    echo "<p>Writing .htaccess file...</p>";
+    echo "<p>.htaccess is complete.</p>";
+  }
+  else
+  {
+    echo "<p>I cannot write your ".dirname(dirname(__FILE__))."/.htaccess file. ";
+    echo "Please create this file and paste in the following:<pre class='code'>";
+    foreach ($newht as $line)
+      echo htmlentities($line) . "\n";
+    echo "</pre></p>";
+  }
+
+?>
+
+
 
   <p align=center>
   <a class="pagelink" href="index3.php">Continue --&gt;</a>
