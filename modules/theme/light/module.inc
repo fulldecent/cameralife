@@ -142,7 +142,7 @@ echo '      </div>
         <a href="#">Search</a>
         <br/><br/>
         Type here to search by photo description, keywords, albums and more
-        <form action="'.$cameralife->base_url.'/search.php" method="get" style="margin: 1em 0">
+        <form id="search" action="'.$cameralife->base_url.'/search.php" method="get" style="margin: 1em 0">
           <p style="margin:0; padding:0">
           <input name="q" value="'.(isset($_GET['q'])?$_GET['q']:'').'" size="20" type="text" />
           <input value="search" type="submit" />
