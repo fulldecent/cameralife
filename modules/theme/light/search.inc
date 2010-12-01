@@ -1,44 +1,44 @@
 <?php
-/**Implements various search options
-*The following variables are set by ShowPage()
-*<ul>
-*<li>$cameralife</li>
-*<li>$search </li>
-*</ul>
-*@link http://fdcl.sourceforge.net
-    *@version 2.6.3b6
-    *@author Will Entriken <cameralife@phor.net>
-    *@copyright Copyright (c) 2001-2009 Will Entriken
-    *@access public
-    */
 /**
-*/
-  # $cameralife and $search are set by ShowPage()
+ * Implements various search options
+ * The following variables are set by ShowPage()
+ * <ul>
+ * <li>$cameralife</li>
+ * <li>$search </li>
+ * </ul>
+ * @link http://fdcl.sourceforge.net
+ * @version 2.6.3b6
+ * @author Will Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @access public
+ */
+  
+// $cameralife and $search are set by ShowPage()
 
-  $cameralife->GetFeature('security');
-  $cameralife->GetFeature('photostore');
+$cameralife->GetFeature('security');
+$cameralife->GetFeature('photostore');
 
-  $start = $_GET['start'] + 0;
-  $search->SetPage($start);
-  $counts = $search->GetCounts();
-  if (($_GET['page'] == 'a') || (!isset($_GET['page']) && $counts['albums'] >0))
-  {
-    $_GET['page'] = 'a';
-    $results = $search->GetAlbums();
-  } 
-  elseif (($_GET['page'] == 'f') || (!isset($_GET['page']) && $counts['folders']>0))
-  {
-    $_GET['page'] = 'f';
-    $results = $search->GetFolders();
-  } 
-  else 
-  {
-    $_GET['page'] = 'p';
-    $results = $search->GetPhotos();
-  }
+$start = $_GET['start'] + 0;
+$search->SetPage($start);
+$counts = $search->GetCounts();
+if (($_GET['page'] == 'a') || (!isset($_GET['page']) && $counts['albums'] >0))
+{
+  $_GET['page'] = 'a';
+  $results = $search->GetAlbums();
+} 
+elseif (($_GET['page'] == 'f') || (!isset($_GET['page']) && $counts['folders']>0))
+{
+  $_GET['page'] = 'f';
+  $results = $search->GetFolders();
+} 
+else 
+{
+  $_GET['page'] = 'p';
+  $results = $search->GetPhotos();
+}
 
-  $header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of'.htmlentities($search->GetQuery()).'" href="'.$camerasife->base_url.'/rss.php?q='.urlencode($search->GetQuery()).'" />';
-  $cameralife->Theme->Header('Site search', 'main', $header);
+$header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of'.htmlentities($search->GetQuery()).'" href="'.$camerasife->base_url.'/rss.php?q='.urlencode($search->GetQuery()).'" />';
+$cameralife->Theme->Header('Site search', 'main', $header);
 ?>
 <div id="sidebar">
 <form method="GET"> 

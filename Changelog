@@ -17,7 +17,7 @@
 * Link to online help from inside the site - for error messages
 * Fixed Amazon S3 support
 * Automatic htaccess setup
-* Passed SQLInjectme test
+* Passed SQLInjectme, XSSme test
 
 2.6.2  Will Entriken <cameralife AT phor.net>
 * Website update, thanks to Rajesh Sundaram

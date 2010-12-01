@@ -1,16 +1,14 @@
 <?php
 /**
- *Theme name - Light
- *@link http://fdcl.sourceforge.net
- *@version 2.6.3b6
- *@author Will Entriken<cameralife@phor.net>
- *@access public
- *@copyright Copyright (c) 2001-2009 Will Entriken
- *@todo make this HTML valid
+ * Theme name - Light
+ * @link http://fdcl.sourceforge.net
+ * @version 2.6.3b6
+ * @author Will Entriken<cameralife@phor.net>
+ * @access public
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @todo make this HTML valid
  */
 
-/** Implements a ThemeModule
-*/
   class LightTheme extends ThemeModule
   {
     function LightTheme() 
@@ -144,7 +142,7 @@ echo '      </div>
         Type here to search by photo description, keywords, albums and more
         <form id="search" action="'.$cameralife->base_url.'/search.php" method="get" style="margin: 1em 0">
           <p style="margin:0; padding:0">
-          <input name="q" value="'.(isset($_GET['q'])?$_GET['q']:'').'" size="20" type="text" />
+          <input name="q" value="'.(isset($_GET['q'])?htmlentities($_GET['q']):'').'" size="20" type="text" />
           <input value="search" type="submit" />
           </p>
         </form>
