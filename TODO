@@ -1,15 +1,9 @@
-================================== 
-BLOCKERS for the 2.6.3 release
-----------------------------------
-
-Admin/comments, delete all
-
 -------------------
 AUTOMATED RELEASE
 edit the first line, save this file, then paste into a terminal...
 -------------------
 
-VERSION='2.6.3b6' # <-- EDIT THIS
+VERSION='2.6.3' # <-- EDIT THIS
 sed -i '' "/this..version/s/'.*'/'$VERSION'/" main.inc
 grep -lIr . . | grep -v '\.svn' | # no binary, no svn
 xargs sed "1,10 s/@\(\W*\)version\W*[0-9.a-z]\+/@\1version $VERSION/" -i
@@ -164,4 +158,4 @@ Try all the hacks
 mysqldump fdcl -d > setup/install.mysql # and add insert statements
 Test Amazon S3 http://github.com/technoweenie/parkplace
 Gallery API
-XSSme SQLinjectme
+XSSme SQLinjectme wapiti

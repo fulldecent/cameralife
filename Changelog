@@ -1,14 +1,15 @@
-2.6.3svnandbetas  Will Entriken <cameralife AT phor.net>
+2.6.3  Will Entriken <cameralife AT phor.net>
 * Huge documentation update by Aysha Mohamed Rafiq
-* Add the widget hack
+* Added hacks/widget.php - put this on your blog
 * Add options for image sizes, thinks Jack Snodgrass
 * Resolve issue at http://www.xssed.com/mirror/55648/
 * Resolve issues at http://secunia.com/advisories/31234/
+* Resolve other XSS and SQL injection issues
+* Site now passes SQLInjectme, XSSme and Wapiti vulnerability tests
 * Add autorotate for new and existing photos
 * Added search like on php.net: http://example.com/cameralife/SEARCHTERM
-* Fix install issue, thanks Eoin McLoughlin
-* Update install documentation
-* Bugfixes
+* Fix install issues, thanks Eoin McLoughlin
+* Update install documentation and process, takes one less click to install
 * Rethemed Admin section, thanks Keith Bishop
 * Supports GPS in photo metadata, links to Google maps
 * Cleaned up RSS feed
@@ -17,7 +18,7 @@
 * Link to online help from inside the site - for error messages
 * Fixed Amazon S3 support
 * Automatic htaccess setup
-* Passed security tests (with fixes) SQLInjectme, XSSme, Wapiti
+* Checkpoint and rollback is easier to manage with batch process
 
 2.6.2  Will Entriken <cameralife AT phor.net>
 * Website update, thanks to Rajesh Sundaram
