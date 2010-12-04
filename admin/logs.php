@@ -1,16 +1,13 @@
 <?php
-  # Part of the user manager section:
-  # Log analyzer - analyze all logs
-  /**This is a part of the user manager section
-  *The log analyzer analyzes all the logs
-  *@link http://fdcl.sourceforge.net
-   *@version 2.6.3b6
-    *@author Will Entriken <cameralife@phor.net>
-    *@copyright Copyright (c) 2001-2009 Will Entriken
-    *@access public
-  */
-  /**
-  */
+/**
+ * Log analyzer - analyze and rollback changes to the site and contents
+ * 
+ * @link http://fdcl.sourceforge.net
+ * @version 2.6.3b6
+ * @author Will Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @access public
+ */
 
   $features=array('database','security');
   require "../main.inc";
@@ -42,18 +39,7 @@
     {
       if (!is_numeric($var) || !is_numeric($val))
         continue;
-
-      $result = $cameralife->Database->Select('logs','*',"id=$val");
-      $record = $result->FetchAssoc();
-
-      $action = array($record['value_field']=>$record['value_old']);
-      $cameralife->Database->Update($record['record_type'].'s',$action,'id='.$record['record_id']);
-
-      $condition = "record_type='".$record['record_type']."'
-                    AND value_field='".$record['value_field']."'
-                    AND record_id = '".$record['record_id']."'
-                    AND id >= ".$record['id'];
-      $cameralife->Database->Delete('logs',$condition);
+      AuditTrail::Undo($val);
     }
   }
 ?>
@@ -121,21 +107,21 @@
           <?php if ($_POST["showalbums"]) echo " checked" ?>
         >
         <label for="showalbums">
-          <?php $cameralife->IconURL('small-album') ?>Albums
+          <img src="<?= $cameralife->IconURL('small-album') ?>">Albums
         </label>
       <td width="25%">
         <input type="checkbox" id="showusers" name="showusers"
           <?php if ($_POST["showusers"]) echo " checked" ?>
         >
         <label for="showusers">
-          <?php $cameralife->IconURL('small-login') ?>Users
+          <img src="<?= $cameralife->IconURL('small-login') ?>">Users
         </label>
       <td width="25%">
         <input type="checkbox" id="showpreferences" name="showpreferences"
           <?php if ($_POST["showpreferences"]) echo " checked" ?>
         >
         <label for="showpreferences">
-          <?php $cameralife->IconURL('small-admin') ?>Preferences
+          <img src="<?= $cameralife->IconURL('small-admin') ?>">Preferences
         </label>
   </table>
   </div>
@@ -169,16 +155,18 @@
         </label>
   </table>
   </div>
-  <h2>Show changes since <span style="color: green">last checkpoint</span></h2>
-  <!--
-    <select>
-      <option>Last checkpoint</option>
-      <option>A week ago</option>
-      <option>A month ago</option>
-      <option>The last 100 changes</option>
-    </select>
-  -->
+  <h2>Show changes since last checkpoint</h2>
   <p><input type=submit value="Query logs"></p>
+</form>
+
+<form method="post">
+  <hr style="width:750px">
+
+  <p>
+    <button onClick='inps = document.getElementsByTagName("input"); for (a in inps) { b=inps[a]; if(b.type!="radio")continue; if(b.value=="") b.checked=true }; return false'>Set each item to the current value</button>
+    <button onClick='inps = document.getElementsByTagName("input"); c=0; for (a in inps) { b=inps[a]; if(b.type!="radio")continue; if(c)b.checked=true; c=(b.value=="")}; return false'>Set each item to the previous value</button>
+    <button onClick='inps = document.getElementsByTagName("input"); for (a in inps) { b=inps[a]; if(b.type!="radio")continue; b.checked=true }; return false'>Set each item to the oldest value</button>
+  </p>
 
   <table align="center" cellspacing="2" border=1 width="100%">
     <tr>
@@ -203,13 +191,11 @@
       $condition .= "OR user_name = '' ";
     $condition .= ") ";
 
-    $checkpoint = $cameralife->Database->SelectOne('logs','MAX(id)');
-    echo "<input type='hidden' name='checkpoint' value='$checkpoint'>\n";
+    $condition .= " AND logs.id > ".($cameralife->GetPref('checkpointlogs')+0);
+    $condition .= " AND logs.record_id=photos.id";
+    $extra = "GROUP BY record_id, record_type, value_field ORDER BY logs.id DESC";
 
-    $condition .= " AND id > ".($cameralife->GetPref('checkpointlogs')+0);
-    $extra = "GROUP BY record_id, record_type, value_field ORDER BY id DESC";
-
-    $result = $cameralife->Database->Select('logs','*, MAX(id) as maxid',$condition,$extra);
+    $result = $cameralife->Database->Select('logs,photos','*, MAX(logs.id) as maxid',$condition,$extra);
     while($record = $result->FetchAssoc())
     {
       echo "<tr><td align=center>";
@@ -232,7 +218,8 @@
 
       $condition = "record_id = ".$record['record_id']."
                     AND record_type = '".$record['record_type']."'
-                    AND value_field = '".$record['value_field']."'";
+                    AND value_field = '".$record['value_field']."'
+                    AND id > ".($cameralife->GetPref('checkpointlogs')+0);
       $result2 = $cameralife->Database->Select('logs','*',$condition, 'ORDER BY id DESC');
 
       unset($last_row);
@@ -246,6 +233,7 @@
         $last_row = $row;
       }
 
+// todo have fun fixing this not to use value_old, maybe a whole separate query here?
       echo "<span style='color:green'>";
       echo "<input id=\"".(++$htmlid)."\" type=radio name=\"".$record['maxid']."\" value=\"".$last_row['id']."\"> ";
       echo "<label for=\"$htmlid\">\"".$last_row['value_old']."\"</label>";
@@ -258,19 +246,27 @@
         <input type=submit name="action" value="Commit Changes">
         <a href="logs.php">(Revert to last saved)</a><br>
   </p>
-  </form>
-
-<h2>Update checkpoint</h2>
-<form method="post" action="controller_prefs.php">
-<p>
-  All of these logs will be hidden when you visit this page later<br>
-  <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] ?>" />
-  <input type="hidden" name="module1" value="CameraLife" />
-  <input type="hidden" name="param1" value="checkpointlogs" />
-  <input type="hidden" name="value1" value="<?= $checkpoint ?>">
-  <input type="submit" value="Update checkpoint">
-</p>
 </form>
+  <h2>Update checkpoint</h2>
+    <form method="post" action="controller_prefs.php">
+      <p>
+      <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] ?>" />
+      <input type="hidden" name="module1" value="CameraLife" />
+      <input type="hidden" name="param1" value="checkpointlogs" />
+      <input type="hidden" name="value1" value="<?= $cameralife->Database->SelectOne('logs','MAX(id)') ?>" />
+      <input type="submit" value="Set checkpoint to now">
+      </p>
+    </form>
+    <form method="post" action="controller_prefs.php">
+      <p>
+      <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] ?>" />
+      <input type="hidden" name="module1" value="CameraLife" />
+      <input type="hidden" name="param1" value="checkpointlogs" />
+      <input type="hidden" name="value1" value="0">
+      <input type="submit" value="Reset checkpoint">
+      </p>
+    </form>
+  </p>
 </body>
 </html>
 

@@ -15,7 +15,6 @@
  * @var mixed $contextPrev the previous photo in the 'context'
  * @var mixed $contextNext the next photo in the 'context'
  */
-
 class Photo extends View
 {
   var $record, $image;
@@ -90,12 +89,12 @@ class Photo extends View
     global $cameralife;
 
     $receipt = NULL;
-    if ($key != 'hits')
-      $receipt = AuditTrail::Log('photo',$this->record['id'],$key,$this->record[$key],$value);
+    $this->record[$key] = $value;
     if ($key == 'status')
       $cameralife->PhotoStore->SetPermissions($this);
-    $this->record[$key] = $value;
     $cameralife->Database->Update('photos', array($key=>$value), 'id='.$this->record['id']);
+    if ($key != 'hits')
+      $receipt = AuditTrail::Log('photo',$this->record['id'],$key,$this->record[$key],$value);
     return $receipt;
   }
 
