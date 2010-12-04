@@ -273,7 +273,7 @@
 ?>
     <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
     <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-    <input type="hidden" name="target" value="<?= $target ?>" />
+    <input type="hidden" name="target" value="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>" />
     <input type="hidden" name="action" value="flag" />
 
     <div style="<?=($_GET['action'] == 'delete')?'':'display:none'?>"class="administrative" align=center id="delete">
