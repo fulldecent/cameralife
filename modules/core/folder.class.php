@@ -143,7 +143,7 @@ class Folder extends Search
     if (basename($this->path))
       $retval['name'] = $this->Basename();
     else
-      $retval['name'] = '(Top level)';
+      $retval['name'] = '(All photos)';
 
     if ($size=='large')
       $retval['image'] = $cameralife->IconURL('folder');

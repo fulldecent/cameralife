@@ -54,9 +54,9 @@ $menu = array();
 <?php
   foreach($folder->GetAncestors() as $ancestor) {
     $icon = $ancestor->GetIcon('small');
-    echo "        <li><a href=\"{$icon['href']}\">{$icon['name']}</a></li>\n";
+    echo "        <li><a href=\"{$icon['href']}\"><img src=\"".$cameralife->IconURL('small-folder')."\"> {$icon['name']}</a></li>\n";
   }
-  echo "        <li>$folder_name</li>\n";
+  echo "        <li><img src=\"".$cameralife->IconURL('small-folder')."\"> $folder_name</li>\n";
 ?>
       </ul>
     </div>

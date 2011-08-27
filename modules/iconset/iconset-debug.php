@@ -11,7 +11,7 @@
 $required_images =
   array('main','small-main','topic','small-topic','album','small-album',
         'photo','small-photo','folder','small-folder',
-        'login','small-login','admin','small-admin','stats','',
+        'login','small-login','admin','small-admin','stats','small-stats',
         'admin-item','search','icon-folder');
 
 if (!$_GET['theme'] || eregi('[/\\]',$_GET['theme']))
@@ -38,7 +38,7 @@ else
   }
   $extras = $images;
 
-  echo "<h2>$theme - required images</h2><table width=\"100%\">";
+  echo "<h1>$theme - required images</h1><table width=\"100%\">";
 
   foreach($required_images as $image)
   {
@@ -52,7 +52,10 @@ else
       sort($images[$image]);
 
       foreach($images[$image] as $suffix)
-        echo "$suffix<img src=\"$theme/$image.$suffix\" align=middle>&nbsp;&nbsp;&nbsp;";
+        if( $suffix =='svg')
+          echo "$suffix<img src=\"$theme/$image.$suffix\" align=middle width=\"50px\">&nbsp;&nbsp;&nbsp;";
+        else
+          echo "$suffix<img src=\"$theme/$image.$suffix\" align=middle>&nbsp;&nbsp;&nbsp;";
     }
     else
     {
@@ -77,9 +80,12 @@ else
     {
       sort($images[$image]);
 
-      foreach($images[$image] as $suffix)
-        echo "$suffix<img src=\"$theme/$image.$suffix\"
-              align=middle>&nbsp;&nbsp;&nbsp;";
+      foreach($images[$image] as $suffix) {
+        if( $suffix =='svg')
+          echo "$suffix<img src=\"$theme/$image.$suffix\" align=middle width=\"50px\">&nbsp;&nbsp;&nbsp;";
+        else
+          echo "$suffix<img src=\"$theme/$image.$suffix\" align=middle>&nbsp;&nbsp;&nbsp;";
+      }
     }
   }
 
