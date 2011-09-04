@@ -1,0 +1,31 @@
+body {
+	background: #efe;
+}
+
+div#header, p, h2, table, ol, ul, h3 {
+	width: 770px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div#header {
+	background: #aab;
+	padding: 1em;
+	border-top: 0.5em solid gray;
+	border-bottom: 0.5em solid gray;
+}
+
+h2 {
+	border-left: 1em solid #aea;
+	background: #dd8;
+	font-size: large;
+	padding: 0.25em 0;
+}
+
+img {
+	border: 0;
+}
+
+.alert {
+	color: red;
+}

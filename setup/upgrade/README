@@ -1,0 +1,14 @@
+===============
+UPGRADE SCRIPTS
+===============
+
+These scripts update your database schema to match your PHP files.
+
+The database schema version is saved in modules/config.inc
+  or if that is blank, your version is 0.
+
+The db version needed by your PHP files is in main.inc near the top.
+
+USAGE:
+
+Open browser to your website, follow instructions.

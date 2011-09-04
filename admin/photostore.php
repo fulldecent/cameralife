@@ -72,22 +72,16 @@
     <td>
       <select name="value1">
       <?php
-        $themes = glob($cameralife->base_dir."/modules/photostore/*");
-        foreach($themes as $theme)
+        $feature = 'photostore';
+        foreach ($cameralife->GetModules($feature) as $module)
         {
-          if (!is_dir($theme))
-            continue;
+          include $cameralife->base_dir."/modules/$feature/$module/module-info.php";
 
-          if ($cameralife->GetPref('photostore') == basename($theme))
-            echo "<option selected value=\"".basename($theme)."\">\n";
-          else
-            echo "<option value=\"".basename($theme)."\">\n";
-
-          echo basename($theme);
+          $selected = $cameralife->GetPref($feature) == basename($module) ? 'selected' : '';
+          echo "<option $selected value=\"$module\">";
+          echo "<b>$module_name</b> - <i>version $module_version by $module_author</i>";
           echo "</option>\n";
-          flush();
         }
-
       ?>
       </select>
     <td><input type="submit" value="Choose">

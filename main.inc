@@ -24,6 +24,14 @@ if (file_exists(dirname(__FILE__).'/modules/config.inc'))
   die('Redirecting to installer...');
 }
 
+// Is the software newer than the database?
+if (!isset($db_schema_version) || $db_schema_version < 2)
+{
+  header('Location: http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']),'/').'/setup/upgrade/upgrade.php');
+  die('Redirecting to upgrader...');
+}
+
+
 require dirname(__FILE__).'/modules/module.inc';
 
 class CameraLife extends CameraLifeModule # and View
@@ -75,6 +83,13 @@ class CameraLife extends CameraLifeModule # and View
   function RelativeInclude($file)
   {
     require $this->base_dir."/$file";
+  }
+
+  function GetModules($feature)
+  {
+    $modules = glob($this->base_dir."/modules/$feature/*", GLOB_ONLYDIR);
+    $modules = array_map('basename', $modules);
+    return $modules;
   }
 
   function GetFeature($feature)

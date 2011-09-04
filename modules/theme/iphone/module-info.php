@@ -13,11 +13,11 @@
   */
 /**
 */
- $theme_name    = 'iPhone';
- $theme_author  = 'Will Entriken';
- $theme_email   = 'cameralife@phor.net';
- $theme_version = '1.0.2';
- $theme_date    = '5/1/2005';
- $theme_url     = 'http://fdcl.sourceforge.net';
- $theme_desc    = 'A scaled down theme';
+ $module_name    = 'iPhone';
+ $module_author  = 'Will Entriken';
+ $module_email   = 'cameralife@phor.net';
+ $module_version = '1.0.2';
+ $module_date    = '5/1/2005';
+ $module_url     = 'http://fdcl.sourceforge.net';
+ $module_desc    = 'A scaled down theme';
 ?>

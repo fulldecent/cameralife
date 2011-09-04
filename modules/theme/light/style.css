@@ -12,7 +12,7 @@ h2 { margin:0; padding:10px 0 0 10px; font-size:1.25em; color:#be141d; font-weig
 #logo a{ color:#fff; text-decoration:none; font-weight:bold; font-size:20px; text-transform:uppercase; letter-spacing:5px; }
 #logo_text { float:right; width:240px; text-align:left; font-size:11px; color:#fff; line-height:12px; padding-top:5px;}
 #menu { background: url(images/menu_bckg.gif) repeat-x #fff; height:40px; padding-top:10px;}
-#menu_list {width:600px; margin:0 auto;}
+#menu_list {width:700px; margin:0 auto;}
 #menu a { display:block; color:#000000; float:left; font-size:14px; text-transform:uppercase; font-weight:bold; text-decoration:none; margin:0 20px; padding-top:8px;}
 #menu a:hover{padding-top:10px;}
 .splitter { display:block; float:left;}

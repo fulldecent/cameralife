@@ -1,25 +1,18 @@
 <?php
- /** Incorporates standard security implementaion. 
- *
- *@version 2.6.2
- *@author Will Entriken <cameralife@phor.net>
- *@copyright Copyright (c) 2001-2009 Will Entriken
- *@access public
- *@link http://fdcl.sourceforge.net
- *
- *<ul>
- *<li>A password to authenticate</li>
- *<li>A cookie to handle "sessions"</li>
- *<li>Groups to determine permissions</li>
- *<li>A database to store the above three features</li>
- *</ul>
- */
-  class DefaultSecurity extends SecurityModule
+ /** Implements OpenID login
+  *
+  *@version 2.6.2
+  *@author Will Entriken <cameralife@phor.net>
+  *@copyright Copyright (c) 2011 Will Entriken
+  *@access public
+  *@link http://fdcl.sourceforge.net
+  */
+  class OpenIDSecurity extends SecurityModule
   {
     var $curuser;
     var $authcookie;
 
-    function DefaultSecurity()
+    function OpenIDSecurity()
     { 
       $this->preferences[] = array('name'=>'auth_photo_rename', 'type'=>'number', 'default'=>'0');
       $this->preferences[] = array('name'=>'auth_photo_delete', 'type'=>'number', 'default'=>'0');
@@ -51,39 +44,54 @@
       }
     }
   
-    /* Return TRUE or a string that is an error message */
-    /**@return TRUE | a string that is an error message
+    /** Logs a user in after they have been authenticated with ID and EMAIL
     */
-    function Login ($username, $password)
+    function Login ($id, $email)
     {
       global $cameralife;
+      $id = mysql_real_escape_string($id);
+      $email = mysql_real_escape_string($email);
 
-      $username = strtolower($username);
-      $username = preg_replace('/[^0-9a-z_]/','',$username);
-      $password = crypt($password,$username);
+      $cookie = mt_rand(0,1000000000000);
+      setcookie($this->GetPref('auth_cookie'),$cookie,time()+30000000,'/');
+      $_COOKIE[$this->GetPref('auth_cookie')] = $cookie;
 
-      $result = $cameralife->Database->Select('users','*',"username='$username' AND password='$password'");
-
-      if ($user = $result->FetchAssoc()) // Login legal
+      $result = $cameralife->Database->Select('users','*',"password='$id'");
+      if ($user = $result->FetchAssoc()) // User exists already
       {
-        $cookie = rand(0,999999);
-        $values['cookie'] = $cookie;
         $values['last_online'] = date('Y-m-d');
         $values['last_ip'] =  $_SERVER["REMOTE_ADDR"];
-        $cameralife->Database->Update('users',$values,"username='$username'");
+        $values['cookie'] = $cookie;
+        $cameralife->Database->Update('users',$values,"password='$id'");
+        return true;
+      } else {
+
+        $result = $cameralife->Database->Select('users','*',"username='$email'");
+
+        if ($user = $result->FetchAssoc())
+          die ('Email address already in use');
+
+        if ($email == '')
+          die ('Email address empty');
+
+        $values['username'] = $email;
+        $values['password'] = $id;
+        $values['auth'] = 1;
+        $values['cookie'] = $cookie;
+        $values['last_online'] = date('Y-m-d');
+        $values['last_ip'] = $HTTP_SERVER_VARS["REMOTE_ADDR"];
+        $values['email'] = $email;
+        $cameralife->Database->Insert('users',$values);
         setcookie($this->GetPref('auth_cookie'),$cookie,time()+30000000,'/');
-        $_COOKIE[$this->GetPref('auth_cookie')] = $cookie;
         return true;
       }
-      else // Login illegal
-        return "Invalid login";
     }
 
 
     function LoginURL () 
     { 
       global $cameralife;
-      return $cameralife->base_url."/modules/security/default/login.php";
+      return $cameralife->base_url."/modules/security/openid/login.php";
     }
 
     /* Return TRUE + cookie or a string that is an error message */
@@ -141,7 +149,7 @@
       if ($this->authorize('admin_file') ||
           $this->authorize('admin_theme') ||
           $this->authorize('admin_customize'))
-      return $cameralife->base_url."/modules/security/default/administer.php";
+      return $cameralife->base_url."/modules/security/openid/administer.php";
       return FALSE;
     }
 

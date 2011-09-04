@@ -1,5 +1,5 @@
 <?php
-/**Modify the Look of Your Site
+/**Modify the look of your site
  *
  * You can set
  *<ul>
@@ -39,8 +39,6 @@
 	elseif (!is_writable($dir))
       echo "<p class=\"alert\">WARNING: $dir is not writable!</p>";
   }
-
-  $all_themes = array();
 ?>
 
 <html>
@@ -72,28 +70,16 @@
     <td>
       <select name="value1">
       <?php
-        $themes = glob($cameralife->base_dir."/modules/theme/*");
-        foreach($themes as $theme)
+        $feature = 'theme';
+        foreach ($cameralife->GetModules($feature) as $module)
         {
-          if ($file[0] == '.')
-            continue;
-          if (!is_dir($theme))
-            continue;
-          if (!is_file($theme."/theme-info.php"))
-            continue;
+          include $cameralife->base_dir."/modules/$feature/$module/module-info.php";
 
-          include($theme."/theme-info.php");
-
-          if ($cameralife->GetPref('theme') == basename($theme))
-            echo "<option selected value=\"".basename($theme)."\">\n";
-          else
-            echo "<option value=\"".basename($theme)."\">\n";
-
-          echo "<b>$theme_name</b> - <i>version $theme_version by $theme_author</i>";
+          $selected = $cameralife->GetPref($feature) == basename($module) ? 'selected' : '';
+          echo "<option $selected value=\"$module\">";
+          echo "<b>$module_name</b> - <i>version $module_version by $module_author</i>";
           echo "</option>\n";
-          flush();
         }
-
       ?>
       </select>
     <td><input type="submit" value="Choose">
@@ -103,26 +89,15 @@
     <td>
       <select name="value2">
       <?php
-        $themes = glob($cameralife->base_dir."/modules/iconset/*");
-        foreach($themes as $theme)
+        $feature = 'iconset';
+        foreach ($cameralife->GetModules($feature) as $module)
         {
-          if ($file[0] == '.')
-            continue;
-          if (!is_dir($theme))
-            continue;
-          if (!is_file($theme."/iconset-info.php"))
-            continue;
+          include $cameralife->base_dir."/modules/$feature/$module/module-info.php";
 
-          include($theme."/iconset-info.php");
-
-          if ($cameralife->GetPref('iconset') == basename($theme))
-            echo "<option selected value=\"".basename($theme)."\">\n";
-          else
-            echo "<option value=\"".basename($theme)."\">\n";
-
-          echo "<b>$iconset_name</b> - <i>version $iconset_version by $iconset_author</i>";
+          $selected = $cameralife->GetPref($feature) == basename($module) ? 'selected' : '';
+          echo "<option $selected value=\"$module\">";
+          echo "<b>$module_name</b> - <i>version $module_version by $module_author</i>";
           echo "</option>\n";
-          flush();
         }
       ?>
       </select>

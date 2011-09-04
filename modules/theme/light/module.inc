@@ -116,7 +116,7 @@
   }
   else
   { 
-    echo '        <a href="'.$cameralife->base_url.'/login.php">Login</a>';
+    echo '        <a href="'.$cameralife->Security->LoginURL().'">Login</a>';
     echo '        <img src="'.$cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))).'/images/splitter.gif" class="splitter" alt="" />';
     echo '        <a href="http://fdcl.sourceforge.net/">Powered by Camera Life</a>';
   }

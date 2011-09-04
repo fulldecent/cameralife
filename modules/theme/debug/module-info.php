@@ -16,11 +16,11 @@
 */
 /**
 */
- $theme_name    = 'Debug';
- $theme_author  = 'Will Entriken';
- $theme_email   = 'default-theme@camera.phor.net';
- $theme_version = '1.2';
- $theme_date    = '2006-01-10';
- $theme_url     = 'http://fdcl.sourceforge.net';
- $theme_desc    = 'Helps you debug page layout.';
+ $module_name    = 'Debug';
+ $module_author  = 'Will Entriken';
+ $module_email   = 'default-theme@camera.phor.net';
+ $module_version = '1.2';
+ $module_date    = '2006-01-10';
+ $module_url     = 'http://fdcl.sourceforge.net';
+ $module_desc    = 'Helps you debug page layout.';
 ?>

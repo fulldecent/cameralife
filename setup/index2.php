@@ -133,20 +133,19 @@
     mysql_query("INSERT INTO `${prefix}preferences` VALUES('CameraLife','sitedate',NOW(),NOW())")
       or die(mysql_error() . ' ' . __LINE__);
 
-    mysql_query("INSERT INTO `${prefix}preferences` VALUES('CameraLife','db_version','1','1')")
-      or die(mysql_error() . ' ' . __LINE__);
-
     $SQL = "
       CREATE TABLE `${prefix}users` (
+        `id` int(10) NOT NULL auto_increment,
         `username` varchar(30) NOT NULL default '',
-        `password` varchar(64) NOT NULL default '',
+        `password` varchar(255) NOT NULL default '',
         `auth` int(11) NOT NULL default '0',
         `cookie` varchar(64) NOT NULL default '',
         `last_online` date NOT NULL default '0000-00-00',
         `last_ip` varchar(20) default NULL,
         `email` varchar(80) default NULL,
         PRIMARY KEY  (`username`),
-        UNIQUE KEY `username` (`username`)
+        UNIQUE KEY `username` (`username`),
+        UNIQUE KEY `id` (`id`)
       ) TYPE=MyISAM COMMENT='Users of the system';";
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);

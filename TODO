@@ -46,6 +46,19 @@ popd
 ===========================
 ----------------------------
 
+===================================
+WHEN MAKING CHANGES TO THE DATABASE
+===================================
+ * Increment version number in module-config.inc, main.inc, and setup/upgrade/upgrade.php
+ * Update db schema at setup/index2.php
+ * Update install.mysql
+ * Write an upgrader in setup/upgrade
+ 
+
+==========
+WISH LIST
+==========
+
   Core modules
 !   modules/core/search.class.inc - Folder sorting based on time photo taken
 
@@ -147,6 +160,10 @@ header("Last-Modified: $gmdate_mod");
     Freshmeat
     Use analytics
 
+  use RecursiveDirectoryIterator in files.php
+  
+  take advantage of PHP5 string parsing to make cleaner code
+    http://www.php.net/manual/en/language.types.string.php#language.types.string.parsing
 
 ========================
   RELEASE GUIDE - Regression testing
@@ -164,3 +181,5 @@ mysqldump fdcl -d > setup/install.mysql # and add insert statements
 Test Amazon S3 http://github.com/technoweenie/parkplace
 Gallery API
 XSSme SQLinjectme wapiti
+
+

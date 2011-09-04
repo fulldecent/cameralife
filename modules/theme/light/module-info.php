@@ -13,12 +13,12 @@
  *@copyright Copyright (c) 2001-2009 Will Entriken
  *@access public
  */
-$theme_name    = 'Light';
-$theme_author  = 'Will Entriken';
-$theme_email   = 'cameralife@phor.net';
-$theme_version = '1.0.1';
-$theme_date    = '7/20/2008';
-$theme_url     = 'http://fdcl.sourceforge.net';
+$module_name    = 'Light';
+$module_author  = 'Will Entriken';
+$module_email   = 'cameralife@phor.net';
+$module_version = '1.0.1';
+$module_date    = '7/20/2008';
+$module_url     = 'http://fdcl.sourceforge.net';
 
-$theme_desc    = 'Design by Reality Software. Based on http://www.freelayouts.com/templates/Reddy';
+$module_desc    = 'Design by Reality Software. Based on http://www.freelayouts.com/templates/Reddy';
 ?>

@@ -1,19 +1,33 @@
 *
 * Camera Life
-* Version 2.6.2 - 2008-07-27
+* Version 2.6.4
 * http://fdcl.sourceforge.net
 *
-* Copyright (C) 2001-2008 Will Entriken "Full Decent" <cameralife AT phor.net>
+* Copyright (C) 2001-2011 Will Entriken "Full Decent" <cameralife AT phor.net>
 *
 * UPGRADING Camera Life from any version to any version
 *
 
-Upgrading from an older version of Camera Life requires working knowledge of MySQL.
-Basically, it goes like this:
-
+Upgrading from 2.6.3 to newer versions with SVN:
   * Back up your database and photos
-  * Look at your database structure
-  * Look at the new database structure (in setup/install.mysql)
+  * Run `svn up`
+  * Load your site and follow upgrade instructions
+
+Upgrading from 2.6.3 to newer versions with stable releases:
+  * Back up your database and photos
+  * Rename the folder of your existing site
+  * Unzip the new Camera Life to your server
+  * Move your previous modules/config.inc and photos into the new folder
+  * Load your site and follow upgrade instructions
+
+Upgrading from versions earlier than 2.6.3 requires working knowledge of MySQL:
+  * Back up your database and photos
+  * Make coffee
+  * Try instructions above for Upgrading from 2.6.3 to newer versions with stable
+  * When the automatic updater fails, mail cameralife-bugs @ phor.net
+  * Continue on your own with the following:
+
+  * Compare your database structure to the new structure (in setup/install.mysql)
   * Update your tables to the new format
   * Edit modules/config.inc, using modules/config-example.inc as a template
   * Paste the new source files on top of the old ones
@@ -22,8 +36,9 @@ Basically, it goes like this:
   * Register an account named "admin"
   * UPDATE users SET auth=5 WHERE username='admin'
   * Point your browser to install/index3.php
+  * Update your modules/config.inc and add $db_schema_version = 1;
 
-Extra notes:
+Extra notes upgrading from versions before 2.5 (year 2005 and earlier):
 
   * Pay attention to unique keys, the key on photos.filename was removed in 2.5
   * admin/.htaccess was removed in 2.2
@@ -40,7 +55,6 @@ Extra notes:
   UPDATE photos SET flag='subject' WHERE flag='u';
   UPDATE photos SET flag='bracketing' WHERE flag='r';
   ALTER TABLE  `photos` CHANGE  `flag`  `flag` ENUM(  'indecent',  'photography',  'subject',  'bracketing' ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL
-
 
   mkdir images/cache
   chmod 777 images/cache

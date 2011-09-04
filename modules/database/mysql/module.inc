@@ -1,17 +1,14 @@
 <?php
-  
-  /**
-  *@version 2.6.3
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-  *@link http://fdcl.sourceforge.net
-   */
-   /**
-   *MYSQL implementation of the database class.
-  * This requires some preferences to be set in $cameralife:
-  * db_name db_user db_pass db_host and optionally db_prefix
-  */
+/**
+ *MYSQL implementation of the database class.
+ * This requires some preferences to be set in $cameralife:
+ * db_name db_user db_pass db_host and optionally db_prefix
+ *@version 2.6.3
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+ *@link http://fdcl.sourceforge.net
+ */
   class MysqlDatabase extends DatabaseModule
   {
     var $myConnection;
@@ -84,7 +81,6 @@
 
       $setstring = substr($setstring, 0, -2); // chop off last ', '
       $sql = "UPDATE ".$this->myPrefix."$table SET $setstring WHERE $condition $extra";
-
       $query = mysql_query($sql, $this->myConnection)
         or die (mysql_error().' SQL: <pre>'.$sql.'</pre>');
 

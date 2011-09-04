@@ -1,3 +1,7 @@
+svn  Will Entriken <cameralife AT phor.net>
+* Added support for OpenID login, this will be default soon
+
+
 2.6.3  Will Entriken <cameralife AT phor.net>
 * Huge documentation update by Aysha Mohamed Rafiq
 * Added hacks/widget.php - put this on your blog

@@ -70,7 +70,7 @@
   else
   {
     $menu[] = array('name'=>'Log in',
-                    'href'=>'login.php',
+                    'href'=>$cameralife->Security->LoginURL(),
                     'image'=>'small-login');
     $menu[] = array('name'=>'Powered by Camera Life',
                     'href'=>'http://fdcl.sourceforge.net/',

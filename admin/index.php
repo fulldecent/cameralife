@@ -1,15 +1,12 @@
 <?php
-  # Provides a menu to choose administrative options
-/**Displays the main admin page
-*Provides a menu to choose administrative options
-*@link http://fdcl.sourceforge.net
- *@version 2.6.3
+ /**Displays the main admin page
+  *Provides a menu to choose administrative options
+  *@link http://fdcl.sourceforge.net
+  *@version 2.6.3
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public
-*/
-/**
-*/
+  */
   $features=array('database','security', 'photostore');
   require "../main.inc";
   $cameralife->base_url = dirname($cameralife->base_url);
@@ -104,9 +101,9 @@
     }
   }
 
-  if ($cameralife->Security->authorize('admin_customize') && $cameralife->Security->AdministerURL())
+  if ($cameralife->Security->authorize('admin_customize'))
   {
-    echo '<h2><a href="'.$cameralife->Security->AdministerURL()."\">User Manager</a></h2>\n";
+    echo "<h2><a href=\"security.php\">Security Manager</a></h2>\n";
     echo "<p>User authentication and security management</p>\n";
 
     if ($numreg)

@@ -196,15 +196,17 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
+  `id` int(20) NOT NULL auto_increment,
   `username` varchar(30) NOT NULL DEFAULT '',
-  `password` varchar(64) NOT NULL DEFAULT '',
+  `password` varchar(255) NOT NULL DEFAULT '',
   `auth` int(11) NOT NULL DEFAULT '0',
   `cookie` varchar(64) NOT NULL DEFAULT '',
   `last_online` date NOT NULL DEFAULT '0000-00-00',
   `last_ip` varchar(20) DEFAULT NULL,
   `email` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`username`),
-  UNIQUE KEY `username` (`username`)
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Users of the system';
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
