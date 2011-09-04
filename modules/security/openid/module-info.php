@@ -1,7 +1,7 @@
 <?php
 /**
  * Module openid security
- * @version 2.6.3
+ * @version 
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2011 Will Entriken
  * @access public

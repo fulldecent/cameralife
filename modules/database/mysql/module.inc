@@ -3,7 +3,7 @@
  *MYSQL implementation of the database class.
  * This requires some preferences to be set in $cameralife:
  * db_name db_user db_pass db_host and optionally db_prefix
- *@version 2.6.3
+ *@version 
  *@author Will Entriken <cameralife@phor.net>
  *@copyright Copyright (c) 2001-2009 Will Entriken
  *@access public

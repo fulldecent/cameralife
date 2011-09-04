@@ -2,7 +2,7 @@
  /**Displays the main admin page
   *Provides a menu to choose administrative options
   *@link http://fdcl.sourceforge.net
-  *@version 2.6.3
+  *@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public

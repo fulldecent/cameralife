@@ -7,7 +7,7 @@
  *<ul>
  *<li>Lazy thumbnailing</li>
  *<li>The deleted dir</li></ul>
- *@version 2.6.3
+ *@version 
  *@author Will Entriken <cameralife@phor.net>
  *@copyright Copyright (c) 2001-2009 Will Entriken
  *@access public

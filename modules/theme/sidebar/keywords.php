@@ -7,7 +7,7 @@
 *<li>Checks for unique values even if the cases are different</li>
 *</ul>
 * @link http://fdcl.sourceforge.net
-*@version 2.6.3
+*@version 
 *@author Will Entriken<cameralife@phor.net>
 *@access public
 *@copyright Copyright (c) 2001-2009 Will Entriken

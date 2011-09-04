@@ -5,7 +5,7 @@
 *<li>$module_version = '1.0.3';</li>
 *<li>$module_date    = '2006-08-31';</li>
 *</ul>
-*@version 2.6.3
+*@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public

@@ -1,7 +1,7 @@
 <?php
  /** Incorporates standard security implementaion. 
  *
- *@version 2.6.2
+ *@version 
  *@author Will Entriken <cameralife@phor.net>
  *@copyright Copyright (c) 2001-2009 Will Entriken
  *@access public

@@ -2,7 +2,7 @@
 /**
  * Theme name - Light
  * @link http://fdcl.sourceforge.net
- * @version 2.6.3
+ * @version 
  * @author Will Entriken<cameralife@phor.net>
  * @access public
  * @copyright Copyright (c) 2001-2009 Will Entriken
@@ -106,7 +106,8 @@
   if ($cameralife->Security->GetName())
   {
 
-    echo '        <a href="'.$cameralife->base_url.'/logout.php">Logout '.$cameralife->Security->GetName().'</a>';
+    $gravitar = htmlentities("http://www.gravatar.com/avatar/".md5($cameralife->Security->GetName())."?s=16&d=identicon");
+    echo '        <a href="'.$cameralife->base_url.'/logout.php">Logout <img src="'.$gravitar.'" /> '.$cameralife->Security->GetName().'</a>';
     echo '        <img src="'.$cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))).'/images/splitter.gif" class="splitter" alt="" />';
     echo '        <a href="'.$myfoldericon['href'].'">My Uploads</a>';
     echo '        <img src="'.$cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))).'/images/splitter.gif" class="splitter" alt="" />';

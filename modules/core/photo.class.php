@@ -4,7 +4,7 @@
  * Class Photo provides a front end to working with photos
  * @author Will Entriken <cameralife@phor.net>
  * @access public
- * @version 2.6.3
+ * @version 
  * @copyright Copyright (c) 2001-2009 Will Entriken
  */
    

@@ -1,5 +1,5 @@
 http://codex.gallery2.org/Gallery3:Features
-http://en.gravatar.com/site/implement/images/
+http://gallery.menalto.com/wiki/Most_Requested_Features
 
 use php5 mysql apache?
 
@@ -8,10 +8,10 @@ AUTOMATED RELEASE
 edit the first line, save this file, then paste into a terminal...
 -------------------
 
-VERSION='2.6.3' # <-- EDIT THIS
+VERSION='2.6.4b1' # <-- EDIT THIS
 sed -i '' "/this..version/s/'.*'/'$VERSION'/" main.inc
-grep -lIr . . | grep -v '\.svn' | # no binary, no svn
-xargs sed "1,10 s/@\(\W*\)version\W*[0-9.a-z]\+/@\1version $VERSION/" -i
+grep -lIZr . . | grep -z -v '\.svn' | # no binary, no svn
+xargs -0 sed "1,10 s/@\(\W*\)version\W*[0-9.a-z]\+/@\1version $VERSION/" -i
 
 svn commit -m "Releasing version $VERSION"
 svn copy https://entriken@fdcl.svn.sourceforge.net/svnroot/fdcl/trunk https://entriken@fdcl.svn.sourceforge.net/svnroot/fdcl/tags/$VERSION -m "Tagging version $VERSION"
@@ -62,13 +62,11 @@ WISH LIST
   Core modules
 !   modules/core/search.class.inc - Folder sorting based on time photo taken
 
-  Remove content negotiation assumption from iconsets
-
   Light theme
     Sorting/ paging
 !   Automatically choose a preview size a la Picasa Web, killer feature
     Accelerator keys, left, right
-    Make Theme->AssetURL work if content negotiation is off
+!   Make Theme->AssetURL work if content negotiation is off
     User can choose image size, persistent - Jack Snodgrass
 
 ! Update PhotoStores for separate photos and CL data
@@ -88,7 +86,7 @@ WISH LIST
     grep '\./' */*php | grep -v requ
     check for inputs as arrays!
     PHP E_ALL strict?
-    VALID HTML STRICT!!!
+!   VALID HTML STRICT!!!
     Each CL install gets random secret number. All requests hash against secret. Protect XSRF
       Is this a differentiator? Put on "Compare Us" page versus Picasa, Gallery, ...
       Hash implementation -- http://pajhome.org.uk/crypt/md5/auth.html -- http://www.owasp.org/index.php/Main_Page -- http://www.owasp.org/index.php/Philadelphia
@@ -115,11 +113,7 @@ WISH LIST
     put into hacks/
 
 ?? Integrate with Picasa or iPhone or Facebook for face recognition
-
-
-
-
-  http://gallery.menalto.com/wiki/Most_Requested_Features
+    http://face.com/
 
   Hacks
     hacks/rename.php - allow it to work on all files in a given path

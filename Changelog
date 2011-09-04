@@ -1,5 +1,7 @@
 svn  Will Entriken <cameralife AT phor.net>
 * Added support for OpenID login, this will be default soon
+* Added upgrade tool
+* Supports Gravitar
 
 
 2.6.3  Will Entriken <cameralife AT phor.net>

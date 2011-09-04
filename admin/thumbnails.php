@@ -3,7 +3,7 @@
  * An administrative tool that updates thumbnails
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 Will Entriken
- * @version 2.6.3
+ * @version 
  * @access public
  * @todo Uses non-public database access
  */

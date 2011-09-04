@@ -1,7 +1,7 @@
 <?php
  /** Implements OpenID login
   *
-  *@version 2.6.2
+  *@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2011 Will Entriken
   *@access public

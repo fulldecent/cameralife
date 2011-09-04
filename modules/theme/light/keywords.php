@@ -3,7 +3,7 @@
   # the keyword tagging system
   /**Output a javascript file to use in conjunction with the keyword tagging system
   *@link http://fdcl.sourceforge.net
-  *@version 2.6.3
+  *@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public
