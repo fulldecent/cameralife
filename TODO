@@ -15,7 +15,9 @@ xargs -0 sed "1,10 s/@\(\W*\)version\W*[0-9.a-z]\+/@\1version $VERSION/" -i
 
 svn commit -m "Releasing version $VERSION"
 svn copy https://entriken@fdcl.svn.sourceforge.net/svnroot/fdcl/trunk https://entriken@fdcl.svn.sourceforge.net/svnroot/fdcl/tags/$VERSION -m "Tagging version $VERSION"
+mv cameralife ~
 phpdoc -c phpdoc.ini # always freezes
+mv ~/cameralife .
 rsync --delete -ave ssh ../docs fulldecent,fdcl@web.sf.net:htdocs
 BASE=$PWD
 pushd $(mktemp -d)
@@ -38,7 +40,7 @@ scp -r "$VERSION" fulldecent,fdcl@frs.sourceforge.net:'/home/frs/project/f/fd/fd
 rm -rf cameralife-*
 popd
 
-#GOTO  https://sourceforge.net/project/admin/explorer.php?group_id=70910
+#GOTO  https://sourceforge.net/projects/fdcl/files/Camera%20Life/
 #  edit files to set as default download
 #GOTO  http://freshmeat.net/projects/fdcl/releases/new
 #MAIL people in the MAILINGLIST file

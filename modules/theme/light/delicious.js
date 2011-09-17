@@ -70,9 +70,9 @@ function init() { var elements = ['alpha','copy','freq', 'network'], divs={}, fr
         if(freqSort.length > 0) {
                 h.alpha.appendChild(divs.alpha); 
         }
-        document.onkeydown = document.onkeypress = document.onkeyup = handler
+/*        document.onkeydown = document.onkeypress = document.onkeyup = handler
         updateHilight()
-
+*/
 /*        if ($id('formtitle')) { focusTo($id('formtitle'),0) } */
 }
 
