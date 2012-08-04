@@ -1,0 +1,31 @@
+.frame { background-color:#FFFFFF; padding:6px; padding-bottom: 12px; border:1px solid #d0d0d0; float: left;}
+.framemini { background-color:#FFFFFF; padding:2px; padding-bottom:1px; border:1px solid #eee; float: left;  }
+
+.polaroid { background-color:#FFFFFF; padding:4px; padding-bottom:15px; border:1px solid #eee;  }
+.shadow {box-shadow: 5px 5px 5px #ccc; -moz-box-shadow: 5px 5px 5px #ccc; -webkit-box-shadow: 3px 3px 3px #ddd;}
+
+
+.l1 {display: inline-block; margin-bottom: 500px; }
+.l2 {
+  display: inline-block;; vertical-align: top;
+  background-color:#FFFFFF; padding:4px; padding-bottom:15px; border:1px solid #eee;
+  box-shadow: 5px 5px 5px #ccc; -moz-box-shadow: 5px 5px 5px #ccc; -webkit-box-shadow: 3px 3px 3px #ddd;
+  margin: 2px;
+  text-decoration: none;
+  color: #444;
+}
+.l3 {}
+.l4 {text-overflow:ellipsis; white-space:nowrap;overflow:hidden;}
+
+.minipolaroid {
+  display: inline-block;; vertical-align: top;
+  background-color:#FFFFFF; padding:2px; padding-bottom:10px; border:1px solid #eee;
+  box-shadow: 2px 2px 2px #ccc; -moz-box-shadow: 2px 2px 2px #ccc; -webkit-box-shadow: 2px 2px 2px #ddd;
+  margin: 2px;
+  text-decoration: none;
+  color: #444;
+}
+
+.clipbox {
+    overflow: hidden;
+}

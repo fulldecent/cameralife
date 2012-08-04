@@ -1,0 +1,6 @@
+.tag { padding: 2px; text-decoration: none;  color: #00f}
+.selected, .tag:hover  { background-color: #008 !important; color: #fff !important; text-decoration: none; }
+.tag, #suggest .tag { font-size: 90%; }
+a.noclicky, a.noclicky:hover { cursor: default; color: #000; text-decoration: none; }
+a.clicky { color: blue; cursor: pointer; }
+

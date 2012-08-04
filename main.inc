@@ -177,7 +177,14 @@ class CameraLife extends CameraLifeModule # and View
 
   function IconURL($name)
   {
-    return $this->base_url."/modules/iconset/".$this->GetPref('iconset')."/$name";
+    $imageTypes = '{[pP][nN][gG],[jJ][pP][eE][gG],[jJ][pP][gG],[gG][iI][fF]}';
+    $locations = array($this->base_dir."/modules/theme/".$this->GetPref('theme')."/iconset/$name.$imageTypes");
+    $locations[] = $this->base_dir."/modules/iconset/".$this->GetPref('iconset')."/$name.$imageTypes";
+    $candidateIcons = glob("{".implode(",",$locations)."}", GLOB_BRACE);
+    if (!count($candidateIcons))
+      $this->Error("Icon not found: $name $locations[0]", __FILE__, __LINE__);
+    $candidateIcon = substr($candidateIcons[0], strlen($this->base_dir));
+    return $this->base_url.$candidateIcon;
   }
 
   function Error($message, $file='', $line='')
@@ -187,7 +194,7 @@ class CameraLife extends CameraLifeModule # and View
     echo '<div style="margin: 3em; background: gray; border: 2px solid gray; padding:0.5em">';
     echo '  <div style="text-align:center; color: white; font-size:large">';
     echo '    Camera Life has encountered an error!</div>';
-    echo "  <div style=\"background: #eee; padding: 1em;\">$message</div>\n";
+    echo "  <div style=\"background: #eee; padding: 1em;\">".htmlentities($message)."</div>\n";
     if ($file)
       echo "  <div style=\"background: #eee; padding: 1em;\">Error at: <i>$file</i></div>\n";
     if ($line)
@@ -197,12 +204,12 @@ class CameraLife extends CameraLifeModule # and View
     if ($cameralife->Security && $cameralife->Security->authorize('admin_customize'))
     {
       echo "You can have the details, since you are an admin:<pre>\n";
-      echo "</pre>\n";
+      echo "<pre>\n";
       $calls = debug_backtrace();
       echo "<dl>\n";
       foreach ($calls as $call)
       {
-        echo "<dt>{$call['file']}:{$call['line']}<br />\n";
+        echo "<dt>{$call['file']}:{$call['line']} ";
         $url = "http://fdcl.sourceforge.net/docs/cameralife/{$call['class']}.html#{$call['function']}";
         echo "<a target=\"_new\" href=\"$url\">".$call['class'].'::'.$call['function']."</a>()</dt>";
         echo '<dd><ul>';

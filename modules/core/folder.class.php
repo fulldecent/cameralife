@@ -1,27 +1,22 @@
 <?php
 /**
-  *Setting up the photostore database
-  *@link http://fdcl.sourceforge.net/
-  *@version 
-  *@author Will Entriken <cameralife@phor.net>
-  *@access public
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  */
-  /**Establishes path of the photos folder
-  */
+ * Access folders on the file system as objects
+ * @link http://fdcl.sourceforge.net/
+ * @version 
+ * @author Will Entriken <cameralife@phor.net>
+ * @access public
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ */
 
 class Folder extends Search
 {
   var $path;
 
-  # must construct with either a Photo or a Path
-  # choose sync to verify the Folder with whats actually on the disk
-  # optional; you tell me whn my latest photo is from, in unixtimef
   /**
-  *This function should be constructed with either of the parameters Photo or Path
-  * .Use 'sync' to compare and verify Folder and disk content
+  * This function should be constructed with either of the parameters Photo or Path.
+  * Use 'sync' to compare and verify Folder and disk content
   *
-  *<b>Optional </b> A feature that notifies in unixtime the location of the latest photo
+  * <b>Optional </b> When is the latest photo in this folder from, unixtime
   */
 
   function Folder($original = '', $sync=FALSE, $date=NULL)
@@ -50,9 +45,9 @@ class Folder extends Search
     $this->mySearchFolderCondition = "path LIKE '".mysql_real_escape_string($this->path)."%/' AND path NOT LIKE '".addslashes($this->path)."%/%/'";
   }
 
- /**
-  *@return $retval an array of folders
-  */
+  /**
+   * @return $retval an array of folders
+   */
   function GetAncestors()
   {
     $retval = array();
@@ -72,10 +67,8 @@ class Folder extends Search
     return $retval;
   }
 
-  # returns COUNT random decendants, or all if count=0
   /**
-  *Returns COUNT, the number of random descendants
-  *if count= 0 returns all
+   * @return some decentants, or all if count==0
    */
   function GetDescendants($count = 0)
   {
@@ -138,7 +131,7 @@ class Folder extends Search
     if ($cameralife->GetPref('rewrite') == 'yes')
       $retval['href'] = $cameralife->base_url.'/folders/'.$this->path;
     else
-      $retval['href'] = $cameralife->base_url.'/folder.php&#63;path='.$this->path;
+      $retval['href'] = $cameralife->base_url.'/folder.php&#63;path='.$this->path; ///TODO encode?
 
     if (basename($this->path))
       $retval['name'] = $this->Basename();
@@ -171,7 +164,7 @@ class Folder extends Search
   }
 
   /**
-  *@access private
+  * @access private
   */
   function array_isearch($str, $array)
   {
@@ -179,7 +172,6 @@ class Folder extends Search
       if(strcasecmp($str, $v) == 0) return $k;
     return false;
   }
-
 
 
   /**
