@@ -61,6 +61,8 @@ WHEN MAKING CHANGES TO THE DATABASE
 WISH LIST
 ==========
 
+  Clean up copyright and remove version from each PHP page, find good convention to use and stick to it
+
   Core modules
 !   modules/core/search.class.inc - Folder sorting based on time photo taken
 

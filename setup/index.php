@@ -11,7 +11,6 @@
 /**
 */
 
-  $version = '2.6.0b3';
   $continue = true;
 
   if(file_exists('../modules/config.inc'))
@@ -247,6 +246,7 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
       <?php
         $main = file('../main.inc');
         $versionline = preg_grep('/this..version/', $main);
+
         preg_match("/'(.*)'/", join($versionline), $matches);
 
         # We collect your ip and version
