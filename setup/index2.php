@@ -196,6 +196,7 @@
     $config[] = "\$db_user = '".$_POST['user']."';\n";
     $config[] = "\$db_pass = '".$_POST['pass']."';\n";
     $config[] = "\$db_prefix = '".$_POST['prefix']."';\n";
+    $config[] = "\$db_schema_version = 2;\n";
     $config[] = "?>\n";
 
     if ($fd = fopen('../modules/config.inc','x'))
