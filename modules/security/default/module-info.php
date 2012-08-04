@@ -1,11 +1,9 @@
 <?php
 /**
  * Module default security
- * @version 
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public
- * @link http://fdcl.sourceforge.net
  */
  $module_name    = 'Default Security';
  $module_author  = 'Will Entriken';

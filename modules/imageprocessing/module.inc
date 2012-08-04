@@ -10,11 +10,9 @@
    *<li>Getting size of image</li>
    *<li>Resizing the image</li>
    *</ul>
-   *@version 2.6.2
    *@author Will Entriken <cameralife@phor.net>
    *@copyright Copyright (c) 2001-2009 Will Entriken
    *@access public
-   *@link http://fdcl.sourceforge.net
    */
 /**Carries functions to create and process images
 */

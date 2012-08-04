@@ -5,11 +5,9 @@
 *<li>Theme version 1.0.2</li>
 *<li>Theme date 5/1/2005</li>
 *</ul>
-*@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public
-  *@link http://fdcl.sourceforge.net
   */
 /**
 */

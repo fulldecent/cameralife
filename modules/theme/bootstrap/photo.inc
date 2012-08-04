@@ -6,8 +6,6 @@
 *<li>linking to relevant locations for further operations </li>
 *<li>caching of most likely viewed pictures</li>
 *</ul>
-* @link http://fdcl.sourceforge.net
-* @version 2.6.4b2
 * @author Will Entriken <cameralife@phor.net>
 * @copyright Copyright (c) 2001-2009 Will Entriken
 * @access public

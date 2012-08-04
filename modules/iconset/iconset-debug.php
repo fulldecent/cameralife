@@ -1,11 +1,9 @@
 <?php
 /**
  * Validates an installed IconSet
- * @version 
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public
- * @link http://fdcl.sourceforge.net
  */
 
 $required_images =

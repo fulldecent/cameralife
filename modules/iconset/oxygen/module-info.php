@@ -9,11 +9,9 @@
  *<li>$module_url     = 'http://www.oxygen-icons.org';</li>
  *<li>$module_desc    = 'From KDE.';</li>
  *</ul>
-*@version 2.6.2
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public
-  *@link http://fdcl.sourceforge.net
   */
   /**
   *

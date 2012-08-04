@@ -12,8 +12,6 @@
   *  <li>admin_theme </li>
   *  <li>admin_customize</li>
   *</ul>
-  *@link http://fdcl.sourceforge.net/
-  *@version 2.6.2
   *@author Will Entriken <cameralife@phor.net>
   *@access public
   *@copyright Copyright (c) 2001-2009 Will Entriken

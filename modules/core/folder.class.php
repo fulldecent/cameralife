@@ -1,8 +1,6 @@
 <?php
 /**
  * Access folders on the file system as objects
- * @link http://fdcl.sourceforge.net/
- * @version 
  * @author Will Entriken <cameralife@phor.net>
  * @access public
  * @copyright Copyright (c) 2001-2009 Will Entriken

@@ -3,11 +3,9 @@
  * An implementation of PhotoStore that stores photos on your local filesystem. 
  * @see PhotoStore
  *
- * @version 
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public
- * @link http://fdcl.sourceforge.net
  */
 class LocalPhotoStore extends PhotoStore
 {

@@ -6,11 +6,9 @@
  *<li>$module_version = '1.0';</li>
  *<li>$module_date    = '1/14/2007';</li>
  *</ul>
- *@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public
-  *@link http://fdcl.sourceforge.net
   */
   /**
   */

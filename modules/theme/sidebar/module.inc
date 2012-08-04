@@ -1,8 +1,6 @@
 <?php
 #TODO: more alt = basename(img)
 /**
-*@link http://fdcl.sourceforge.net
-*@version 
 *@author Will Entriken<cameralife@phor.net>
 *@access public
 *@copyright Copyright (c) 2001-2009 Will Entriken

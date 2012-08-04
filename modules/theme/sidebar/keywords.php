@@ -6,8 +6,6 @@
 *<li>The javascript is used in conjunction with the keyword tagging system</li>
 *<li>Checks for unique values even if the cases are different</li>
 *</ul>
-* @link http://fdcl.sourceforge.net
-*@version 
 *@author Will Entriken<cameralife@phor.net>
 *@access public
 *@copyright Copyright (c) 2001-2009 Will Entriken

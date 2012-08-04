@@ -1,11 +1,9 @@
 <?php
 /**
  * The class for logging and reverting changes to the site
- * @version 
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public
- * @link http://fdcl.sourceforge.net
  */
 
 class AuditTrail

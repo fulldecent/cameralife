@@ -2,8 +2,6 @@
 <?php
 /**
 * Displays post installation notifcation messages
-*@link http://fdcl.sourceforge.net
-*@version 
 *@author Will Entriken <cameralife@phor.net>
 *@copyright Copyright (c) 2001-2009 Will Entriken
 *@access public
@@ -249,8 +247,7 @@ If you are upgrading from a previous version of Camera Life, stop and read the f
 
         preg_match("/'(.*)'/", join($versionline), $matches);
 
-        # We collect your ip and version
-        $newest = file_get_contents('http://fdcl.sourceforge.net/check.php?i='.$matches[1]);
+        $newest = file_get_contents('https://raw.github.com/fulldecent/cameralife/master/VERSION');
 
         if ($matches[1] == $newest)
           echo "<font color=green>You have ".$matches[1]."</font>";

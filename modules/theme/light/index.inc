@@ -4,8 +4,6 @@
  *Page appears after successful installation and prompts the user to add photos
  *
  *<b>Note</b> $cameralife set by ShowPage()
- *@link http://fdcl.sourceforge.net
- *@version 
  *@author Will Entriken <cameralife@phor.net>
  *@copyright Copyright (c) 2001-2009 Will Entriken
  *@access public

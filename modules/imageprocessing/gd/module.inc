@@ -1,11 +1,9 @@
 <?php
  //GD image functions
  /**Processing GD images
- *@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public
-  *@link http://fdcl.sourceforge.net
   */
   /** Carries functions to create and process images
   */

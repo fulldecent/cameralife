@@ -2,8 +2,6 @@
 /**Displays and sorts albums
 *
 *<b>Note</b> $cameralife and $topic are set by ShowPage()
-  *@link http://fdcl.sourceforge.net
-  *@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public

@@ -4,8 +4,6 @@
   #   the remote API
 /**
 *This hack will be compatible with Gallery 2 for a remote API
-*@link http://fdcl.sourceforge.net
-*@version 
 *@author Will Entriken <cameralife@phor.net>
 *@copyright Copyright (c) 2001-2009 Will Entriken
 *@access public

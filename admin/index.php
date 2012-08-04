@@ -1,8 +1,6 @@
 <?php
  /**Displays the main admin page
   *Provides a menu to choose administrative options
-  *@link http://fdcl.sourceforge.net
-  *@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public
@@ -70,8 +68,7 @@
     } 
     else
     {
-      # We collect your ip and version
-      $newest = file_get_contents('http://fdcl.sourceforge.net/check.php?a='.$cameralife->version);
+      $newest = file_get_contents('https://raw.github.com/fulldecent/cameralife/master/VERSION');
       echo "Latest is <strong>".$newest."</strong> ";
       echo "<a href=\"http://fdcl.sourceforge.net\">get it</a>";
     }

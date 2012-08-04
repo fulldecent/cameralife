@@ -2,8 +2,6 @@
 /**
  * Creates sitemap for search engines
  * Includes a master index and indexs for each 1000 photos
- * @link http://fdcl.sourceforge.net
- * @version 
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public

@@ -1,8 +1,6 @@
 <?php
   # Sets the options for your site...
  /**Enables you set options for your site
-  *@link http://fdcl.sourceforge.net
-  *@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public

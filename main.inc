@@ -4,8 +4,6 @@
 
 /**
  * Carries classes CameraLife, CameraLife Module and View
- * @link http://fdcl.sourceforge.net
- * @version 
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public
@@ -210,7 +208,7 @@ class CameraLife extends CameraLifeModule # and View
       foreach ($calls as $call)
       {
         echo "<dt>{$call['file']}:{$call['line']} ";
-        $url = "http://fdcl.sourceforge.net/docs/cameralife/{$call['class']}.html#{$call['function']}";
+        $url = "http://camera.phor.net/docs/cameralife/{$call['class']}.html#{$call['function']}";
         echo "<a target=\"_new\" href=\"$url\">".$call['class'].'::'.$call['function']."</a>()</dt>";
         echo '<dd><ul>';
         if(count($call['args']))

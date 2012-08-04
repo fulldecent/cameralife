@@ -1,7 +1,5 @@
 <?php
 /** Common features in the admin/ directory
- *@link http://fdcl.sourceforge.net
- *@version 
  *@author Will Entriken <cameralife@phor.net>
  *@copyright Copyright (c) 2001-2009 Will Entriken
  *@access public

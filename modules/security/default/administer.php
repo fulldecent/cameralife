@@ -5,11 +5,9 @@
   *<li>Allows monitoring of user activities</li>
   *<li>Enables editing of security settings</li>
   *</ul>
-   *@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public
-  *@link http://fdcl.sourceforge.net
   */
   /**
 */

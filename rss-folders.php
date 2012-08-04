@@ -1,8 +1,6 @@
 <?php
 
 /**Creates an RSS feed of folders
-*@link http://fdcl.sourceforge.net
-  *@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public

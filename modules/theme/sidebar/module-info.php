@@ -6,8 +6,6 @@
 *<li>Theme version- 1.0.2</li>
 *<li>Theme date-5/1/2005</li>
 *</ul>
-*@link http://fdcl.sourceforge.net
-*@version 
 *@author Will Entriken<cameralife@phor.net>
 *@access public
 *@copyright Copyright (c) 2001-2009 Will Entriken

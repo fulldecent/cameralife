@@ -7,8 +7,6 @@
  * <li>description = the photo(s) description</li>
  * <li>userfile = encoded file to upload, JPG or ZIP</li>
  * <li>target = the exit URL, or 'ajax' for an ajax call</li></ul>
- * @link  http://fdcl.sourceforge.net/
- * @version 2.6.2
  * @author Will Entriken <cameralife@phor.net>
  * @access public
  * @copyright Copyright (c) 2001-2009 Will Entriken

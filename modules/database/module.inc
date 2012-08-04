@@ -1,14 +1,10 @@
 <?php
 /**
-*
-*@version 
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-  *@link http://fdcl.sourceforge.net
-*/
- /** Base class for all database modules
-     */
+ *
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+ */
 
   class DatabaseModule extends CameraLifeModule
   {

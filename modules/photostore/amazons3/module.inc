@@ -7,11 +7,9 @@
  *<ul>
  *<li>Lazy thumbnailing</li>
  *<li>The deleted dir</li></ul>
- *@version 
  *@author Will Entriken <cameralife@phor.net>
  *@copyright Copyright (c) 2001-2009 Will Entriken
  *@access public
- *@link http://fdcl.sourceforge.net
  */
 
 /**Stores files remotely on the Amazon S3 cloud

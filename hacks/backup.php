@@ -1,8 +1,6 @@
 <?php
 /**Creates a backup copy of all photos in the photostore.
  *<b>Note:</b>Scaled and thumbnail photos will not be copied
- *@link http://fdcl.sourceforge.net
- *@version 
  *@author Will Entriken <cameralife@phor.net>
  *@copyright Copyright (c) 2001-2009 Will Entriken
  *@access public

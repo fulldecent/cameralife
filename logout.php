@@ -1,7 +1,5 @@
 <?php
 /**A security feature that enables you log out of CameraLife
-*@link http://fdcl.sourceforge.net
-  *@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public

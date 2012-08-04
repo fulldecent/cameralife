@@ -1,11 +1,9 @@
 <?php
  /** Implements OpenID login
   *
-  *@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2011 Will Entriken
   *@access public
-  *@link http://fdcl.sourceforge.net
   */
   class OpenIDSecurity extends SecurityModule
   {

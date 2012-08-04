@@ -1,11 +1,9 @@
 <?php
 /**
  * Module openid security
- * @version 
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2011 Will Entriken
  * @access public
- * @link http://fdcl.sourceforge.net
  */
  $module_name    = 'OpenID';
  $module_author  = 'Will Entriken';

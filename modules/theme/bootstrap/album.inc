@@ -4,11 +4,9 @@
   *Editing an album
   *
   *<b>Note</b>  $cameralife and $album are set by ShowPage()
-  *@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public
-  *@link http://fdcl.sourceforge.net
   */
   /**
   */

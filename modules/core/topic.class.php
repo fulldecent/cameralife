@@ -1,8 +1,6 @@
 <?php
 
     /**
-    *for the homepage visit @link  http://fdcl.sourceforge.net/
-    *@version 
     *@author Will Entriken <WillEntriken @gmail.com>
     *@access public
     *@copyright Copyright (c) 2001-2009 Will Entriken

@@ -4,8 +4,6 @@
  * BEWARE: BACKUP YOUR DATABASE BEFORE MESSING AROUND HERE!
  * if only I had told myself that earlier today :-(
  *
- * @link http://fdcl.sourceforge.net
- * @version 
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public

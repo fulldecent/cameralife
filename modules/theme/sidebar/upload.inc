@@ -6,8 +6,6 @@
    * <li>You can upload a photo in JPEG format or a ZIP of JPEG photos</li>
    * <li>The maximum file size is 20MB</li>
   *</ul>
-  *@link http://fdcl.sourceforge.net
-  *@version 
   *@author Will Entriken <cameralife@phor.net>
   *@copyright Copyright (c) 2001-2009 Will Entriken
   *@access public
