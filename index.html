@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -15,17 +16,18 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>Cameralife</h1>
-        <p>Camera Life -- Run your own photo website</p>
-
-        <p class="view"><a href="https://github.com/fulldecent/cameralife">View the Project on GitHub <small>fulldecent/cameralife</small></a></p>
-
+        <h1 class="header">Cameralife</h1>
+        <p class="header">Camera Life -- Run your own photo website</p>
 
         <ul>
-          <li><a href="https://github.com/fulldecent/cameralife/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/fulldecent/cameralife/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/fulldecent/cameralife">View On <strong>GitHub</strong></a></li>
+          <li class="download"><a class="buttons" href="https://github.com/fulldecent/cameralife/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/fulldecent/cameralife/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/fulldecent/cameralife">View On GitHub</a></li>
         </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/fulldecent">fulldecent</a></p>
+
+
       </header>
       <section>
         <p><img src="http://fdcl.sourceforge.net/images/header-camera-life.gif" alt="Logo"></p>
@@ -34,12 +36,12 @@
 
 <p>Camera Life is PHP software you can run to show your photos on your own website. Camera Life is easy to setup and customize if want to blend it in with the rest of your site.</p>
 
-<p>The two big features are: great photo organization, and a full audit trail. If someone accesses your site and changes all the photo descriptions or adds lame comments, you can easily go into the administrator page and revert it. There's also a lot of advanced features that nerds will care about, shown below. </p>
+<p>The biggest features are: great photo organization, and a full audit trail. If someone accesses your site and changes all the photo descriptions or adds lame comments, you can easily go into the administrator page and revert it. Camera Life also supports some advanced integration features that will appeal if you are connecting to a CMS or your own website. </p>
 
 <ul>
 <li>See a Live Demo </li>
 <li>Read Install Notes</li>
-</ul><p><img src="images/screenshot1.jpeg" alt="Screenshot"><img src="images/screenshot2.jpeg" alt="Screenshot"><img src="images/screenshot3.jpeg" alt="Screenshot"><img src="images/screenshot4.jpeg" alt="Screenshot"></p>
+</ul><p><img src="http://fdcl.sourceforge.net/images/screen-home.jpg" alt="Screenshot"><img src="http://fdcl.sourceforge.net/images/screen-folder.jpg" alt="Screenshot"><img src="http://fdcl.sourceforge.net/images/screen-admin.jpg" alt="Screenshot"></p>
 
 <h3>Features</h3>
 
@@ -56,12 +58,11 @@
 <p>There's other crazy stuff, like <a href="http://fdcl.sourceforge.net/wiki/index.php/ThumbnailServer">support for an external thumbnail server</a> and things listed in the <a href="http://fdcl.svn.sourceforge.net/viewvc/fdcl/trunk/README">Changelog</a>. Also see the <a href="http://fdcl.svn.sourceforge.net/viewvc/fdcl/trunk/TODO">TODO file and the </a><a href="http://fdcl.sourceforge.net/camera.phor.net/TODO">TODO file of the lead developer</a> before it even gets checked in to git.</p>
       </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/fulldecent">fulldecent</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
-              <script type="text/javascript">
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		          <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
