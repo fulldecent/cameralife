@@ -256,7 +256,7 @@ if (isset($_GET['receipt']) && is_numeric ($_GET['receipt']))
  */
 function AddParam($url, $param, $value=NULL)
 {
-  if ((strpos($url, '&#63;') !== FALSE) || (strpos($url, '?') !== FALSE))
+  if ((strpos($url, '&#63;') !== FALSE) || (strpos($url, '?') !== FALSE) || (strpos($url, '&amp;') !== FALSE))
     $url .= "&amp;$param";
   else
     $url .= "&#63;$param";

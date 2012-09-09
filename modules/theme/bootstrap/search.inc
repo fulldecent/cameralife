@@ -36,60 +36,71 @@ else
 }
 
 $header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of'.htmlentities($search->GetQuery()).'" href="'.$camerasife->base_url.'/rss.php?q='.urlencode($search->GetQuery()).'" />';
-$cameralife->Theme->Header('Site search', 'main', $header);
-?>
-<div id="sidebar">
-<form method="GET"> 
+
+$sidebar = <<<HTML
   <div class="item">
     <a href="?q=unnamed">Search for unnamed photos</a>
   </div>
-<?php
+HTML;
+if($_GET['page'] == "p" && $cameralife->Security->Authorize('admin_albums')) {
+    $queryHTML = urlencode($search->GetQuery());
+    $sidebar .= <<<HTMLx
+  <div class="item"><a href="topic.php&#63;edit=true&amp;term=$queryHTML">Create an Album of these photos</a></div>
+HTMLx;
+}
 
-  if($_GET['page'] == "p" && $cameralife->Security->Authorize('admin_albums'))
-    echo '<div class="item"><a href="topic.php&#63;edit=true&amp;term='.urlencode($search->GetQuery()).'">Create an Album of these photos</a></div>';
+$cameralife->Theme->Header('Site search', $sidebar, $header);
 
-echo '</div><div id="text">';
-  if ($_GET['albumhelp'])
-  {
+if ($_GET['albumhelp']) {
 ?>
-    <?php $cameralife->Theme->Section('How to use Albums') ?>
-
-      <?php $cameralife->Theme->Image('small-album', array('align'=>'middle')) ?> An Album is a collection of photos with a common term in their description. <br>
-      <?php $cameralife->Theme->Image('small-topic', array('align'=>'middle')) ?> A Topic is a logical collection of Albums. Ex: People, Places, Events<br>
-      <?php $cameralife->Theme->Image('small-search', array('align'=>'middle')) ?> To create an album, perform a search, then choose "Create an album from these photos" on the toolbar.<br>
-      <p>Note: In the future, you can simply perform a search, without pulling up these instructions.
-      <a href="http://fdcl.sourceforge.net/wiki/index.php/Albums">Click here for more information</a></p>
+<div class="alert alert-info alert-block">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  <h4>How to use Albums</h4>
+    <?php $cameralife->Theme->Image('small-album', array('align'=>'middle')) ?> 
+    An Album is a collection of photos with a common term in their description. <br>
+    <?php $cameralife->Theme->Image('small-topic', array('align'=>'middle')) ?> 
+    A Topic is a logical collection of Albums. Ex: People, Places, Events<br>
+    <?php $cameralife->Theme->Image('small-search', array('align'=>'middle')) ?> 
+    To create an album, perform a search, then choose "Create an album from these photos" on the toolbar.<br>
+    <p>Note: In the future, you can simply perform a search, without pulling up these instructions.
+    <a href="https://github.com/fulldecent/cameralife/wiki/Albums">Click here for more information</a></p>
 <?php
-    }
+  exit(0);
+}
 
-  if($_GET['albumhelp']) exit(0);
+echo "<h1>";
+$cameralife->Theme->Image('search');
+echo "Search for ".htmlentities($search->GetQuery())."</h1>";
+echo '<ul class="nav nav-pills">'.PHP_EOL;
+foreach ($counts as $type=>$num) {
+    echo "<li";
+    $class = array();
+    if ($_GET["page"] == $type[0])
+        $class[] = "active";
+    if ($num == 0)
+        $class[] = "disabled";
+    if (count($class)) 
+        echo " class=\"".implode(" ",$class)."\"";
+    if ($num == 1 && substr($type,-1)=='s')
+        $type = substr($type, 0 -1);
+    $href = "&#63;q=".urlencode($search->GetQuery())."&amp;page=".$type[0];
+    if ($num == 0)
+        $href = "#";
+    echo "><a href=\"$href\">$num $type</a></li>".PHP_EOL;
+}
+echo "</ul>".PHP_EOL;
 
-  if ($counts['albums'] > 0)
-    $sections[] = array('name'=>$counts['albums'].' albums of '.htmlentities($search->GetQuery()),
-                        'page_name'=>'a',
-                        'image'=>'small-topic');
-  if ($counts['folders'] > 0)
-    $sections[] = array('name'=>$counts['folders'].' folders of '.htmlentities($search->GetQuery()),
-                        'page_name'=>'f',
-                        'image'=>'small-topic');
-  if ($counts['photos'] > 0)
-    $sections[] = array('name'=>$counts['photos'].' photos of '.htmlentities($search->GetQuery()),
-                        'page_name'=>'p',
-                        'image'=>'small-topic');
-
-  if (count($sections) > 0)
-    $cameralife->Theme->MultiSection($sections, '', 'and', array('q'=>htmlentities($search->GetQuery())));
-  else
-    $cameralife->Theme->Section('Sorry, no results');
 
   $cameralife->Theme->Grid($results);
 
+  $icon = $search->GetIcon();
+  $href = AddParam($icon['href'], "page", $_GET['page']);
   if ($_GET['page'] == "a")
-    $cameralife->Theme->PageSelector($start,$counts['albums'],12,"page=a&amp;q=".urlencode($search->GetQuery()));
+    $cameralife->Theme->PageSelector($start,$counts['albums'],12,$href);
   else if ($_GET['page'] == "f")
-    $cameralife->Theme->PageSelector($start,$counts['folders'],12,"page=f&amp;q=".urlencode($search->GetQuery()));
+    $cameralife->Theme->PageSelector($start,$counts['folders'],12,$href);
   else
-    $cameralife->Theme->PageSelector($start,$counts['photos'],12,"page=p&amp;q=".urlencode($search->GetQuery()));
+    $cameralife->Theme->PageSelector($start,$counts['photos'],12,$href);
 ?>
 
 <p>

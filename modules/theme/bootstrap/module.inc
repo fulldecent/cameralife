@@ -1,6 +1,6 @@
 <?php
 /**
- * Theme name - Light
+ * Theme name - Bootstrap
  * @author Will Entriken<cameralife@phor.net>
  * @access public
  * @copyright Copyright (c) 2001-2009 Will Entriken
@@ -159,14 +159,9 @@
     </div>
     <div class="container-fluid">
 <?php
-      if ($menu) {
+      if ($this->menu) {
 ?>
       <div class="row-fluid">
-        <div class="span3">
-          <div class="well sidebar-nav">
-            <?= $menu ?>
-          </div>
-        </div>
         <div class="span9">
 <?php
       }
@@ -175,9 +170,14 @@
     function Footer()
     {
       global $cameralife;
-      if ($menu) {
+      if ($this->menu) {
 ?>
         </div><!--/span-->
+        <div class="span3">
+          <div class="well sidebar-nav">
+            <?= $this->menu ?>
+          </div>
+        </div>
       </div><!--/row-->
 <?php
       }
@@ -216,34 +216,29 @@
 <?php
     }
 
-    // query is an array of Icons, or and array of classes that have Icons
+    // query is an array of Icons, or an array of classes that have Icons
     function Grid($query) 
     {
-      echo "  <table width='100%' class='grid' align=center cellspacing=3 cellpadding=3>\n";
-      $i=0;
     
-      foreach ($query as $thumb)
-      {
+      echo '<div>'.PHP_EOL;
+      foreach ($query as $thumb) {
         if (is_array($thumb))
           $icon = $thumb;
         else
           $icon = $thumb->GetIcon();
 
-        if ($i%4==0) echo "    <tr>\n";
-          $i++;
-
-        echo "      <td align='center' width='25%' class='border'>".
-             "<a href=\"".$icon["href"]."\">\n";
-        $imageattrs = array('alt'=>'thumb', 'width'=>$icon['width'], 'height'=>$icon['height']);
+        echo '<div class="l1" style="margin-bottom:1em">'.PHP_EOL;
+        echo '<a class="l2" href="'.$icon["href"].'">';
+        $imageattrs = array('alt'=>'thumb', 'width'=>$icon['width'], 'height'=>$icon['height'], 'class'=>'l3');
         $this->Image($icon["image"], $imageattrs);
-        echo "</a><br>".$icon['name'];
-        if ($icon['context'])
-          echo " <i><font size='-2'>(".$icon['context'].")</font></i>";
-        echo "</td>\n";
+        echo '<div class="l4" style="width:'.$icon['width'].'px">'.$icon['name'].'</div>';
+        echo '</a>'.PHP_EOL;
+        echo '</div>'.PHP_EOL;
       }
-      echo "  </table>\n";
+      echo '</div>'.PHP_EOL;
     }
 
+/*
     function Section($name, $href=FALSE, $image=FALSE)
     {
       echo "  <div class=\"section\">\n";
@@ -285,59 +280,40 @@
         $finalhtml = implode(" $conjunction ", $sectionhtml);
       echo "$finalhtml $conjunction $last";
     }
-
+*/
     function PageSelector($start, $total, $per_page, $url)
     {
       global $theme;
     
       if ($total > $per_page) // Refuse to only show one page
       {
-        echo '<div class="pageselector">';
+        echo '<div class="pagination"><ul>';
 
-        if ($start==-1)
-        {
+        if ($start==-1) {
           echo "<span class='current'>Randomly showing <b>$per_page</b> of <b>$total</b></span> ";
           echo "<a class='nextprev' href=\"$url\">More &#187;</a>";
-        }
-        else
-        {
+        } else {
           $first=max($start-2*$per_page,0);
           $last=min($first+4*$per_page,intval(($total-1)/$per_page)*$per_page);
           $first=max($last-4*$per_page,0);
           if ($last==0) $last=1;
       
           if ($first != $start)
-            echo "<a class='nextprev' href=\"".AddParam($url,'start',$start-$per_page)."\">";
+            echo "<li><a href=\"".AddParam($url,'start',$start-$per_page)."\">&laquo;</a></li>";
           else
-            echo "<span class='nextprev'>";
-          echo '&#171; Previous';
-          if ($first != $start)
-            echo "</a>";
-          else
-            echo "</span>";
+            echo "<li><a class=\"disabled\" href=\"#\">&laquo;</a></li>";
   
-          for ($i=$first; $i<=$last; $i+=$per_page)
-          {
-            if ($i==$start)
-            {
-            echo "<span class='current'>".($i/$per_page+1)."</span> ";
-            }
+          for ($i=$first; $i<=$last; $i+=$per_page) {
+            if ($i==$start) 
+                echo "<li class=\"active\"><a href=\"".AddParam($url,'start',$i)."\">".($i/$per_page+1)."</a></li>";
             else
-            {
-              echo "<a href=\"".AddParam($url,'start',"$i")."\">";
-              echo ($i/$per_page+1)."</a> ";
-            }
+                echo "<li><a href=\"".AddParam($url,'start',$i)."\">".($i/$per_page+1)."</a></li>";
           }
   
           if ($last != $start)
-            echo "<a class='nextprev' href=\"".AddParam($url,'start',$start+$per_page)."\">";
-          else
-            echo "<span class='nextprev'>";
-          echo 'Next &#187;';
-          if ($last != $start)
-            echo "</a>";
-          else
-            echo "</span>\n";
+            echo "<li><a href=\"".AddParam($url,'start',$start+$per_page)."\">&raquo;</a></li>";
+          else 
+            echo "<li><a class=\"disabled\" href=\"#\">&laquo;</a></li>";
         }
         echo "</div>\n";
       }
