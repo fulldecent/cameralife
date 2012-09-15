@@ -1,0 +1,51 @@
+h1 {
+    font-size: 60px;
+    margin-top: 1.5em;
+}
+h2 {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    font-size: 26px;
+    color: #888
+}
+h3 {
+    font-size: 20px;
+}
+p {
+    font-size: 16px;
+    color:#9d9d9d;
+    line-height: 150%;
+}
+
+
+/* **************************** */
+
+.rotate10 {
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+
+    -webkit-transform:rotate(10deg);
+    -moz-transform:rotate(10deg);
+    -o-transform:rotate(10deg);
+    -ms-transform:rotate(10deg);
+    transform: translate3d(0,0,0);
+    -webkit-backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+}
+
+.rotate20 {
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+
+    -webkit-transform:rotate(20deg);
+    -moz-transform:rotate(20deg);
+    -o-transform:rotate(20deg);
+    -ms-transform:rotate(20deg);
+    transform: translate3d(0,0,0);
+    -webkit-backface-visibility: hidden;
+}
+
