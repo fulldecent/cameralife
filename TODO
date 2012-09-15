@@ -37,6 +37,15 @@ WHEN MAKING CHANGES TO THE DATABASE
 WISH LIST
 ==========
 
+  When importing photos do not set name to untitled if the filename is useful some code:
+>>>>>
+        $origname = ucwords($photo->Get('filename'));
+        $origname = preg_replace('/.[^.]+$/', '', $origname);
+
+        if (!preg_match('/^dscn/i', $origname) && !preg_match('/^im/i', $origname)) // useless filename
+          echo '<tr><td><td><input type="button" onclick="javascript:set(\''.addslashes($origname).'\')" value="Set name to '.$origname.'">';
+>>>>>
+
   Clean up copyright and remove version from each PHP page, find good convention to use and stick to it
 
   Core modules

@@ -38,16 +38,19 @@ else
 $header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of'.htmlentities($search->GetQuery()).'" href="'.$camerasife->base_url.'/rss.php?q='.urlencode($search->GetQuery()).'" />';
 
 $sidebar = <<<HTML
-  <div class="item">
-    <a href="?q=unnamed">Search for unnamed photos</a>
-  </div>
+    <ul class="nav nav-list">
+        <li class="nav-header">Tools</li>
+        <li><a href="?q=unnamed">Search for unnamed photos</a></li>
 HTML;
 if($_GET['page'] == "p" && $cameralife->Security->Authorize('admin_albums')) {
     $queryHTML = urlencode($search->GetQuery());
     $sidebar .= <<<HTMLx
-  <div class="item"><a href="topic.php&#63;edit=true&amp;term=$queryHTML">Create an Album of these photos</a></div>
+        <li><a href="topic.php&#63;edit=true&amp;term=$queryHTML">Create an Album of these photos</a></li>
 HTMLx;
 }
+$sidebar .= <<<HTML
+    </ul>
+HTML;
 
 $cameralife->Theme->Header('Site search', $sidebar, $header);
 
@@ -90,9 +93,11 @@ foreach ($counts as $type=>$num) {
 }
 echo "</ul>".PHP_EOL;
 
-
   $cameralife->Theme->Grid($results);
 
+  echo "<form>";
+  echo "<input type=hidden name=q value=\"".htmlentities($search->GetQuery())."\" />";
+  echo "<input type=hidden name=page value=\"".htmlentities($_GET['page'])."\" />";
   $icon = $search->GetIcon();
   $href = AddParam($icon['href'], "page", $_GET['page']);
   if ($_GET['page'] == "a")
@@ -101,20 +106,15 @@ echo "</ul>".PHP_EOL;
     $cameralife->Theme->PageSelector($start,$counts['folders'],12,$href);
   else
     $cameralife->Theme->PageSelector($start,$counts['photos'],12,$href);
-?>
+    
+  echo "<select name=\"sort\">\n";
+  foreach ($search->SortOptions() as $sortOption) {
+    list($id, $desc, $selected) = $sortOption;
+    echo "<option value=\"$id\" $selected>$desc</option>\n";
+  }  
+  echo "</select>\n";
+  echo "<input class=\"btn\" type=submit value=\"Sort\">\n";
+  echo "</form>";    
 
-<p>
-  Sort by <select name="sort">
-    <option <?php if ($sort=="id") echo "selected" ?> value="id">Oldest First</option>
-    <option <?php if ($sort=="id desc") echo "selected" ?> value="id desc">Newest First</option>
-    <option <?php if ($sort=="description") echo "selected" ?> value="description">Alphabetically</option>
-    <option <?php if ($sort=="description desc") echo "selected" ?> value="description desc">Alphabetically (backwards)</option>
-    <option <?php if ($sort=="comment desc") echo "selected" ?> value="comment desc">Most popular first</option>
-    <option <?php if ($sort=="comment") echo "selected" ?> value="comment">Least popular first</option>
-    <option <?php if ($sort=="rand()") echo "selected" ?> value="rand()">Randomly</option>
-  </select>
-  <input type=submit value="Sort">
-</p>
-<?php
   $cameralife->Theme->Footer();
 ?>

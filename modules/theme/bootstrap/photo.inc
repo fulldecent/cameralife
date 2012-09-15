@@ -1,122 +1,105 @@
 <?php
-/**Enables 
-*<ul>
-*<li>displaying/viewing of photos</li>
-*<li>editing of photos</li>
-*<li>linking to relevant locations for further operations </li>
-*<li>caching of most likely viewed pictures</li>
-*</ul>
-* @author Will Entriken <cameralife@phor.net>
-* @copyright Copyright (c) 2001-2009 Will Entriken
-* @access public
-*/
-  # $cameralife and $photo are set by ShowPage()
-  # Display a photo, edit a photo, link to relevant places
+/**
+ * Photo view 
+ * @author Will Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @access public
+ */
 
-  $cameralife->GetFeature('security');
-  $cameralife->GetFeature('photostore');
-  $cameralife->GetFeature('imageprocessing');
+# $cameralife and $photo are set by ShowPage()
+# Display a photo, edit a photo, link to relevant places
 
-  if ($photo->Get('status') != 0) 
-    $cameralife->Security->authorize('admin_file', 'This file has been flagged or marked private');
+$cameralife->GetFeature('security');
+$cameralife->GetFeature('photostore');
+$cameralife->GetFeature('imageprocessing');
 
-  if (isset($_GET['referer']))
-    $_SERVER['HTTP_REFERER'] = $_GET['referer'];
-  if (isset($_SERVER['HTTP_REFERER']))
-  {
-    $_SERVER['HTTP_REFERER'] = str_replace($cameralife->base_url,'', $_SERVER['HTTP_REFERER']);
-    $_SERVER['HTTP_REFERER'] = preg_replace('|^/|', '', $_SERVER['HTTP_REFERER']);
-  }
+if (isset($_GET['referer']))
+  $_SERVER['HTTP_REFERER'] = $_GET['referer'];
+if (isset($_SERVER['HTTP_REFERER'])) {
+  $_SERVER['HTTP_REFERER'] = str_replace($cameralife->base_url,'', $_SERVER['HTTP_REFERER']);
+  $_SERVER['HTTP_REFERER'] = preg_replace('|^/|', '', $_SERVER['HTTP_REFERER']);
+}
 
-  # Handy stuff
-  $icon = $photo->GetIcon('small');
-  if (isset($_SERVER['HTTP_REFERER']))
-    $icon['href'] .= (strpos($icon['href'], '&#63;') ? '&amp;' : '&#63;') . 'referer='.urlencode($_SERVER['HTTP_REFERER']);
-  $photoPrev = $photo->GetPrevious();
-  $photoNext = $photo->GetNext();
+# Handy stuff
+$icon = $photo->GetIcon('small');
+if (isset($_SERVER['HTTP_REFERER']))
+  $icon['href'] .= (strpos($icon['href'], '&#63;') ? '&amp;' : '&#63;') . 'referer='.urlencode($_SERVER['HTTP_REFERER']);
+$photoPrev = $photo->GetPrevious();
+$photoNext = $photo->GetNext();
 
-  if ($cameralife->Security->GetName())
-    $rating = $avg = $cameralife->Database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->Get('id')." AND username='".$cameralife->Security->GetName()."'");
-  else
-    $rating = $avg = $cameralife->Database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->Get('id')." AND user_ip='".$_SERVER['REMOTE_ADDR']."'");
+if ($cameralife->Security->GetName())
+  $rating = $avg = $cameralife->Database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->Get('id')." AND username='".$cameralife->Security->GetName()."'");
+else
+  $rating = $avg = $cameralife->Database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->Get('id')." AND user_ip='".$_SERVER['REMOTE_ADDR']."'");
 
-/*    // If the user is not logged in and is making helpful edits, invite them to register / login
-    if (!$cameralife->Security->GetName())
-    {
-      $condition = "user_ip='".$cameralife->Security->GetAddr()."' AND user_name=''";
-      $count_edits = $cameralife->Database->SelectOne('logs','COUNT(*)',$condition);
-      if ($count_edits % 3 == 0)
-        $ask_user_to_login = true;
-    }
-*/
-  ## Extra header...
-  $headers = '<link rel="stylesheet" type="text/css" href="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/delicious.css" />'.PHP_EOL;
-  
-  if($photoPrev)
-  {
-    $previcon = $photoPrev->GetIcon();
-    $previcon['href'] .= strpos($previcon['href'], '&#63;') ? '&amp;' : '&#63;';
-    $prevhref = $previcon['href'].'referer='.urlencode($_SERVER['HTTP_REFERER']);
-    $headers .= "<link rel=\"prev\" href=\"$prevhref\" />\n";
-  }
-  if($photoNext)
-  {
-    $nexticon = $photoNext->GetIcon();
-    $nexticon['href'] .= strpos($nexticon['href'], '&#63;') ? '&amp;' : '&#63;';
-    $nexthref = $nexticon['href'].'referer='.urlencode($_SERVER['HTTP_REFERER']);
-    $headers .= "<link rel=\"next\" href=\"$nexthref\">\n";
-  }
+## Extra header...
+$headers = '<link rel="stylesheet" type="text/css" href="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/delicious.css" />'.PHP_EOL;
 
-  $headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/keywords.php"></script>';
-  $headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/delicious.js"></script>';
-  $headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/photo.js"></script>';
-  $headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/ajax.js"></script>';
-  $headers .= '<script type="text/javascript">';
+if($photoPrev) {
+  $previcon = $photoPrev->GetIcon();
+  $previcon['href'] .= strpos($previcon['href'], '&#63;') ? '&amp;' : '&#63;';
+  $prevhref = $previcon['href'].'referer='.urlencode($_SERVER['HTTP_REFERER']);
+  $headers .= "<link rel=\"prev\" href=\"$prevhref\" />\n";
+} 
+if($photoNext) {
+  $nexticon = $photoNext->GetIcon();
+  $nexticon['href'] .= strpos($nexticon['href'], '&#63;') ? '&amp;' : '&#63;';
+  $nexthref = $nexticon['href'].'referer='.urlencode($_SERVER['HTTP_REFERER']);
+  $headers .= "<link rel=\"next\" href=\"$nexthref\">\n";
+}
 
-  $suggestions = $photo->Get('path');
-  foreach (explode('/', $suggestions) as $keyword)
-    $keys['"'.preg_replace('/[^a-z0-9]/i','',$keyword).'"']=1;
-  $headers .= 'var copytags=['.implode(',',array_keys($keys))."]\n";
-  $headers .= 'var rating='.($rating+0)."\n";
-  $headers .= 'var cameralifebaseurl="'.$cameralife->base_url.'"';
-  $headers .='</script>';
+$headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/photo.js"></script>';
+$headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/ajax.js"></script>';
 
-  $cameralife->Theme->Header(htmlentities($photo->Get('description')), 'photo', $headers, 'init()', '', "document.getElementById('rename').style.display='';focusTo(\$id('formtitle'),0);return false;");
+### Set up sidebar menu
+$actions = array(); // name=>, icon=>, href=>, onclick=>
+$actions[] = array('name'=>"View full-sized ({$photo->Get('width')} x {$photo->Get('height')}px)",
+                   'icon'=>'fullscreen',
+                   'href'=>$photo->GetMedia('photo'));
+$sizes = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
+sort($sizes);
+if (count($sizes)) foreach ($sizes as $size)
+{
+  $actions[] = array('name'=>"View at ${size}px",
+                     'icon'=>'fullscreen',
+                     'href'=>html_entity_decode($photo->GetMedia($size)));
+}
+if ($cameralife->Security->authorize('photo_rename'))
+  $actions[] = array('name'=>"Rename photo",
+                     'icon'=>'font',
+                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','rename')),
+                     'onclick'=>"$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false");
+if ($cameralife->Security->authorize('photo_delete'))
+  $actions[] = array('name'=>"Flag photo",
+                     'icon'=>'flag',
+                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','flag')),
+                     'onclick'=>"$('#delete').show();return false");
+if ($cameralife->Security->authorize('photo_modify'))
+  $actions[] = array('name'=>"Modify photo (rotate, revert, ...)",
+                     'icon'=>'wrench',
+                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','modify')),
+                     'onclick'=>"$('#modify').show();return false");
+if ($photo->Get('status') == 0)
+  $actions[] = array('name'=>"Order prints online",
+                     'icon'=>'print',
+                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','print')),
+                     'onclick'=>"$('#print').show();return false");
+$menu = <<<HTML
+<ul class="nav nav-list">
+  <li class="nav-header">Actions</li>
+HTML;
+foreach ($actions as $action) {
+  $menu .= "  <li><a href=\"".htmlentities($action['href'])."\"";
+  if (isset($action['onclick']))
+    $menu .= " onclick=\"{$action[onclick]}\"";
+  $menu .= "><i class=\"icon-{$action[icon]}\"></i> {$action[name]}</a></li>\n";
+}
+$menu .= <<<HTML
+</ul>
+HTML;
+/*
 
-  echo "     <div id=\"sidebar\">\n";
-  echo "       <h1>Actions</h1>\n";
-  echo "       <ul>\n";
 
-  echo "       <li><a rel=\"nofollow\" href=\"".$photo->GetMedia('photo')."\">
-               View full-sized (".$photo->Get('width')." x ".$photo->Get('height').")</a></li>\n";
-
-  $sizes = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
-  sort($sizes);
-  if (count($sizes)) foreach ($sizes as $size)
-  {
-    echo " <li>";
-    echo " <a rel=\"nofollow\" href=\"".$photo->GetMedia($size)."\">";
-    $cameralife->Theme->Image('small-photo',array('align'=>'middle'));
-    echo " View at ${size}px</a>\n";
-    echo "</li>";
-  }
-
-  // Show all the tasks the user can do (if they're allowed)
-  if ($cameralife->Security->authorize('photo_rename'))
-  {
-    $href = $icon['href'].'&amp;action=rename';
-    echo "       <li><a href=\"$href\" onClick=\"document.getElementById('rename').style.display='';focusTo(\$id('formtitle'),0);return false;\">Rename photo</a></li>\n";
-  }
-  if ($cameralife->Security->authorize('photo_delete'))
-  {
-    $href = $icon['href'].'&amp;action=delete';
-    echo "       <li><a href=\"$href\" onClick=\"document.getElementById('delete').style.display='';return false\">Flag / Report photo'</a></li>\n";
-  }
-  if ($cameralife->Security->authorize('photo_modify'))
-  {
-    $href = $icon['href'].'&amp;action=modify';
-    echo "       <li><a href=\"$href\" onClick=\"document.getElementById('modify').style.display='';return false\">Modify (rotate, revert, ...)</a></li>\n";
-  }
   if ($cameralife->Security->authorize('admin_albums') && 
       isset($_SERVER['HTTP_REFERER']) && 
       (preg_match ("#album.php\?id=([0-9]+)#",$_SERVER['HTTP_REFERER'],$regs) || preg_match("#albums/([0-9]+)#",$_SERVER['HTTP_REFERER'],$regs)))
@@ -137,8 +120,7 @@
     $href = $icon['href'].'&amp;action=print';
     echo "       <li><a href=\"$href\">Order prints</a></li>\n";
   }
-
-  echo "     </ul>\n";
+    echo "     </ul>\n";
   echo "     <h1>Related photos</h1>\n";
   echo "     <ul>\n";
 
@@ -164,60 +146,62 @@
   }
 
   echo "    </div>"; # Sidebar
+*/
+
+
+$cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
 
   if ($photo->Get('status') > 0)
   {
 ?>
-    <div class="administrative" align="center">
-      <p>This photo is not public</p>
-    </div>
+  <div class="alert">This photo is not public</div>
 <?php
   }
+?>
+  <h1>
+    <?= htmlentities($photo->Get('description'), NULL, "UTF-8") ?>
+<?php
   if ($cameralife->Security->authorize('photo_rename'))
   {
 ?>
-    <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST" name="form" id="renameform">
-    <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
-    <input type="hidden" name="target" value="<?= $icon['href'] ?>">
-    <input type="hidden" name="action" value="rename">
+    <a href="<?= AddParamRawUrlEncode('action','rename') ?>" 
+       id="showHideRenameForm"
+       class="btn btn-mini" 
+       style="<?=(isset($_GET['action']) && $_GET['action'] == 'rename')?'display:none':''?>"
+       onclick="$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false">edit</a>
+<?php 
+  } 
+?>
+  </h1>
+<?php
 
-    <div style="<?=(isset($_GET['action']) && $_GET['action'] == 'rename')?'':'display:none'?>" class="administrative" align=center id="rename">
-      <table>
-        <tr><td colspan=3><p>This <b>Title</b> will be shown on this page and on thumbnails of this photo elsewhere. <b>Keywords</b> will never be displayed. Searches and Albums both use the <b>Title</b> and <b>Keywords</b> to find photos.</p>
-        <tr><td>Title:<td colspan=2><input id="formtitle" style="width: 100%;" type="text" name="param1" value="<?= htmlentities($photo->Get('description')) ?>">
-      <?php
-        $origname = ucwords($photo->Get('filename'));
-        $origname = preg_replace('/.[^.]+$/', '', $origname);
-
-        if (!preg_match('/^dscn/i', $origname) && !preg_match('/^im/i', $origname)) // useless filename
-          echo '<tr><td><td><input type="button" onclick="javascript:set(\''.addslashes($origname).'\')" value="Set name to '.$origname.'">';
-      ?>
-        <tr><td>Keywords:
-          <td style="width:100%"><input style="width: 100%;" id="tags" name="param2" value="<?= htmlentities($photo->Get('keywords')) ?>" autocomplete="off" type="text">
-          <td>space&nbsp;separated
-        <tr style="visibility: hidden; background:pink" id="suggestions">
-          <td class="rs">completions
-          <td><div id="suggest"></div>
-        <tr>
-          <td><i>suggested</i>
-          <td colspan=2 style="border-bottom: 1px solid #2F4C5D;">
-            <span id="copy">
-            </span>
-        <tr valign=top>
-          <td>
-              <i><a id="alphasort" class="noclicky" href="javascript:sort('alpha')">all</a
-              >&nbsp;|&nbsp;<a id="freqsort" class="clicky" href="javascript:sort('freq')">common</a></i>
-          <td colspan=2>
-            <div id="alpha">
-            </div>
-        <tr><td>&nbsp;
-
-        <tr><td><td>
-          <input type="submit" value="Save Changes" onclick="makeRequest('<?= $cameralife->base_url ?>/photo_controller.php','renameform',renameDone);return false">
-          <a href="<?= $icon['href'] ?>"
-             onclick="return toggleshowrename()">(cancel)</a> 
-      </table>
-    </div>
+  if ($cameralife->Security->authorize('photo_rename'))
+  {
+?>
+    <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST" name="form" id="renameform" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'rename')?'':'display:none'?>">
+      <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
+      <input type="hidden" name="target" value="<?= $icon['href'] ?>">
+      <input type="hidden" name="action" value="rename">
+      <legend>The <strong>Title</strong> shows on this page and thumbnails of this photo elsewhere. <strong>Keywords</strong> are never displayed. Searches and Albums use the <strong>Title</strong> and <strong>Keywords</strong> to find photos.</legend>
+      <div class="control-group">
+        <label class="control-label" for="formtitle">Title</label>
+        <div class="controls">
+          <input name="param1" type="text" id="formtitle" placeholder="Title" class="input-large" value="<?= htmlentities($photo->Get('description'), NULL, "UTF-8") ?>">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="tags">Keywords</label>
+        <div class="controls">
+          <input name="param2" type="text" id="tags" placeholder="Keywords" class="input-xxlarge" value="<?= htmlentities($photo->Get('tags'), NULL, "UTF-8") ?>">
+          <span class="help-inline">space separated</span>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="controls">
+          <input class="btn btn-primary" type="submit" value="Save Changes" onclick="makeRequest('<?= $cameralife->base_url ?>/photo_controller.php','renameform',renameDone);return false">
+          <a class="btn" href="<?= $icon['href'] ?>" onclick="$('#showHideRenameForm').show();$('#renameform').hide();return false">Cancel</a> 
+        </div>
+      </div>
     </form>
 <?php
   }
@@ -235,64 +219,99 @@
       $target = $cameralife->base_url.'/'.$_SERVER['HTTP_REFERER'];
     else
       $target = $cameralife->base_url.'/index.php';
+      
 ?>
-    <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
-    <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-    <input type="hidden" name="target" value="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>" />
-    <input type="hidden" name="action" value="flag" />
-
-    <div style="<?=($_GET['action'] == 'delete')?'':'display:none'?>"class="administrative" align=center id="delete">
-      <p>Thank you for taking the time to report bad content. Please choose the obvious problem with this photo.</p>
-      <table>
-        <tr><td><input type="radio" name="param1" id="r1" value="indecent">
-          <td><label for="r1">Indecent or Sensitive</label>
-          <td>Obsenity, nudity
-        <tr><Td><input type="radio" name="param1" id="r2" value="photography">
-          <td><label for="r2">Bad photography</label>
-          <td>Blurry, poor lighting, terrible cropping
-        <tr><Td><input type="radio" name="param1" id="r3" value="subject">
-          <td><label for="r3">Poor subject</label>
-          <td>The subject is uninteresting, ie: dirt
-        <tr><Td><input type="radio" name="param1" id="r4" value="bracketing">
-          <td><label for="r4">Bracketing</label>
-          <td>A very similar photo supercedes this one
-      </table>
-          <p><input type="submit" value="Flag Photo">
-          <a href="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>"
-           onclick="document.getElementById('delete').style.display='none';return false">(cancel)</a> </p>
-    </div>
-  </form>
+    <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST" name="form" id="delete" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'flag')?'':'display:none'?>">
+      <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
+      <input type="hidden" name="target" value="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>" />
+      <input type="hidden" name="action" value="flag" />
+      <legend>Thank you for taking the time to report bad content. Please choose the obvious problem with this photo.</legend>
+      
+      <label class="radio">
+        <input type="radio" name="param1" id="r1" value="indecent">
+        <strong>Indecent or Sensitive</strong> / Obsenity, nudity
+      </label>
+      <label class="radio">
+        <input type="radio" name="param1" id="r1" value="photography">
+        <strong>Bad photography</strong> / Blurry, poor lighting, terrible cropping
+      </label>
+      <label class="radio">
+        <input type="radio" name="param1" id="r1" value="subject">
+        <strong>Poor subject</strong> / The subject is uninteresting, eg: dirt
+      </label>
+      <label class="radio">
+        <input type="radio" name="param1" id="r1" value="bracketing">
+        <strong>Bracketing</strong> / A very similar photo supersedes this one
+      </label>
+      <input class="btn btn-primary btn-danger" type="submit" value="Flag Photo" onclick="makeRequest('<?= $cameralife->base_url ?>/photo_controller.php','renameform',renameDone);return false">
+      <a class="btn" href="<?= $icon['href'] ?>" onclick="$('#delete').hide();return false">Cancel</a> 
+    </form>
 <?php
   }
   if ($cameralife->Security->authorize('photo_modify'))
   {
 ?>
-    <div style="<?=($_GET['action'] == 'modify')?'':'display:none'?>"class="administrative" align=center id="modify">
-      <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
-      Rotate: <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-      <input type="hidden" name="target" value="<?= $icon['href'] ?>" />
-      <input type="hidden" name="action" value="rotate" />
-        <input type="submit" name="param1" value="Rotate Counter-Clockwise">
-        <input type="submit" name="param1" value="Rotate Clockwise">
+    <div id="modify" class="well" style="<?=(isset($_GET['action']) && $_GET['action'] == 'modify')?'':'display:none'?>">
+      <legend>Modify photo. All modifications can be reverted.</legend>
+
+      <form class="form-horizontal" action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
+        <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
+        <input type="hidden" name="target" value="<?= $icon['href'] ?>" />
+        <input type="hidden" name="action" value="rotate" />
+        <div class="control-group">
+          <label class="control-label" for="tags">Rotate</label>
+          <div class="controls">
+            <input class="btn" type="submit" name="param1" value="Rotate Counter-Clockwise">
+            <input class="btn" type="submit" name="param1" value="Rotate Clockwise">
+          </div>
+        </div>
+      </form>
+      
+      <form class="form-horizontal" action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
+        <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
+        <input type="hidden" name="target" value="<?= $icon['href'] ?>" />
+        <input type="hidden" name="action" value="revert" />
+        <div class="control-group">
+          <label class="control-label" for="tags">Revert</label>
+          <div class="controls">
+            <input class="btn" type="submit" name="param1" value="Revert">
+          </div>
+        </div>
       </form>
 
-      <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
-      Revert: <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-      <input type="hidden" name="target" value="<?= $icon['href'] ?>" />
-      <input type="hidden" name="action" value="revert" />
-        <input type="submit" name="param1" value="Revert">
+      <form class="form-horizontal" action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
+        <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
+        <input type="hidden" name="target" value="<?= $icon['href'] ?>" />
+        <input type="hidden" name="action" value="rethumb" />
+        <div class="control-group">
+          <label class="control-label" for="tags">Regenerate Thumbnail</label>
+          <div class="controls">
+            <input class="btn" type="submit" name="param1" value="Regenerate Thumbnail">
+          </div>
+        </div>
       </form>
-
-      <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
-      Regenerate Thumbnail: <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-      <input type="hidden" name="target" value="<?= $icon['href'] ?>" />
-      <input type="hidden" name="action" value="rethumb" />
-        <input type="submit" name="param1" value="Regenerate Thumbnail">
-      </form>
-
-      <a href="<?= $icon['href'] ?>"
-         onclick="document.getElementById('modify').style.display='none';return false">(cancel)</a> 
+      
+<!--
+      <script type="text/javascript" src="http://feather.aviary.com/js/feather.js"></script>
+      <div class="form-horizontal">
+        <div class="control-group">
+          <label class="control-label">Edit photo</label>
+          <div class="controls">
+            <a class="btn" onclick="return launchEditor('image1', 'http://images.aviary.com/imagesv5/feather_default.jpg');">Edit photo with Aviary</a>
+          </div>
+        </div>
+      </div>
+-->
+      
+      <div class="form-horizontal">
+        <div class="control-group">
+          <div class="controls">
+            <a class="btn" href="<?= $icon['href'] ?>" onclick="$('#modify').hide();return false">Cancel</a> 
+          </div>
+        </div>
+      </div>
     </div>
+
 <?php
   }
   elseif ($ask_user_to_login == true)
@@ -305,12 +324,10 @@
     </div>
 <?php
   }
-  if ($photo->Get('status') == 0 && $_GET['action'] == 'print')
+  if ($photo->Get('status') == 0)
   {
 ?>
-    <div class="administrative" align=center>
-    <form action="http://www.digibug.com/dapi/order.php" method="post">
-    <p>You can order prints of this photo from the Camera Life store.</p>
+    <form action="http://www.digibug.com/dapi/order.php" method="POST" name="form" id="print" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'print')?'':'display:none'?>">
       <input type="hidden" name="digibug_api_version" value="100">
       <input type="hidden" name="company_id" value="1941">
       <input type="hidden" name="event_id" value="5755">
@@ -324,9 +341,10 @@
       <input type="hidden" name="thumb_height_1" value="<?= $photo->Get('tn_height') ?>">
       <input type="hidden" name="thumb_width_1" value="<?= $photo->Get('tn_width') ?>">
       <input type="hidden" name="title_1" value="<?= $photo->Get('description') ?>">
-      <input type="submit" value="Order">
+      <legend>You can order prints of this photo from the Camera Life store.</legend>
+      <input class="btn btn-primary" type="submit" value="Order">
+      <a class="btn" href="<?= $icon['href'] ?>" onclick="$('#print').hide();return false">Cancel</a> 
     </form>
-    </div>
 <?php
   }
 
@@ -344,88 +362,91 @@
     echo '<div id="receipt" class="receipt" style="visibility: hidden"></div>';
   }
 
-  echo "<div style=\"text-align: center\">\n";
+ // echo "<div class='thumbnail' style=\"text-align: center; margin: 0 auto\">\n";
   $alt = htmlentities($photo->Get('description'));
-  echo "<img id=\"curphoto\" style=\"margin: 0 auto\" src=\"".$photo->GetMedia('scaled')."\" alt=\"$alt\">\n\n";
-  echo "</div>\n";
+  echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px solid #DDD; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; margin: 0 auto\" src=\"".$photo->GetMedia('scaled')."\" alt=\"$alt\">\n\n";
+//  echo "</div>\n";
 ?>
 
-<table width="100%">
-  <tr valign=top>
-    <td width="49%">
-      <h2>Information</h2>
-        <ul>
-      <?php
-        if ($photo->Get('username'))
-        {
-          echo '         <li>This photo was added by '.$photo->Get('username').'</li>';
-        }
+<div class="row-fluid">
+  <div class="span6">
+    <h2>Information</h2>
+    <dl class="dl-horizontal">
+<?php
+if ($photo->Get('username')) {
+  echo '         <dt>Author</dt><dd>'.$photo->Get('username').'</dd>';
+}
 
-        if ($exif = $photo->GetEXIF())
-        {
-          foreach ($exif as $key=>$val)
-          {
-            if ($key=="Location")
-              echo "         <li>$key: <a href=\"http://maps.google.com/maps?q=$val\">$val</a></li>";
-            else
-              echo "         <li>$key: $val</li>";
-          }
-        }
-
-      ?>
-      </ul>
-    <td width="2%">
-    <td width="49%">
-    <form action="<?= $cameralife->base_url?>/photo_controller.php" method=POST name="form">
-    <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
-    <input type="hidden" name="target" value="<?= $icon['href'] ?>">
-    <input type="hidden" name="action" value="rate">
-      <h2>Feedback</h2>
-      <?php 
-  echo "My rating:\n";
-  $unlit = $cameralife->IconURL('unlit');
-  $lit = $cameralife->IconURL('lit');
-
-  echo "<span id=\"rating\">";
-  for ($i=1;$i<=5;$i++)
-  {
-    $hrefjs = ($i!=1) ? '' : "onclick=\"document.getElementById('delete').style.display='';return false\"";
-    $style = 'style="border:0; background:none; padding:0; margin:0"';
-    $imgsrc = ($i <= $rating) ? $lit : $unlit;
-    $img = "<img id=\"rate$i\" src=\"$imgsrc\" alt=\"star\">";
- 
-    echo "<button name=\"param1\" value=\"$i\" $hrefjs type=\"submit\" onmouseover=\"overstar($i)\" onmouseout=\"nostar()\" $style>$img</button>";
+if ($exif = $photo->GetEXIF()) {
+  foreach ($exif as $key=>$val) {
+    if ($key=="Location")
+      echo "         <dt>$key</dt><dd><a href=\"http://maps.google.com/maps?q=$val\">$val</a></dd>\n";
+    else if ($key=="Camera Model")
+      echo "         <dt>$key</dt><dd><a href=\"http://pbase.com/cameras/$val\">$val</a></dd>\n";
+    else
+      echo "         <dt>$key</dt><dd>$val</dd>\n";
   }
-  if ($rating == 5)
-    echo "(saved in my favorite photos)";
+}
+?>    
+    </dl>
+  </div>
+  <div class="span6">
+    <h2>Feedback</h2>
+    <form action="<?= $cameralife->base_url?>/photo_controller.php" method=POST name="form">
+      <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
+      <input type="hidden" name="target" value="<?= $icon['href'] ?>">
+      <input type="hidden" name="action" value="rate">
+    
+      <dl class="dl-horizontal">
+        <dt>My rating</dt>
+        <dd>
+<?php
+for ($i=1; $i<=5; $i++) {
+  echo "<button name=\"param1\" value=\"$i\" type=\"submit\" class=\"btn btn-mini\">";
+  if ($i<=$rating)
+    echo "<i class=\"icon-star\"></i>\n";
+  else
+    echo "<i class=\"icon-star-empty\"></i>\n";
+  echo "</button>\n";
+}
+?>
+        </dd>
+        <dt>Average rating</dt>
+        <dd>
+<?php
+for ($i=1; $i<=5; $i++) {
+  if ($i<=$avg)
+    echo "<i class=\"icon-star\"></i>\n";
+  else
+    echo "<i class=\"icon-star-empty\"></i>\n";
+}
+?>
+        </dd>
+      </dl>
+    </form>
+    <h2>Comments</h2>
+      <?php 
 
-  echo "</span><br>";
-  $avg = $cameralife->Database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->Get('id'));
-  echo "Average rating: $avg\n";
-  echo "<p>";
 $result = $cameralife->Database->Select('comments', '*', 'photo_id='.$photo->Get('id'));
 while ($comment = $result->FetchAssoc())
 echo "<strong>".$comment['username']."</strong> <em>" . date('Y-m-d', strtotime($comment['date']))."</em><br>" .htmlentities($comment['comment']) . "<hr>";
   echo "</p>";
       ?>
-</form>
-
-<form action="<?= $cameralife->base_url ?>/photo_controller.php" method=POST name="form">
+      <form action="<?= $cameralife->base_url ?>/photo_controller.php" method=POST name="form">
 <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
 <input type="hidden" name="target" value="<?= $icon['href'] ?>">
 <input type="hidden" name="action" value="comment">
 <input name="param1">
-<input type="submit" value="Post comment">
+<input type="submit" value="Post comment" class="btn">
 </form>
-    </table>
+  </div>
+</div>
 
 <?php
   # Cache the next image the user is likely to look at
-  if ($photoNext)
-  {
-    echo '<img style="display:none" src="'.$photoNext->GetMedia('scaled').'" alt="hidden photo">';
+  if ($photoNext) {
+      echo '<img style="display:none" src="'.$photoNext->GetMedia('scaled').'" alt="hidden photo">';
   }
+  
+  $cameralife->Theme->Footer();
 ?>
-
-</body>
-</html>

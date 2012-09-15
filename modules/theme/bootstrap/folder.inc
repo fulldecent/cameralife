@@ -1,13 +1,9 @@
 <?php
 /**
- * Establishes path of the photos folder
- *
- *<b>Note</b>  $cameralife and $folder are set by ShowPage()
- *
- *Magic vars GET:start, GET/POST:sort are handled in search.class.php
- *@author Will Entriken <cameralife@phor.net>
- *@access public
- *@copyright Copyright (c) 2001-2009 Will Entriken
+ * Folder view 
+ * @author Will Entriken <cameralife@phor.net>
+ * @access public
+ * @copyright Copyright (c) 2001-2009 Will Entriken
  */
 
 # $cameralife and $folder are set by ShowPage()
@@ -46,18 +42,20 @@ $menu = array();
   $cameralife->Theme->Header($folder_name, 'folder');
 
 ?>
-    <div id="sidebar">
-      <h1>Folder View</h1> 
-      <ul>
+
+<ul class="breadcrumb">
 <?php
   foreach($folder->GetAncestors() as $ancestor) {
     $icon = $ancestor->GetIcon('small');
-    echo "        <li><a href=\"{$icon['href']}\"><img src=\"".$cameralife->IconURL('small-folder')."\"> {$icon['name']}</a></li>\n";
+    echo "  <li><a href=\"{$icon['href']}\"><img src=\"".$cameralife->IconURL('small-folder')."\"> {$icon['name']}</a></li>\n";
+    echo "  <span class=\"divider\">/</span></li>";
   }
   echo "        <li><img src=\"".$cameralife->IconURL('small-folder')."\"> $folder_name</li>\n";
 ?>
-      </ul>
-    </div>
+</ul>
+
+<h1>TODO: UPLOAD PHOTOS HERE</h1>
+
 <div id="text">
 <?php
 
@@ -68,7 +66,6 @@ $menu = array();
 
   if (count($sections) >= 2) {
     $icon = $folder->GetIcon();
-    echo "This folder contains ";
     $cameralife->Theme->MultiSection($sections, $icon['href']);
   }
   elseif (count($sections == 1))

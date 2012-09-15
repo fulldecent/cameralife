@@ -262,10 +262,24 @@ function AddParam($url, $param, $value=NULL)
     $url .= "&#63;$param";
 
   if ($value !==NULL)
-    $url .= "=$value";
+    $url .= "=".rawurlencode($value);
 
   return $url;
 }
 
+function AddParamRawUrlEncode($param, $value=NULL , $url=NULL)
+{
+  if ($url == NULL)
+    $url = $_SERVER['REQUEST_URI'];
+  if ((strpos($url, '&#63;') !== FALSE) || (strpos($url, '?') !== FALSE) || (strpos($url, '&amp;') !== FALSE))
+    $url .= "&amp;";
+  else
+    $url .= "&#63;";
+  $url .= rawurlencode($param);
+  if ($value !==NULL)
+    $url .= "=".rawurlencode($value);
+
+  return $url;
+}
 
 ?>

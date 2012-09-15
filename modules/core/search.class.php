@@ -1,5 +1,6 @@
 <?php
-/**Class Search enables you to get and use the search facility
+/**
+ *Class Search enables you to get and use the search facility
  *@author Will Entriken <cameralife@phor.net>
  *@access public
  *@copyright Copyright (c) 2001-2009 Will Entriken
@@ -73,8 +74,11 @@ class Search extends View
     $retval[] = array('popular', 'Popular First');
     $retval[] = array('unpopular', 'Unpopular First');
     $retval[] = array('rand', 'Random');
-    if (is_object($this) && array_key_exists($this->mySort, $retval))
-      $retval[$this->mySort][] = 'selected';
+    foreach ($retval as &$item) {
+        list($id, $desc) = $item;
+        if (is_object($this) && $this->mySort==$id)
+            $item[] = "selected";
+    }
     return $retval;
   }
 

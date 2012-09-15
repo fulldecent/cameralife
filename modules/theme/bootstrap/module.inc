@@ -89,7 +89,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title><?= $title ?></title>
+    <title><?= htmlentities($title, NULL, "UTF-8") ?></title> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Camera Life version <?= $cameralife->version ?>">
     <meta name="author" content="<?= $cameralife->GetPref('owner_email') ?>">
@@ -97,6 +97,7 @@
     <!-- Le styles -->
     <link href="<?= $cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))) ?>/css-extra/custom.css" rel="stylesheet">
     <link href="<?= $cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))) ?>/css/bootstrap.css" rel="stylesheet">
+    <link href="<?= $cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))) ?>/css/bootstrap-responsive.min.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -106,15 +107,13 @@
         padding: 9px 0;
       }
     </style>
-    <link href="<?= $cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))) ?>/css/bootstrap-responsive.css" rel="stylesheet">
-
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
-
   <?= $body ?>
+  
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
@@ -125,18 +124,35 @@
           </a>
           <a class="brand" href="<?= $cameralife->base_url ?>"><?= $cameralife->GetPref('sitename') ?></a>
           <div class="btn-group pull-right">
+<?php
+if ($cameralife->Security->GetName()) {
+   $gravitarHTML = htmlentities("http://www.gravatar.com/avatar/".md5($cameralife->Security->GetName())."?s=16&d=identicon");
+
+?>  
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+              <img src="<?= $gravitarHTML ?>" height=16 width=16>
+              <?= $cameralife->Security->GetName() ?>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="<?= $myfoldericon['href'] ?>">My Uploads</a></li>
+              <li><a href="<?= $cameralife->base_url.'/admin/index.php' ?>">Administer</a></li>
+              <li><a href="<?= $cameralife->base_url.'/admin/index.php' ?>">Customize this page</a></li>
+              <li class="divider"></li>
+              <li><a href="<?= $cameralife->base_url.'/logout.php' ?>">Sign Out</a></li>
+            </ul>
+<?php
+  } else {
+?>
+            <a class="btn pull-right" href="<?= $cameralife->Security->LoginURL() ?>">
               <i class="icon-user"></i>
               <img src="http://facebook.com/favicon.ico" height=16 width=16>
               <img src="http://google.com/favicon.ico" height=16 width=16>
               <img src="http://yahoo.com/favicon.ico" height=16 width=16> Login
-              <span class="caret"></span>
             </a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Profile</a></li>
-              <li class="divider"></li>
-              <li><a href="#">Sign Out</a></li>
-            </ul>
+<?php
+  }
+?>
           </div>
           <a class="btn pull-right" href="#">
             <i class="icon-plus"></i>
@@ -197,20 +213,8 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap-transition.js"></script>
-    <script src="../assets/js/bootstrap-alert.js"></script>
-    <script src="../assets/js/bootstrap-modal.js"></script>
-    <script src="../assets/js/bootstrap-dropdown.js"></script>
-    <script src="../assets/js/bootstrap-scrollspy.js"></script>
-    <script src="../assets/js/bootstrap-tab.js"></script>
-    <script src="../assets/js/bootstrap-tooltip.js"></script>
-    <script src="../assets/js/bootstrap-popover.js"></script>
-    <script src="../assets/js/bootstrap-button.js"></script>
-    <script src="../assets/js/bootstrap-collapse.js"></script>
-    <script src="../assets/js/bootstrap-carousel.js"></script>
-    <script src="../assets/js/bootstrap-typeahead.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <script src="<?= $cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))) ?>/js/bootstrap.min.js"></script>
   </body>
 </html>
 <?php
@@ -248,6 +252,7 @@
       if ($href)  echo "    </a>\n";
       echo "  </div>\n";
     }
+*/
 
     /// Taken an Icon to make base url
     function MultiSection($sections, $base_url, $conjunction='and', $query=NULL)
@@ -256,31 +261,27 @@
       $sectionhtml = array();
       $finalhtml = '';
 
-      foreach($sections as $section)
-      {
-        $html = "<a";
+      echo '<ul class="nav nav-tabs">'.PHP_EOL;
+      foreach($sections as $section) {
         if ($_GET['page'] == $section['page_name'])
-          $html .= ' class="current"';
+          echo "<li class=\"active\">";
+        else
+          echo "<li>";
+      
         $url = $base_url;
         $url = AddParam($url, 'page', $section['page_name']);
         if (isset($query))
           foreach($query as $p => $v)
             $url = AddParam($url, $p, $v);
-        $html .= " href=\"$url\">";
-        #if ($section['image']) $this->Image($section['image'], array('align'=>'middle'));
-        $html .= $section['name'];
-        $html .= "</a>";
-        $sectionhtml[] = $html;
+        echo "<a href=\"$url\">";
+        echo $section['name'];
+        echo "</a>";
+        echo "</li>";
       }
-
-      $last = array_pop($sectionhtml);
-      if ($conjunction == 'and' || $conjunction == 'or')
-        $finalhtml = implode(', ', $sectionhtml);
-      else
-        $finalhtml = implode(" $conjunction ", $sectionhtml);
-      echo "$finalhtml $conjunction $last";
+      
+      echo "</ul>";
     }
-*/
+
     function PageSelector($start, $total, $per_page, $url)
     {
       global $theme;
