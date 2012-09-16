@@ -1,52 +1,114 @@
 <?php
 /**
- * Accepts install parameters and perform the actual CL install
- *
- *@author Will Entriken <cameralife@phor.net>
- *@copyright Copyright (c) 2001-2009 Will Entriken
- *@access public
+ * Displays post installation notifcation messages
+ * @author Will Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @access public
  */
 
-  // Pretend like the user will authenticate by giving them a cookie.
-  setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
+$continue = true;
+if(file_exists('../modules/config.inc')) {
+  die("Camera Life already appears to be set up, because modules/config.inc exists.");
+}
+
+// Pretend like the user will authenticate by giving them a cookie.
+setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
+
 ?>
-<html>
-<head>
-<link rel="stylesheet" type="text/css" href="common.css">
-<title>Camera Life Installation</title>
-</head>
-<body>
 
-<h1>Setting up Camera Life</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Install Camera Life</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<h2>Setting up database</h2>
+    <!-- Le styles -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <style type="text/css">
+    </style>
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-52764-13']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+    </script>
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand">INSTALL CAMERA LIFE</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a>1. Prerequisites</a></li>
+              <li class="active"><a>2. Database</a></li>
+              <li><a>3. Use Camera Life</a></li>
+            </ul>
+            <a class="btn pull-right" href="mailto:cameralifesupport@phor.net">
+              <i class="icon-envelope"></i>
+              Email support
+            </a>
+            <a class="btn pull-right" href="http://fulldecent.github.com/cameralife">
+              <i class="icon-home"></i>
+              Camera Life homepage
+            </a>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="well">
+        <h2>Installing to database</h2>
+      </div>
 
 <?php
     if (!$_POST['host'])
-      die ("You didn't specify a server to connect to, <a href=\"index2.php\">go back</a> and try again");
+      die ("You didn't specify a server to connect to, <a href=\"index.php\">go back</a> and try again");
     if (!$_POST['name'])
-      die ("You didn't specify a database, <a href=\"index2.php\">go back</a> and try again");
+      die ("You didn't specify a database, <a href=\"index.php\">go back</a> and try again");
     if (!$_POST['user'])
-      die ("You didn't specify a username, <a href=\"index2.php\">go back</a> and try again");
+      die ("You didn't specify a username, <a href=\"index.php\">go back</a> and try again");
     if (!$_POST['pass'])
-      die ("You didn't specify a password, <a href=\"index2.php\">go back</a> and try again");
+      die ("You didn't specify a password, <a href=\"index.php\">go back</a> and try again");
     if (!$_POST['sitepass'])
-      die ("You didn't specify a site password, <a href=\"index2.php\">go back</a> and try again");
+      die ("You didn't specify a site password, <a href=\"index.php\">go back</a> and try again");
     $prefix = $_POST['prefix'];
 
     $setup_link = @mysql_connect($_POST['host'],$_POST['user'],$_POST['pass'])
-      or die ("I couldn't connect using those credentials, <a href=\"index2.php\">go back</a> and try again");
+      or die ("I couldn't connect using those credentials, <a href=\"index.php\">go back</a> and try again");
 
     @mysql_select_db($_POST['name'], $setup_link)
-      or die ("I couldn't select that database, <a href=\"index2.php\">go back</a> and try again");
+      or die ("I couldn't select that database, <a href=\"index.php\">go back</a> and try again");
 
     $result = mysql_query('SHOW TABLES FROM '.$_POST['name'].' WHERE tables_in_'.$_POST['name'].' LIKE "'.$_POST['prefix'].'%"',$setup_link);
     if (mysql_fetch_array($result))
       die ("The database ".$_POST['name']." has tables in it. The installer will not change
             the existing tables! To upgrade, consult the <a href='../UPGRADE'>UPGRADE</a> file");
-  ?>
+?>
 
-  <p>Logged in to database...</p>
+      <h3>Logged in to database...</h3>
 
   <?php
 
@@ -59,7 +121,7 @@
         `poster_id` int(11) NOT NULL default '0',
         `hits` bigint(20) NOT NULL default '0',
         PRIMARY KEY  (`id`)
-      ) TYPE=MyISAM COMMENT='Sections of pictures';";
+      );";
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);
 
@@ -84,7 +146,7 @@
         `modified` int(1) NOT NULL default '0',
         PRIMARY KEY  (`id`),
         UNIQUE KEY `id` (`id`)
-      ) TYPE=MyISAM COMMENT='Photos and their descriptions';";
+      );";
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);
 
@@ -99,7 +161,7 @@
         KEY `id` (`id`),
         KEY `id_2` (`id`,`username`,`user_ip`),
         KEY `id_4` (`id`)
-      ) TYPE=MyISAM COMMENT='Photo Ratings';";
+      );";
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);
 
@@ -113,7 +175,7 @@
         `date` datetime NOT NULL,
         PRIMARY KEY  (`id`),
         KEY `id` (`photo_id`)
-      ) TYPE=MyISAM COMMENT='Photo comments';";
+      );";
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);
 
@@ -124,7 +186,7 @@
         `prefvalue` varchar(255) NOT NULL default '',
         `prefdefault` varchar(255) NOT NULL default '',
         PRIMARY KEY  (`prefmodule`,`prefkey`)
-      ) TYPE=MyISAM COMMENT='Customizable site options';";
+      );";
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);
 
@@ -144,7 +206,7 @@
         PRIMARY KEY  (`username`),
         UNIQUE KEY `username` (`username`),
         UNIQUE KEY `id` (`id`)
-      ) TYPE=MyISAM COMMENT='Users of the system';";
+      );";
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);
 
@@ -155,7 +217,7 @@
         `value` varchar(255) NOT NULL,
         PRIMARY KEY  (`photoid`,`tag`),
         KEY `photoid` (`photoid`)
-      ) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
+      );";
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);
 
@@ -171,7 +233,7 @@
         `user_ip` varchar(16) NOT NULL default '',
         `user_date` date NOT NULL default '0000-00-00',
         PRIMARY KEY  (`id`)
-      ) TYPE=MyISAM COMMENT='Logs modifications to the system';";
+      );";
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);
 
@@ -187,7 +249,7 @@
 
   ?>
 
-<h2>Writing configuration file</h2>
+<h3>Writing configuration file</h3>
 
   <?php
     $config[] = "<?php\n";
@@ -218,7 +280,7 @@
     }
   ?>
 
-<h2>Setting up .htaccess</h2>
+<h3>Setting up .htaccess</h3>
 
 <?php
   $htaccess = file('../.htaccess');
@@ -249,14 +311,16 @@
       echo htmlentities($line) . "\n";
     echo "</pre></p>";
   }
-
 ?>
 
+      <a class="btn btn-primary btn-large" href="index3.php">Continue --&gt;</a>
+    </div> <!-- /container -->
 
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
 
-  <p align=center>
-  <a class="pagelink" href="index3.php">Continue --&gt;</a>
-  </p>
-
-</body>
+  </body>
 </html>
