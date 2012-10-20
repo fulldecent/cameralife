@@ -1,98 +1,89 @@
-*
-* Camera Life
-* Version 2.6 - 2008-11-10
-* https://github.com/fulldecent/cameralife
-*
-* Copyright (C) 2001-2012 Will Entriken "Full Decent" <cameralife AT phor.net>
-*
-* Camera Life is released under the terms of the GNU General Public 
-* License as published by the Free Software Foundation; either version 2 
-* of the License, or (at your option) any later version. See the 
-* file LICENSE for more information
-*
+12345678901234567890123456789012345678901234567890123456789012345678901234567890
 
-I INTRODUCTION
+Camera Life
+===========
 
-  Camera Life is a system for cataloging your photo collection. It gives 
-  users the ability to search or browse your archive in intuitive ways, with
-  an attention to powerful administrative functions.
+Version 2.6  
+Copyright (C) 2001-2012 William Entriken  
+https://github.com/fulldecent/cameralife  
+cameralife@phor.net
+  
+Camera Life is released under the terms of the GNU General Public License 
+as published by the Free Software Foundation; either version 2 of the 
+License, or (at your option) any later version. See the file LICENSE for 
+more information.
 
+![Screenshot 1](http://fulldecent.github.com/cameralife/splashAssets/screenshot1.png)
+![Screenshot 2](http://fulldecent.github.com/cameralife/splashAssets/screenshot2.png)
+![Screenshot 3](http://fulldecent.github.com/cameralife/splashAssets/screenshot3.png)
 
-II FEATURES
+Introduction
+--------------
+Camera Life is a system for cataloging your photo collection. It gives users 
+the ability to search or browse your archive in intuitive ways, with an 
+attention to powerful administrative functions.
 
- A Storing photos
+Features
+--------
+1. Great photo organization
 
-   You can store photos in a folder on your webserver, another FTP/WWWserver,
-   Amazon S3 or Flickr. Photos added to your "photostore" will be recognized
-   by Camera Life and cached/thumbnailed.
+   Photos are sorted in folders and also by albums/topics with automatic 
+categorization by keywords.
+   
+2. Full audit trail
 
- B Organizing Photos
+   If you have open access and someone adds lame comments or photo 
+descriptions, you can easily revert changes to the site.
+   
+3. Easy to install and try
 
-   Photos are browsable by file heirarchy. You can edit the description for
-   each photo and add tags. Then you can create Albums, which are groups of
-   photos containing some search term. As you rename and tag photos, they
-   are automatically added to or removed from Albums. Each Album is a member
-   of a Topic.
+   See the installation flyover at http://youtu.be/aWDdMfyPwwo  (1 minute 
+5 second video)
 
-   Camera Life will learn how photos are related and present the user with
-   photos that are related to the one currently showing.
+4. Easy to get photos in
 
- C The social effect
+  Users can upload photos via the web, FTP access, iPhoto, iPhone, 
+Mac/Windows/Linux software, Digikam, or any other product that supports 
+the Gallery Remote protocol.
 
-   You can allow site users to edit photo description, add tags, comment
-   on photos and flag photos for deletion. This is enabled by default. All
-   actions on the site have an audit trail and can be undone. This is under
-   the Administer interface.
+5. Responsive
 
- D Extensible
+  Supports OpenSearch and RSS. Is built using JQuery/AJAX for browsers, a 
+custom theme for iPhone, but gracefully degrades without Javascript for 
+accessibility... or if you want to load it on a cell phone made in the 90's
+  
+6. Integrates well with your site
 
-   The code is very modular. You can easily add themes or iconset to your 
-   site, or integrate with your existing CMS or template system.
-
- E Web 2.0 / Integration
-
-   Camera Life supports microformats and some of the interface is done with 
-   AJAX. It supports photocasting through an RSS feed. iPhone users will
-   see a special version of the site. Camera Life is compatible with the
-   Gallery Remote API, so you can use tools designed for Gallery to upload
-   your photos to the site:
-
-     iPhoto:      http://zwily.com/iphoto/
-     KDE/digikam: http://www.digikam.org/?q=about/features09x
-     Java:        http://gallery.menalto.com/wiki/Gallery_Remote
+  Code is documented and integrates with your database and security model. 
+Photos store on your server, Amazon S3, a remote FTP/SFTP server, and rsync.net. 
+It scales if you want to offload thumbnailing to separate server(s).
 
 
-III INSTALLATION
+Installation
+------------
 
- A Install
-
-   See the file INSTALL
-
- B Upgrade
-
-   See the file UPGRADE
+See the file INSTALL or UPGRADE, as appropriate.
 
 
-IV MAITENANCE
+Maintenance
+-----------
 
- A Administer
+1. Administration
 
-   Regularly login as admin and click Administer at the top of the main page. 
-   Items that require your attention will be noted in red.
+  Regularly login as admin and click Administer at the top of the main page. 
+Items that require your attention will show in red.
 
- B Add Albums
+2. Add albums
 
-   To create new Albums, login and choose Create Album from the front page.
-   Or start a search and click 'Create an album with these results'
+  To create new Albums, login and choose Create Album from the front page. Or 
+start a search and click 'Create an album with these results'
 
 
-V BUGS
+Support
+-------
 
- A Bugs
+Please file issues at https://github.com/fulldecent/cameralife  
 
-    Mail 'em to us at cameralife AT phor.net. Please begin your subject with:
-    "CAMERALIFE-BUGS:".
-
+Lead developer is available to consult on custom integration of Camera Life.
 
 Thank you for choosing Camera Life for your photo displaying needs!
-
