@@ -154,7 +154,7 @@ if ($cameralife->Security->GetName()) {
   }
 ?>
           </div>
-          <a class="btn pull-right" href="#">
+          <a class="btn pull-right" href="<?= $cameralife->base_url ?>/upload.php">
             <i class="icon-plus"></i>
               Upload Photos
           </a>

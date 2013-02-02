@@ -400,6 +400,8 @@ if ($exif = $photo->GetEXIF()) {
       <dl class="dl-horizontal">
         <dt>My rating</dt>
         <dd>
+          <div class="btn-group">
+
 <?php
 for ($i=1; $i<=5; $i++) {
   echo "<button name=\"param1\" value=\"$i\" type=\"submit\" class=\"btn btn-mini\">";
@@ -410,6 +412,7 @@ for ($i=1; $i<=5; $i++) {
   echo "</button>\n";
 }
 ?>
+          </div>
         </dd>
         <dt>Average rating</dt>
         <dd>

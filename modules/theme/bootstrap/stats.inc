@@ -1,7 +1,6 @@
 <?php
-/**Displays popular photos and albums,and fun facts such as the amount of time a site has been online
- *
- * <b> Note </b> $cameralife and $album are set by ShowPage()
+/**
+ * Displays popular photos and albums,and fun facts such as the amount of time a site has been online
  *@author Will Entriken <cameralife@phor.net>
  *@copyright Copyright (c) 2001-2009 Will Entriken
  *@access public
@@ -16,15 +15,22 @@
   $popular_albums = $stats->GetPopularAlbums();
   $funfacts = $stats->GetFunFacts();
 
-  $header = '
-  <style type="text/css">
-    div.bar {margin: 0; background: red; float: left; height: 1em; clear: both}
-  </style>
-';
   $cameralife->Theme->Header($cameralife->GetPref('sitename').' - Stats', 'stats');
 ?>
-<div id="sidebar">
-  <h1>Most popular photos</h1>
+
+<h1>Uploading Photos</h1>
+<ul>
+  <li>You can upload a photo in JPEG format or a ZIP of JPEG photos
+  <li>The maximum file size is 20MB.
+<?php
+  if ($cameralife->Security->Authorize('admin_file') && !isset($_REQUEST['path']))
+    echo '    <li>To upload somewhere else, go to that folder and click "upload here"';
+?>
+</ul>
+
+<div class="row">
+  <div class="span4">
+    <h1>Most popular nnphotos</h1>
 <?php
   foreach ($popular_photos as $result)
   {
@@ -34,7 +40,11 @@
     echo '<a style="clear: left" href="'.$icon['href'].'">'.$result->Get('hits').' hits</a><span class="description">'.$icon['name'].'</span></div>';
   }
 ?>
+  </div>
 </div>
+
+<?php exit(0); ?>
+
 <div id="text">
 
   <h1>Most popular photos</h1>

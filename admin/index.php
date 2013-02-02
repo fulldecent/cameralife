@@ -1,156 +1,152 @@
 <?php
- /**Displays the main admin page
-  *Provides a menu to choose administrative options
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-  */
-  $features=array('database','security', 'photostore');
-  require "../main.inc";
-  $cameralife->base_url = dirname($cameralife->base_url);
+/**
+ * Displays the main admin page
+ * Provides a menu to choose administrative options
+ * @author Will Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2013 Will Entriken
+ */
+$features=array('database','security', 'photostore');
+require "../main.inc";
+$cameralife->base_url = dirname($cameralife->base_url);
 
-  $numdel = $cameralife->Database->SelectOne('photos','COUNT(*)','status=1');
-  $numpri = $cameralife->Database->SelectOne('photos','COUNT(*)','status=2');
-  $numupl = $cameralife->Database->SelectOne('photos','COUNT(*)','status=3');
-  $numreg = $cameralife->Database->SelectOne('users','COUNT(*)','auth=1');
-  $numlog = $cameralife->Database->SelectOne('logs','COUNT(*)','id>'.($cameralife->GetPref('checkpointlogs')+0));
-  $numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->GetPref('checkpointcomments')+0));
+$numdel = $cameralife->Database->SelectOne('photos','COUNT(*)','status=1');
+$numpri = $cameralife->Database->SelectOne('photos','COUNT(*)','status=2');
+$numupl = $cameralife->Database->SelectOne('photos','COUNT(*)','status=3');
+$numreg = $cameralife->Database->SelectOne('users','COUNT(*)','auth=1');
+$numlog = $cameralife->Database->SelectOne('logs','COUNT(*)','id>'.($cameralife->GetPref('checkpointlogs')+0));
+$numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->GetPref('checkpointcomments')+0));
 ?>
-<html>
-<head>
-  <title><?= $cameralife->GetPref('sitename') ?></title>
-  <link rel="stylesheet" href="admin.css">
-  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-</head>
-<body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Camera Life - Administration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<div id="header">
-<h1>Site Administration</h1>
+    <!-- Le styles -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="brand" href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration
+        </div>
+      </div>
+    </div>
+    <div class="container">
 <?php
-  $home = $cameralife->GetIcon('small');
-  echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
-?> |
-<a href="../stats.php"><img src="<?= $cameralife->IconURL('small-photo')?>">Stats</a> |
+$latestVersion = trim(file_get_contents('https://raw.github.com/fulldecent/cameralife/master/VERSION'));
+if ($cameralife->version == $latestVersion)
+  echo "<p class=\"alert alert-success\">You are running Camera Life {$cameralife->version}, the latest version</p>\n";
+else
+  echo "<p class=\"alert alert-error\">A newer version of Camera Life, $latestVersion, is available. <a href=\"http://fulldecent.github.com/cameralife/\">Please visit the Camera Life homepage.</a></p>\n";
 
-<?php
-  if (file_exists('../.svn'))
-    $svn = exec('svnversion '.$cameralife->base_dir);
-  else
-    $svn = 'not versioned';
-  
-  if ($svn != 'not versioned')
-  {
-    echo "Camera Life version <strong>svn:$svn</strong> | ";
-
-    if (!$_GET['svn'])
-    {
-      echo " <a href=\"?svn=yes\">check for svn update</a>";
-    } 
-    else
-    {
-      $newest = file_get_contents('http://fdcl.svn.sourceforge.net/svnroot/fdcl/');
-      preg_match('#Revision ([0-9]+):#', $newest, $regs);
-      echo "Latest is <strong>".$regs[1]."</strong> ";
-      echo "<a href=\"http://fdcl.svn.sourceforge.net/viewvc/fdcl/trunk/?view=log\">view diffs</a>";
-
-      echo "<pre>";
-       passthru('svn log '.$cameralife->base_dir.' -r base:head');
-      echo "</pre>";
-    }
-  }
-  else
-  {
-    echo "Camera Life version <strong>".$cameralife->version."</strong> | ";
-
-    if (!$_GET['svn'])
-    {
-      echo " <a href=\"?svn=yes\">check latest version</a>";
-    } 
-    else
-    {
-      $newest = file_get_contents('https://raw.github.com/fulldecent/cameralife/master/VERSION');
-      echo "Latest is <strong>".$newest."</strong> ";
-      echo "<a href=\"http://fdcl.sourceforge.net\">get it</a>";
-    }
-  }
+if ($cameralife->Security->authorize('admin_file')) {
 ?>
-</div>
-
+      <h1>Administration</h1>
+      <ul class="thumbnails">
+        <li class="span4">
+          <div class="thumbnail">
+            <h2>Logs</h2>
 <?php
-
-  if ($cameralife->Security->authorize('admin_customize'))
-  {
-    echo "<h2><a href=\"appearance.php\">Appearance</a></h2>\n";
-    echo "<p>Choose a theme and iconset</p>\n";
-
-    # Upgrade hack
-    if (is_dir($cameralife->base_dir."/images/scaled/"))
-    {
-      echo "<p class=\"alert\">Note: images/scaled is no longer used, scaled photos now go in your \"Automatically cached photos\" folder.</p>\n";
-    }
-    if (is_dir($cameralife->base_dir."/images/thumbnail/"))
-    {
-      echo "<p class=\"alert\">Note: images/thumbnail is no longer used, thumbnails now go in your \"Automatically cached photos\" folder.</p>\n";
-    }
-    if (is_dir($cameralife->base_dir."/images/modified/"))
-    {
-      echo "<p class=\"alert\">Note: images/modified is no longer used, modified photos now go in your \"Automatically cached photos\" folder. Make sure you Update Your Database first (in File Manager), so your modified files are copied over.</p>\n";
-    }
-  }
-
-  if ($cameralife->Security->authorize('admin_customize'))
-  {
-    echo "<h2><a href=\"security.php\">Security Manager</a></h2>\n";
-    echo "<p>User authentication and security management</p>\n";
-
-    if ($numreg)
-      echo "<p class=\"alert\">$numreg users have registered but not been confirmed</p>\n";
-  }
-
-  if ($cameralife->Security->authorize('admin_customize'))
-  {
-    echo "<h2><a href=\"logs.php\">Log Viewer</a></h2>\n";
-    echo "<p>View and rollback changes to the site</p>\n";
-    if ($numlog)
-      echo "<p class=\"alert\">There are $numlog logged actions since your last checkpoint</p>";
-    else
-      echo "<p>No changes have been made since your last checkpoint</p>";
-  }
-
-  if ($cameralife->Security->authorize('admin_customize'))
-  {
-    echo "<h2><a href=\"comments.php\">Comment Viewer</a></h2>\n";
-    echo "<p>View and censor comments on the site</p>\n";
-    if ($numlog)
-      echo "<p class=\"alert\">There are $numcomments comments since your last checkpoint</p>";
-    else
-      echo "<p>No changes have been made since your last checkpoint</p>";
-  }
-
-  if ($cameralife->Security->authorize('admin_file'))
-  {
-    echo "<h2><a href=\"files.php\">File Manager</a></h2>\n";
-    echo "<p>Maintain photo collection and view private photos</p>\n";
-
-    if ($numdel)
-      echo "<p class=\"alert\">$numdel photos have been flagged</p>";
-    if ($numupl)
-      echo "<p class=\"alert\">$numupl photos have been uploaded but not reviewed</p>";
-  }
-
-  if ($cameralife->Security->authorize('admin_file'))
-  {
-    echo "<h2><a href=\"photostore.php\">Photo Storage</a></h2>\n";
-    echo "<p>Setup where your photos are stored: in a local folder, a remote server, Amazon S3, ...</p>\n";
-  }
-
-  if ($cameralife->Security->authorize('admin_customize'))
-  {
-    echo "<h2><a href=\"register.php\">Provide Feedback</a></h2>\n";
-    echo "<p>Provide feedback of your experiences with Camera Life</p>";
-  }
+if ($numlog)
+  echo "<p class=\"alert\">There are $numlog logged actions since your last checkpoint</p>";
+else
+  echo "<p class=\"alert alert-info\">No changes have been made since your last checkpoint</p>";
 ?>
-</body>
+            <p><a class="btn" href="logs.php">View and rollback site actions &raquo;</a></p>
+          </div>
+        </li>
+        <li class="span4">
+          <div class="thumbnail">
+            <h2>Comments</h2>
+<?php
+if ($numcomments)
+  echo "<p class=\"alert\">There are $numcomments comments since your last checkpoint</p>";
+else
+  echo "<p class=\"alert alert-info\">No changes have been made since your last checkpoint</p>";
+?>
+            <p><a class="btn" href="comments.php">View and censor site comments &raquo;</a></p>
+          </div>
+        </li>
+        <li class="span4">
+          <div class="thumbnail">
+            <h2>File manager</h2>
+            <p>Private photos are also viewable here</p>
+<?php
+if ($numdel)
+  echo "<p class=\"alert alert-error\"><i class=\"icon-flag\"></i> $numdel photos have been flagged</p>";
+if ($numupl)
+  echo "<p class=\"alert alert-info\">$numupl photos have been uploaded but not reviewed</p>";
+?>
+            <p><a class="btn" href="files.php">Manage files &raquo;</a></p>
+          </div>
+        </li>
+      </ul>
+<?php
+}
+if ($cameralife->Security->authorize('admin_customize')) {
+?>
+      <h1>Configuration</h1>
+      <ul class="thumbnails">
+        <li class="span3">
+          <div class="thumbnail">
+            <h2>Appearance</h2>
+            <p><a class="btn" href="appearance.php">Set theme and iconset &raquo;</a></p>
+          </div>
+        </li>
+        <li class="span3">
+          <div class="thumbnail">
+            <h2>Security</h2>
+<?php
+if ($numreg)
+  echo "<p class=\"alert alert-info\">$numreg users have registered but not been confirmed</p>\n";
+?>
+            <p><a class="btn" href="security.php">Manager users &amp; security &raquo;</a></p>
+          </div>
+        </li>
+        <li class="span3">
+          <div class="thumbnail">
+            <h2>Photo storage</h2>
+            <p>Your photos can be stored on your web server, a remote server, Amazon S3, etc.</p>
+            <p><a class="btn" href="files.php">Configure photo store &raquo;</a></p>
+          </div>
+        </li>
+        <li class="span3">
+          <div class="thumbnail">
+            <h2>Feedback</h2>
+            <p>How do you like Camera Life? Let us know.</p>
+            <p>
+              <a class="btn" href="register.php"><i class="icon-envelope"></i> Write feedback &raquo;</a>
+              <a class="btn" href="https://github.com/fulldecent/cameralife/issues"><i class="icon-flag"></i> Report an issue &raquo;</a>
+              <a class="btn" href="https://github.com/fulldecent/cameralife"><i class="icon-star"></i> Get project updates &raquo;</a>              
+            </p>
+          </div>
+        </li>
+      </ul>
+<?php
+}
+?>
+    </div>
+  </body>
 </html>
-
-

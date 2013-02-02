@@ -1,67 +1,65 @@
 <?php
-/**Enables photo upload
-  *
-  *<ul>
-   * <li>You can upload a photo in JPEG format or a ZIP of JPEG photos</li>
-   * <li>The maximum file size is 20MB</li>
-  *</ul>
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-  */
-  /**
-  */
-  # $cameralife set by ShowPage()
+/**
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+*/
 
-  $cameralife->GetFeature('security');
-  $cameralife->GetFeature('photostore');
+$cameralife->GetFeature('security');
+$cameralife->GetFeature('photostore');
 
-  if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$user['username'].'/')
-  {
-    $cameralife->Security->Authorize('admin_file', 1);
-    $path = $_REQUEST['path'];
-  }
-  else
-  {
-    $cameralife->Security->Authorize('photo_upload', 1);
-    $path = 'upload/'.$cameralife->Security->GetName().'/';
-  }
-  $folder = new Folder($path);
-  $icon = $folder->GetIcon();
+if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$user['username'].'/')
+{
+  $cameralife->Security->Authorize('admin_file', 1);
+  $path = $_REQUEST['path'];
+}
+else
+{
+  $cameralife->Security->Authorize('photo_upload', 1);
+  $path = 'upload/'.$cameralife->Security->GetName().'/';
+}
+$folder = new Folder($path);
+$icon = $folder->GetIcon();
 
-  $cameralife->Theme->Header('Upload photos','photo');
+$cameralife->Theme->Header('Upload photos','photo');
 ?>
 <BGSOUND src="<?= $cameralife->base_url ?>/filedone.wav">
-<div id="text">
-<form enctype="multipart/form-data" method=POST action="<?= $cameralife->base_url ?>/upload_controller.php">
-<input type="hidden" name="target" value="<?= $icon['href'] ?>">
 <h1>Uploading Photos</h1>
-  <ul>
-    <li>You can upload a photo in JPEG format or a ZIP of JPEG photos
-    <li>The maximum file size is 20MB
-  </ul>
+<ul>
+  <li>You can upload a photo in JPEG format or a ZIP of JPEG photos
+  <li>The maximum file size is 20MB
+<?php
+  if ($cameralife->Security->Authorize('admin_file') && !isset($_REQUEST['path']))
+    echo '    <li>To upload somewhere else, go to that folder and click "upload here"';
+?>
+</ul>
 
-  <?php
-    if ($cameralife->Security->Authorize('admin_file') && !isset($_REQUEST['path']))
-    {
-      echo '<h1>Notes</h1>';
-      echo "<p>You can also upload to individual folders:</p>";
-      echo "<ul>";
-      echo "  <li>Go to the folder you would like to upload to";
-      echo "  <li>Choose Upload photo here from the title menu link";
-      echo "</ul>";
-    }
-  ?>
-
-  <p>
-  <input type="hidden" name="MAX_FILE_SIZE" value="20800000">
-  <table>
-    <tr><td>Path:<td><?= $path ?><input name="path" type=hidden value="<?= $path ?>">
-    <tr><td>Photo file:<td><input name="userfile" type="file">
-    <tr><td>Photo description:<td><input name="description" type="text" size=50>
-  </table>
-  <input type="submit" value="Upload Photo">
-  </p>
+<form enctype="multipart/form-data" method=POST action="<?= $cameralife->base_url ?>/upload_controller.php" class="form-horizontal">
+<input type="hidden" name="target" value="<?= $icon['href'] ?>">
+  <div class="control-group">
+    <label class="control-label" for="path">Path:</label>
+    <div class="controls">
+      <span class="input-xlarge uneditable-input"><i class="icon-folder-open"></i> <?= $path ?></span>
+      <input name="path" type=hidden value="<?= $path ?>">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="userfile">Photo file:</label>
+    <div class="controls">
+      <input name="userfile" type="file">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="description">Photo description:</label>
+    <div class="controls">
+      <input name="description"  placeholder="Unnamed">
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn">Upload Photo</button>
+    </div>
+  </div>
 
 </form>
 <?php
