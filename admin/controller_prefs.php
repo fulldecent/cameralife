@@ -16,7 +16,6 @@
 $features=array('database','theme','security');
 require "../main.inc";
 $cameralife->base_url = dirname($cameralife->base_url);
-
 $cameralife->Security->authorize('admin_customize', 1); // Require
 $prefs = array();
 

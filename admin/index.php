@@ -45,11 +45,10 @@ $numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($ca
   </head>
 
   <body>
-
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
-          <a class="brand" href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration
+          <span class="brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
         </div>
       </div>
     </div>
