@@ -1,174 +1,158 @@
 <?php
-/**
- * Log analyzer - analyze and rollback changes to the site and contents
- * 
+/*
+ * Administer comments on the site
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public
  */
+$features=array('database','security', 'photostore');
+require "../main.inc";
+$cameralife->base_url = dirname($cameralife->base_url);
+$cameralife->Security->authorize('admin_customize', 1); // Require
 
-  $features=array('database','security');
-  require "../main.inc";
-  $cameralife->base_url = dirname($cameralife->base_url);
-
-  $cameralife->Security->authorize('admin_customize', 1); // Require
-
-  if (!$_POST['showphotos'] && !$_POST['showalbums'] && !$_POST['showusers'] && !$_POST['showpreferences'])
-  {
-    $_POST['showphotos'] = TRUE;
-    $_POST['showalbums'] = TRUE;
-    $_POST['showusers'] = TRUE;
-    $_POST['showpreferences'] = TRUE;
+if (!$_POST['showme'] && !$_POST['showreg'] && !$_POST['showunreg']) {
+  $_POST['showme'] = TRUE;
+  $_POST['showreg'] = TRUE;
+  $_POST['showunreg'] = TRUE;
+}
+if (!$_POST['showphotos'] && !$_POST['showalbums'] && !$_POST['showusers'] && !$_POST['showpreferences']) {
+  $_POST['showphotos'] = TRUE;
+  $_POST['showalbums'] = TRUE;
+  $_POST['showusers'] = TRUE;
+  $_POST['showpreferences'] = TRUE;
+}
+if ($_POST['action'] == 'Commit changes') {
+  foreach ($_POST as $var => $val) {
+    if (!is_numeric($var) || !is_numeric($val))
+      continue;
+    AuditTrail::Undo($val);
   }
-  if ($_POST['showphotos'] && $_POST['showalbums'] && $_POST['showusers'] && $_POST['showpreferences'])
-    $showallparts = TRUE;
-  if (!$_POST['showme'] && !$_POST['showreg'] && !$_POST['showunreg'])
-  {
-    $_POST['showme'] = TRUE;
-    $_POST['showreg'] = TRUE;
-    $_POST['showunreg'] = TRUE;
-  }
-  if ($_POST['showme'] && $_POST['showreg'] && $_POST['showunreg'])
-    $showallusers = TRUE;
-
-  if ($_POST['action'] == 'Commit Changes')
-  {
-    foreach ($_POST as $var => $val)
-    {
-      if (!is_numeric($var) || !is_numeric($val))
-        continue;
-      AuditTrail::Undo($val);
-    }
-  }
+}
+$numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->GetPref('checkpointcomments')+0));
+$checkpointDate = strtotime($cameralife->Database->SelectOne('logs','max(user_date)','id='.($cameralife->GetPref('checkpointcomments')+0)));
+$latestLog = $cameralife->Database->SelectOne('logs','max(id)');
 ?>
-<html>
-<head>
-  <title><?= $cameralife->GetPref('sitename') ?></title>
-  <link rel="stylesheet" href="admin.css">
-  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Camera Life - Administration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <script language="javascript">
-  <!--
-    function toggleParts(a,b)
-    {
-      document.getElementById(a).style.display = 'block'
-      document.getElementById(b).style.display = 'none'
-      document.getElementById('showphotos').checked = 'true'
-      document.getElementById('showalbums').checked = 'true'
-      document.getElementById('showusers').checked = 'true'
-      document.getElementById('showpreferences').checked = 'true'
-      return false;
-    }
-    function toggleUsers(a,b)
-    {
-      document.getElementById(a).style.display = 'block'
-      document.getElementById(b).style.display = 'none'
-      document.getElementById('showme').checked = 'true'
-      document.getElementById('showreg').checked = 'true'
-      document.getElementById('showunreg').checked = 'true'
-      return false;
-    }
-  -->
-  </script>
-</head>
-<body>
+    <!-- Le styles -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 
-<div id="header">
-<h1>Site Administration &ndash; Log Viewer</h1>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <span class="brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / <a href="index.php">Administration</a> / Logs</span>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <h1>Options</h1>
 <?php
-  $home = $cameralife->GetIcon('small');
-  echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
-?> |
-<a href="index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>  |
-<a href="http://fdcl.sourceforge.net/wiki/index.php/Checkpoints">Help with checkpoints</a>
-</div>
-
-<form method="post">
-
-  <div id="allparts" <?= ($showallparts) ? '' : 'style="display:none"' ?>>
-  <h2>Show changes affecting any part of the site <a href="#" onclick="toggleParts('someparts','allparts')">[change]</a></h2>
-  </div>
-  <div id="someparts" <?= ($showallparts) ? 'style="display:none"' : '' ?>>
-  <h2>Show changes affecting only these parts of the site <a href="#" onclick="toggleParts('allparts','someparts')">[show all]</a></h2>
-
-  <table width="100%">
-    <tr>
-      <td width="25%">
-        <input type="checkbox" id="showphotos" name="showphotos"
-          <?php if ($_POST["showphotos"]) echo " checked" ?>
-        >
-        <label for="showphotos">
-          <img src="<?= $cameralife->IconURL('small-photo') ?>">Photos
-        </label>
-      <td width="25%">
-        <input type="checkbox" id="showalbums" name="showalbums"
-          <?php if ($_POST["showalbums"]) echo " checked" ?>
-        >
-        <label for="showalbums">
-          <img src="<?= $cameralife->IconURL('small-album') ?>">Albums
-        </label>
-      <td width="25%">
-        <input type="checkbox" id="showusers" name="showusers"
-          <?php if ($_POST["showusers"]) echo " checked" ?>
-        >
-        <label for="showusers">
-          <img src="<?= $cameralife->IconURL('small-login') ?>">Users
-        </label>
-      <td width="25%">
-        <input type="checkbox" id="showpreferences" name="showpreferences"
-          <?php if ($_POST["showpreferences"]) echo " checked" ?>
-        >
-        <label for="showpreferences">
-          <img src="<?= $cameralife->IconURL('small-admin') ?>">Preferences
-        </label>
-  </table>
-  </div>
-  <div id="allusers" <?= ($showallusers) ? '' : 'style="display:none"' ?>>
-  <h2>Show changes by anyone <a href="#" onclick="toggleUsers('someusers','allusers')">[change]</a></h2>
-  </div>
-  <div id="someusers" <?= ($showallusers) ? 'style="display:none"' : '' ?>>
-  <h2>Show changes by these users <a href="#" onclick="toggleUsers('allusers','someusers')">[show all]</a></h2>
-  <table width="100%">
-    <tr>
-      <td width="33%">
-        <input type="checkbox" id="showme" name="showme"
-          <?php if ($_POST["showme"]) echo " checked" ?>
-        >
-        <label for="showme">
-          <?php $cameralife->IconURL('small-login') ?>Me
-        </label>
-      <td width="33%">
-        <input type="checkbox" id="showreg" name="showreg"
-          <?php if ($_POST["showreg"]) echo " checked" ?>
-        >
-        <label for="showreg">
-          <?php $cameralife->IconURL('small-login') ?>Other Registered Users
-        </label>
-      <td width="33%">
-        <input type="checkbox" id="showunreg" name="showunreg"
-          <?php if ($_POST["showunreg"]) echo " checked" ?>
-        >
-        <label for="showunreg">
-          <?php $cameralife->IconURL('small-login') ?>Unregistered Users
-        </label>
-  </table>
-  </div>
-  <h2>Show changes since last checkpoint</h2>
-  <p><input type=submit value="Query logs"></p>
-</form>
-
-<form method="post">
-  <hr style="width:750px">
-
-  <p>
-    <button onClick='inps = document.getElementsByTagName("input"); for (a in inps) { b=inps[a]; if(b.type!="radio")continue; if(b.value=="") b.checked=true }; return false'>Set each item to the current value</button>
-    <button onClick='inps = document.getElementsByTagName("input"); c=0; for (a in inps) { b=inps[a]; if(b.type!="radio")continue; if(c)b.checked=true; c=(b.value=="")}; return false'>Set each item to the previous value</button>
-    <button onClick='inps = document.getElementsByTagName("input"); for (a in inps) { b=inps[a]; if(b.type!="radio")continue; b.checked=true }; return false'>Set each item to the oldest value</button>
-  </p>
-
-  <table align="center" cellspacing="2" border=1 width="100%">
-    <tr>
-      <th colspan=2>Results
+if ($checkpointDate) {
+?>
+      <form class="alert alert-info" method="post" action="controller_prefs.php">
+        A checkpoint was set on <?= date("Y-m-d",$checkpointDate) ?>. Only logs after then are shown.
+        <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] ?>" />
+        <input type="hidden" name="module1" value="CameraLife" />
+        <input type="hidden" name="param1" value="checkpointlogs" />
+        <input type="hidden" name="value1" value="0">
+        <input class="btn" type="submit" value="Reset checkpoint">
+        <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn"><i class="icon-info-sign"></i> Learn about checkpoints</a>
+      </form>
+<?php
+} else {
+?>
+      <form class="alert alert-info" method="post" action="controller_prefs.php">
+        No checkpoint is set. All logs are being shown.
+        <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] ?>" />
+        <input type="hidden" name="module1" value="CameraLife" />
+        <input type="hidden" name="param1" value="checkpointlogs" />
+        <input type="hidden" name="value1" value="<?= $latestLog ?>">
+        <input class="btn" type="submit" value="Hide logs up to now">
+        <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn"><i class="icon-info-sign"></i> Learn about checkpoints</a>
+        </form>
+<?php
+}
+?>
+      <form class="well form-horizontal form-inline" method="post">
+        <div class="control-group">
+          <label class="control-label" for="inputEmail">Show comments from</label>
+          <div class="controls">
+            <label class="checkbox inline">
+             <input type="checkbox" name="showme" <?php if ($_POST["showme"]) echo " checked" ?>> 
+             <i class="icon-user"></i> Me
+            </label>
+            <label class="checkbox inline">
+             <input type="checkbox" name="showreg" <?php if ($_POST["showreg"]) echo " checked" ?>> 
+             <i class="icon-user"></i> Registered users
+            </label>
+            <label class="checkbox inline">
+             <input type="checkbox" name="showunreg" <?php if ($_POST["showunreg"]) echo " checked" ?>> 
+             <i class="icon-user"></i> Unregistered users
+            </label>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="inputPassword">Show change types</label>
+          <div class="controls">
+            <label class="checkbox inline">
+              <input type="checkbox" name="showphotos" <?php if ($_POST["showphotos"]) echo " checked" ?>>
+              <img src="<?= $cameralife->IconURL('small-photo') ?>"> Photos
+            </label>
+            <label class="checkbox inline">
+              <input type="checkbox" name="showalbums" <?php if ($_POST["showalbums"]) echo " checked" ?>>
+              <img src="<?= $cameralife->IconURL('small-album') ?>"> Albums
+            </label>
+            <label class="checkbox inline">
+              <input type="checkbox" name="showusers" <?php if ($_POST["showusers"]) echo " checked" ?>>
+              <img src="<?= $cameralife->IconURL('small-login') ?>"> Users
+            </label>
+            <label class="checkbox inline">
+              <input type="checkbox" name="showpreferences" <?php if ($_POST["showpreferences"]) echo " checked" ?>>
+              <img src="<?= $cameralife->IconURL('small-admin') ?>"> Preferences
+            </label>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <input type="submit" class="btn" value="Update" />
+          </div>
+        </div>
+      </form>
+      <div class="pull-right well">
+        <h1>Quick tools</h1>
+        <button class="btn" onClick='inps = document.getElementsByTagName("input"); for (a in inps) { b=inps[a]; if(b.type!="radio")continue; if(b.value=="") b.checked=true }; return false'>Set each item to the current value</button><br/>
+        <button class="btn" onClick='inps = document.getElementsByTagName("input"); c=0; for (a in inps) { b=inps[a]; if(b.type!="radio")continue; if(c)b.checked=true; c=(b.value=="")}; return false'>Set each item to the previous value</button><br/>
+        <button class="btn" onClick='inps = document.getElementsByTagName("input"); for (a in inps) { b=inps[a]; if(b.type!="radio")continue; b.checked=true }; return false'>Set each item to the oldest value</button><br/>
+      </div>
+      <h1>Logged changes</h1> 
+      <form method="post" class="form" id="comments">
   <?php
     $condition = "(0 ";
     if ($_POST['showphotos'])
@@ -190,83 +174,66 @@
     $condition .= ") ";
 
     $condition .= " AND logs.id > ".($cameralife->GetPref('checkpointlogs')+0);
-    $condition .= " AND logs.record_id=photos.id";
     $extra = "GROUP BY record_id, record_type, value_field ORDER BY logs.id DESC";
 
-    $result = $cameralife->Database->Select('logs,photos','*, MAX(logs.id) as maxid',$condition,$extra);
+    $result = $cameralife->Database->Select('logs','record_type, record_id, value_field, MAX(logs.id) as maxid',$condition,$extra);
     while($record = $result->FetchAssoc())
     {
-      echo "<tr><td align=center>";
-      if ($record['record_type'] == 'photo')
-      {
-        $photo = new Photo($record['record_id']);
-        $icon = $photo->GetIcon('small');
-        echo "<a href=\"".$icon['href']."\">";
-        echo '<img src="'.$cameralife->IconURL('small-photo').'">';
-        echo "</a>";
+      $receipt = new Receipt($record['maxid']);
+      $object = $receipt->GetObject();
+      $icon = $object->GetIcon();
+    //var_dump($record);
+    /*
+      $photo = new Photo($record['photo_id']);
+      $icon = $photo->GetIcon('small');
+      $icon = $photo->GetIcon();
+      */
+  // echo "<P>";var_dump("THE ICON", $icon, $record, $object);echo "</p>";
+      $max = max($icon['width'], $icon['height']);
+      $width64 = $icon['width'] / $max * 64;
+      $height64 = $icon['height'] / $max * 64;
+
+?>
+        <div class="media">
+          <a class="pull-left" style="width: 64px" href="<?= $icon['href'] ?>">
+            <img class="media-object" data-src="holder.js/64x64" alt="thumbnail" style="width: <?= $width64?>px; height: <?= $height64 ?>px;" src="<?= $icon['image'] ?>">
+          </a>
+          <div class="media-body">
+            <h4 class="media-heading"><?= htmlentities($icon['name']) ?> (<?= $record['record_type'] ?>)</h4>
+<?php 
+      $chain = $receipt->GetChain();
+      $arr = $chain[0]->GetOld();
+      $oldValue = $arr['value']; $fromReceipt = $arr['fromReceipt'];
+      echo '<label class="checkbox">';
+      echo '<input type="radio" name="'.$record['maxid'].'" value="'.$chain[0]->Get('id').'"> ';
+      if ($fromReceipt)
+        echo htmlentities($oldValue).' <span class="label label-info"> '.$receipt->Get('value_field').' from before checkpoint</span>';
+      else
+        echo htmlentities($oldValue).' <span class="label"> default '.$receipt->Get('value_field').'</span>';
+      echo '</label>';
+      for ($i=0; $i<count($chain)-1; $i++) {
+?>
+            <label class="checkbox">
+              <input type="radio" name="<?= $record['maxid'] ?>" value="<?= $chain[$i+1]->Get('id') ?>">
+              <?= $chain[$i]->Get('value_new') ?> <span class="label label-info">updated <?= $chain[$i]->Get('value_field') ?></span>
+            </label>
+<?php  
       }
-      else if ($record['record_type'] == 'album')
-        echo '<img src="'.$cameralife->IconURL('small-album').'">';
-      else if ($record['record_type'] == 'preference')
-        echo '<img src="'.$cameralife->IconURL('small-admin').'">';
-      else if ($record['record_type'] == 'user')
-        echo '<img src="'.$cameralife->IconURL('small-user').'">';
-      echo "<br><i>".$record['value_field']."</i>";
-      echo "<td>\n";
-
-      $condition = "record_id = ".$record['record_id']."
-                    AND record_type = '".$record['record_type']."'
-                    AND value_field = '".$record['value_field']."'
-                    AND id > ".($cameralife->GetPref('checkpointlogs')+0);
-      $result2 = $cameralife->Database->Select('logs','*',$condition, 'ORDER BY id DESC');
-
-      unset($last_row);
-      while ($row = $result2->FetchAssoc())
-      {
-        $checked = $last_row ? '' : 'checked';
-        echo "<input id=\"".(++$htmlid)."\" type=\"radio\" $checked name=\"".$record['maxid']."\" value=\"".$last_row['id']."\"> ";
-        echo "<label style=\"color: brown\" for=\"$htmlid\">\"".$row['value_new']."\"</label> ";
-        echo ($row['user_name']?$row['user_name']:'Anonymous').' ('.$row['user_ip'].') '.$row['user_date']."\n";
-        echo "<br>";
-        $last_row = $row;
-      }
-
-// todo have fun fixing this not to use value_old, maybe a whole separate query here?
-      echo "<span style='color:green'>";
-      echo "<input id=\"".(++$htmlid)."\" type=radio name=\"".$record['maxid']."\" value=\"".$last_row['id']."\"> ";
-      echo "<label for=\"$htmlid\">\"".$last_row['value_old']."\"</label>";
-      echo "</span>\n\n";
+      echo '<label class="checkbox">';
+      echo '<input type="radio" name="'.$record['maxid'].'" checked> ';
+      echo $chain[$i]->Get('value_new').' <span class="label label-success">current '. $chain[$i]->Get('value_field').'</span>';
+      echo '</label>';
+?>          
+          </div>
+        </div>
+<?php
     }
-  ?>
-  </table>
-
-  <p>
-        <input type=submit name="action" value="Commit Changes">
-        <a href="logs.php">(Revert to last saved)</a><br>
-  </p>
-</form>
-  <h2>Update checkpoint</h2>
-    <form method="post" action="controller_prefs.php">
-      <p>
-      <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] ?>" />
-      <input type="hidden" name="module1" value="CameraLife" />
-      <input type="hidden" name="param1" value="checkpointlogs" />
-      <input type="hidden" name="value1" value="<?= $cameralife->Database->SelectOne('logs','MAX(id)') ?>" />
-      <input type="submit" value="Set checkpoint to now">
-      </p>
-    </form>
-    <form method="post" action="controller_prefs.php">
-      <p>
-      <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] ?>" />
-      <input type="hidden" name="module1" value="CameraLife" />
-      <input type="hidden" name="param1" value="checkpointlogs" />
-      <input type="hidden" name="value1" value="0">
-      <input type="submit" value="Reset checkpoint">
-      </p>
-    </form>
-  </p>
-</body>
+?>
+        <p>
+          <input class="btn btn-danger" type=submit name="action" value="Commit changes">
+          <a class="btn" href="?">Revert to last saved</a><br>
+        </p>
+      </form>
+    </div>
+  </body>
 </html>
-
-
-

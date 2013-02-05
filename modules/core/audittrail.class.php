@@ -26,7 +26,6 @@ class AuditTrail
   {
     global $user, $_SERVER, $cameralife;
     if ($value_old==$value_new) return;
-
     $log['record_type'] = $record_type;
     $log['record_id'] = $record_id;
     $log['value_field'] = $value_field;
@@ -35,7 +34,6 @@ class AuditTrail
     $log['user_name'] = $cameralife->Security->GetName();
     $log['user_ip'] = $_SERVER['REMOTE_ADDR'];
     $log['user_date'] = date('Y-m-d');
-
     $id = $cameralife->Database->Insert('logs',$log);
     return new Receipt($id);
   }
@@ -48,6 +46,7 @@ class AuditTrail
    */
   function Undo($id)
   {
+//TODO: FACTOR THIS OUT use GetOld()
     global $cameralife;
 
     if(is_numeric($id))
@@ -150,6 +149,11 @@ class Receipt
     return ($new['id'] == $this->myRecord['id']);
   }
 
+  function Get($item)
+  {
+    return $this->myRecord[$item];
+  }
+
   function GetDescription()
   {
     if ($this->myRecord['record_type']=='photo' && $this->myRecord['value_field'] == 'description')
@@ -158,10 +162,80 @@ class Receipt
       return 'The photo has been flagged.';
     return 'Action completed.';
   }
-
-  function Get($item)
+  
+  function GetObject()
   {
-    return $this->myRecord[$item];
+    if ($this->myRecord['record_type']=='photo')
+      return new Photo($this->myRecord['record_id']);
+    if ($this->myRecord['record_type']=='album')
+      return new Album($this->myRecord['record_id']);
+    if ($this->myRecord['record_type']=='preference')
+      return $cameralife;
+    if ($this->myRecord['record_type']=='user')
+      return die("user receipt type"); //TODO wtf do I do here?
+    $cameralife->Error("Invalid receipt type.");
+  }
+  
+  // Returns all receipts from this back to the beginning
+  function GetChain($checkpoint=-1)
+  {
+    global $cameralife;
+    $retval = array();
+    $condition = "value_field='".$this->myRecord['value_field']."'";
+    $condition .= " AND record_type='".$this->myRecord['record_type']."'";
+    $condition .= " AND record_id='".$this->myRecord['record_id']."'";
+    $condition .= " AND id>$checkpoint";    
+    $query = $cameralife->Database->Select('logs', 'id', $condition, 'ORDER BY id');
+    while ($row = $query->FetchAssoc()) {
+      $retval[] = new Receipt($row['id']);
+    }
+    return $retval;
+  }
+  
+  // Finds the previous record value
+  // returns: {value:OLDVALUE,fromReceipt:TRUE|FALSE} 
+  function GetOld()
+  {
+    global $cameralife;
+
+    $condition = 'record_id='.$this->myRecord['record_id'];
+    $condition .= " AND record_type='".$this->myRecord['record_type']."'";
+    $condition .= " AND value_field='".$this->myRecord['value_field']."'";
+    $condition .= " AND id <= ".$this->myRecord['id'];
+    # Gets the requested AND previous log entry for a record and value field
+    $result = $cameralife->Database->Select('logs', '*', $condition, 'ORDER BY id DESC LIMIT 2');
+
+    $target = $result->FetchAssoc();
+    $prior = $result->FetchAssoc();
+    if(is_array($prior) && isset($prior['value_new'])) {
+      return array('value'=>$prior['value_new'], 'fromReceipt'=>TRUE);
+    } else {
+      switch ($this->myRecord['record_type'].'_'.$this->myRecord['value_field'])
+      {
+        case 'photo_description':
+          return array('value'=>'unnamed', 'fromReceipt'=>FALSE);
+        case 'photo_status':
+          return array('value'=>0, 'fromReceipt'=>FALSE);
+        case 'photo_keywords':
+          return array('value'=>'', 'fromReceipt'=>FALSE);
+        case 'photo_flag':
+          return array('value'=>'', 'fromReceipt'=>FALSE);
+        case 'album_name':
+          return array('value'=>'', 'fromReceipt'=>FALSE);
+        case 'album_poster_id':
+          $album = new Album($this->myRecord['record_id']);
+          $condition = "status=0 and lower(description) like lower('%".$album->Get['term']."%')";
+          $query = $cameralife->Database->Select('photos','id',$condition);
+          $result = $query->FetchAssoc();
+          if ($result) 
+            return array('value'=>$result['id'], 'fromReceipt'=>FALSE);
+          else
+            $cameralife->Error("Cannot find a poster for the album #".$this->myRecord['record_id'], __FILE__, __LINE__);
+          break;
+        default:
+          $cameralife->Error("I don't know how to undo the parameter ".$this->myRecord['record_type'].'_'.$this->myRecord['value_field'], __FILE__, __LINE__);
+      }
+    }
   }
 }
 

@@ -74,7 +74,13 @@ class Album extends Search
 
   function GetPoster()
   {
-    return new Photo($this->record['poster_id']);
+    if (Photo::PhotoExists($this->record['poster_id']))
+      return new Photo($this->record['poster_id']);
+    else {
+      $photos = $this->GetPhotos();
+      return $photos[0];
+    }
+    
   }
 
   function SetPoster($poster)
@@ -118,8 +124,10 @@ class Album extends Search
 
     if ($size == 'large')
     {
-      $photo = new Photo($this->record['poster_id']);
+      $photo = $this->GetPoster();
       $retval['image'] = $photo->GetMedia('thumbnail');
+      $retval['width'] = $photo->Get('tn_width');
+      $retval['height'] = $photo->Get('tn_height');
     }
     else
     {

@@ -77,7 +77,7 @@ if ($checkpointDate) {
         <input type="hidden" name="param1" value="checkpointcomments" />
         <input type="hidden" name="value1" value="0">
         <input class="btn" type="submit" value="Reset checkpoint">
-        <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn">Learn about checkpoints</a>
+        <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn"><i class="icon-info-sign"></i> Learn about checkpoints</a>
       </form>
 <?php
 } else {
@@ -89,7 +89,7 @@ if ($checkpointDate) {
         <input type="hidden" name="param1" value="checkpointcomments" />
         <input type="hidden" name="value1" value="<?= $latestComment ?>">
         <input class="btn" type="submit" value="Hide comments up to now">
-        <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn">Learn about checkpoints</a>
+        <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn"><i class="icon-info-sign"></i> Learn about checkpoints</a>
         </form>
 <?php
 }
