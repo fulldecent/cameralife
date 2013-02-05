@@ -63,7 +63,6 @@ $latest_version = 2;
     }
   }
 
-
 ?>
 </body>
 </html>

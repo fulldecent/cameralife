@@ -1,15 +1,41 @@
-NOW:
- * enable STRICT mode and play around.
- * http://stackoverflow.com/q/12487876
-"Strict Standards: Non-static method Topic::GetTopics() should not be called statically, assuming $this from incompatible context in /usr/share/cameralife/modules/theme/sidebar/index.inc on line 139"
+================================
+Features needed for next release
+================================
+  * Regression testing
+  * See issues tracked in Github
 
+================================
+TESTING NEEDED BEFORE RELEASE
+================================
 
+BASIC REGRESSION TESTING:
+  Check main theme in MSIE
+  Try to upload a non-image
+  OpenSearch: http://friendfeed.com/bgolub/5e56afb1/i-like-how-google-chrome-deals-with-opensearch
+  Microformats: http://microformats.org/wiki/rel-tag
+  Validate all HTML and CSS
+  RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/rss.php%3Fq%3Dwill
+  Try all the hacks
+  mysqldump fdcl -d > setup/install.mysql # and add insert statements
+  Test Amazon S3 http://github.com/technoweenie/parkplace
+  Gallery API
+  XSSme SQLinjectme wapiti
 
-
-http://codex.gallery2.org/Gallery3:Features
-http://gallery.menalto.com/wiki/Most_Requested_Features
-
-use php5 mysql apache?
+SECURITY TESTING:
+  Remove support for strip slashes / and remove all stripslashes!
+  find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
+  grep GET  -r modules/theme/*/*inc
+  grep PHP_SELF  -r modules/theme/*/*inc
+  grep Database -r modules/theme/*/*inc
+  grep '\./' */*php | grep -v requ
+  check for inputs as arrays!
+  PHP E_ALL strict?
+  Each CL install gets random secret number. All requests hash against secret. Protect XSRF
+    Is this a differentiator? Put on "Compare Us" page versus Picasa, Gallery, ...
+    Hash implementation -- http://pajhome.org.uk/crypt/md5/auth.html -- http://www.owasp.org/index.php/Main_Page -- http://www.owasp.org/index.php/Philadelphia
+  When receiving the form, validate the hash.
+  Login via OpenID / Facebook / Google / ...
+  
 
 -------------------
 AUTOMATED RELEASE
@@ -39,137 +65,3 @@ WHEN MAKING CHANGES TO THE DATABASE
  * Update db schema at setup/index2.php
  * Update install.mysql
  * Write an upgrader in setup/upgrade
- 
-
-==========
-WISH LIST
-==========
-
-  When importing photos do not set name to untitled if the filename is useful some code:
->>>>>
-        $origname = ucwords($photo->Get('filename'));
-        $origname = preg_replace('/.[^.]+$/', '', $origname);
-
-        if (!preg_match('/^dscn/i', $origname) && !preg_match('/^im/i', $origname)) // useless filename
-          echo '<tr><td><td><input type="button" onclick="javascript:set(\''.addslashes($origname).'\')" value="Set name to '.$origname.'">';
->>>>>
-
-  Clean up copyright and remove version from each PHP page, find good convention to use and stick to it
-
-  Core modules
-!   modules/core/search.class.inc - Folder sorting based on time photo taken
-
-  Light theme
-    Sorting/ paging
-!   Automatically choose a preview size a la Picasa Web, killer feature
-    Accelerator keys, left, right
-!   Make Theme->AssetURL work if content negotiation is off
-    User can choose image size, persistent - Jack Snodgrass
-
-! Update PhotoStores for separate photos and CL data
-    Abstract and add video support
-    Make a DatabasePhotoStore
-    Any other API updates
-      move Image stuff in Photo further out into ImageProcessing (???)
-    Create Theme developer assistant
-!   Theme bounty for iPod Nano
-
-! Focus on security 
-    Remove support for strip slashes / and remove all stripslashes!
-    find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
-    grep GET  -r modules/theme/*/*inc
-    grep PHP_SELF  -r modules/theme/*/*inc
-    grep Database -r modules/theme/*/*inc
-    grep '\./' */*php | grep -v requ
-    check for inputs as arrays!
-    PHP E_ALL strict?
-!   VALID HTML STRICT!!!
-    Each CL install gets random secret number. All requests hash against secret. Protect XSRF
-      Is this a differentiator? Put on "Compare Us" page versus Picasa, Gallery, ...
-      Hash implementation -- http://pajhome.org.uk/crypt/md5/auth.html -- http://www.owasp.org/index.php/Main_Page -- http://www.owasp.org/index.php/Philadelphia
-    When receiving the form, validate the hash.
-    Login via OpenID / Facebook / Google / ...
-
-  Upload photos 
-    via email - http://www.phpclasses.org/browse/file/3.html
-    HTML5 drag-n-drop file upload
-
-  Update database
-    Normalize all metadata to one table
-      Beware the flickr hack for export/restore
-    Change audit trail
-    Update audit trail admin interface
-    Picasa compatibility - for photo modification string?
-    Update photos.mtime, make it photos."filter" like Picasa ???
-    Enumerate the photos.status and other columns
-
-  Integrate with facebook
-    send photos to facebook
-    retrieve comments from facebook
-    retrieve tags / who is in the photo from Facebook, 
-    put into hacks/
-
-?? Integrate with Picasa or iPhone or Facebook for face recognition
-    http://face.com/
-
-  Hacks
-    hacks/rename.php - allow it to work on all files in a given path
-
-BETTER CACHING
---php
-$if_modified_since = preg_replace('/;.*$/', '', $HTTP_IF_MODIFIED_SINCE);
-
-$mtime = filemtime($SCRIPT_FILENAME);
-$gmdate_mod = gmdate('D, d M Y H:i:s', $mtime) . ' GMT';
-
-if ($if_modified_since == $gmdate_mod) {
-    header("HTTP/1.0 304 Not Modified");
-    exit;
-}
-header("Last-Modified: $gmdate_mod");
---
-
-  Make a module API compare to theme-info.php
-    Gallery theme compatibility
-  i18n
-  This will use a modification string like in picasa.ini
-    Add a photo modification optimization engine to photo.class.php
-    It takes the existing photo and filter
-    Considers the new filter
-    Deletes stale caches
-    Acts in the best possible way
-    Rotate existing photo
-    Or start from scratch
-    Chooses to work off original or scaled image
-    Result: editing a photo will not require modifying the full sized image (takes forever) unless the user loads that full size image, in which case it is cached.
-    Admin may update these cache at their whim via the Update Database in Files in Admin
-  
-  Move to Google Code Hosting
-    Add everything as a ticket
-    Edit code to point to new wiki
-    http://cameralife.org
-    Freshmeat
-    Use analytics
-
-  use RecursiveDirectoryIterator in files.php
-  
-  take advantage of PHP5 string parsing to make cleaner code
-    http://www.php.net/manual/en/language.types.string.php#language.types.string.parsing
-
-========================
-  RELEASE GUIDE - Regression testing
-------------------------
-
-Check main theme in MSIE
-Try to upload a non-image
-OpenSearch: http://friendfeed.com/bgolub/5e56afb1/i-like-how-google-chrome-deals-with-opensearch
-Microformats: http://microformats.org/wiki/rel-tag
-Validate all HTML and CSS
-RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/rss.php%3Fq%3Dwill
-Try all the hacks
-mysqldump fdcl -d > setup/install.mysql # and add insert statements
-Test Amazon S3 http://github.com/technoweenie/parkplace
-Gallery API
-XSSme SQLinjectme wapiti
-
-

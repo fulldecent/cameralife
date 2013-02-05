@@ -39,7 +39,6 @@ if (function_exists('gd_info')) {
                    'cpanel'=>'Contact your host to configure PHP-GD');
 }
 
-
 if (get_magic_quotes_gpc()) {
   $checkPrerequesites[] = array('desc'=>'Magic quotes is disabled, as it should be', 'type'=>'success');
 } else {
@@ -121,8 +120,8 @@ else {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Le styles -->
-    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
     <style type="text/css">
     </style>
 
@@ -317,8 +316,7 @@ GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-    <script src="bootstrap/js/bootstrap.js"></script>
-
+    <script src="../bootstrap/js/bootstrap.min..js"></script>
   </body>
 </html>
 
