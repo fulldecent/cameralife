@@ -11,6 +11,8 @@
     $action = 'register';
   else
     $action = 'login';
+//TODO: use bootstrap
+
 ?>
 
 <html>

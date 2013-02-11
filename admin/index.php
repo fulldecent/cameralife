@@ -128,7 +128,7 @@ if ($numreg)
           <div class="thumbnail">
             <h2>Photo storage</h2>
             <p>Your photos can be stored on your web server, a remote server, Amazon S3, etc.</p>
-            <p><a class="btn" href="files.php">Configure photo store &raquo;</a></p>
+            <p><a class="btn" href="photostore.php">Configure photostore &raquo;</a></p>
           </div>
         </li>
         <li class="span3">

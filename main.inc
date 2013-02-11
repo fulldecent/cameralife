@@ -80,7 +80,10 @@ class CameraLife extends CameraLifeModule # and View
     
   function RelativeInclude($file)
   {
-    require $this->base_dir."/$file";
+    if (file_exists($this->base_dir."/$file"))
+      require $this->base_dir."/$file";
+    else
+      $this->Error("File does not exist: ".$this->base_dir."/$file");
   }
 
   function GetModules($feature)

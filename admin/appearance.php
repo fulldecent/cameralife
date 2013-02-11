@@ -51,7 +51,7 @@ require "admin.inc";
       </div>
     </div>
     <div class="container">
-      <h1>Modules</h1>
+      <h2>Modules</h2>
       
       <form class="form-horizontal well" method="post" action="controller_prefs.php">
         <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'].'&#63;page='.$_GET['page'] ?>" />
@@ -102,7 +102,7 @@ foreach ($cameralife->GetModules($feature) as $module)
         </div>
       </form>
       
-      <h1>Site Parameters</h1> 
+      <h2>Site Parameters</h2> 
       
       <form method="post" action="controller_prefs.php" class="form-horizontal">
         <div class="control-group">

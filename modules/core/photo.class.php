@@ -1,5 +1,4 @@
 <?php
-  
 /**
  * Class Photo provides a front end to working with photos
  * @author Will Entriken <cameralife@phor.net>
@@ -120,7 +119,8 @@ class Photo extends View
 
     if (!$onlyWantEXIF)
     {
-      $this->image = $cameralife->ImageProcessing->CreateImage($file);
+      $this->image = $cameralife->ImageProcessing->CreateImage($file)
+        or $cameralife->Error("Bad photo load: $file",__FILE__,__LINE__);
       if (!$this->image->Check()) $cameralife->Error("Bad photo processing: $file",__FILE__,__LINE__);
     }
     if ($temp) unlink($file);
