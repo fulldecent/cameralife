@@ -80,7 +80,7 @@ if ($_GET['page'] !== 'update') // Show stuff
 {
 ?>
       <div class="pull-right well">
-        <h1>Quick tools</h1>
+        <h2>Quick tools</h2>
         <p>Set all status to...</p>
         <select name="status" onchange="$('select').val($('#status').val())" id="status">';
           <option value="0">Public</option>

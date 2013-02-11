@@ -66,7 +66,7 @@ $latestComment = $cameralife->Database->SelectOne('comments','max(id)');
       </div>
     </div>
     <div class="container">
-      <h1>Options</h1>
+      <h2>Options</h2>
 <?php
 if ($checkpointDate) {
 ?>
@@ -111,13 +111,13 @@ if ($checkpointDate) {
         <input class="btn" type=submit value="Update">
       </form>
       <div class="pull-right well">
-        <h1>Quick tools</h1>
+        <h2>Quick tools</h2>
         <button class="btn" onclick="$('#comments :checkbox').slice(0,10).attr('checked',true)">Check the first 10 checkboxes</button><br/>
         <button class="btn" onclick="$('#comments :checkbox').slice(0,50).attr('checked',true)">Check the first 50 checkboxes</button><br/>
         <button class="btn" onclick="$('#comments :checkbox').slice(0,200).attr('checked',true)">Check the first 200 checkboxes</button><br/>
         <button class="btn" onclick="$('#comments blockquote :contains(http://)').closest('label').children('input').attr('checked',true)">Check all with http://</button>
       </div>
-      <h1>Comments</h1> 
+      <h2>Comments</h2> 
       <form method="post" class="form" id="comments">
   <?php
     $condition = "(0 ";

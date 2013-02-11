@@ -13,7 +13,7 @@
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public
  */
-$features=array('database','theme','security');
+$features=array('database','security');
 require "../main.inc";
 $cameralife->base_url = dirname($cameralife->base_url);
 $cameralife->Security->authorize('admin_customize', 1); // Require

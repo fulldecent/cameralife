@@ -72,7 +72,7 @@ $latestLog = $cameralife->Database->SelectOne('logs','max(id)');
       </div>
     </div>
     <div class="container">
-      <h1>Options</h1>
+      <h2>Options</h2>
 <?php
 if ($checkpointDate) {
 ?>
@@ -146,12 +146,12 @@ if ($checkpointDate) {
         </div>
       </form>
       <div class="pull-right well">
-        <h1>Quick tools</h1>
+        <h2>Quick tools</h2>
         <button class="btn" onClick='inps = document.getElementsByTagName("input"); for (a in inps) { b=inps[a]; if(b.type!="radio")continue; if(b.value=="") b.checked=true }; return false'>Set each item to the current value</button><br/>
         <button class="btn" onClick='inps = document.getElementsByTagName("input"); c=0; for (a in inps) { b=inps[a]; if(b.type!="radio")continue; if(c)b.checked=true; c=(b.value=="")}; return false'>Set each item to the previous value</button><br/>
         <button class="btn" onClick='inps = document.getElementsByTagName("input"); for (a in inps) { b=inps[a]; if(b.type!="radio")continue; b.checked=true }; return false'>Set each item to the oldest value</button><br/>
       </div>
-      <h1>Logged changes</h1> 
+      <h2>Logged changes</h2> 
       <form method="post" class="form" id="comments">
   <?php
     $condition = "(0 ";
