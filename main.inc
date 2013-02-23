@@ -5,7 +5,7 @@
 /**
  * Carries classes CameraLife, CameraLife Module and View
  * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @copyright Copyright (c) 2001-2013 Will Entriken
  * @access public
  */
 #error_reporting(E_ALL);
@@ -14,8 +14,7 @@ ini_set('display_errors', '1');
 
 
 // Is this the first run?
-if (file_exists(dirname(__FILE__).'/modules/config.inc'))
-{
+if (file_exists(dirname(__FILE__).'/modules/config.inc')) {
   require(dirname(__FILE__).'/modules/config.inc');
 } else {
   header('Location: http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']),'/').'/setup/');
@@ -23,12 +22,10 @@ if (file_exists(dirname(__FILE__).'/modules/config.inc'))
 }
 
 // Is the software newer than the database?
-if (!isset($db_schema_version) || $db_schema_version < 2)
-{
+if (!isset($db_schema_version) || $db_schema_version < 2) {
   header('Location: http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']),'/').'/setup/upgrade/upgrade.php');
   die('Redirecting to upgrader...');
 }
-
 
 require dirname(__FILE__).'/modules/module.inc';
 
@@ -191,44 +188,34 @@ class CameraLife extends CameraLifeModule # and View
   function Error($message, $file='', $line='')
   {
     global $cameralife;
+    echo "<link rel=\"stylesheet\" href=\"{$this->base_url}/bootstrap/css/bootstrap.min.css\" />\n";
+    echo "<div class=\"alert\">\n";
+    echo "  <h2>Camera Life has encountered an error!</h2>\n";
+    echo "  <blockquote>".htmlentities($message)."</blockquote>\n";
 
-    echo '<div style="margin: 3em; background: gray; border: 2px solid gray; padding:0.5em">';
-    echo '  <div style="text-align:center; color: white; font-size:large">';
-    echo '    Camera Life has encountered an error!</div>';
-    echo "  <div style=\"background: #eee; padding: 1em;\">".htmlentities($message)."</div>\n";
-    if ($file)
-      echo "  <div style=\"background: #eee; padding: 1em;\">Error at: <i>$file</i></div>\n";
-    if ($line)
-      echo "  <div style=\"background: #eee; padding: 1em;\">Line: <i>$line</i></div>\n";
-    echo "</div></div>\n";
-
-    if ($cameralife->Security && $cameralife->Security->authorize('admin_customize'))
-    {
-      echo "You can have the details, since you are an admin:<pre>\n";
-      echo "<pre>\n";
+    if ($cameralife->Security && $cameralife->Security->authorize('admin_customize')) {
+      echo "  You can have the backtrace, since you are an admin:\n";
       $calls = debug_backtrace();
-      echo "<dl>\n";
-      foreach ($calls as $call)
-      {
-        echo "<dt>{$call['file']}:{$call['line']} ";
+      echo "  <dl>\n";
+      foreach ($calls as $call) {
+        echo "    <dt>{$call['file']}:{$call['line']} ";
         $url = "http://camera.phor.net/docs/cameralife/{$call['class']}.html#{$call['function']}";
-        echo "<a target=\"_new\" href=\"$url\">".$call['class'].'::'.$call['function']."</a>()</dt>";
-        echo '<dd><ul>';
-        if(count($call['args']))
-          foreach($call['args'] as $callarg) 
-          {
-            echo "<li><pre>";
-            var_dump($callarg);
-            echo "</pre></li>";
+        echo "<a target=\"_new\" href=\"$url\">".$call['class'].'::'.$call['function']."</a>()</dt>\n";
+        echo '    <dd><ul>';
+        if (count($call['args']))
+          foreach ($call['args'] as $callarg) {
+            echo "<li>".print_r($callarg, true)."</li>";
+//            var_dump($callarg);
+  //          echo "</li>";
           }
-        echo '</ul></dd>';
+        echo "</ul></dd>\n";
 #       echo '<dd><p>For object details view source...</p><!--<pre>';
 #       var_dump($call['object']);
 #       echo '--></pre></dd>';
       }
-      echo "</dl>\n";
-
+      echo "  </dl>\n";
     }
+    echo "</div>\n";
     exit(1);
   }
 }
