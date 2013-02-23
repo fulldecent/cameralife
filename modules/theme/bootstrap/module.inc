@@ -95,9 +95,9 @@
     <meta name="author" content="<?= $cameralife->GetPref('owner_email') ?>">
 
     <!-- Le styles -->
+    <link href="<?= $cameralife->base_url ?>/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= $cameralife->base_url ?>/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="<?= $cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))) ?>/css-extra/custom.css" rel="stylesheet">
-    <link href="<?= $cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))) ?>/css/bootstrap.css" rel="stylesheet">
-    <link href="<?= $cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))) ?>/css/bootstrap-responsive.min.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -214,7 +214,7 @@ if ($cameralife->Security->GetName()) {
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-    <script src="<?= $cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))) ?>/js/bootstrap.min.js"></script>
+    <script src="<?= $cameralife->base_url ?>/bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>
 <?php
