@@ -21,7 +21,7 @@ else
 $folder = new Folder($path);
 $icon = $folder->GetIcon();
 
-$cameralife->Theme->Header('Upload photos','photo');
+$cameralife->Theme->Header('Upload photos');
 ?>
 <BGSOUND src="<?= $cameralife->base_url ?>/filedone.wav">
 <h1>Uploading Photos</h1>
