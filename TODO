@@ -1,25 +1,19 @@
-================================
-Features needed for next release
-================================
-  * Regression testing
-  * See issues tracked in Github
+=======================================
+RELEASE PROCESS / AND HACKING PROCESS
+=======================================
 
-================================
-TESTING NEEDED BEFORE RELEASE
-================================
+CHECK ISSUES TRACKED IN GITHUB
 
 BASIC REGRESSION TESTING:
-  Check main theme in MSIE
+  Check main theme in MSIE / http://netrenderer.com/
   Try to upload a non-image
   OpenSearch: http://friendfeed.com/bgolub/5e56afb1/i-like-how-google-chrome-deals-with-opensearch
-  Microformats: http://microformats.org/wiki/rel-tag
   Validate all HTML and CSS
   RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/rss.php%3Fq%3Dwill
   Try all the hacks
   mysqldump fdcl -d > setup/install.mysql # and add insert statements
   Test Amazon S3 http://github.com/technoweenie/parkplace
-  Gallery API
-  XSSme SQLinjectme wapiti
+  Test Gallery API
 
 SECURITY TESTING:
   Remove support for strip slashes / and remove all stripslashes!
@@ -30,19 +24,17 @@ SECURITY TESTING:
   grep '\./' */*php | grep -v requ
   check for inputs as arrays!
   PHP E_ALL strict?
-  Each CL install gets random secret number. All requests hash against secret. Protect XSRF
-    Is this a differentiator? Put on "Compare Us" page versus Picasa, Gallery, ...
-    Hash implementation -- http://pajhome.org.uk/crypt/md5/auth.html -- http://www.owasp.org/index.php/Main_Page -- http://www.owasp.org/index.php/Philadelphia
-  When receiving the form, validate the hash.
   Login via OpenID / Facebook / Google / ...
+  XSSme SQLinjectme wapiti
   
+Make a new flyover install video
 
 -------------------
 AUTOMATED RELEASE
 edit the first line, save this file, then paste into a terminal...
 -------------------
 
-VERSION='2.6.4b2' # <-- EDIT THIS
+VERSION='2.6.4' # <-- EDIT THIS
 echo $VERSION > VERSION
 sed -i "/this..version/s/'.*'/'$VERSION'/" main.inc
 grep -lIZr . . | grep -z -v '\.git' | # no binary, no git
