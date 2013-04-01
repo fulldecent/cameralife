@@ -84,7 +84,7 @@ if ($numlog)
 else
   echo "<p class=\"alert alert-info\">No changes have been made since your last checkpoint</p>";
 ?>
-            <p><a class="btn" href="logs.php">View and rollback site actions &raquo;</a></p>
+            <p><a class="btn" href="logs.php"><i class="icon-step-backward"></i> View and rollback site actions &raquo;</a></p>
           </div>
         </li>
         <li class="span4">
@@ -96,7 +96,7 @@ if ($numcomments)
 else
   echo "<p class=\"alert alert-info\">No changes have been made since your last checkpoint</p>";
 ?>
-            <p><a class="btn" href="comments.php">View and censor site comments &raquo;</a></p>
+            <p><a class="btn" href="comments.php"><i class="icon-user"></i> View and censor site comments &raquo;</a></p>
           </div>
         </li>
         <li class="span4">
@@ -109,7 +109,7 @@ if ($numdel)
 if ($numupl)
   echo "<p class=\"alert alert-info\">$numupl photos have been uploaded but not reviewed</p>";
 ?>
-            <p><a class="btn" href="files.php">Manage files &raquo;</a></p>
+            <p><a class="btn" href="files.php"><i class="icon-folder-open"></i> Manage files &raquo;</a></p>
           </div>
         </li>
       </ul>
@@ -122,7 +122,7 @@ if ($cameralife->Security->authorize('admin_customize')) {
         <li class="span3">
           <div class="thumbnail">
             <h2>Appearance</h2>
-            <p><a class="btn" href="appearance.php">Set theme and iconset &raquo;</a></p>
+            <p><a class="btn" href="appearance.php"><i class="icon-star-empty"></i> Set theme and iconset &raquo;</a></p>
           </div>
         </li>
         <li class="span3">
@@ -132,14 +132,14 @@ if ($cameralife->Security->authorize('admin_customize')) {
 if ($numreg)
   echo "<p class=\"alert alert-info\">$numreg users have registered but not been confirmed</p>\n";
 ?>
-            <p><a class="btn" href="security.php">Manager users &amp; security &raquo;</a></p>
+            <p><a class="btn" href="security.php"><i class="icon-lock"></i> Manage users &amp; security &raquo;</a></p>
           </div>
         </li>
         <li class="span3">
           <div class="thumbnail">
             <h2>Photo storage</h2>
             <p>Your photos can be stored on your web server, a remote server, Amazon S3, etc.</p>
-            <p><a class="btn" href="photostore.php">Configure photostore &raquo;</a></p>
+            <p><a class="btn" href="photostore.php"><i class="icon-folder-open"></i> Configure photostore &raquo;</a></p>
           </div>
         </li>
         <li class="span3">
@@ -149,7 +149,8 @@ if ($numreg)
             <p>
               <a class="btn" href="register.php"><i class="icon-envelope"></i> Write feedback &raquo;</a>
               <a class="btn" href="https://github.com/fulldecent/cameralife/issues"><i class="icon-flag"></i> Report an issue &raquo;</a>
-              <a class="btn" href="https://github.com/fulldecent/cameralife"><i class="icon-star"></i> Get project updates &raquo;</a>              
+              <a class="btn" href="https://github.com/fulldecent/cameralife"><i class="icon-star"></i> Get project updates &raquo;</a>  
+              <a class="btn" href="http://www.facebook.com/sharer.php?u=http://fulldecent.github.com/cameralife/"><i class="icon-star"></i> Like on Facebook &raquo;</a>  
             </p>
           </div>
         </li>
