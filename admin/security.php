@@ -6,10 +6,10 @@
  * @access public
  */
 $features=array('database','security');
-require "../main.inc";
+require '../main.inc';
 $cameralife->base_url = dirname($cameralife->base_url);
 $cameralife->Security->authorize('admin_customize', 1); // Require
-require "admin.inc";
+require 'admin.inc';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +51,7 @@ require "admin.inc";
     </div>
     <div class="container">
       <h2>Module</h2>
-      
+
       <form class="form-horizontal well" method="post" action="controller_prefs.php">
         <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'].'&#63;page='.$_GET['page'] ?>" />
         <input type="hidden" name="module1" value="CameraLife" />
@@ -63,8 +63,7 @@ require "admin.inc";
             <select name="value1" id="inputTheme" class="input-xxlarge">
 <?php
 $feature = 'security';
-foreach ($cameralife->GetModules($feature) as $module)
-{
+foreach ($cameralife->GetModules($feature) as $module) {
   include $cameralife->base_dir."/modules/$feature/$module/module-info.php";
 
   $selected = $cameralife->GetPref($feature) == basename($module) ? 'selected' : '';

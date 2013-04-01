@@ -6,10 +6,10 @@
  * @access public
  */
 $features=array('database','security', 'photostore', 'theme');
-require "../main.inc";
+require '../main.inc';
 $cameralife->base_url = dirname($cameralife->base_url);
 $cameralife->Security->authorize('admin_customize', 1); // Require
-require "admin.inc";
+require 'admin.inc';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,7 +56,7 @@ require "admin.inc";
         <div style="display:none" id="chgps">
           <h3>If you have no photos:</h3>
           <p>Just change the drop-down and configure below</p>
-        
+
           <h3>If you want to keep existing photos:</h3>
           <p class="text-error">Warning: backup your photos and database before you try these instructions. If you load any other pages during this process, the consequences could be dire.</p>
           <ol>
@@ -66,13 +66,13 @@ require "admin.inc";
             <li><a href="../hacks/restore.php" target="_new">Restore your photostore</a></li>
             <li>Unedit main.inc</li>
           </ol>
-      
+
           <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'].'&#63;page='.$_GET['page'] ?>" />
           <input type="hidden" name="module1" value="CameraLife" />
           <input type="hidden" name="param1" value="theme" />
           <input type="hidden" name="module2" value="CameraLife" />
           <input type="hidden" name="param2" value="iconset" />
-  
+
           <div class="control-group">
             <label class="control-label" for="inputTheme">Photostore</label>
             <div class="controls">
@@ -93,7 +93,7 @@ foreach ($cameralife->GetModules($feature) as $module) {
           </div>
         </div>
       </form>
-      
+
       <?php renderPrefsAsHTML($cameralife->PhotoStore); ?>
     </div>
   </body>

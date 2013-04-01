@@ -7,11 +7,11 @@
  */
 $features=array('database','security', 'photostore', 'imageprocessing');
 @ini_set('max_execution_time',9000);
-require "../main.inc";
+require '../main.inc';
 $cameralife->Security->authorize('admin_customize', 1); // Require
 $cameralife->base_url = dirname($cameralife->base_url);
 chdir ($cameralife->base_dir);
-require "admin.inc";
+require 'admin.inc';
 $cameralife->Security->authorize('admin_file', 1); // Require
 $lastdone = (int) $_GET['lastdone']
   or $lastdone = -1;
@@ -61,8 +61,6 @@ $numdone = (int) $_GET['numdone']
     <div class="container">
       <h2>Update thumbnails</h2>
       <p>We are now caching thumbnails. This avoids a delay when a photo is viewed for the first time.</p>
-      
-      
 
 <?php
   $total = $cameralife->Database->SelectOne('photos', 'count(*)');
@@ -81,7 +79,7 @@ $numdone = (int) $_GET['numdone']
   $next1000 = $cameralife->Database->Select('photos', 'id', "id > $lastdone", 'ORDER BY id LIMIT 500');
   $fixed = 0;
   flush();
-  while(($next = $next1000->FetchAssoc()) && ($fixed < 10)) {
+  while (($next = $next1000->FetchAssoc()) && ($fixed < 10)) {
     $curphoto = new Photo($next['id']);
     if ($cameralife->PhotoStore->CheckThumbnails($curphoto)) {
       echo "<div>Updated #".$next['id']."</div>\n";

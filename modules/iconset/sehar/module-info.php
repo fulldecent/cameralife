@@ -11,4 +11,3 @@
  $module_url     = 'http://sehardesigns.carbonmade.com';
 
  $module_desc    = 'An illustrated icon set.';
-?>

@@ -15,7 +15,7 @@
     * if (is_string($result))
     *   $cameralife->Error($result);
    *}
- 
+
    *if ($_POST['target'] == 'ajax')
    *  exit(0);
    *else
@@ -26,17 +26,14 @@
 */
 
   $features=array('database','theme','security');
-  require "../../../main.inc";
+  require '../../../main.inc';
   $cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
 
-  if (strtolower($_POST['action']) == 'login')
-  {
+  if (strtolower($_POST['action']) == 'login') {
     $result = $cameralife->Security->Login($_POST['param1'], $_POST['param2']);
     if (is_string($result))
       $cameralife->Error($result);
-  }
-  elseif(strtolower($_POST['action']) == 'register')
-  {
+  } elseif (strtolower($_POST['action']) == 'register') {
     $result = $cameralife->Security->Register($_POST['param1'], $_POST['param2'], $_POST['param3']);
     if (is_string($result))
       $cameralife->Error($result);
@@ -46,4 +43,3 @@
     exit(0);
   else
     header("Location: ".$_POST['target']);
-?>

@@ -1,6 +1,6 @@
 <?php
   $features=array('database','theme','security','imageprocessing','photostore');
-  require "../main.inc";
+  require '../main.inc';
   $cameralife->base_url = dirname($cameralife->base_url);
   $cameralife->Security->authorize('admin_file', 1); // Require
 
@@ -11,5 +11,3 @@
   while($row = $query->FetchAssoc())
     $cameralife->Database->Query("DELETE FROM logs WHERE id=".$row['id']);
   echo "done";
-
-?>

@@ -20,4 +20,3 @@
  $module_url     = 'http://fdcl.sourceforge.net';
 
  $module_desc    = 'Here are some icons ripped from the Gnome project';
-?>

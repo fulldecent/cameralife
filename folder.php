@@ -7,7 +7,7 @@
  */
 
 $features=array('database','theme','photostore', 'imageprocessing', 'security');
-require "main.inc";
+require 'main.inc';
 
 ##TODO: make the second param true there
 $folder = new Folder(stripslashes($_GET['path']), false);
@@ -19,4 +19,3 @@ if ($count == 0) {
 }
 
 $folder->ShowPage();
-?>

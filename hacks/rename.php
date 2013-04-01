@@ -18,7 +18,7 @@
  */
 
   $features=array('database','theme','security','imageprocessing','photostore');
-  require "../main.inc";
+  require '../main.inc';
   $cameralife->base_url = dirname($cameralife->base_url);
 
   $cameralife->Security->authorize('admin_file', 1); // Require
@@ -28,19 +28,15 @@
 
   // Handle form actions
     $curphoto = FALSE;
-  foreach ($_POST as $key=>$val)
-  {
+  foreach ($_POST as $key=>$val) {
     list($cmd, $id) = explode('_', $key);
     if ($id == FALSE) continue;
-    if (!$curphoto || $id != $curphoto->Get('id'))
-    {
+    if (!$curphoto || $id != $curphoto->Get('id')) {
       $curphoto = new Photo($id);
     }
-    switch ($cmd)
-    {
+    switch ($cmd) {
     case 'desc':
-      if ($curphoto->Get('description') != $val && strlen($val) > 0)
-      {
+      if ($curphoto->Get('description') != $val && strlen($val) > 0) {
         if ($val == 'ERASED')
           $curphoto->Erase();
         else
@@ -69,7 +65,8 @@
   <link rel="stylesheet" href="hacks.css">
   <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
   <script language="javascript">
-    function changealldesc() {
+    function changealldesc()
+    {
       val = document.getElementById('desc').value;
       inputs = document.getElementsByTagName('input');
       for (var i = 0; i < inputs.length; i++) {
@@ -78,7 +75,8 @@
         }
       }
     }
-    function addallkey() {
+    function addallkey()
+    {
       vals = document.getElementById('key').value.split(' ');
       for (var j = 0; j < vals.length; j++) {
         val = vals[j];
@@ -94,7 +92,8 @@
         }
       }
     }
-    function delallkey() {
+    function delallkey()
+    {
       vals = document.getElementById('key').value.split(' ');
       for (var j = 0; j < vals.length; j++) {
         val = vals[j];
@@ -127,8 +126,7 @@
 
 <?php
   echo "<p>Show <select name=\"perpage\" onchange=\"document.getElementById('form1').submit()\">";
-  foreach(array(8,12,25,100,'all') as $num)
-  {
+  foreach (array(8,12,25,100,'all') as $num) {
     if ($perpage == $num)
       echo "<option selected>$num</option>\n";
     else
@@ -140,15 +138,13 @@
   echo "<tr><td>All keywords:<td><input id='key' name='key' size=35><td><input type=button value=\"Add to all\" onclick=\"addallkey()\"><input type=button value=\"Remove from all\" onclick=\"delallkey()\"></table>";
   echo "<hr size=1>";
 
-
   $selection = "id, description, keywords, status, mtime";
   if ($perpage == 'all') $limit = '';
   else $limit = "LIMIT $start, $perpage";
   $query = $cameralife->Database->Select('photos',$selection,"description='unnamed' AND (status=0 OR status=2)","ORDER BY id $limit");
 
   echo "<table>";
-  while($photo = $query->FetchAssoc())
-  {
+  while ($photo = $query->FetchAssoc()) {
     if ($i++%2==0) echo "<tr>";
     echo "<td>";
     echo "<a href=\"../photo.php&#63;id=".$photo['id']."\">";
@@ -196,4 +192,3 @@
   </form>
 </body>
 </html>
-

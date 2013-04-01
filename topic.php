@@ -7,7 +7,7 @@
 */
 
 $features=array('database','theme');
-require "main.inc";
+require 'main.inc';
 
 $topic = new Topic($_GET['name']);
 
@@ -18,4 +18,3 @@ if (!isset($_GET['edit']) && $count == 0) {
 }
 
 $topic->ShowPage();
-?>

@@ -7,7 +7,7 @@
  */
 
 $continue = true;
-if(file_exists('../modules/config.inc')) {
+if (file_exists('../modules/config.inc')) {
   die("Camera Life already appears to be set up, because modules/config.inc exists.");
 }
 
@@ -33,7 +33,7 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    
+
     <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-52764-13']);
@@ -261,17 +261,14 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
     $config[] = "\$db_schema_version = 2;\n";
     $config[] = "?>\n";
 
-    if ($fd = fopen('../modules/config.inc','x'))
-    {
+    if ($fd = fopen('../modules/config.inc','x')) {
       foreach ($config as $line)
         fwrite ($fd, $line);
       fclose($fd);
 
       echo "<p>Writing configuration file...</p>";
       echo "<p>Configuration is complete.</p>";
-    }
-    else
-    {
+    } else {
       echo "<p>I cannot write your config file modules/config.inc ";
       echo "Please create this file and paste in the following:<pre class='code'>";
       foreach ($config as $line)
@@ -294,17 +291,14 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
   $dir = trim($dir, '/');
   $newht = preg_replace('/RewriteBase .*/',"RewriteBase /$dir/",$htaccess,1,$fixed);
 
-  if ($fd = fopen('../.htaccess','w+'))
-  {
+  if ($fd = fopen('../.htaccess','w+')) {
     foreach ($newht as $line)
       fwrite ($fd, $line);
     fclose($fd);
 
     echo "<p>Writing .htaccess file...</p>";
     echo "<p>.htaccess is complete.</p>";
-  }
-  else
-  {
+  } else {
     echo "<p>I cannot write your ".dirname(dirname(__FILE__))."/.htaccess file. ";
     echo "Please create this file and paste in the following:<pre class='code'>";
     foreach ($newht as $line)

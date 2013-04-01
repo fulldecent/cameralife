@@ -6,7 +6,7 @@
  * @access public
  */
 $features=array('database','security', 'photostore');
-require "../main.inc";
+require '../main.inc';
 $cameralife->base_url = dirname($cameralife->base_url);
 $cameralife->Security->authorize('admin_customize', 1); // Require
 $stats = new Stats;
@@ -71,5 +71,3 @@ Cheers,
     </div>
   </body>
 </html>
-
-

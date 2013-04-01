@@ -8,14 +8,14 @@
 
 class Stats
 {
-  var $counts;
+  public $counts;
 
-  function Stats()
+  public function Stats()
   {
     $this->counts = array();
   }
 
-  function GetCounts()
+  public function GetCounts()
   {
     global $cameralife;
 
@@ -28,10 +28,11 @@ class Stats
     $this->counts['maxphotohits'] = $cameralife->Database->SelectOne('photos','MAX(hits)');
     $this->counts['maxalbumhits'] = $cameralife->Database->SelectOne('albums','MAX(hits)');
     $this->counts['daysonline'] = floor((time()-strtotime($cameralife->GetPref('sitedate'))) / 86400 );
+
     return $this->counts;
   }
 
-  function GetPopularPhotos()
+  public function GetPopularPhotos()
   {
     global $cameralife;
 
@@ -39,10 +40,11 @@ class Stats
     $query = $cameralife->Database->Select('photos','id',NULL,'ORDER BY hits DESC limit 5');
     while ($photo = $query->FetchAssoc())
       $popular_photos[] = new Photo($photo['id']);
+
     return $popular_photos;
   }
 
-  function GetPopularAlbums()
+  public function GetPopularAlbums()
   {
     global $cameralife;
 
@@ -50,10 +52,11 @@ class Stats
     $query = $cameralife->Database->Select('albums','id',NULL,'ORDER BY hits DESC limit 5');
     while ($album = $query->FetchAssoc())
       $popular_albums[] = new Album($album['id']);
+
     return $popular_albums;
   }
 
-  function GetFunFacts()
+  public function GetFunFacts()
   {
     if (empty($this->counts))
       $this->GetCounts();
@@ -87,7 +90,7 @@ class Stats
     $funfacts[] = 'Postage for mailing a photo here to each of your friends (like you have that many) will cost '.
                   '<strong>$'.(round ($this->counts['photos'] * 0.44, 2)).'</strong>.';
                   # http://www.usps.com/prices/welcome.htm
+
     return $funfacts;
   }
 }
-?>

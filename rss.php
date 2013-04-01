@@ -7,7 +7,7 @@
  */
 
   $features=array('database','theme','security', 'photostore');
-  require "main.inc";
+  require 'main.inc';
 
   $search = new Search($_GET['q']);
   $searchicon = $search->GetIcon();
@@ -38,8 +38,7 @@
   </author>
 
 <?php
-  foreach($photos as $photo)
-  {
+  foreach ($photos as $photo) {
     $icon = $photo->GetIcon();
     $date = strtotime($photo->Get('created'));
     $exif = $photo->GetEXIF();

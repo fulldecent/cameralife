@@ -6,11 +6,11 @@
  * @access public
  */
 $features=array('database','security', 'photostore', 'theme');
-require "../main.inc";
+require '../main.inc';
 $cameralife->base_url = dirname($cameralife->base_url);
 $cameralife->Security->authorize('admin_customize', 1); // Require
 if(!isset($_GET['page'])) $_GET['page'] = 'setup';
-require "admin.inc";
+require 'admin.inc';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +52,7 @@ require "admin.inc";
     </div>
     <div class="container">
       <h2>Modules</h2>
-      
+
       <form class="form-horizontal well" method="post" action="controller_prefs.php">
         <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'].'&#63;page='.$_GET['page'] ?>" />
         <input type="hidden" name="module1" value="CameraLife" />
@@ -66,8 +66,7 @@ require "admin.inc";
             <select name="value1" id="inputTheme" class="input-xxlarge">
 <?php
 $feature = 'theme';
-foreach ($cameralife->GetModules($feature) as $module)
-{
+foreach ($cameralife->GetModules($feature) as $module) {
   include $cameralife->base_dir."/modules/$feature/$module/module-info.php";
 
   $selected = $cameralife->GetPref($feature) == basename($module) ? 'selected' : '';
@@ -86,8 +85,7 @@ foreach ($cameralife->GetModules($feature) as $module)
             <select name="value2" id="inputIconset" class="input-xxlarge">
 <?php
 $feature = 'iconset';
-foreach ($cameralife->GetModules($feature) as $module)
-{
+foreach ($cameralife->GetModules($feature) as $module) {
   include $cameralife->base_dir."/modules/$feature/$module/module-info.php";
 
   $selected = $cameralife->GetPref($feature) == basename($module) ? 'selected' : '';
@@ -101,9 +99,9 @@ foreach ($cameralife->GetModules($feature) as $module)
           </div>
         </div>
       </form>
-      
-      <h2>Site Parameters</h2> 
-      
+
+      <h2>Site Parameters</h2>
+
       <form method="post" action="controller_prefs.php" class="form-horizontal">
         <div class="control-group">
           <label class="control-label" for="sitename">Site name</label>
@@ -192,14 +190,14 @@ foreach ($cameralife->GetModules($feature) as $module)
             <input type="text" id="optionsizes" name="value9" size=30 value="<?= join(',',preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'))) ?>">
             <span class="help-inline">comma separated (you can also leave this blank)</span>
           </div>
-        </div>          
+        </div>
         <div class="control-group">
           <div class="controls">
             <input type="submit" value="Save changes" class="btn btn-primary"/>
           </div>
         </div>
       </form>
-      
+
 <?php renderPrefsAsHTML($cameralife->Theme) ?>
   </body>
 </html>

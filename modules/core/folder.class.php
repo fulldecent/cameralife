@@ -8,7 +8,7 @@
 
 class Folder extends Search
 {
-  var $path;
+  public $path;
 
   /**
   * This function should be constructed with either of the parameters Photo or Path.
@@ -17,19 +17,16 @@ class Folder extends Search
   * <b>Optional </b> When is the latest photo in this folder from, unixtime
   */
 
-  function Folder($original = '', $sync=FALSE, $date=NULL)
+  public function Folder($original = '', $sync=FALSE, $date=NULL)
   {
     global $cameralife;
 
-    if (is_string($original)) # This a path
-    {
+    if (is_string($original)) { # This a path
       if (strpos($original, '..') !== false)
         $cameralife->Error('Tried to access a path which contains  ..', __FILE__, __LINE__);
 
       $this->path = $original;
-    }
-    elseif(get_class($original) == 'Photo') # Extract the path from this Photo
-    {
+    } elseif (get_class($original) == 'Photo') { # Extract the path from this Photo
       $this->path = $original->Get('path');
     }
     $this->date = $date;
@@ -46,34 +43,32 @@ class Folder extends Search
   /**
    * @return $retval an array of folders
    */
-  function GetAncestors()
+  public function GetAncestors()
   {
     $retval = array();
 
-    if (strlen($this->path) > 1)
-    {
+    if (strlen($this->path) > 1) {
       $retval[] = new Folder('', FALSE);
 
-      foreach (explode("/",$this->path) as $dir)
-      {
+      foreach (explode("/",$this->path) as $dir) {
         if (!$dir) continue;
         $full_path=$full_path.$dir."/";
         if ($full_path == $this->path) continue;
         $retval[] = new Folder($full_path, FALSE);
       }
     }
+
     return $retval;
   }
 
   /**
    * @return some decentants, or all if count==0
    */
-  function GetDescendants($count = 0)
+  public function GetDescendants($count = 0)
   {
     global $cameralife;
 
-    switch ($this->mySort)
-    {
+    switch ($this->mySort) {
       case 'newest':    $sort = 'created desc'; break;
       case 'oldest':    $sort = 'created'; break;
       case 'az':        $sort = 'description'; break;
@@ -91,15 +86,15 @@ class Folder extends Search
     $family = $cameralife->Database->Select('photos', $selection, $condition, $extra);
     while ($youngin = $family->FetchAssoc())
       $result[] = new Folder($youngin['path'], FALSE);
+
     return $result;
   }
 
-  function GetChildren()
+  public function GetChildren()
   {
     global $cameralife;
 
-    switch ($this->mySort)
-    {
+    switch ($this->mySort) {
       case 'newest':    $sort = 'id desc'; break;
       case 'oldest':    $sort = 'id'; break;
       case 'az':        $sort = 'description'; break;
@@ -118,10 +113,11 @@ class Folder extends Search
     $result = array();
     while ($youngin = $family->FetchAssoc())
       $result[] = new Folder($this->path . $youngin['basename'] . '/', FALSE);
+
     return $result;
   }
 
-  function GetIcon($size='large')
+  public function GetIcon($size='large')
   {
     global $cameralife;
     $retval = array();
@@ -146,17 +142,17 @@ class Folder extends Search
     return $retval;
   }
 
-  function Path()
+  public function Path()
   {
     return htmlentities($this->path);
   }
 
-  function Basename()
+  public function Basename()
   {
     return basename(htmlentities($this->path));
   }
 
-  function Dirname()
+  public function Dirname()
   {
     return dirname(htmlentities($this->path));
   }
@@ -164,13 +160,13 @@ class Folder extends Search
   /**
   * @access private
   */
-  function array_isearch($str, $array)
+  public function array_isearch($str, $array)
   {
     foreach($array as $k => $v)
       if(strcasecmp($str, $v) == 0) return $k;
+
     return false;
   }
-
 
   /**
   *Matches the DB with the contents on the filesystem.Efficiently
@@ -283,7 +279,7 @@ class Folder extends Search
       *$photoObj->Erase();
       *</code> Photo not found anywhere
       */
-  function Update()
+  public function Update()
   {
     global $cameralife;
 
@@ -293,23 +289,19 @@ class Folder extends Search
     $result = $cameralife->Database->Select('photos','id,filename,path,fsize','','ORDER BY path, filename');
 
     // Verify each photo in the DB
-    while ($photo = $result->FetchAssoc())
-    {
+    while ($photo = $result->FetchAssoc()) {
       $filename = $photo['filename'];
       $photopath = $photo['path'].$filename;
 
       // Found in correct location
-      if ($new_files[$photopath])
-      {
+      if ($new_files[$photopath]) {
         # Bonus code, if this is local, we can do more verification
-        if ($cameralife->GetPref('photostore')=='local' && $photo['fsize'])
-        {
+        if ($cameralife->GetPref('photostore')=='local' && $photo['fsize']) {
           $photofile = $cameralife->PhotoStore->PhotoDir."/$photopath";
           $actualsize = filesize($photofile);
 
           // Found, but changed
-          if ($actualsize != $photo['fsize'])
-          {
+          if ($actualsize != $photo['fsize']) {
             $retval[] = "$photopath was changed, flushing cache";
             $photoObj = new Photo($photo['id']);
             $photoObj->Revert();
@@ -323,33 +315,27 @@ class Folder extends Search
         continue;
       }
 
-
       // Look for a photo in the same place, but with the filename capitalization changed
-      if ($new_files[strtolower($photopath)])
-      {
+      if ($new_files[strtolower($photopath)]) {
         unset ($new_files[strtolower($photopath)]);
         continue;
       }
 
-      if ($new_files[strtoupper($photopath)])
-      {
+      if ($new_files[strtoupper($photopath)]) {
         unset ($new_files[strtoupper($photopath)]);
         continue;
       }
 
       # Was photo renamed lcase?
-      if ($filename != strtolower($filename))
-      {
+      if ($filename != strtolower($filename)) {
         $candidatephotopaths = array_keys($new_files, strtolower($filename));
 
-        foreach ($candidatephotopaths as $candidatephotopath)
-        {
+        foreach ($candidatephotopaths as $candidatephotopath) {
           $candidatedirname=dirname($candidatephotopath);
           $candidatefilename=dirname($candidatephotopath);
           if ($candidatedirname) $candidatedirname .= '/';
           if ($candidatedirname == './') $candidatedirname = '';
-          if ($photo['path'] == $candidatedirname)
-          {
+          if ($photo['path'] == $candidatedirname) {
             unset ($new_files[$candidatephotopath]);
             $cameralife->Database->Update('photos',array('filename'=>$candidatefilename),'id='.$photo['id']);
             continue 2;
@@ -358,18 +344,15 @@ class Folder extends Search
       }
 
       # Was photo renamed ucase?
-      if ($filename != strtoupper($filename))
-      {
+      if ($filename != strtoupper($filename)) {
         $candidatephotopaths = array_keys($new_files, strtoupper($filename));
 
-        foreach ($candidatephotopaths as $candidatephotopath)
-        {
+        foreach ($candidatephotopaths as $candidatephotopath) {
           $candidatedirname=dirname($candidatephotopath);
           $candidatefilename=dirname($candidatephotopath);
           if ($candidatedirname) $candidatedirname .= '/';
           if ($candidatedirname == './') $candidatedirname = '';
-          if ($photo['path'] == $candidatedirname)
-          {
+          if ($photo['path'] == $candidatedirname) {
             unset ($new_files[$candidatephotopath]);
             $cameralife->Database->Update('photos',array('filename'=>$candidatefilename),'id='.$photo['id']);
             continue 2;
@@ -379,11 +362,9 @@ class Folder extends Search
 
       // Look for a photo with the same name and filesize anywhere else
       $candidatephotopaths = array_keys($new_files, $filename);
-      foreach ($candidatephotopaths as $candidatephotopath)
-      {
+      foreach ($candidatephotopaths as $candidatephotopath) {
         # Bonus code
-        if ($cameralife->GetPref('photostore')=='local')
-        {
+        if ($cameralife->GetPref('photostore')=='local') {
           $actualsize = filesize($cameralife->PhotoStore->PhotoDir . '/' . $candidatephotopath);
           if ($actualsize != $photo['fsize'])
             continue;
@@ -409,12 +390,10 @@ class Folder extends Search
       // then this will find it
       //
       // (otherwise a photo that was moved and changed would be considered lost)
-      foreach ($candidatephotopaths as $candidatephotopath)
-      {
+      foreach ($candidatephotopaths as $candidatephotopath) {
         $number = preg_replace('/[^\d]/','',$candidatephotopath);
 
-        if ($number > 1000 && abs($number - $lastmoved[0])<5 && $newpath == $lastmoved[1])
-        {
+        if ($number > 1000 && abs($number - $lastmoved[0])<5 && $newpath == $lastmoved[1]) {
           $candidatedirname=dirname($candidatephotopath).'/';
           if ($candidatedirname) $candidatedirname .= '/';
           if ($candidatedirname=='./') $candidatedirname = '';
@@ -424,9 +403,7 @@ class Folder extends Search
           unset ($new_files[$candidatephotopath]);
           $lastmoved = array($number, $candidatedirname);
           continue 2;
-        }
-        else
-        {
+        } else {
           $str = $photo['path'].$photo['filename']." is missing, and $candidatephotopath was found, ";
           $str .= "they are not the same, I don't know what to do... ";
           $str .= "If they are the same, move latter to former, update, then move back.";
@@ -471,12 +448,10 @@ class Folder extends Search
     // We are looking for any excuse NOT to add them to the DB
     //
 
-    foreach ($new_files as $new_file => $newbase)
-    {
+    foreach ($new_files as $new_file => $newbase) {
       if (preg_match("/^picasa.ini|digikam3.db$/i",$newbase))
         continue;
-      if (!preg_match("/.jpg$|.jpeg$|.png$|.gif$/i",$newbase))
-      {
+      if (!preg_match("/.jpg$|.jpeg$|.png$|.gif$/i",$newbase)) {
         $retval[] = "Skipped $new_file because it is not a JPEG or PNG file";
         continue;
       }
@@ -486,23 +461,19 @@ class Folder extends Search
       if ($newpath=='./') $newpath = '';
 
       # Bonus code
-      if ($cameralife->GetPref('photostore')=='local')
-      {
+      if ($cameralife->GetPref('photostore')=='local') {
         $actualsize = filesize($cameralife->PhotoStore->PhotoDir . '/' . $new_file);
         $extra = ' AND (fsize='.$actualsize.' OR fsize IS NULL)';
-      }
-      else
+      } else
         $extra = '';
 
       $condition = "filename LIKE '".mysql_real_escape_string($newbase)."' ".$extra;
       $result = $cameralife->Database->Select('photos','id, filename, path',$condition);
 
       // Is anything in the photostore too similar (given available information) to let this photo in?
-      if ($photo = $result->FetchAssoc())
-      {
+      if ($photo = $result->FetchAssoc()) {
         // With the case-insensitive LIKE above, this will handle files renamed only by case
-        if(strcasecmp($photo['path'].$photo['filename'], $new_file) == 0)
-        {
+        if (strcasecmp($photo['path'].$photo['filename'], $new_file) == 0) {
           $retval[] = $photo['path'].$photo['filename'].' was renamed to '.$new_file;
           $cameralife->Database->Update('photos',array('filename'=>$newbase),'id='.$photo['id']);
           continue;
@@ -510,8 +481,7 @@ class Folder extends Search
 
         # Bonus code
         $same = FALSE;
-        if ($cameralife->GetPref('photostore')=='local')
-        {
+        if ($cameralife->GetPref('photostore')=='local') {
           $a = file_get_contents($cameralife->PhotoStore->PhotoDir . '/' . $photo['path'].$photo['filename']);
           $b = file_get_contents($cameralife->PhotoStore->PhotoDir . '/' . $new_file);
           if ($a == $b)
@@ -528,11 +498,9 @@ class Folder extends Search
       }
 
       # Bonus code
-      if ($cameralife->GetPref('photostore')=='local')
-      {
+      if ($cameralife->GetPref('photostore')=='local') {
         $deletedfile = $cameralife->PhotoStore->DeletedDir ."/$newpath$newbase";
-        if (file_exists($deletedfile) && filesize($deletedfile) == filesize($cameralife->PhotoStore->PhotoDir . '/' . $new_file))
-        {
+        if (file_exists($deletedfile) && filesize($deletedfile) == filesize($cameralife->PhotoStore->PhotoDir . '/' . $new_file)) {
           $error = "A file that was added to the photostore $new_file is the same as ";
           $error .= "a file that was previoulsy deleted. Remove the new or the old file: ";
           $error .= $cameralife->preferences['core']['deleted_dir'].'/'.$newbase;
@@ -547,6 +515,7 @@ class Folder extends Search
       # Don't need to add to the photostore, since its already there
       $photoObj->Destroy();
     }
+
     return $retval;
   }
 
@@ -560,7 +529,7 @@ class Folder extends Search
   *
   *@return true or false
   */
-  function Fsck()
+  public function Fsck()
   {
     global $cameralife;
 
@@ -568,15 +537,12 @@ class Folder extends Search
     if(!is_array($files)) return FALSE;
 
     $fsphotos = $fsdirs = array();
-    foreach ($files as $file)
-    {
+    foreach ($files as $file) {
       if (preg_match("/.jpg$|.jpeg$|.png$|.gif$/i",$file))
         $fsphotos[] = $file;
-      else
-      {
+      else {
 
-        if ($cameralife->GetPref('photostore')=='local')
-        {
+        if ($cameralife->GetPref('photostore')=='local') {
           if (!is_dir($cameralife->PhotoStore->GetPref('photo_dir') . '/' . $this->path . $file))
             continue;
         }
@@ -588,10 +554,10 @@ class Folder extends Search
     $selection = "filename";
     $condition = "path = '".addslashes($this->path)."'";
     $result = $cameralife->Database->Select('photos', $selection, $condition);
-    while ($row = $result->FetchAssoc())
-    {
+    while ($row = $result->FetchAssoc()) {
       $key = array_search($row['filename'], $fsphotos);
       if($key === FALSE)
+
         return FALSE;
       else
         unset ($fsphotos[$key]);
@@ -600,10 +566,10 @@ class Folder extends Search
     $selection = "DISTINCT SUBSTRING_INDEX(SUBSTR(path,".(strlen($this->path)+1)."),'/',1) AS basename";
     $condition = "path LIKE '".addslashes($this->path)."%/' AND status=0";
     $result = $cameralife->Database->Select('photos', $selection, $condition, $extra);
-    while ($row = $result->FetchAssoc())
-    {
+    while ($row = $result->FetchAssoc()) {
       $key = array_search($row['basename'], $fsdirs);
       if($key === FALSE)
+
         return FALSE;
       else
         unset ($fsdirs[$key]);
@@ -612,5 +578,3 @@ class Folder extends Search
     return (count($fsphotos) + count($fsdirs) == 0);
   }
 }
-
-?>

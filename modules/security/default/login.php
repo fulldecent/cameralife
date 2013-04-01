@@ -4,7 +4,7 @@
   * Use this as a starting point to integrate with your existing CMS.
   */
   $features=array('database','security');
-  require "../../../main.inc";
+  require '../../../main.inc';
   $cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
 
   if(isset($_GET['register']))
@@ -41,8 +41,6 @@
 <?php } ?>
 </table>
 
-
 </form>
 </body>
 </html>
-

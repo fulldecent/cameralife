@@ -24,4 +24,3 @@
  $module_url     = 'http://www.oxygen-icons.org';
 
  $module_desc    = 'From KDE.';
-?>

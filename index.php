@@ -8,7 +8,6 @@
 /**
 */
   $features=array('database','theme');
-  require "main.inc";
+  require 'main.inc';
 
   $cameralife->Theme->ShowPage('index');
-?>

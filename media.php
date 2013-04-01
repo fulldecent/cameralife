@@ -18,17 +18,16 @@
  */
 
 $features=array('database','security','imageprocessing', 'photostore');
-require "main.inc";
+require 'main.inc';
 
 $photo = new Photo($_GET['id']);
 $format = $_GET['scale'];
-if (!is_numeric($_GET['ver'])) 
+if (!is_numeric($_GET['ver']))
   $cameralife->Error('Required number ver missing! Query string: '.htmlentities($_SERVER['QUERY_STRING']));
 
 $extension = $photo->extension;
 
-if (!$cameralife->Security->authorize('admin_file'))
-{
+if (!$cameralife->Security->authorize('admin_file')) {
   if ($photo->Get('status')==1) $reason = "deleted";
   elseif ($photo->Get('status')==2) $reason = "marked as private";
   elseif ($photo->Get('status')==3) $reason = "uploaded but not revied";
@@ -51,15 +50,13 @@ elseif ($format == 'scaled')
   list($file, $temp, $mtime) = $cameralife->PhotoStore->GetFile($photo, $format);
 elseif ($format == 'thumbnail')
   list($file, $temp, $mtime) = $cameralife->PhotoStore->GetFile($photo, $format);
-elseif (is_numeric($format))
-{
+elseif (is_numeric($format)) {
   $valid = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
   if (in_array($format, $valid))
     list($file, $temp, $mtime) = $cameralife->PhotoStore->GetFile($photo, $format);
   else
     $cameralife->Error('This image size has not been allowed');
-}
-else
+} else
   $cameralife->Error('Bad size parameter. Query string: '.htmlentities($_SERVER['QUERY_STRING']));
 
 if ($extension == 'jpg' || $extension == 'jpeg')
@@ -81,4 +78,3 @@ header("Expires: ".gmdate("D, d M Y H:i:s", time() + 2592000)." GMT"); // One mo
 
 readfile($file);
 if ($temp) unlink($file);
-?>

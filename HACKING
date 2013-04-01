@@ -45,3 +45,8 @@ For more details, check the TODO file.
 
 - Any post requests or ajax calls are sent to photo_controller.php
 
+*
+* Coding standards
+*
+We are preferring PSR-2 style PHP code, and all code will be accepted. Please also use phpdoc.
+

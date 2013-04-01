@@ -17,6 +17,4 @@
   $_POST['userfile_name'] = $old['g2_userfile_name'];
   $_FILES['userfile'] = $_FILES['g2_userfile'];
 
-
   require 'gallery_remote2.php';
-?>

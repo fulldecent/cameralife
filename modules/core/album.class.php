@@ -12,7 +12,7 @@
 
 class Album extends Search
 {
-  var $record;
+  public $record;
   /**
   *
   *<code>is_array($orginal)</code> will be a new album given in parts
@@ -20,12 +20,11 @@ class Album extends Search
   *
   *@param mixed $original A unique ID
   */
-  function Album($original)
+  public function Album($original)
   {
     global $cameralife;
 
-    if(is_array($original)) # A new album, given by parts
-    {
+    if (is_array($original)) { # A new album, given by parts
       $search = new Search($original['term']);
       $count = $search->GetCounts();
       if ($count['photos'] == 0)
@@ -37,25 +36,21 @@ class Album extends Search
       $this->record['term'] = $original['term'];
       $this->record['poster_id'] = $result[0]->Get('id');
       $this->record['id'] = $cameralife->Database->Insert('albums', $this->record);
-    }
-    elseif(is_numeric($original))  # This is an ID
-    {
+    } elseif (is_numeric($original)) {  # This is an ID
       $result = $cameralife->Database->Select('albums', '*', "id=$original");
       $this->record = $result->FetchAssoc();
       if (!$this->record) {
         header("HTTP/1.0 404 Not Found");
         $cameralife->Error("Album #".($original+0)." not found.");
       }
-    }
-    else
-    {
+    } else {
       $cameralife->Error("Invalid album", __FILE__, __LINE__);
     }
 
     Search::Search($this->record['term']);
   }
 
-  function Set($key, $value)
+  public function Set($key, $value)
   {
     global $cameralife;
 
@@ -64,26 +59,28 @@ class Album extends Search
       $receipt = AuditTrail::Log('album',$this->record['id'],$key,$this->record[$key],$value);
     $this->record[$key] = $value;
     $cameralife->Database->Update('albums', array($key=>$value), 'id='.$this->record['id']);
+
     return $receipt;
   }
 
-  function Get($key)
+  public function Get($key)
   {
     return $this->record[$key];
   }
 
-  function GetPoster()
+  public function GetPoster()
   {
     if (Photo::PhotoExists($this->record['poster_id']))
       return new Photo($this->record['poster_id']);
     else {
       $photos = $this->GetPhotos();
+
       return $photos[0];
     }
-    
+
   }
 
-  function SetPoster($poster)
+  public function SetPoster($poster)
   {
     global $cameralife;
 
@@ -96,12 +93,12 @@ class Album extends Search
     $this->Set('poster_id', $_GET['poster_id']);
   }
 
-  function GetTopic()
+  public function GetTopic()
   {
     return new Topic($this->record['topic']);
   }
 
-  function Erase()
+  public function Erase()
   {
     global $cameralife;
 
@@ -111,7 +108,7 @@ class Album extends Search
   /** @param string $size size of the image (large)
   */
 
-  function GetIcon($size='large')
+  public function GetIcon($size='large')
   {
     global $cameralife;
 
@@ -122,15 +119,12 @@ class Album extends Search
     else
       $retval['href'] = $cameralife->base_url.'/album.php&#63;id='.$this->record['id'];
 
-    if ($size == 'large')
-    {
+    if ($size == 'large') {
       $photo = $this->GetPoster();
       $retval['image'] = $photo->GetMedia('thumbnail');
       $retval['width'] = $photo->Get('tn_width');
       $retval['height'] = $photo->Get('tn_height');
-    }
-    else
-    {
+    } else {
       $retval['image'] = 'small-album';
     }
 
@@ -141,4 +135,3 @@ class Album extends Search
     return $retval;
   }
 }
-?>

@@ -6,7 +6,7 @@
 */
 
 $features=array('database','theme');
-require "main.inc";
+require 'main.inc';
 
 if (!Photo::PhotoExists($_GET['id'])) {
   header("HTTP/1.0 404 Not Found");
@@ -14,9 +14,8 @@ if (!Photo::PhotoExists($_GET['id'])) {
 }
 
 $photo = new Photo($_GET['id']);
-if ($photo->Get('status') != 0) 
+if ($photo->Get('status') != 0)
   $cameralife->Security->authorize('admin_file', 'This file has been flagged or marked private');
 $photo->Set('hits', $photo->Get('hits') + 1);
 
 $photo->ShowPage();
-?>

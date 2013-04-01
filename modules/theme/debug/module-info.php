@@ -21,4 +21,3 @@
  $module_date    = '2006-01-10';
  $module_url     = 'http://fdcl.sourceforge.net';
  $module_desc    = 'Helps you debug page layout.';
-?>

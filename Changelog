@@ -1,5 +1,6 @@
 git  Will Entriken <cameralife AT phor.net>
 * Support Google Analytics
+* Create PHP code style guidelines and adopt
 
 2.6.4  Will Entriken <cameralife AT phor.net>
 * Added support for OpenID login, this will be default soon

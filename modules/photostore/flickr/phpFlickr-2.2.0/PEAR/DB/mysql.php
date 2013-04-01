@@ -52,13 +52,13 @@ class DB_mysql extends DB_common
      * The DB driver type (mysql, oci8, odbc, etc.)
      * @var string
      */
-    var $phptype = 'mysql';
+    public $phptype = 'mysql';
 
     /**
      * The database syntax variant to be used (db2, access, etc.), if any
      * @var string
      */
-    var $dbsyntax = 'mysql';
+    public $dbsyntax = 'mysql';
 
     /**
      * The capabilities of this DB implementation
@@ -73,7 +73,7 @@ class DB_mysql extends DB_common
      *
      * @var array
      */
-    var $features = array(
+    public $features = array(
         'limit'         => 'alter',
         'new_link'      => '4.2.0',
         'numrows'       => true,
@@ -87,7 +87,7 @@ class DB_mysql extends DB_common
      * A mapping of native error codes to DB error codes
      * @var array
      */
-    var $errorcode_map = array(
+    public $errorcode_map = array(
         1004 => DB_ERROR_CANNOT_CREATE,
         1005 => DB_ERROR_CANNOT_CREATE,
         1006 => DB_ERROR_CANNOT_CREATE,
@@ -117,13 +117,13 @@ class DB_mysql extends DB_common
      * The raw database connection created by PHP
      * @var resource
      */
-    var $connection;
+    public $connection;
 
     /**
      * The DSN information for connecting to a database
      * @var array
      */
-    var $dsn = array();
+    public $dsn = array();
 
 
     /**
@@ -131,7 +131,7 @@ class DB_mysql extends DB_common
      * @var bool
      * @access private
      */
-    var $autocommit = true;
+    public $autocommit = true;
 
     /**
      * The quantity of transactions begun
@@ -142,7 +142,7 @@ class DB_mysql extends DB_common
      * @var integer
      * @access private
      */
-    var $transaction_opcount = 0;
+    public $transaction_opcount = 0;
 
     /**
      * The database specified in the DSN
@@ -152,7 +152,7 @@ class DB_mysql extends DB_common
      * @var string
      * @access private
      */
-    var $_db = '';
+    public $_db = '';
 
 
     // }}}
@@ -163,7 +163,7 @@ class DB_mysql extends DB_common
      *
      * @return void
      */
-    function DB_mysql()
+    public function DB_mysql()
     {
         $this->DB_common();
     }
@@ -185,12 +185,12 @@ class DB_mysql extends DB_common
      *                    Only used if PHP is at version 4.3.0 or greater.
      *                    Available since PEAR DB 1.7.0.
      *
-     * @param array $dsn         the data source name
-     * @param bool  $persistent  should the connection be persistent?
+     * @param array $dsn        the data source name
+     * @param bool  $persistent should the connection be persistent?
      *
-     * @return int  DB_OK on success. A DB_Error object on failure.
+     * @return int DB_OK on success. A DB_Error object on failure.
      */
-    function connect($dsn, $persistent = false)
+    public function connect($dsn, $persistent = false)
     {
         if (!PEAR::loadExtension('mysql')) {
             return $this->raiseError(DB_ERROR_EXTENSION_NOT_FOUND);
@@ -245,7 +245,7 @@ class DB_mysql extends DB_common
         if (!$this->connection) {
             if (($err = @mysql_error()) != '') {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED,
-                                         null, null, null, 
+                                         null, null, null,
                                          $err);
             } else {
                 return $this->raiseError(DB_ERROR_CONNECT_FAILED,
@@ -270,12 +270,13 @@ class DB_mysql extends DB_common
     /**
      * Disconnects from the database server
      *
-     * @return bool  TRUE on success, FALSE on failure
+     * @return bool TRUE on success, FALSE on failure
      */
-    function disconnect()
+    public function disconnect()
     {
         $ret = @mysql_close($this->connection);
         $this->connection = null;
+
         return $ret;
     }
 
@@ -291,11 +292,11 @@ class DB_mysql extends DB_common
      *
      * @param string  the SQL query string
      *
-     * @return mixed  + a PHP result resrouce for successful SELECT queries
+     * @return mixed + a PHP result resrouce for successful SELECT queries
      *                + the DB_OK constant for other successful queries
      *                + a DB_Error object on failure
      */
-    function simpleQuery($query)
+    public function simpleQuery($query)
     {
         $ismanip = DB::isManip($query);
         $this->last_query = $query;
@@ -326,6 +327,7 @@ class DB_mysql extends DB_common
         if (is_resource($result)) {
             return $result;
         }
+
         return DB_OK;
     }
 
@@ -341,7 +343,7 @@ class DB_mysql extends DB_common
      *
      * @return false
      */
-    function nextResult($result)
+    public function nextResult($result)
     {
         return false;
     }
@@ -364,12 +366,12 @@ class DB_mysql extends DB_common
      * @param int      $fetchmode how the resulting array should be indexed
      * @param int      $rownum    the row number to fetch (0 = first row)
      *
-     * @return mixed  DB_OK on success, NULL when the end of a result set is
+     * @return mixed DB_OK on success, NULL when the end of a result set is
      *                 reached or on failure
      *
      * @see DB_result::fetchInto()
      */
-    function fetchInto($result, &$arr, $fetchmode, $rownum = null)
+    public function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
         if ($rownum !== null) {
             if (!@mysql_data_seek($result, $rownum)) {
@@ -398,6 +400,7 @@ class DB_mysql extends DB_common
         if ($this->options['portability'] & DB_PORTABILITY_NULL_TO_EMPTY) {
             $this->_convertNullArrayValuesToEmpty($arr);
         }
+
         return DB_OK;
     }
 
@@ -411,13 +414,13 @@ class DB_mysql extends DB_common
      * DB_result::free() instead.  It can't be declared "protected"
      * because DB_result is a separate object.
      *
-     * @param resource $result  PHP's query result resource
+     * @param resource $result PHP's query result resource
      *
-     * @return bool  TRUE on success, FALSE if $result is invalid
+     * @return bool TRUE on success, FALSE if $result is invalid
      *
      * @see DB_result::free()
      */
-    function freeResult($result)
+    public function freeResult($result)
     {
         return @mysql_free_result($result);
     }
@@ -432,18 +435,19 @@ class DB_mysql extends DB_common
      * DB_result::numCols() instead.  It can't be declared "protected"
      * because DB_result is a separate object.
      *
-     * @param resource $result  PHP's query result resource
+     * @param resource $result PHP's query result resource
      *
-     * @return int  the number of columns.  A DB_Error object on failure.
+     * @return int the number of columns.  A DB_Error object on failure.
      *
      * @see DB_result::numCols()
      */
-    function numCols($result)
+    public function numCols($result)
     {
         $cols = @mysql_num_fields($result);
         if (!$cols) {
             return $this->mysqlRaiseError();
         }
+
         return $cols;
     }
 
@@ -457,18 +461,19 @@ class DB_mysql extends DB_common
      * DB_result::numRows() instead.  It can't be declared "protected"
      * because DB_result is a separate object.
      *
-     * @param resource $result  PHP's query result resource
+     * @param resource $result PHP's query result resource
      *
-     * @return int  the number of rows.  A DB_Error object on failure.
+     * @return int the number of rows.  A DB_Error object on failure.
      *
      * @see DB_result::numRows()
      */
-    function numRows($result)
+    public function numRows($result)
     {
         $rows = @mysql_num_rows($result);
         if ($rows === null) {
             return $this->mysqlRaiseError();
         }
+
         return $rows;
     }
 
@@ -478,16 +483,17 @@ class DB_mysql extends DB_common
     /**
      * Enables or disables automatic commits
      *
-     * @param bool $onoff  true turns it on, false turns it off
+     * @param bool $onoff true turns it on, false turns it off
      *
-     * @return int  DB_OK on success.  A DB_Error object if the driver
+     * @return int DB_OK on success.  A DB_Error object if the driver
      *               doesn't support auto-committing transactions.
      */
-    function autoCommit($onoff = false)
+    public function autoCommit($onoff = false)
     {
         // XXX if $this->transaction_opcount > 0, we should probably
         // issue a warning here.
         $this->autocommit = $onoff ? true : false;
+
         return DB_OK;
     }
 
@@ -497,9 +503,9 @@ class DB_mysql extends DB_common
     /**
      * Commits the current transaction
      *
-     * @return int  DB_OK on success.  A DB_Error object on failure.
+     * @return int DB_OK on success.  A DB_Error object on failure.
      */
-    function commit()
+    public function commit()
     {
         if ($this->transaction_opcount > 0) {
             if ($this->_db) {
@@ -514,6 +520,7 @@ class DB_mysql extends DB_common
                 return $this->mysqlRaiseError();
             }
         }
+
         return DB_OK;
     }
 
@@ -523,9 +530,9 @@ class DB_mysql extends DB_common
     /**
      * Reverts the current transaction
      *
-     * @return int  DB_OK on success.  A DB_Error object on failure.
+     * @return int DB_OK on success.  A DB_Error object on failure.
      */
-    function rollback()
+    public function rollback()
     {
         if ($this->transaction_opcount > 0) {
             if ($this->_db) {
@@ -540,6 +547,7 @@ class DB_mysql extends DB_common
                 return $this->mysqlRaiseError();
             }
         }
+
         return DB_OK;
     }
 
@@ -551,9 +559,9 @@ class DB_mysql extends DB_common
      *
      * 0 is returned for queries that don't manipulate data.
      *
-     * @return int  the number of rows.  A DB_Error object on failure.
+     * @return int the number of rows.  A DB_Error object on failure.
      */
-    function affectedRows()
+    public function affectedRows()
     {
         if (DB::isManip($this->last_query)) {
             return @mysql_affected_rows($this->connection);
@@ -568,17 +576,17 @@ class DB_mysql extends DB_common
     /**
      * Returns the next free id in a sequence
      *
-     * @param string  $seq_name  name of the sequence
-     * @param boolean $ondemand  when true, the seqence is automatically
+     * @param string  $seq_name name of the sequence
+     * @param boolean $ondemand when true, the seqence is automatically
      *                            created if it does not exist
      *
-     * @return int  the next id number in the sequence.
+     * @return int the next id number in the sequence.
      *               A DB_Error object on failure.
      *
      * @see DB_common::nextID(), DB_common::getSequenceName(),
      *      DB_mysql::createSequence(), DB_mysql::dropSequence()
      */
-    function nextId($seq_name, $ondemand = true)
+    public function nextId($seq_name, $ondemand = true)
     {
         $seqname = $this->getSequenceName($seq_name);
         do {
@@ -653,14 +661,14 @@ class DB_mysql extends DB_common
     /**
      * Creates a new sequence
      *
-     * @param string $seq_name  name of the new sequence
+     * @param string $seq_name name of the new sequence
      *
-     * @return int  DB_OK on success.  A DB_Error object on failure.
+     * @return int DB_OK on success.  A DB_Error object on failure.
      *
      * @see DB_common::createSequence(), DB_common::getSequenceName(),
      *      DB_mysql::nextID(), DB_mysql::dropSequence()
      */
-    function createSequence($seq_name)
+    public function createSequence($seq_name)
     {
         $seqname = $this->getSequenceName($seq_name);
         $res = $this->query('CREATE TABLE ' . $seqname
@@ -684,14 +692,14 @@ class DB_mysql extends DB_common
     /**
      * Deletes a sequence
      *
-     * @param string $seq_name  name of the sequence to be deleted
+     * @param string $seq_name name of the sequence to be deleted
      *
-     * @return int  DB_OK on success.  A DB_Error object on failure.
+     * @return int DB_OK on success.  A DB_Error object on failure.
      *
      * @see DB_common::dropSequence(), DB_common::getSequenceName(),
      *      DB_mysql::nextID(), DB_mysql::createSequence()
      */
-    function dropSequence($seq_name)
+    public function dropSequence($seq_name)
     {
         return $this->query('DROP TABLE ' . $this->getSequenceName($seq_name));
     }
@@ -703,13 +711,13 @@ class DB_mysql extends DB_common
      * Backwards compatibility with old sequence emulation implementation
      * (clean up the dupes)
      *
-     * @param string $seqname  the sequence name to clean up
+     * @param string $seqname the sequence name to clean up
      *
-     * @return bool  true on success.  A DB_Error object on failure.
+     * @return bool true on success.  A DB_Error object on failure.
      *
      * @access private
      */
-    function _BCsequence($seqname)
+    public function _BCsequence($seqname)
     {
         // Obtain a user-level lock... this will release any previous
         // application locks, but unlike LOCK TABLES, it does not abort
@@ -744,6 +752,7 @@ class DB_mysql extends DB_common
         if (DB::isError($result)) {
             return $result;
         }
+
         return true;
     }
 
@@ -756,14 +765,14 @@ class DB_mysql extends DB_common
      * MySQL can't handle the backtick character (<kbd>`</kbd>) in
      * table or column names.
      *
-     * @param string $str  identifier name to be quoted
+     * @param string $str identifier name to be quoted
      *
-     * @return string  quoted identifier string
+     * @return string quoted identifier string
      *
      * @see DB_common::quoteIdentifier()
      * @since Method available since Release 1.6.0
      */
-    function quoteIdentifier($str)
+    public function quoteIdentifier($str)
     {
         return '`' . $str . '`';
     }
@@ -774,7 +783,7 @@ class DB_mysql extends DB_common
     /**
      * @deprecated  Deprecated in release 1.6.0
      */
-    function quote($str)
+    public function quote($str)
     {
         return $this->quoteSmart($str);
     }
@@ -785,14 +794,14 @@ class DB_mysql extends DB_common
     /**
      * Escapes a string according to the current DBMS's standards
      *
-     * @param string $str  the string to be escaped
+     * @param string $str the string to be escaped
      *
-     * @return string  the escaped string
+     * @return string the escaped string
      *
      * @see DB_common::quoteSmart()
      * @since Method available since Release 1.6.0
      */
-    function escapeSimple($str)
+    public function escapeSimple($str)
     {
         if (function_exists('mysql_real_escape_string')) {
             return @mysql_real_escape_string($str, $this->connection);
@@ -811,14 +820,14 @@ class DB_mysql extends DB_common
      * when running a "DELETE FROM table" query.  Only implemented
      * if the DB_PORTABILITY_DELETE_COUNT portability option is on.
      *
-     * @param string $query  the query string to modify
+     * @param string $query the query string to modify
      *
-     * @return string  the modified query string
+     * @return string the modified query string
      *
      * @access protected
      * @see DB_common::setOption()
      */
-    function modifyQuery($query)
+    public function modifyQuery($query)
     {
         if ($this->options['portability'] & DB_PORTABILITY_DELETE_COUNT) {
             // "DELETE FROM table" gives 0 affected rows in MySQL.
@@ -828,6 +837,7 @@ class DB_mysql extends DB_common
                                       'DELETE FROM \1 WHERE 1=1', $query);
             }
         }
+
         return $query;
     }
 
@@ -837,20 +847,20 @@ class DB_mysql extends DB_common
     /**
      * Adds LIMIT clauses to a query string according to current DBMS standards
      *
-     * @param string $query   the query to modify
-     * @param int    $from    the row to start to fetching (0 = the first row)
-     * @param int    $count   the numbers of rows to fetch
-     * @param mixed  $params  array, string or numeric data to be used in
+     * @param string $query  the query to modify
+     * @param int    $from   the row to start to fetching (0 = the first row)
+     * @param int    $count  the numbers of rows to fetch
+     * @param mixed  $params array, string or numeric data to be used in
      *                         execution of the statement.  Quantity of items
      *                         passed must match quantity of placeholders in
      *                         query:  meaning 1 placeholder for non-array
      *                         parameters or 1 placeholder per array element.
      *
-     * @return string  the query string with LIMIT clauses added
+     * @return string the query string with LIMIT clauses added
      *
      * @access protected
      */
-    function modifyLimitQuery($query, $from, $count, $params = array())
+    public function modifyLimitQuery($query, $from, $count, $params = array())
     {
         if (DB::isManip($query)) {
             return $query . " LIMIT $count";
@@ -865,16 +875,16 @@ class DB_mysql extends DB_common
     /**
      * Produces a DB_Error object regarding the current problem
      *
-     * @param int $errno  if the error is being manually raised pass a
+     * @param int $errno if the error is being manually raised pass a
      *                     DB_ERROR* constant here.  If this isn't passed
      *                     the error information gathered from the DBMS.
      *
-     * @return object  the DB_Error object
+     * @return object the DB_Error object
      *
      * @see DB_common::raiseError(),
      *      DB_mysql::errorNative(), DB_common::errorCode()
      */
-    function mysqlRaiseError($errno = null)
+    public function mysqlRaiseError($errno = null)
     {
         if ($errno === null) {
             if ($this->options['portability'] & DB_PORTABILITY_ERRORS) {
@@ -889,6 +899,7 @@ class DB_mysql extends DB_common
             }
             $errno = $this->errorCode(mysql_errno($this->connection));
         }
+
         return $this->raiseError($errno, null, null, null,
                                  @mysql_errno($this->connection) . ' ** ' .
                                  @mysql_error($this->connection));
@@ -900,9 +911,9 @@ class DB_mysql extends DB_common
     /**
      * Gets the DBMS' native error code produced by the last query
      *
-     * @return int  the DBMS' error code
+     * @return int the DBMS' error code
      */
-    function errorNative()
+    public function errorNative()
     {
         return @mysql_errno($this->connection);
     }
@@ -913,19 +924,19 @@ class DB_mysql extends DB_common
     /**
      * Returns information about a table or a result set
      *
-     * @param object|string  $result  DB_result object from a query or a
+     * @param object|string $result DB_result object from a query or a
      *                                 string containing the name of a table.
      *                                 While this also accepts a query result
      *                                 resource identifier, this behavior is
      *                                 deprecated.
-     * @param int            $mode    a valid tableInfo mode
+     * @param int $mode a valid tableInfo mode
      *
-     * @return array  an associative array with the information requested.
+     * @return array an associative array with the information requested.
      *                 A DB_Error object on failure.
      *
      * @see DB_common::tableInfo()
      */
-    function tableInfo($result, $mode = null)
+    public function tableInfo($result, $mode = null)
     {
         if (is_string($result)) {
             /*
@@ -989,6 +1000,7 @@ class DB_mysql extends DB_common
         if ($got_string) {
             @mysql_free_result($id);
         }
+
         return $res;
     }
 
@@ -998,15 +1010,15 @@ class DB_mysql extends DB_common
     /**
      * Obtains the query string needed for listing a given type of objects
      *
-     * @param string $type  the kind of objects you want to retrieve
+     * @param string $type the kind of objects you want to retrieve
      *
-     * @return string  the SQL query string or null if the driver doesn't
+     * @return string the SQL query string or null if the driver doesn't
      *                  support the object type requested
      *
      * @access protected
      * @see DB_common::getListOf()
      */
-    function getSpecialQuery($type)
+    public function getSpecialQuery($type)
     {
         switch ($type) {
             case 'tables':
@@ -1030,5 +1042,3 @@ class DB_mysql extends DB_common
  * c-basic-offset: 4
  * End:
  */
-
-?>

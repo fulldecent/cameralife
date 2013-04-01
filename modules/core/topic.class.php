@@ -10,9 +10,9 @@
       */
 class Topic extends Search
 {
-  var $name;
+  public $name;
 
-  function Topic($name)
+  public function Topic($name)
   {
     global $cameralife;
 
@@ -24,17 +24,17 @@ class Topic extends Search
     $this->mySearchFolderCondition = "FALSE";
   }
 
-  function GetName()
+  public function GetName()
   {
     return htmlentities($this->name);
   }
 
-  function Get($item)
+  public function Get($item)
   {
     return $this->$item;
   }
 
-  function GetIcon($size='large')
+  public function GetIcon($size='large')
   {
     global $cameralife;
     $retval = array();
@@ -58,7 +58,7 @@ class Topic extends Search
   /**
   *This function is a static function
   */
-  function GetTopics()
+  public function GetTopics()
   {
     global $cameralife;
 
@@ -70,7 +70,4 @@ class Topic extends Search
     return $retval;
   }
 
-
 }
-
-?>

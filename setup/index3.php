@@ -24,7 +24,7 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    
+
     <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-52764-13']);
@@ -71,7 +71,7 @@
     <div class="container">
 
 <!--      <p style="text-align:center"><img src="images/intro1.png"><p> -->
-      
+
       <div class="well">
         <h2>You are running Camera Life <?php readfile('../VERSION') ?></h2>
         <p>Thank you for choosing to install Camera Life. We hope you will find this software is easy to use and fun.
@@ -88,7 +88,7 @@
             <li>Use the <a href="../upload.php" target="_blank">Upload Page</a></li>
             <li>Use <a href="http://zwily.com/iphoto/" target="_blank">iPhotoToGallery</a>, <a href="http://www.digikam.org/" target="_blank">digKkam</a>, <a href="http://gallery.menalto.com/wiki/Gallery_Remote" target="_blank">Gallery Remote</a> or any <a href="http://codex.gallery2.org/Other_Clients#Photonator_.28Mac_OS_X.29" target="_blank">other software</a> compatible with the Gallery Remote API</li>
             <li>Use rsync to photos from your desktop to your server</li>
-            <li>Advanced setup: change your <a href="../admin/photostore.php" target="_blank">Photo Storage setup</a> to use your Amazon S3, or Flickr, or remote FTP storage</li>  
+            <li>Advanced setup: change your <a href="../admin/photostore.php" target="_blank">Photo Storage setup</a> to use your Amazon S3, or Flickr, or remote FTP storage</li>
           </ul>
         </div>
         <div class="span6">
@@ -107,13 +107,13 @@ a tutorial on how your site works.</p>
 
       <div class="well">
         <h2>
-          You're done 
+          You're done
           <a class="btn btn-primary btn-large" href="../index.php"><i class="icon-arrow-right icon-white"></i> Check out your site</a>
           <a class="btn btn-large" href="https://github.com/fulldecent/cameralife"><i class="icon-star"></i> Star on Github to get updates</a>
           <a class="btn btn-large" href="mailto:cameralifeinstalled@phor.net"><i class="icon-envelope"></i> Send feedback</a>
         </h2>
       </div>
-      
+
     </div>
   </body>
 </html>

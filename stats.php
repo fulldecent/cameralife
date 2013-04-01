@@ -7,9 +7,7 @@
  */
 
 $features=array('database','theme', 'security');
-require "main.inc";
+require 'main.inc';
 
 $stats = new Stats;
 $cameralife->Theme->ShowPage('stats');
-
-?>

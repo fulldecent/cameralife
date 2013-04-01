@@ -38,22 +38,22 @@ class View
    *It returns
    *<ul>
    *<li>an array with keys href,name</li>
-  	*<li>context(flavor text)</li>
-  	*<li>rel and rev (from HTML a element attributes)</li>
-  	*<li>width and height for the image</li>
-  	*<li>date in unix time</li>
-  	*</ul>
-  	*<b>Note</b>  href is HTML encoded, so you code it as <a> href="$icon[href]">$icon[name]</a>
-  	*The image will be linked to its specific URL
-  	*The named icons should only consists of characters [a-z] or $ symbol
-  	*
-  	*@param string $size whether the images is 'large' or 'small'
+      *<li>context(flavor text)</li>
+      *<li>rel and rev (from HTML a element attributes)</li>
+      *<li>width and height for the image</li>
+      *<li>date in unix time</li>
+      *</ul>
+      *<b>Note</b>  href is HTML encoded, so you code it as <a> href="$icon[href]">$icon[name]</a>
+      *The image will be linked to its specific URL
+      *The named icons should only consists of characters [a-z] or $ symbol
+      *
+      *@param string $size whether the images is 'large' or 'small'
    *@return array with keys: href, name, image
-  	*/
+      */
 
-  function GetIcon($size='large') {}
+  public function GetIcon($size='large') {}
 
-  function ShowPage()
+  public function ShowPage()
   {
     global $cameralife;
 
@@ -61,5 +61,3 @@ class View
   }
 
 }
-
-?>

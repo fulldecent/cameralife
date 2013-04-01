@@ -12,4 +12,3 @@
  $module_date    = '9/1/2011';
  $module_url     = 'http://fdcl.sourceforge.net';
  $module_desc    = 'Implements security using OpenID. Based on jQuery OpenID Plug-in by Jarrett Vance and lightopenid by mewp.';
-?>

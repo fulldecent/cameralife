@@ -7,16 +7,16 @@
  */
 class Search extends View
 {
-  var $mySearchPhotoCondition;
-  var $mySearchAlbumCondition;
-  var $mySearchFolderCondition;
-  var $myLimit;
-  var $mySort;
-  var $mySql;
-  var $myQuery;
-  var $myCounts;
+  public $mySearchPhotoCondition;
+  public $mySearchAlbumCondition;
+  public $mySearchFolderCondition;
+  public $myLimit;
+  public $mySort;
+  public $mySql;
+  public $myQuery;
+  public $myCounts;
 
-  function Search($query = '')
+  public function Search($query = '')
   {
     global $cameralife, $_POST, $_GET;
 
@@ -27,8 +27,7 @@ class Search extends View
     $this->myExtra='';
     $special = array('?', '.');
     $special_escaped = array('[?]', '[.]');
-    foreach(explode(' ', $query) as $term)
-    {
+    foreach (explode(' ', $query) as $term) {
       $term = addslashes($term);
       $term = str_replace($special, $special_escaped, $term);
       $searchPhotoConditions[] = "concat(description,' ',keywords) REGEXP '(^|[[:blank:]])".addslashes(preg_quote(stripslashes($term)))."'";
@@ -39,12 +38,10 @@ class Search extends View
     $this->mySearchAlbumCondition = implode(' AND ', $searchAlbumConditions);
     $this->mySearchFolderCondition = implode(' AND ', $searchFolderConditions);
 
-    if (isset($_POST['sort']))
-    {
+    if (isset($_POST['sort'])) {
       $this->mySort = $_POST['sort'];
       setcookie("sort",$this->mySort);
-    }
-    elseif (isset($_GET['sort']))
+    } elseif (isset($_GET['sort']))
       $this->mySort = $_GET['sort'];
     elseif (isset($_COOKIE['sort']))
       $this->mySort = $_COOKIE['sort'];
@@ -58,13 +55,13 @@ class Search extends View
     $this->myLimit = "LIMIT $start, 12";
   }
 
-  function SetSort($sort)
+  public function SetSort($sort)
   {
     $this->mySort = $sort;
   }
 
   # static function, and a not static function...
-  function SortOptions()
+  public function SortOptions()
   {
     $retval = array();
     $retval[] = array('newest', 'Newest First');
@@ -79,15 +76,15 @@ class Search extends View
         if (is_object($this) && $this->mySort==$id)
             $item[] = "selected";
     }
+
     return $retval;
   }
 
-  function GetCounts()
+  public function GetCounts()
   {
     global $cameralife;
 
-    if (!isset($this->myCounts))
-    {
+    if (!isset($this->myCounts)) {
       $this->myCounts = array();
       $selection = "COUNT(DISTINCT id)";
       $this->myCounts['photos'] = $cameralife->Database->SelectOne('photos', 'COUNT(*)', $this->mySearchPhotoCondition.' AND status=0');
@@ -98,18 +95,17 @@ class Search extends View
     return $this->myCounts;
   }
 
-  function SetPage($start, $pagesize=12)
+  public function SetPage($start, $pagesize=12)
   {
 //    $this->myLimit = 'LIMIT '.($page*$pagesize).','.$pagesize;
     $this->myLimit = 'LIMIT '.$start.','.$pagesize;
   }
 
-  function GetPhotos()
+  public function GetPhotos()
   {
     global $cameralife;
 
-    switch ($this->mySort)
-    {
+    switch ($this->mySort) {
       case 'newest':    $sort = 'id desc'; break;
       case 'oldest':    $sort = 'id'; break;
       case 'az':        $sort = 'description'; break;
@@ -129,12 +125,11 @@ class Search extends View
     return $photos;
   }
 
-  function GetAlbums()
+  public function GetAlbums()
   {
     global $cameralife;
 
-    switch ($this->mySort)
-    {
+    switch ($this->mySort) {
       case 'newest':    $sort = 'albums.id desc'; break;
       case 'oldest':    $sort = 'albums.id'; break;
       case 'az':        $sort = 'description'; break;
@@ -155,12 +150,11 @@ class Search extends View
     return $albums;
   }
 
-  function GetFolders()
+  public function GetFolders()
   {
     global $cameralife;
 
-    switch ($this->mySort)
-    {
+    switch ($this->mySort) {
       case 'newest':    $sort = 'id desc'; break;
       case 'oldest':    $sort = 'id'; break;
       case 'az':        $sort = 'description'; break;
@@ -176,22 +170,22 @@ class Search extends View
     $folders = array();
     while ($row = $query->FetchAssoc())
       $folders[] = new Folder($row['path'], FALSE, $row['date']);
+
     return $folders;
   }
 
-  function GetIcon($size='large')
+  public function GetIcon($size='large')
   {
     global $cameralife;
+
     return array('name'=>'Search for '.htmlentities($this->myQuery),
                  'href'=>$cameralife->base_url."/search.php&#63;q=".urlencode($this->myQuery),
                  'image'=>($size=='large')?'search':'small-search');
   }
 
-  function GetQuery()
+  public function GetQuery()
   {
     return $this->myQuery;
   }
 
 }
-
-?>

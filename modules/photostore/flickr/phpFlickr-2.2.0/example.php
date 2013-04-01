@@ -1,4 +1,4 @@
-<?
+<?php
 /* Last updated with phpFlickr 1.3.2
  *
  * This example file shows you how to call the 100 most recent public
@@ -9,11 +9,11 @@
  * flickr.people.getInfo.  Enabling caching will help a whole lot with
  * this as there are many people who post multiple photos at once.
  *
- * Obviously, you'll want to replace the "<api key>" with one provided 
+ * Obviously, you'll want to replace the "<api key>" with one provided
  * by Flickr: http://www.flickr.com/services/api/key.gne
  */
 
-require_once("phpFlickr.php");
+require_once 'phpFlickr.php';
 $f = new phpFlickr("<api key>");
 
 $recent = $f->photos_getRecent();
@@ -27,4 +27,3 @@ foreach ($recent['photo'] as $photo) {
     echo $owner['username'];
     echo "</a><br>";
 }
-?>

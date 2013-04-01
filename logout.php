@@ -8,7 +8,7 @@
 */
 
   $features=array('security');
-  require "main.inc";
+  require 'main.inc';
 
   $url = $cameralife->Security->Logout();
 
@@ -16,4 +16,3 @@
     header('Location: '.$url);
   else
     header('Location: '.$cameralife->base_url.'/index.php');
-?>

@@ -8,7 +8,7 @@
  */
 
   $features=array('database', 'security');
-  require "main.inc";
+  require 'main.inc';
 
   $page = $_GET['page'];
   $id = (int) $_GET['id'];
@@ -22,8 +22,7 @@
 
   $nodes = array();
 
-  if (!isset($page))
-  {
+  if (!isset($page)) {
     $lastphoto = $cameralife->Database->SelectOne('photos', 'MAX(id)', 'status=0');
     $lastalbum = $cameralife->Database->SelectOne('albums', 'MAX(id)');
 ?>
@@ -43,8 +42,7 @@
   </sitemap>
 <?php
     flush();
-    for ($id = 0; $id < $lastphoto; $id += 1000)
-    {
+    for ($id = 0; $id < $lastphoto; $id += 1000) {
       if ($cameralife->Database->SelectOne('photos', 'COUNT(*)', 'status = 0 AND id>='.$id.' AND id<'.($id+1000)) == 0)
         continue;
       $photodate = $cameralife->Database->SelectOne('photos', 'MAX(created)', 'status = 0 AND id>='.$id.' AND id<'.($id+1000));
@@ -57,36 +55,26 @@
 
     echo "</sitemapindex>\n";
     exit(0);
-  }
-  elseif ($page == 'common')
-  {
+  } elseif ($page == 'common') {
     $nodes[] = array($baseurl.'/index.php', '1.0');
     $nodes[] = array($baseurl.'/login.php', '0.1');
     $nodes[] = array($baseurl.'/stats.php', '0.1');
-  }
-  elseif ($page == 'albums')
-  {
+  } elseif ($page == 'albums') {
     $result = $cameralife->Database->Select('albums', 'id, hits');
 
     while($record = $result->FetchAssoc())
       $nodes[] = array($baseurl.'/album.php?id='.$record['id'], round(log($record['hits']+1,$counts['maxalbumhits']+1), 4));
-  }
-  elseif ($page == 'topics')
-  {
+  } elseif ($page == 'topics') {
     $result = $cameralife->Database->Select('albums', 'DISTINCT(topic)');
 
     while($record = $result->FetchAssoc())
       $nodes[] = array($baseurl.'/topic.php?name='.urlencode($record['topic']));
-  }
-  elseif ($page == 'photos')
-  {
+  } elseif ($page == 'photos') {
     $result = $cameralife->Database->Select('photos', 'id, hits', 'status = 0 AND id>='.$id.' AND id<'.($id+1000), 'ORDER BY id');
 
     while($record = $result->FetchAssoc())
       $nodes[] = array($baseurl.'/photo.php?id='.$record['id'], round(log($record['hits']+1,$counts['maxphotohits']+1), 4));
-  }
-  else
-  {
+  } else {
     die('Invalid page');
   }
 
@@ -94,8 +82,7 @@
   echo "  xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9\n";
   echo "  http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\"\n";
   echo "  xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
-  foreach ($nodes as $node)
-  {
+  foreach ($nodes as $node) {
     echo "  <url>\n";
     echo "    <loc>".$node[0]."</loc>\n";
     if (isset($node[1]))
@@ -103,4 +90,3 @@
     echo "  </url>\n";
   }
   echo '</urlset>';
-?>

@@ -3,10 +3,10 @@
  * Class Photo provides a front end to working with photos
  * @author Will Entriken <cameralife@phor.net>
  * @access public
- * @version 
+ * @version
  * @copyright Copyright (c) 2001-2009 Will Entriken
  */
-   
+
 /**
  * This class is for getting and using photos
  * @var mixed $context an Album, Search or Folder from where the user retrieved the photo
@@ -16,13 +16,13 @@
  */
 class Photo extends View
 {
-  var $record, $image;
+  public $record, $image;
 
-  var $context; // an Album, Search or Folder of where the user came from to get to this photo
-  var $contextPhotos; // photos from context
-  var $contextPrev; // the previous photo in context
-  var $contextNext; // the next photo in contex
-  var $extension;
+  public $context; // an Album, Search or Folder of where the user came from to get to this photo
+  public $contextPhotos; // photos from context
+  public $contextPrev; // the previous photo in context
+  public $contextNext; // the next photo in contex
+  public $extension;
 
   /**
   * To get an empty Photo pass nothing ie NULL
@@ -31,22 +31,17 @@ class Photo extends View
   * <b>Required fields <var>filename</var>, <var>path</var>, <var>username</var></b>
   * Optional fields <var>status</var>, <var>description</var>, <var>fsize</var>, <var>created</var>
   */
-  function Photo($original = NULL)
+  public function Photo($original = NULL)
   {
     global $cameralife;
 
-    if (is_null($original))
-    {
+    if (is_null($original)) {
       $this->record['id'] = NULL;
-    }
-    elseif (is_numeric($original)) # This is an ID
-    {
+    } elseif (is_numeric($original)) { # This is an ID
       $result = $cameralife->Database->Select('photos','*', "id=$original");
       $this->record = $result->FetchAssoc()
         or $cameralife->Error("Photo #$original not found", __FILE__, __LINE__);
-    }
-    elseif(is_array($original)) # A new image, given by an array
-    {
+    } elseif (is_array($original)) { # A new image, given by an array
       $this->record['description'] = 'unnamed';
       $this->record['status'] = '0';
       $this->record['fsize'] = filesize($fullpath);
@@ -71,19 +66,20 @@ class Photo extends View
       $this->extension = strtolower($path_parts['extension']);
   }
 
-  static function PhotoExists($original) 
+  public static function PhotoExists($original)
   {
     global $cameralife;
-  
+
     if(!is_numeric($original))
       $cameralife->Error("Input needs to be a number", __FILE__, __LINE__);
 
     $result = $cameralife->Database->Select('photos','*', "id=$original");
     $a = $result->FetchAssoc();
+
     return $a != 0;
   }
 
-  function Set($key, $value)
+  public function Set($key, $value)
   {
     global $cameralife;
 
@@ -94,31 +90,30 @@ class Photo extends View
       $cameralife->PhotoStore->SetPermissions($this);
     $this->record[$key] = $value;
     $cameralife->Database->Update('photos', array($key=>$value), 'id='.$this->record['id']);
+
     return $receipt;
   }
 
-  function Get($key)
+  public function Get($key)
   {
     return $this->record[$key];
   }
 
   /// Initialize the <var>$this->image</var> variable and collect fsize and $this->LoadEXIF if possible
-  function LoadImage($onlyWantEXIF = false)
+  public function LoadImage($onlyWantEXIF = false)
   {
     global $cameralife;
 
     if (isset($this->image)) return;
     list ($file, $temp, $this->record['mtime']) = $cameralife->PhotoStore->GetFile($this);
 ///TODO there shouldnt be three cases here
-    if (is_null($this->record['modified']) || $this->record['modified'] == 0 || $this->record['modified'] == '')
-    {
+    if (is_null($this->record['modified']) || $this->record['modified'] == 0 || $this->record['modified'] == '') {
       $this->record['fsize'] = filesize($file);
       $this->record['created'] = date('Y-m-d', $this->record['mtime']);
       $this->LoadEXIF($file);
     }
 
-    if (!$onlyWantEXIF)
-    {
+    if (!$onlyWantEXIF) {
       $this->image = $cameralife->ImageProcessing->CreateImage($file)
         or $cameralife->Error("Bad photo load: $file",__FILE__,__LINE__);
       if (!$this->image->Check()) $cameralife->Error("Bad photo processing: $file",__FILE__,__LINE__);
@@ -128,25 +123,19 @@ class Photo extends View
 
   /// Scale image to all needed sizes and save in photostore, update image/tn sizes
   /// also update fsize if this is unmodified.
-  function GenerateThumbnail()
+  public function GenerateThumbnail()
   {
     global $cameralife;
 
     $this->LoadImage(); // sets $this->EXIF and $this-record
-    if (($cameralife->GetPref('autorotate') == 'yes') && ($this->record['modified'] == NULL || $this->record['modified'] == 0))
-    {
-      if ($this->EXIF['Orientation'] == 3)
-      {
+    if (($cameralife->GetPref('autorotate') == 'yes') && ($this->record['modified'] == NULL || $this->record['modified'] == 0)) {
+      if ($this->EXIF['Orientation'] == 3) {
         $this->Rotate(180);
-      }
-      elseif ($this->EXIF['Orientation'] == 6)
-      {
+      } elseif ($this->EXIF['Orientation'] == 6) {
         $this->Rotate(90);
-      }
-      elseif ($this->EXIF['Orientation'] == 8)
-      {
+      } elseif ($this->EXIF['Orientation'] == 8) {
         $this->Rotate(270);
-      } 
+      }
     }
     $imagesize = $this->image->GetSize();
 
@@ -158,8 +147,7 @@ class Photo extends View
     $files = array();
     rsort($sizes);
 
-    foreach ($sizes as $cursize)
-    {
+    foreach ($sizes as $cursize) {
       $tempfile = tempnam($cameralife->GetPref('tempdir'), 'cameralife_'.$cursize);
       $dims = $this->image->Resize($tempfile, $cursize);
       $files[$cursize] = $tempfile;
@@ -179,7 +167,7 @@ class Photo extends View
     $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
   }
 
-  function Rotate($angle)
+  public function Rotate($angle)
   {
     global $cameralife;
 
@@ -195,12 +183,11 @@ class Photo extends View
     $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
   }
 
-  function Revert()
+  public function Revert()
   {
     global $cameralife;
 
-    if ($this->record['modified'])
-    {
+    if ($this->record['modified']) {
       $this->record['modified'] = 0;
       $cameralife->PhotoStore->ModifyFile($this, NULL);
       $this->record['mtime'] = 0;
@@ -209,7 +196,7 @@ class Photo extends View
     $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
   }
 
-  function Erase()
+  public function Erase()
   {
     global $cameralife;
 
@@ -222,8 +209,7 @@ class Photo extends View
     $this->Destroy();
 
     # Bonus code
-    if (file_exists($cameralife->base_dir.'/deleted.log'))
-    {
+    if (file_exists($cameralife->base_dir.'/deleted.log')) {
       $fh = fopen($cameralife->base_dir.'/deleted.log', 'a')
         or $cameralife->Error("Can't open ".$cameralife->base_dir.'/deleted.log', __FILE__, __LINE__);
       fwrite($fh, date('Y-m-d H:i:s')."\t".$this->record['path'].$this->record['filename']."\n");
@@ -231,13 +217,13 @@ class Photo extends View
     }
   }
 
-  function Destroy()
+  public function Destroy()
   {
     if ($this->image)
       $this->image->Destroy();
   }
 
-  function GetMedia($size='thumbnail')
+  public function GetMedia($size='thumbnail')
   {
     global $cameralife;
     if ($url = $cameralife->PhotoStore->GetURL($this, $size))
@@ -249,7 +235,7 @@ class Photo extends View
       return $cameralife->base_url.'/media.php&#63;id='.$this->record['id']."&amp;size=$size&amp;ver=".($this->record['mtime']+0);
   }
 
-  function GetFolder()
+  public function GetFolder()
   {
     return new Folder($this->record['path'], FALSE);
   }
@@ -258,7 +244,7 @@ class Photo extends View
   /**
   *Enables you to set icon size as large or small
   */
-  function GetIcon($size='large')
+  public function GetIcon($size='large')
   {
     global $cameralife;
 
@@ -276,15 +262,14 @@ class Photo extends View
     return $retval;
   }
 
-  function GetEXIF()
+  public function GetEXIF()
   {
     global $cameralife;
 
     $this->EXIF = array();
     $query = $cameralife->Database->Select('exif', '*', "photoid=".$this->record['id']);
 
-    while($row = $query->FetchAssoc())
-    {
+    while ($row = $query->FetchAssoc()) {
       if ($row['tag'] == 'empty') continue;
       $this->EXIF[$row['tag']] = $row['value'];
     }
@@ -292,46 +277,38 @@ class Photo extends View
     return $this->EXIF;
   }
 
-  function LoadEXIF($file)
+  public function LoadEXIF($file)
   {
     global $cameralife;
 
     $exif = @exif_read_data($file, 'IFD0', true);
     $this->EXIF = array();
-    if ($exif===false) 
+    if ($exif===false)
       return $retval;
-    else
-    {
-      if ($exif['EXIF']['DateTimeOriginal'])
-      {
+    else {
+      if ($exif['EXIF']['DateTimeOriginal']) {
         $this->EXIF["Date taken"]=$exif['EXIF']['DateTimeOriginal'];
         $exifPieces = explode(" ", $this->EXIF["Date taken"]);
         $this->record['created'] = date("Y-m-d",strtotime(str_replace(":","-",$exifPieces[0])." ".$exifPieces[1]));
       }
-      if ($model = $exif['IFD0']['Model'])
-      {
+      if ($model = $exif['IFD0']['Model']) {
         $this->EXIF["Camera Model"]=$model;
       }
-      if ($fnumber = $exif['COMPUTED']['ApertureFNumber'])
-      {
+      if ($fnumber = $exif['COMPUTED']['ApertureFNumber']) {
         $this->EXIF["Aperture"]=$fnumber;
       }
-      if ($exposuretime = $exif['EXIF']['ExposureTime'])
-      {
+      if ($exposuretime = $exif['EXIF']['ExposureTime']) {
         $this->EXIF["Speed"]=$exposuretime;
       }
-      if ($iso = $exif['EXIF']['ISOSpeedRatings'])
-      {
+      if ($iso = $exif['EXIF']['ISOSpeedRatings']) {
         $this->EXIF["ISO"]=$iso;
       }
-      if ($focallength = $exif['EXIF']['FocalLength'])
-      {
+      if ($focallength = $exif['EXIF']['FocalLength']) {
         if(preg_match('#([0-9]+)/([0-9]+)#', $focallength, $regs))
         $focallength = $regs[1] / $regs[2];
         $this->EXIF["Focal distance"]="${focallength}mm";
       }
-      if ($focallength)
-      {
+      if ($focallength) {
         $ccd = 35;
         if ($exif['COMPUTED']['CCDWidth'])
         $ccd = str_replace('mm','',$exif['COMPUTED']['CCDWidth']);
@@ -340,13 +317,11 @@ class Photo extends View
 
         $this->EXIF["Field of view"]="${fov}&deg; horizontal";
       }
-      if ($focallength && $exposuretime)
-      {
+      if ($focallength && $exposuretime) {
         if (!$iso) $iso = 100;
         if ($exif['EXIF']['Flash'] % 2 == 1)
         $light = 'Flash';
-        else
-        {
+        else {
           if (preg_match('#([0-9]+)/([0-9]+)#', $exposuretime, $regs));
             $exposuretime = $regs[1] / $regs[2];
 
@@ -358,12 +333,10 @@ class Photo extends View
         }
         $this->EXIF["Lighting"]=$light;
       }
-      if ($orient = $exif['IFD0']['Orientation'])
-      {
+      if ($orient = $exif['IFD0']['Orientation']) {
         $this->EXIF["Orientation"]=$orient;
       }
-      if ($exif['GPS'])
-      {
+      if ($exif['GPS']) {
         $lat = 0;
         if (count($exif['GPS']['GPSLatitude']) > 0)
           $lat += $this->GPS2num($exif['GPS']['GPSLatitude'][0]);
@@ -417,7 +390,7 @@ class Photo extends View
   *Search for photos named as a user given description
 */
 
-  function GetRelated()
+  public function GetRelated()
   {
     global $_SERVER, $cameralife;
 
@@ -429,7 +402,7 @@ class Photo extends View
       $extrasearch = "&amp;start=".$regs[1];
 
     // Find if the referer is an album
-    if (isset($_SERVER['HTTP_REFERER']) && 
+    if (isset($_SERVER['HTTP_REFERER']) &&
         (preg_match("#album.php\?id=([0-9]*)#",$_SERVER['HTTP_REFERER'],$regs) || preg_match("#albums/([0-9]+)#",$_SERVER['HTTP_REFERER'],$regs)))
     {
       $album = new Album($regs[1]);
@@ -447,8 +420,7 @@ class Photo extends View
 
     // Find all albums that contain this photo, this is not 100%
     $result = $cameralife->Database->Select('albums','id,name',"'".addslashes($this->Get('description'))."' LIKE CONCAT('%',term,'%')");
-    while ($albumrecord = $result->FetchAssoc())
-    {
+    while ($albumrecord = $result->FetchAssoc()) {
 //      if (is_a($this->context, 'Album') && $this->context->Get('id') == $album['id']) // PHP4
       if (($this->context instanceof Album) && $this->context->Get('id') == $albumrecord['id']) // PHP5
         continue;
@@ -469,29 +441,23 @@ class Photo extends View
       $retval[] = $icon;
 
       $this->context = $search;
-    }
-    else
-    {
+    } else {
       // Find all photos named exactly like this
-
 
       $search = new Search($this->Get('description'));
       $counts = $search->GetCounts();
 
-      if ($counts['photos'] > 1)
-      {
+      if ($counts['photos'] > 1) {
         $icon = $search->GetIcon('small');
         $icon['name'] = 'Photos named the same';
         $retval[] = $icon;
       }
     }
 
-    if (strlen($this->Get('path')) > 0)
-    {
+    if (strlen($this->Get('path')) > 0) {
       $icon = $this->GetFolder()->GetIcon('small');
 
-      if (!$this->context)
-      {
+      if (!$this->context) {
         $this->context = $this->GetFolder();
         $icon['class'] = 'referer';
         $icon['rel'] = 'directory'; // an anchor attribute, to add semantics
@@ -509,30 +475,29 @@ class Photo extends View
   */
 
   /// Convert "2/4" to 0.5 and "4" to 4
-  function GPS2num($num)
+  public function GPS2num($num)
   {
     $parts = explode('/', $num);
     if(count($parts) == 0)
+
       return 0;
     if(count($parts) == 1)
+
       return $parts[0];
     return floatval($parts[0]) / floatval($parts[1]);
   }
 
-
-  function GetContext()
+  public function GetContext()
   {
     if (!$this->context)
       $this->GetRelated();
 
-    if (!count($this->contextPhotos))
-    {
+    if (!count($this->contextPhotos)) {
       $this->context->SetPage(0,99);
 
       $this->contextPhotos = $this->context->GetPhotos(); /* Using the base class, how sexy is that? Uses base class ;a useful and convinient feature*/
       $last = new Photo();
-      foreach ($this->contextPhotos as $cur)
-      {
+      foreach ($this->contextPhotos as $cur) {
         if ($cur->Get('id') == $this->Get('id') && $last->Get('id'))
           $this->contextPrev = $last;
         if ($last->Get('id') == $this->Get('id'))
@@ -541,6 +506,7 @@ class Photo extends View
       }
 
     }
+
     return $this->contextPhotos;
   }
 
@@ -549,7 +515,7 @@ class Photo extends View
   *else false if none exists
   */
 
-  function GetPrevious()
+  public function GetPrevious()
   {
     if (!count($this->contextPhotos))
       $this->GetContext();
@@ -558,7 +524,7 @@ class Photo extends View
   }
 
   // returns the next photo or false if none exists
-  function GetNext()
+  public function GetNext()
   {
     if (!count($this->contextPhotos))
       $this->GetContext();
@@ -567,4 +533,3 @@ class Photo extends View
   }
 
 }
-?>

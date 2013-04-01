@@ -1,6 +1,6 @@
 <?php
   $features=array('database','security','imageprocessing', 'photostore');
-  require "../main.inc";
+  require '../main.inc';
   $cameralife->base_url = dirname($cameralife->base_url);
 
   echo '<html><head><title>Pics</title></head><body>';
@@ -9,8 +9,7 @@
   $photos = new Search();
   $photos->SetPage(0, 3);
   $photos->SetSort('rand');
-  foreach ($photos->GetPhotos() as $photo)
-  {
+  foreach ($photos->GetPhotos() as $photo) {
     $icon = $photo->GetIcon();
     echo "          <a href=\"".$icon['href']."\" target=\"_new\">\n";
     echo "            <img style=\"border:0\" src=\"".$icon['image']."\" width=\"".$icon['width']."\" height=\"".$icon['height
@@ -19,5 +18,3 @@
     echo "          </a>\n";
   }
   echo '</body></html>';
-?>
-

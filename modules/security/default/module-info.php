@@ -12,4 +12,3 @@
  $module_date    = '5/1/2005';
  $module_url     = 'http://fdcl.sourceforge.net';
  $module_desc    = 'Implements on-site security based on access lists';
-?>

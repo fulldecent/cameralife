@@ -6,7 +6,7 @@
  * @access public
  */
 $features=array('database','security', 'photostore');
-require "../main.inc";
+require '../main.inc';
 $cameralife->base_url = dirname($cameralife->base_url);
 $cameralife->Security->authorize('admin_customize', 1); // Require
 
@@ -97,15 +97,15 @@ if ($checkpointDate) {
       <form class="well form-inline" method="post">
         Show comments from:
         <label class="checkbox inline">
-         <input type="checkbox" name="showme" <?php if ($_POST["showme"]) echo " checked" ?>> 
+         <input type="checkbox" name="showme" <?php if ($_POST["showme"]) echo " checked" ?>>
          <i class="icon-user"></i> Me
         </label>
         <label class="checkbox inline">
-         <input type="checkbox" name="showreg" <?php if ($_POST["showreg"]) echo " checked" ?>> 
+         <input type="checkbox" name="showreg" <?php if ($_POST["showreg"]) echo " checked" ?>>
          <i class="icon-user"></i> Registered users
         </label>
         <label class="checkbox inline">
-         <input type="checkbox" name="showunreg" <?php if ($_POST["showunreg"]) echo " checked" ?>> 
+         <input type="checkbox" name="showunreg" <?php if ($_POST["showunreg"]) echo " checked" ?>>
          <i class="icon-user"></i> Unregistered users
         </label>
         <input class="btn" type=submit value="Update">
@@ -117,7 +117,7 @@ if ($checkpointDate) {
         <button class="btn" onclick="$('#comments :checkbox').slice(0,200).attr('checked',true)">Check the first 200 checkboxes</button><br/>
         <button class="btn" onclick="$('#comments blockquote :contains(http://)').closest('label').children('input').attr('checked',true)">Check all with http://</button>
       </div>
-      <h2>Comments</h2> 
+      <h2>Comments</h2>
       <form method="post" class="form" id="comments">
   <?php
     $condition = "(0 ";
@@ -136,10 +136,9 @@ if ($checkpointDate) {
     $extra = "GROUP BY photo_id ORDER BY id DESC";
 
     $result = $cameralife->Database->Select('comments','*, MAX(id) as maxid',$condition,$extra);
-    while($record = $result->FetchAssoc())
-    {
+    while ($record = $result->FetchAssoc()) {
     //var_dump($record);
-    
+
       $photo = new Photo($record['photo_id']);
       $icon = $photo->GetIcon('small');
       $icon = $photo->GetIcon();
@@ -154,12 +153,11 @@ if ($checkpointDate) {
           </a>
           <div class="media-body">
             <h4 class="media-heading"><?= htmlentities($icon['name']) ?></h4>
-<?php            
+<?php
       $condition = "photo_id = ".$record['photo_id'];
       $result2 = $cameralife->Database->Select('comments','*',$condition, 'ORDER BY id DESC');
 
-      while ($row = $result2->FetchAssoc())
-      {
+      while ($row = $result2->FetchAssoc()) {
         $byLine = ($row['username']?$row['username']:'Anonymous').' ('.$row['user_ip'].') '.$row['user_date'];
 ?>
             <label class="checkbox">
@@ -171,7 +169,7 @@ if ($checkpointDate) {
             </label>
 <?php
       }
-?>          
+?>
           </div>
         </div>
 <?php

@@ -7,7 +7,7 @@
  */
 
 $continue = true;
-if(file_exists('../modules/config.inc')) {
+if (file_exists('../modules/config.inc')) {
   die("Camera Life already appears to be set up, because modules/config.inc exists.");
 }
 
@@ -82,7 +82,7 @@ $allerrors = 0;
 $unwritable = array();
 foreach ($writable as $a) {
   $fullDir = dirname(dirname(__FILE__)).'/'.$a[0];
-  if(is_writable($fullDir)) {
+  if (is_writable($fullDir)) {
     //$checkPrerequesites[] = array('desc'=>"Directory <code>$fullDir</code> is writable", 'type'=>'success');
   } else {
     $checkPrerequesites[] = array('desc'=>"Directory <code>$fullDir</code> is not writable {$a[1]}", 'type'=>$a[2]);
@@ -129,7 +129,7 @@ else {
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    
+
     <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-52764-13']);
@@ -176,7 +176,7 @@ else {
     <div class="container">
 
 <!--      <p style="text-align:center"><img src="images/intro1.png"><p> -->
-      
+
       <div class="well">
         <h2>You are installing Camera Life <?php readfile('../VERSION') ?></h2>
         <p>Thank you for choosing to install Camera Life. We hope you will find this software is easy to use and fun. This project is licensed under the GNU General Public License, version 2. If you are upgrading from a previous version of Camera Life, stop and read the file <a href="../UPGRADE">UPGADE</a>.
@@ -206,7 +206,7 @@ foreach ($fixes as $fix) {
          </div>
       </div>
 
-<?php 
+<?php
 $continue = 1;
 foreach ($checkPrerequesites as $result) {
   if ($result['type'] == 'error')
@@ -236,29 +236,29 @@ if ($continue) {
           <h2>Linux instructions</h2>
             <pre>$ sudo mysql
 mysql&lt; CREATE DATABASE <b>cameralife</b>;
-mysql&lt; GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '<b>pass</b>';</pre> 
+mysql&lt; GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '<b>pass</b>';</pre>
         </div>
         <div class="span4">
           <h2>CPanel instructions</h2>
-          <ul> 
-            <li><a target="_new" href="http://phor.net/cpanel">Login to cPanel</a></li> 
-            <li>Click <a target="_new" href="http://phor.net:2082/frontend/x3/sql/index.html">MySQL Databases</a></li> 
-            <li>Create Database: enter <b>cameralife</b>, read what your database is actually named, go back</li> 
-            <li>Add New User: <b>username</b> <b>password</b></li> 
-            <li>Add User To Database: select your user and database, and tick ALL PRIVILEGES</li> 
-            <li>Note, your cPanel account name will proceed your database and user names below. For example, your database name will be mycpanelname_cameralife</li> 
-          </ul> 
+          <ul>
+            <li><a target="_new" href="http://phor.net/cpanel">Login to cPanel</a></li>
+            <li>Click <a target="_new" href="http://phor.net:2082/frontend/x3/sql/index.html">MySQL Databases</a></li>
+            <li>Create Database: enter <b>cameralife</b>, read what your database is actually named, go back</li>
+            <li>Add New User: <b>username</b> <b>password</b></li>
+            <li>Add User To Database: select your user and database, and tick ALL PRIVILEGES</li>
+            <li>Note, your cPanel account name will proceed your database and user names below. For example, your database name will be mycpanelname_cameralife</li>
+          </ul>
         </div>
         <div class="span4">
           <h2>phpMyAdmin/MAMP</h2>
-          <ul> 
-            <li>If using MAMP, Preferences | Ports | Set MySQL to 3306 standard</li> 
-            <li>Login to phpMyAdmin (<a href="http://localhost/phpMyAdminForPHP5/">link for MAMP on localhost</a>)</li> 
+          <ul>
+            <li>If using MAMP, Preferences | Ports | Set MySQL to 3306 standard</li>
+            <li>Login to phpMyAdmin (<a href="http://localhost/phpMyAdminForPHP5/">link for MAMP on localhost</a>)</li>
             <li>Click SQL along the top, then paste in:
               <pre class="code">CREATE DATABASE <b>cameralife</b>;
-GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '<b>pass</b>';</pre> 
-            </li> 
-          </ul> 
+GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '<b>pass</b>';</pre>
+            </li>
+          </ul>
         </div>
       </div>
 
@@ -302,7 +302,7 @@ GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '
           <div class="controls">
             <input type="password" id="sitepass" name="sitepass" value="">
           </div>
-        </div>  
+        </div>
         <div class="control-group">
           <div class="controls">
             <button type="submit" class="btn btn-primary btn-large">Continue</button>
@@ -319,4 +319,3 @@ GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '
     <script src="../bootstrap/js/bootstrap.min..js"></script>
   </body>
 </html>
-

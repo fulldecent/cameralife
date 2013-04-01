@@ -19,4 +19,3 @@ $module_date    = '7/20/2008';
 $module_url     = 'http://fdcl.sourceforge.net';
 
 $module_desc    = 'Design by Reality Software. Based on http://www.freelayouts.com/templates/Reddy';
-?>

@@ -8,7 +8,7 @@
 
 class AuditTrail
 {
-  function AuditTrail()
+  public function AuditTrail()
   {
 
   }
@@ -22,7 +22,7 @@ class AuditTrail
    * @param string $value_old old field value
    * @param string $value_new new field value
    */
-  function Log($record_type, $record_id, $value_field, $value_old, $value_new)
+  public function Log($record_type, $record_id, $value_field, $value_old, $value_new)
   {
     global $user, $_SERVER, $cameralife;
     if ($value_old==$value_new) return;
@@ -35,6 +35,7 @@ class AuditTrail
     $log['user_ip'] = $_SERVER['REMOTE_ADDR'];
     $log['user_date'] = date('Y-m-d');
     $id = $cameralife->Database->Insert('logs',$log);
+
     return new Receipt($id);
   }
 
@@ -44,13 +45,12 @@ class AuditTrail
    * This also removes said action from the logs.
    * @param int $id is the ID of the receipt representing action to revert
    */
-  function Undo($id)
+  public function Undo($id)
   {
 //TODO: FACTOR THIS OUT use GetOld()
     global $cameralife;
 
-    if(is_numeric($id))
-    {
+    if (is_numeric($id)) {
       $result = $cameralife->Database->Select('logs', '*', 'id='.$id);
       $receipt = $result->FetchAssoc();
     }
@@ -66,14 +66,10 @@ class AuditTrail
 
     $target = $result->FetchAssoc();
     $prior = $result->FetchAssoc();
-    if(is_array($prior) && isset($prior['value_new']))
-    {
+    if (is_array($prior) && isset($prior['value_new'])) {
       $oldvalue = $prior['value_new'];
-    }
-    else
-    {
-      switch ($receipt['record_type'].'_'.$receipt['value_field'])
-      {
+    } else {
+      switch ($receipt['record_type'].'_'.$receipt['value_field']) {
         case 'photo_description':
           $oldvalue = 'unnamed';
           break;
@@ -94,7 +90,7 @@ class AuditTrail
           $condition = "status=0 and lower(description) like lower('%".$album->Get['term']."%')";
           $query = $cameralife->Database->Select('photos','id',$condition);
           $result = $query->FetchAssoc();
-          if ($result) 
+          if ($result)
             $oldvalue = $result['id'];
           else
             $cameralife->Error("Cannot find a poster for the album #".$record['record_id'], __FILE__, __LINE__);
@@ -120,10 +116,10 @@ class AuditTrail
  */
 class Receipt
 {
-  var $myRecord;
+  public $myRecord;
 
   /// Retrieves a recepit from the database. Receipt records are created by Log().
-  function Receipt($id)
+  public function Receipt($id)
   {
     global $cameralife;
 
@@ -136,7 +132,7 @@ class Receipt
   }
 
   /// Returns true if this receipt represents the most recent change to the affected record
-  function IsValid()
+  public function IsValid()
   {
     global $cameralife;
 
@@ -146,15 +142,16 @@ class Receipt
     $result = $cameralife->Database->Select('logs', '*', $condition, 'ORDER BY id DESC LIMIT 1');
 
     $new = $result->FetchAssoc();
+
     return ($new['id'] == $this->myRecord['id']);
   }
 
-  function Get($item)
+  public function Get($item)
   {
     return $this->myRecord[$item];
   }
 
-  function GetDescription()
+  public function GetDescription()
   {
     if ($this->myRecord['record_type']=='photo' && $this->myRecord['value_field'] == 'description')
       return 'The description has been updated.';
@@ -162,8 +159,8 @@ class Receipt
       return 'The photo has been flagged.';
     return 'Action completed.';
   }
-  
-  function GetObject()
+
+  public function GetObject()
   {
     if ($this->myRecord['record_type']=='photo')
       return new Photo($this->myRecord['record_id']);
@@ -175,26 +172,27 @@ class Receipt
       return die("user receipt type"); //TODO wtf do I do here?
     $cameralife->Error("Invalid receipt type.");
   }
-  
+
   // Returns all receipts from this back to the beginning
-  function GetChain($checkpoint=-1)
+  public function GetChain($checkpoint=-1)
   {
     global $cameralife;
     $retval = array();
     $condition = "value_field='".$this->myRecord['value_field']."'";
     $condition .= " AND record_type='".$this->myRecord['record_type']."'";
     $condition .= " AND record_id='".$this->myRecord['record_id']."'";
-    $condition .= " AND id>$checkpoint";    
+    $condition .= " AND id>$checkpoint";
     $query = $cameralife->Database->Select('logs', 'id', $condition, 'ORDER BY id');
     while ($row = $query->FetchAssoc()) {
       $retval[] = new Receipt($row['id']);
     }
+
     return $retval;
   }
-  
+
   // Finds the previous record value
-  // returns: {value:OLDVALUE,fromReceipt:TRUE|FALSE} 
-  function GetOld()
+  // returns: {value:OLDVALUE,fromReceipt:TRUE|FALSE}
+  public function GetOld()
   {
     global $cameralife;
 
@@ -207,11 +205,10 @@ class Receipt
 
     $target = $result->FetchAssoc();
     $prior = $result->FetchAssoc();
-    if(is_array($prior) && isset($prior['value_new'])) {
+    if (is_array($prior) && isset($prior['value_new'])) {
       return array('value'=>$prior['value_new'], 'fromReceipt'=>TRUE);
     } else {
-      switch ($this->myRecord['record_type'].'_'.$this->myRecord['value_field'])
-      {
+      switch ($this->myRecord['record_type'].'_'.$this->myRecord['value_field']) {
         case 'photo_description':
           return array('value'=>'unnamed', 'fromReceipt'=>FALSE);
         case 'photo_status':
@@ -227,7 +224,7 @@ class Receipt
           $condition = "status=0 and lower(description) like lower('%".$album->Get['term']."%')";
           $query = $cameralife->Database->Select('photos','id',$condition);
           $result = $query->FetchAssoc();
-          if ($result) 
+          if ($result)
             return array('value'=>$result['id'], 'fromReceipt'=>FALSE);
           else
             $cameralife->Error("Cannot find a poster for the album #".$this->myRecord['record_id'], __FILE__, __LINE__);
@@ -238,5 +235,3 @@ class Receipt
     }
   }
 }
-
-?>

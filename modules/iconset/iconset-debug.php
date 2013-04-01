@@ -12,22 +12,17 @@ $required_images =
         'login','small-login','admin','small-admin','stats','small-stats',
         'admin-item','search','small-search','icon-folder');
 
-if (!$_GET['theme'] || eregi('[/\\]',$_GET['theme']))
-{
+if (!$_GET['theme'] || eregi('[/\\]',$_GET['theme'])) {
   echo "<h1>Select a theme to examine</h1><ul>";
-  foreach(glob(dirname(__FILE__).'/*/') as $file)
-  {
+  foreach (glob(dirname(__FILE__).'/*/') as $file) {
     $file = basename($file);
     echo "<li><a href=\"&#63;theme=$file\">$file</a>";
   }
   echo "</ul>";
-}
-else
-{
+} else {
   $theme = htmlentities($_GET['theme']);
 
-  foreach (glob(dirname(__FILE__)."/$theme/*") as $image)
-  {
+  foreach (glob(dirname(__FILE__)."/$theme/*") as $image) {
     $image = basename($image);
     if ($image[0] == '.' || strstr($image,'~') || strstr($image, 'php'))
       continue;
@@ -38,15 +33,13 @@ else
 
   echo "<h1>$theme - required images</h1><table width=\"100%\">";
 
-  foreach($required_images as $image)
-  {
+  foreach ($required_images as $image) {
     if ($i++%2 == 0)
       echo '<tr><td>&nbsp;<tr>';
     echo '<td align=left width="50%">';
 
     echo "<h3>$image</h3>";
-    if ($images[$image])
-    {
+    if ($images[$image]) {
       sort($images[$image]);
 
       foreach($images[$image] as $suffix)
@@ -54,9 +47,7 @@ else
           echo "$suffix<img src=\"$theme/$image.$suffix\" align=middle width=\"50px\">&nbsp;&nbsp;&nbsp;";
         else
           echo "$suffix<img src=\"$theme/$image.$suffix\" align=middle>&nbsp;&nbsp;&nbsp;";
-    }
-    else
-    {
+    } else {
       if ($image)
         echo "<font color=red>NO IMAGES</font>";
     }
@@ -67,18 +58,16 @@ else
   echo "</table>";
   echo "<h2>$theme - additional images</h2><table width=\"100%\">";
 
-  foreach($extras as $image => $suffixes)
-  {
+  foreach ($extras as $image => $suffixes) {
     if ($j++%2 == 0)
       echo '<tr><td>&nbsp;<tr>';
     echo '<td align=left width="50%">';
 
     echo "<h3>$image</h3>";
-    if ($images[$image])
-    {
+    if ($images[$image]) {
       sort($images[$image]);
 
-      foreach($images[$image] as $suffix) {
+      foreach ($images[$image] as $suffix) {
         if( $suffix =='svg')
           echo "$suffix<img src=\"$theme/$image.$suffix\" align=middle width=\"50px\">&nbsp;&nbsp;&nbsp;";
         else
@@ -89,4 +78,3 @@ else
 
   echo "</table>";
 }
-?>

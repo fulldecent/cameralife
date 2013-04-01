@@ -11,4 +11,3 @@
  $module_url     = 'http://datakey.com.ar/liliana/portfolio/';
 
  $module_desc    = 'An illustrated icon set.';
-?>

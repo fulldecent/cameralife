@@ -12,4 +12,3 @@ $module_date    = '7/1/2012';
 $module_url     = 'http://fdcl.sourceforge.net';
 
 $module_desc    = 'Based on the Twitter Bootstrap theme';
-?>

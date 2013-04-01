@@ -18,4 +18,3 @@
  $module_date    = '5/1/2005';
  $module_url     = 'http://fdcl.sourceforge.net';
  $module_desc    = 'A scaled down theme';
-?>

@@ -4,7 +4,7 @@
 
   @ini_set('max_execution_time',9000);
   $features=array('database','theme','security','imageprocessing', 'photostore');
-  require "../main.inc";
+  require '../main.inc';
   $cameralife->base_url = dirname($cameralife->base_url);
   chdir ($cameralife->base_dir);
 
@@ -32,7 +32,6 @@
   <a href="index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>
 </div>
 
-
 <?php
   flush();
   $total = $cameralife->Database->SelectOne('photos', 'count(*)');
@@ -53,39 +52,27 @@
   $next1000 = $cameralife->Database->Select('photos', 'id', "id > $lastdone", 'ORDER BY id LIMIT 100');
   $fixed = 0;
 
-  while(($next = $next1000->FetchAssoc()) && ($fixed < 30))
-  {
+  while (($next = $next1000->FetchAssoc()) && ($fixed < 30)) {
     $curphoto = new Photo($next['id']);
 
-    if ($curphoto->Get('modified') == NULL || $curphoto->Get('modified') == 0)
-    {
+    if ($curphoto->Get('modified') == NULL || $curphoto->Get('modified') == 0) {
 /// UPDATE THIS LINE TO SKIP EXISTING EXIF DATA
-      if (count($curphoto->GetEXIF()) && 0)
-      {
+      if (count($curphoto->GetEXIF()) && 0) {
         echo "Skipped #".$next['id']."<br>\n";
-      }
-      else
-      {
+      } else {
         $curphoto->LoadImage(/*onlyWantEXIF=*/true);
 
         $EXIF = $curphoto->GetEXIF();
-        if ($EXIF['Orientation'] == 3)
-        {
+        if ($EXIF['Orientation'] == 3) {
           $cameralife->PhotoStore->ModifyFile($curphoto, NULL);
           echo "Flagged #".$next['id']." for rotation<br>\n";
-        }
-        elseif ($EXIF['Orientation'] == 6)
-        {
+        } elseif ($EXIF['Orientation'] == 6) {
           $cameralife->PhotoStore->ModifyFile($curphoto, NULL);
           echo "Flagged #".$next['id']." for rotation<br>\n";
-        }
-        elseif ($EXIF['Orientation'] == 8)
-        {
+        } elseif ($EXIF['Orientation'] == 8) {
           $cameralife->PhotoStore->ModifyFile($curphoto, NULL);
           echo "Flagged #".$next['id']." for rotation<br>\n";
-        }
-        else
-        {
+        } else {
           echo "Updated #".$next['id']."<br>\n";
         }
       }
@@ -97,12 +84,10 @@
   }
 
   $numdone += $fixed;
-  if ($todo > 0)
-  {
+  if ($todo > 0) {
     echo "<script language='javascript'>window.setTimeout('window.location=\"exif.php?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\"',500)</script>\n" ;
     echo "<p><a href=\"exif.php?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\">Click here to continue</a> if the Javascript redirect doesn't work.</p>\n";
-  }
-  else
+  } else
     echo "<p>All photos updated. Now you can <a href=\"../admin/thumbnails.php\">update thumbnail caches</a>.</p>\n"
 ?>
 

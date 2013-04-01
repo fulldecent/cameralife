@@ -29,7 +29,6 @@
  */
 require_once 'PEAR.php';
 
-
 // {{{ constants
 // {{{ error codes
 
@@ -437,10 +436,10 @@ class DB
      * Create a new DB object for the specified database type but don't
      * connect to the database
      *
-     * @param string $type     the database type (eg "mysql")
-     * @param array  $options  an associative array of option names and values
+     * @param string $type    the database type (eg "mysql")
+     * @param array  $options an associative array of option names and values
      *
-     * @return object  a new DB object.  A DB_Error object on failure.
+     * @return object a new DB object.  A DB_Error object on failure.
      *
      * @see DB_common::setOption()
      */
@@ -464,6 +463,7 @@ class DB
                                     "Unable to include the DB/{$type}.php"
                                     . " file for '$dsn'",
                                     'DB_Error', true);
+
             return $tmp;
         }
 
@@ -501,11 +501,11 @@ class DB
      * }
      * </code>
      *
-     * @param mixed $dsn      the string "data source name" or array in the
+     * @param mixed $dsn the string "data source name" or array in the
      *                         format returned by DB::parseDSN()
-     * @param array $options  an associative array of option names and values
+     * @param array $options an associative array of option names and values
      *
-     * @return object  a new DB object.  A DB_Error object on failure.
+     * @return object a new DB object.  A DB_Error object on failure.
      *
      * @uses DB_dbase::connect(), DB_fbsql::connect(), DB_ibase::connect(),
      *       DB_ifx::connect(), DB_msql::connect(), DB_mssql::connect(),
@@ -541,6 +541,7 @@ class DB
                                     "Unable to include the DB/{$type}.php"
                                     . " file for '$dsn'",
                                     'DB_Error', true);
+
             return $tmp;
         }
 
@@ -556,6 +557,7 @@ class DB
         $err = $obj->connect($dsninfo, $obj->getOption('persistent'));
         if (DB::isError($err)) {
             $err->addUserInfo($dsn);
+
             return $err;
         }
 
@@ -568,9 +570,9 @@ class DB
     /**
      * Return the DB API version
      *
-     * @return string  the DB API version number
+     * @return string the DB API version number
      */
-    function apiVersion()
+    public function apiVersion()
     {
         return '@package_version@';
     }
@@ -581,11 +583,11 @@ class DB
     /**
      * Determines if a variable is a DB_Error object
      *
-     * @param mixed $value  the variable to check
+     * @param mixed $value the variable to check
      *
-     * @return bool  whether $value is DB_Error object
+     * @return bool whether $value is DB_Error object
      */
-    function isError($value)
+    public function isError($value)
     {
         return is_a($value, 'DB_Error');
     }
@@ -596,11 +598,11 @@ class DB
     /**
      * Determines if a value is a DB_<driver> object
      *
-     * @param mixed $value  the value to test
+     * @param mixed $value the value to test
      *
-     * @return bool  whether $value is a DB_<driver> object
+     * @return bool whether $value is a DB_<driver> object
      */
-    function isConnection($value)
+    public function isConnection($value)
     {
         return (is_object($value) &&
                 is_subclass_of($value, 'db_common') &&
@@ -617,11 +619,11 @@ class DB
      * Examples of data definition queries are CREATE, DROP, ALTER, GRANT,
      * REVOKE.
      *
-     * @param string $query  the query
+     * @param string $query the query
      *
-     * @return boolean  whether $query is a data manipulation query
+     * @return boolean whether $query is a data manipulation query
      */
-    function isManip($query)
+    public function isManip($query)
     {
         $manips = 'INSERT|UPDATE|DELETE|REPLACE|'
                 . 'CREATE|DROP|'
@@ -631,6 +633,7 @@ class DB
         if (preg_match('/^\s*"?(' . $manips . ')\s+/i', $query)) {
             return true;
         }
+
         return false;
     }
 
@@ -640,12 +643,12 @@ class DB
     /**
      * Return a textual error message for a DB error code
      *
-     * @param integer $value  the DB error code
+     * @param integer $value the DB error code
      *
-     * @return string  the error message or false if the error code was
+     * @return string the error message or false if the error code was
      *                  not recognized
      */
-    function errorMessage($value)
+    public function errorMessage($value)
     {
         static $errorMessages;
         if (!isset($errorMessages)) {
@@ -726,7 +729,7 @@ class DB
      *  + username: User name for login
      *  + password: Password for login
      */
-    function parseDSN($dsn)
+    public function parseDSN($dsn)
     {
         $parsed = array(
             'phptype'  => false,
@@ -745,6 +748,7 @@ class DB
             if (!$dsn['dbsyntax']) {
                 $dsn['dbsyntax'] = $dsn['phptype'];
             }
+
             return $dsn;
         }
 
@@ -872,15 +876,15 @@ class DB_Error extends PEAR_Error
     /**
      * DB_Error constructor
      *
-     * @param mixed $code       DB error code, or string with error message
-     * @param int   $mode       what "error mode" to operate in
-     * @param int   $level      what error level to use for $mode &
+     * @param mixed $code  DB error code, or string with error message
+     * @param int   $mode  what "error mode" to operate in
+     * @param int   $level what error level to use for $mode &
      *                           PEAR_ERROR_TRIGGER
-     * @param mixed $debuginfo  additional debug info, such as the last query
+     * @param mixed $debuginfo additional debug info, such as the last query
      *
      * @see PEAR_Error
      */
-    function DB_Error($code = DB_ERROR, $mode = PEAR_ERROR_RETURN,
+    public function DB_Error($code = DB_ERROR, $mode = PEAR_ERROR_RETURN,
                       $level = E_USER_NOTICE, $debuginfo = null)
     {
         if (is_int($code)) {
@@ -921,20 +925,20 @@ class DB_result
      * @var boolean
      * @see DB_common::$options
      */
-    var $autofree;
+    public $autofree;
 
     /**
      * A reference to the DB_<driver> object
      * @var object
      */
-    var $dbh;
+    public $dbh;
 
     /**
      * The current default fetch mode
      * @var integer
      * @see DB_common::$fetchmode
      */
-    var $fetchmode;
+    public $fetchmode;
 
     /**
      * The name of the class into which results should be fetched when
@@ -943,26 +947,26 @@ class DB_result
      * @var string
      * @see DB_common::$fetchmode_object_class
      */
-    var $fetchmode_object_class;
+    public $fetchmode_object_class;
 
     /**
      * The number of rows to fetch from a limit query
      * @var integer
      */
-    var $limit_count = null;
+    public $limit_count = null;
 
     /**
      * The row to start fetching from in limit queries
      * @var integer
      */
-    var $limit_from = null;
+    public $limit_from = null;
 
     /**
      * The execute parameters that created this result
      * @var array
      * @since Property available since Release 1.7.0
      */
-    var $parameters;
+    public $parameters;
 
     /**
      * The query string that created this result
@@ -972,19 +976,19 @@ class DB_result
      * @var string
      * @since Property available since Release 1.7.0
      */
-    var $query;
+    public $query;
 
     /**
      * The query result resource id created by PHP
      * @var resource
      */
-    var $result;
+    public $result;
 
     /**
      * The present row being dealt with
      * @var integer
      */
-    var $row_counter = null;
+    public $row_counter = null;
 
     /**
      * The prepared statement resource id created by PHP in $dbh
@@ -1001,7 +1005,7 @@ class DB_result
      * @var resource
      * @since Property available since Release 1.7.0
      */
-    var $statement;
+    public $statement;
 
 
     // }}}
@@ -1011,12 +1015,12 @@ class DB_result
      * This constructor sets the object's properties
      *
      * @param object   &$dbh     the DB object reference
-     * @param resource $result   the result resource id
-     * @param array    $options  an associative array with result options
+     * @param resource $result  the result resource id
+     * @param array    $options an associative array with result options
      *
      * @return void
      */
-    function DB_result(&$dbh, $result, $options = array())
+    public function DB_result(&$dbh, $result, $options = array())
     {
         $this->autofree    = $dbh->options['autofree'];
         $this->dbh         = &$dbh;
@@ -1034,12 +1038,12 @@ class DB_result
     /**
      * Set options for the DB_result object
      *
-     * @param string $key    the option to set
-     * @param mixed  $value  the value to set the option to
+     * @param string $key   the option to set
+     * @param mixed  $value the value to set the option to
      *
      * @return void
      */
-    function setOption($key, $value = null)
+    public function setOption($key, $value = null)
     {
         switch ($key) {
             case 'limit_from':
@@ -1071,10 +1075,10 @@ class DB_result
      *   + <var>DB_PORTABILITY_RTRIM</var>
      *     right trim the data
      *
-     * @param int $fetchmode  the constant indicating how to format the data
-     * @param int $rownum     the row number to fetch (index starts at 0)
+     * @param int $fetchmode the constant indicating how to format the data
+     * @param int $rownum    the row number to fetch (index starts at 0)
      *
-     * @return mixed  an array or object containing the row's data,
+     * @return mixed an array or object containing the row's data,
      *                 NULL when the end of the result set is reached
      *                 or a DB_Error object on failure.
      *
@@ -1100,12 +1104,12 @@ class DB_result
                     }
                 }
             }
-            if ($this->row_counter >= ($this->limit_from + $this->limit_count))
-            {
+            if ($this->row_counter >= ($this->limit_from + $this->limit_count)) {
                 if ($this->autofree) {
                     $this->free();
                 }
                 $tmp = null;
+
                 return $tmp;
             }
             if ($this->dbh->features['limit'] === 'emulate') {
@@ -1124,11 +1128,13 @@ class DB_result
                     $arr = &new $object_class($arr);
                 }
             }
+
             return $arr;
         }
         if ($res == null && $this->autofree) {
             $this->free();
         }
+
         return $res;
     }
 
@@ -1154,15 +1160,15 @@ class DB_result
      *     right trim the data
      *
      * @param array &$arr       the variable where the data should be placed
-     * @param int   $fetchmode  the constant indicating how to format the data
-     * @param int   $rownum     the row number to fetch (index starts at 0)
+     * @param int $fetchmode the constant indicating how to format the data
+     * @param int $rownum    the row number to fetch (index starts at 0)
      *
-     * @return mixed  DB_OK if a row is processed, NULL when the end of the
+     * @return mixed DB_OK if a row is processed, NULL when the end of the
      *                 result set is reached or a DB_Error object on failure
      *
      * @see DB_common::setOption(), DB_common::setFetchMode()
      */
-    function fetchInto(&$arr, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum = null)
+    public function fetchInto(&$arr, $fetchmode = DB_FETCHMODE_DEFAULT, $rownum = null)
     {
         if ($fetchmode === DB_FETCHMODE_DEFAULT) {
             $fetchmode = $this->fetchmode;
@@ -1188,6 +1194,7 @@ class DB_result
                 if ($this->autofree) {
                     $this->free();
                 }
+
                 return null;
             }
             if ($this->dbh->features['limit'] === 'emulate') {
@@ -1207,11 +1214,13 @@ class DB_result
                     $arr = new $object_class($arr);
                 }
             }
+
             return DB_OK;
         }
         if ($res == null && $this->autofree) {
             $this->free();
         }
+
         return $res;
     }
 
@@ -1221,9 +1230,9 @@ class DB_result
     /**
      * Get the the number of columns in a result set
      *
-     * @return int  the number of columns.  A DB_Error object on failure.
+     * @return int the number of columns.  A DB_Error object on failure.
      */
-    function numCols()
+    public function numCols()
     {
         return $this->dbh->numCols($this->result);
     }
@@ -1234,9 +1243,9 @@ class DB_result
     /**
      * Get the number of rows in a result set
      *
-     * @return int  the number of rows.  A DB_Error object on failure.
+     * @return int the number of rows.  A DB_Error object on failure.
      */
-    function numRows()
+    public function numRows()
     {
         if ($this->dbh->features['numrows'] === 'emulate'
             && $this->dbh->options['portability'] & DB_PORTABILITY_NUMROWS)
@@ -1253,6 +1262,7 @@ class DB_result
             while ($res->fetchInto($tmp, DB_FETCHMODE_ORDERED)) {
                 $i++;
             }
+
             return $i;
         } else {
             return $this->dbh->numRows($this->result);
@@ -1265,9 +1275,9 @@ class DB_result
     /**
      * Get the next result if a batch of queries was executed
      *
-     * @return bool  true if a new result is available or false if not
+     * @return bool true if a new result is available or false if not
      */
-    function nextResult()
+    public function nextResult()
     {
         return $this->dbh->nextResult($this->result);
     }
@@ -1278,9 +1288,9 @@ class DB_result
     /**
      * Frees the resources allocated for this result set
      *
-     * @return bool  true on success.  A DB_Error object on failure.
+     * @return bool true on success.  A DB_Error object on failure.
      */
-    function free()
+    public function free()
     {
         $err = $this->dbh->freeResult($this->result);
         if (DB::isError($err)) {
@@ -1288,6 +1298,7 @@ class DB_result
         }
         $this->result = false;
         $this->statement = false;
+
         return true;
     }
 
@@ -1298,11 +1309,12 @@ class DB_result
      * @see DB_common::tableInfo()
      * @deprecated Method deprecated some time before Release 1.2
      */
-    function tableInfo($mode = null)
+    public function tableInfo($mode = null)
     {
         if (is_string($mode)) {
             return $this->dbh->raiseError(DB_ERROR_NEED_MORE_DATA);
         }
+
         return $this->dbh->tableInfo($this, $mode);
     }
 
@@ -1312,11 +1324,11 @@ class DB_result
     /**
      * Determine the query string that created this result
      *
-     * @return string  the query string
+     * @return string the query string
      *
      * @since Method available since Release 1.7.0
      */
-    function getQuery()
+    public function getQuery()
     {
         return $this->query;
     }
@@ -1327,9 +1339,9 @@ class DB_result
     /**
      * Tells which row number is currently being processed
      *
-     * @return integer  the current row being looked at.  Starts at 1.
+     * @return integer the current row being looked at.  Starts at 1.
      */
-    function getRowCounter()
+    public function getRowCounter()
     {
         return $this->row_counter;
     }
@@ -1366,7 +1378,7 @@ class DB_row
      *
      * @return void
      */
-    function DB_row(&$arr)
+    public function DB_row(&$arr)
     {
         foreach ($arr as $key => $value) {
             $this->$key = &$arr[$key];
@@ -1384,5 +1396,3 @@ class DB_row
  * c-basic-offset: 4
  * End:
  */
-
-?>

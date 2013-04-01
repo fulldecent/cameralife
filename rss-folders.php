@@ -9,7 +9,7 @@
 /**
 */
   $features=array('database','theme','security', 'photostore');
-  require "main.inc";
+  require 'main.inc';
 
   $search = new Search($_GET['q']);
   $search->SetSort('newest');
@@ -22,11 +22,10 @@
   <channel>
     <title><![CDATA[<?= $cameralife->GetPref('sitename') ?> - <?= $_GET['q'] ?>]]></title>
     <link><?= $cameralife->base_url ?></link>
-    <description>Search results for '<? $_GET['q'] ?>'</description>
+    <description>Search results for '<?php $_GET['q'] ?>'</description>
     <language>en-us</language>
 <?php
-  foreach($results as $result)
-  {
+  foreach ($results as $result) {
     $icon = $result->GetIcon();
     #$date = strtotime($photo->Get('created'));
     #var_dump($icon, $result);

@@ -24,4 +24,3 @@
                   'stuff in sodipodi. We\'ll see how this works out. Most '.
                   'images are distributed as png, gif, and svg files, for '.
                   'maximum reusability. P.S. I\'m a noob with SVG.';
-?>

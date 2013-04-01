@@ -17,15 +17,14 @@
 //TODO: don't let anyone access this page uness this module is live
 
   $features=array('database','security');
-  require "../../../main.inc";
+  require '../../../main.inc';
   $cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
 
   $cameralife->Security->authorize('admin_customize', 1); //require
 
   $_GET['page'] or $_GET['page'] = 'users';
 
-  foreach ($_POST as $key => $val)
-  {
+  foreach ($_POST as $key => $val) {
     if ($val == "delete")
       $cameralife->Database->Delete('users',"id='$key'");
     else
@@ -33,7 +32,7 @@
   }
   $cameralife->SavePreferences();
 
-  function html_select_auth($param_name)
+  public function html_select_auth($param_name)
   {
     global $cameralife;
     global $prefnum;
@@ -75,7 +74,8 @@
   <link rel="stylesheet" href="../../../admin/admin.css">
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
   <script language="javascript">
-    function changeall() {
+    public function changeall()
+    {
       val = document.getElementById('status').value;
       inputs = document.getElementsByTagName('select');
       for (var i = 0; i < inputs.length; i++) {
@@ -102,8 +102,7 @@
 </h2>
 
 <?php
-  if ($_GET['page'] == 'users' )
-  {
+  if ($_GET['page'] == 'users') {
 ?>
     <form method="post">
     <table align="center" cellspacing="2" border=1 width="100%">
@@ -117,8 +116,7 @@
         <th width="10%">Options
     <?php
       $result = $cameralife->Database->Select('users','*',NULL, 'ORDER BY auth desc');
-      while ($curuser = $result->FetchAssoc())
-      {
+      while ($curuser = $result->FetchAssoc()) {
         $count_actions = $cameralife->Database->SelectOne('logs','COUNT(*)',"user_name='".$curuser["username"]."'");
         $count_photos = $cameralife->Database->SelectOne('photos','COUNT(*)',"username='".$curuser["username"]."'");
 
@@ -161,7 +159,7 @@
     ?>
     </table>
 
-<?php } else if ($_GET['page'] == 'policies' ) { ?>
+<?php } elseif ($_GET['page'] == 'policies') { ?>
     <form method="post" action="<?= $cameralife->base_url . '/admin/controller_prefs.php' ?>">
     <input type="hidden" name="target" value="<?= $cameralife->base_url .'/modules/security/'.$cameralife->GetPref('security').'/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
     <table align="center" cellspacing="2" border=1 width="100%">
@@ -203,5 +201,3 @@
 </form>
 </body>
 </html>
-
-

@@ -3,7 +3,7 @@
  * Listener for HTTP_Request and HTTP_Response objects
  *
  * PHP versions 4 and 5
- * 
+ *
  * LICENSE:
  *
  * Copyright (c) 2002-2007, Richard Heyes
@@ -40,7 +40,7 @@
  * @copyright   2002-2007 Richard Heyes
  * @license     http://opensource.org/licenses/bsd-license.php New BSD License
  * @version     CVS: $Id: Listener.php 127 2008-01-17 20:21:37Z dcoulter $
- * @link        http://pear.php.net/package/HTTP_Request/ 
+ * @link        http://pear.php.net/package/HTTP_Request/
  */
 
 /**
@@ -54,24 +54,23 @@
  * @author      Alexey Borzov <avb@php.net>
  * @version     Release: 1.4.2
  */
-class HTTP_Request_Listener 
+class HTTP_Request_Listener
 {
    /**
     * A listener's identifier
     * @var string
     */
-    var $_id;
+    public $_id;
 
    /**
     * Constructor, sets the object's identifier
     *
     * @access public
     */
-    function HTTP_Request_Listener()
+    public function HTTP_Request_Listener()
     {
         $this->_id = md5(uniqid('http_request_', 1));
     }
-
 
    /**
     * Returns the listener's identifier
@@ -79,7 +78,7 @@ class HTTP_Request_Listener
     * @access public
     * @return string
     */
-    function getId()
+    public function getId()
     {
         return $this->_id;
     }
@@ -94,7 +93,7 @@ class HTTP_Request_Listener
     * @param    mixed   Additional data
     * @abstract
     */
-    function update(&$subject, $event, $data = null)
+    public function update(&$subject, $event, $data = null)
     {
         echo "Notified of event: '$event'\n";
         if (null !== $data) {
@@ -103,4 +102,3 @@ class HTTP_Request_Listener
         }
     }
 }
-?>

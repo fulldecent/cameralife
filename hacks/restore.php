@@ -12,7 +12,7 @@
   @ini_set('max_execution_time',9000);
 
   $features=array('database','security','imageprocessing', 'photostore');
-  require "../main.inc";
+  require '../main.inc';
   $cameralife->base_url = dirname($cameralife->base_url);
 
   $cameralife->Security->authorize('admin_file', 1); // Require
@@ -20,6 +20,7 @@
   function mkdir_recursive($pathname, $mode=0777)
   {
     is_dir(dirname($pathname)) || mkdir_recursive(dirname($pathname), $mode);
+
     return is_dir($pathname) || @mkdir($pathname, $mode);
   }
 
@@ -49,8 +50,7 @@
 
 <?php
 
-  if ($_REQUEST['photodir'])
-  {
+  if ($_REQUEST['photodir']) {
     $photos = $cameralife->Database->Select('photos','id,filename,path,modified',"id>$lastdone",'ORDER BY path, filename');
 
     $total = $cameralife->Database->SelectOne('photos', 'count(*)');
@@ -66,15 +66,12 @@
     echo "<div style='height: 25px; background: #347 url(".$cameralife->IconURL('progress').") repeat-x; width:".($done/$total*100)."%'></div>";
     echo "</div></p>\n";
 
-    if ($todo)
-    {
+    if ($todo) {
       mkdir_recursive($_REQUEST['moddir']);
 
-      while ($photo = $photos->FetchAssoc())
-      {
+      while ($photo = $photos->FetchAssoc()) {
 
-        if($photo['modified'])
-        {
+        if ($photo['modified']) {
 //TODO fix hardcoded file format
 // this first one could be /dev/null?
           $cameralife->PhotoStore->ModifyFile(new Photo($photo['id']), $_REQUEST['moddir'] . '/' . $photo['id'] . '_mod.jpg');
@@ -83,8 +80,7 @@
         $ticket = $cameralife->PhotoStore->PutFile(new Photo($photo['id']), $_REQUEST['photodir'] . '/' . $photo['path'] . $photo['filename']);
 
 //TODO doing this twice is not efficient!
-        if($photo['modified'])
-        {
+        if ($photo['modified']) {
 //TODO fix hardcoded file format
           $cameralife->PhotoStore->ModifyFile(new Photo($photo['id']), $_REQUEST['moddir'] . '/' . $photo['id'] . '_mod.jpg');
         }
@@ -98,16 +94,13 @@
       }
       echo "<script language='javascript'>window.location='restore.php?photodir=".urlencode($_REQUEST['photodir'])."&moddir=".urlencode($_REQUEST['moddir'])."&starttime=$starttime&lastdone=$lastdone'</script>";
     }
-  }
-  else
-  {
+  } else {
 ?>
 
 <p>This tool will restore your backed up photos. <strong>USE ABSOLUTE PATHS</strong>.</p>
 
 <?php
-  if ($cameralife->GetPref('photostore') == 'flickr' && !is_writable(dirname(__FILE__)))
-  {
+  if ($cameralife->GetPref('photostore') == 'flickr' && !is_writable(dirname(__FILE__))) {
     echo '<div style="background: red">I need to write into '.dirname(__FILE__).' please make it writable.</div>';
   }
 ?>
@@ -130,4 +123,3 @@
 ?>
 </body>
 </html>
-

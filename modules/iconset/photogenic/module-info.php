@@ -12,7 +12,6 @@
 /**
 */
 
-
  $module_name    = 'Photogenic';
  $module_author  = 'Will Entriken';
  $module_email   = 'cameralife@phor DOTT net';
@@ -21,4 +20,3 @@
  $module_url     = 'http://fdcl.sourceforge.net';
 
  $module_desc    = 'The original icon set. Uses real photos of things.';
-?>

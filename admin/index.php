@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2001-2013 Will Entriken
  */
 $features=array('database','security', 'photostore');
-require "../main.inc";
+require '../main.inc';
 $cameralife->base_url = dirname($cameralife->base_url);
 
 $numdel = $cameralife->Database->SelectOne('photos','COUNT(*)','status=1');
@@ -149,8 +149,8 @@ if ($numreg)
             <p>
               <a class="btn" href="register.php"><i class="icon-envelope"></i> Write feedback &raquo;</a>
               <a class="btn" href="https://github.com/fulldecent/cameralife/issues"><i class="icon-flag"></i> Report an issue &raquo;</a>
-              <a class="btn" href="https://github.com/fulldecent/cameralife"><i class="icon-star"></i> Get project updates &raquo;</a>  
-              <a class="btn" href="http://www.facebook.com/sharer.php?u=http://fulldecent.github.com/cameralife/"><i class="icon-star"></i> Like on Facebook &raquo;</a>  
+              <a class="btn" href="https://github.com/fulldecent/cameralife"><i class="icon-star"></i> Get project updates &raquo;</a>
+              <a class="btn" href="http://www.facebook.com/sharer.php?u=http://fulldecent.github.com/cameralife/"><i class="icon-star"></i> Like on Facebook &raquo;</a>
             </p>
           </div>
         </li>

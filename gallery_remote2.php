@@ -21,16 +21,14 @@
 /**
 */
   $features=array('database', 'security', 'imageprocessing', 'photostore');
-  require "main.inc";
+  require 'main.inc';
 
 # try something
 session_start();
 
-
   # gallery remote api is inadequate!
 
-  if ($_GET['redirect'])
-  {
+  if ($_GET['redirect']) {
     list($photoid, $type) = split('XXX', $_GET['redirect']);
     $photo = new Photo($photoid);
     header('Location: '.html_entity_decode($photo->GetMedia($type)));
@@ -41,7 +39,6 @@ session_start();
   {
     return is_dir($path) || mkdir_p(dirname($path)) && mkdir($path);
   }
-
 
 /**We use an alternate string encoding method
 *If any bugs are found, we can switch to G2's original implementation
@@ -59,6 +56,7 @@ session_start();
 
     $string = urlencode($string);
     $string = str_replace('+', '%20', $string);
+
     return $string;
   }
   function unescapeforgr($string)
@@ -73,8 +71,7 @@ session_start();
 
 #  header('Content-type: text/plain');
 
-  switch($_POST['cmd'])
-  {
+  switch ($_POST['cmd']) {
   case 'login':
     gr_login();
     break;
@@ -107,15 +104,12 @@ session_start();
     $result = $cameralife->Security->Login($_POST['uname'], $_POST['password']);
     setcookie('GALLERYSID', $_COOKIE[$cameralife->Security->GetPref('auth_cookie')], time()+60*60*24*30);
 
-    if ($result === true)
-    {
+    if ($result === true) {
       echo "#__GR2PROTO__\n";
       echo "status=0\n";
       echo "status_text=Login successful.\n";
       echo "server_version=2.6\n";
-    }
-    else
-    {
+    } else {
       echo "#__GR2PROTO__\n";
       echo "status = 201\n";
       echo "status_text = Login failed.\n";
@@ -127,8 +121,7 @@ session_start();
   {
     global $cameralife;
 
-    if (!$cameralife->Security->Authorize('admin_file'))
-    {
+    if (!$cameralife->Security->Authorize('admin_file')) {
       echo "status=401\n"; #close
       echo "status_text=You do not have permission to do that.\n";
       exit(1);
@@ -140,8 +133,7 @@ session_start();
     if (count($_SESSION['albums']))
       foreach($_SESSION['albums'] as $album)
         $folders[count($folders)+1] = $album;
-    foreach ($folders as $i => $folder)
-    {
+    foreach ($folders as $i => $folder) {
       $parentname = dirname($folder);
       if ($parentname == '.') $parentname = '';
       if ($parentname) $parentname .= '/';
@@ -178,8 +170,7 @@ session_start();
     $folder = new Folder(unescapeforgr($_POST['set_albumName']));
     $i=1;
 
-    foreach ($folder->GetPhotos() as $photo)
-    {
+    foreach ($folder->GetPhotos() as $photo) {
 #      echo "image.name.$i=".$photo->GetMedia('photo')."\n";
       echo "image.name.$i=".$photo->Get('id')."XXXphoto\n";
       echo "image.raw_width.$i=".$photo->Get('width')."\n";
@@ -217,8 +208,7 @@ session_start();
     $retval = array();
     if ($folder->Path())
         $retval[$i++] = $folder->Path();
-    foreach ($folder->GetChildren() as $child)
-    {
+    foreach ($folder->GetChildren() as $child) {
       $result = folder_search($child, $i);
       $i += count($result);
       $retval += $result;
@@ -241,8 +231,7 @@ session_start();
     $description = $_POST['caption'];
     #extrafield.fieldname=fieldvalue [optional, since 2.3]
 
-    if ($_FILES)
-    {
+    if ($_FILES) {
       $condition = "filename='".$filename."' and fsize=".$_FILES['userfile']['size'];
       $cameralife->Database->SelectOne('photos','COUNT(*)',$condition)
         and $error = "A photo with the same name and size already exists. Please rename and try again, or stop uploading duplicate photos.";
@@ -262,8 +251,7 @@ session_start();
       if ($_FILES['userfile']['error'] == UPLOAD_ERR_NO_FILE)
         $error = "No file was selected for upload.";
 
-      if (!$error)
-      {
+      if (!$error) {
         $temp = tempnam('', 'cameralife_');
         move_uploaded_file($_FILES['userfile']['tmp_name'], $temp)
           or $cameralife->Error("Could not upload the photo, is the destination writable?");
@@ -278,20 +266,15 @@ session_start();
         $cameralife->PhotoStore->PutFile($photo, $temp);
         @unlink($temp);
       }
-    }
-    else
-    {
+    } else {
       $error = 'Photo not received.';
     }
 
-    if ($error)
-    {
+    if ($error) {
       echo "#__GR2PROTO__\n";
       echo "status=403\n";
       echo "status_text=$error\n";
-    }
-    else
-    {
+    } else {
       echo "#__GR2PROTO__\n";
       echo "status=0\n";
       echo "status_text=Upload successful.\n";
@@ -318,4 +301,3 @@ session_start();
     else
       $_SESSION['albums'][] = $_POST['newAlbumTitle'].$_POST['newAlbumName'].'/';
   }
-?>

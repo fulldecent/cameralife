@@ -7,7 +7,7 @@
  * @access public
  */
 $features=array('database','security', 'photostore');
-require "../main.inc";
+require '../main.inc';
 chdir ($cameralife->base_dir);
 $cameralife->base_url = dirname($cameralife->base_url);
 $cameralife->Security->authorize('admin_customize', 1); // Require
@@ -76,8 +76,7 @@ else if ($_GET['page'] == 'private')
 else if ($_GET['page'] == 'upload')
   $target_status = 3;
 
-if ($_GET['page'] !== 'update') // Show stuff
-{
+if ($_GET['page'] !== 'update') { // Show stuff
 ?>
       <div class="pull-right well">
         <h2>Quick tools</h2>
@@ -85,7 +84,7 @@ if ($_GET['page'] !== 'update') // Show stuff
         <select name="status" onchange="$('select').val($('#status').val())" id="status">';
           <option value="0">Public</option>
           <option value="1">Flagged</option>
-          <option value="2">Private</option> 
+          <option value="2">Private</option>
           <option value="3">New Upload</option>
           <option value="4">Erased</option>
         </select>
@@ -93,7 +92,7 @@ if ($_GET['page'] !== 'update') // Show stuff
       <form method="post">
 <?php
   if ($_GET['page'] == 'flagged')
-    echo "<p>Photos that are flagged show up here. \"Erasing\" a photo deletes it, unless <a href=\"photostore.php\">your photostore</a> is set up to keep a copy."; 
+    echo "<p>Photos that are flagged show up here. \"Erasing\" a photo deletes it, unless <a href=\"photostore.php\">your photostore</a> is set up to keep a copy.";
   else if ($_GET['page'] == 'private')
     echo '<p>Photos that have been marked private will show here.</p>';
   else if ($_GET['page'] == 'upload')
@@ -106,7 +105,7 @@ if ($_GET['page'] !== 'update') // Show stuff
   $icons = array();
 
   echo '<ul class="thumbnails">';
-  foreach($photos as $photo) {
+  foreach ($photos as $photo) {
     $icon = $photo->GetIcon();
     echo '<li class="span2"><div class="thumbnail" style="text-align:center">';
     echo '<a href="'.$icon['href'].'">';
@@ -127,9 +126,7 @@ if ($_GET['page'] !== 'update') // Show stuff
   <a href="<?= '?'.$_SERVER['QUERY_STRING'] ?>" class="btn">Undo changes</a>
 </p>
 <?php
-}
-else // Update DB
-{
+} else { // Update DB
   echo "<p>Updating the database to reflect any changes to the PhotoStore...</p>\n<ol>\n";
   flush();
 

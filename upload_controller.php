@@ -31,7 +31,7 @@
 
     if (strpos(mime_content_type($file), 'image/') != 0)
       $camerlife->Error("Invalid mimetype for uploaded file");
-      
+
     if (!$description) $description = 'unnamed';
     $filesize = filesize($file);
 
@@ -58,13 +58,10 @@
     return 0;
   }
 
-  if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$cameralife->Security->GetName().'/')
-  {
+  if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$cameralife->Security->GetName().'/') {
     $cameralife->Security->Authorize('admin_file', 1);
     $path = $_REQUEST['path'];
-  }
-  else
-  {
+  } else {
     $cameralife->Security->Authorize('photo_upload', 1);
     $path = 'upload/'.$cameralife->Security->GetName().'/';
   }
@@ -98,9 +95,7 @@
   if ($_FILES['userfile']['error'] == UPLOAD_ERR_NO_FILE)
     $cameralife->Error("No file was selected for upload.", __FILE__);
 
-
-if ( !function_exists('sys_get_temp_dir') )
-{
+if ( !function_exists('sys_get_temp_dir') ) {
     // Based on http://www.phpit.net/
     // article/creating-zip-tar-archives-dynamically-php/2/
     /**@link http://www.phpit.net/article/creating-zip-tar-archives-dynamically-php/2/
@@ -109,41 +104,32 @@ if ( !function_exists('sys_get_temp_dir') )
     function sys_get_temp_dir()
     {
         // Try to get from environment variable
-        if ( !empty($_ENV['TMP']) )
-        {
+        if ( !empty($_ENV['TMP']) ) {
             return realpath( $_ENV['TMP'] );
-        }
-        else if ( !empty($_ENV['TMPDIR']) )
-        {
+        } elseif ( !empty($_ENV['TMPDIR']) ) {
             return realpath( $_ENV['TMPDIR'] );
-        }
-        else if ( !empty($_ENV['TEMP']) )
-        {
+        } elseif ( !empty($_ENV['TEMP']) ) {
             return realpath( $_ENV['TEMP'] );
         }
 
         // Detect by creating a temporary file
-        else
-        {
+        else {
             // Try to use system's temporary directory
             // as random name shouldn't exist
             $temp_file = tempnam( md5(uniqid(rand(), TRUE)), '' );
-            if ( $temp_file )
-            {
+            if ($temp_file) {
                 $temp_dir = realpath( dirname($temp_file) );
                 unlink( $temp_file );
+
                 return $temp_dir;
-            }
-            else
-            {
+            } else {
                 return FALSE;
             }
         }
     }
 }
 
-  if (preg_match('|\.zip$|i', $_FILES['userfile']['name']))
-  {
+  if (preg_match('|\.zip$|i', $_FILES['userfile']['name'])) {
     //echo "Uploading ZIP file.<br>";
     $temp = tempnam('', 'cameralife_');
     $tempdir = sys_get_temp_dir();
@@ -155,23 +141,18 @@ if ( !function_exists('sys_get_temp_dir') )
     exec ("unzip -d $tempdir -nj '$temp' '*jpg' '*JPG' '*jpeg' '*JPEG' '*png' '*PNG'", $output, $return);
     unlink ($temp);
 
-    foreach ($output as $outputline)
-    {
-      if (preg_match("|$tempdir".'/?\s?(.+)|', $outputline, $matches))
-      {
+    foreach ($output as $outputline) {
+      if (preg_match("|$tempdir".'/?\s?(.+)|', $outputline, $matches)) {
         if (!preg_match("/.jpg$|.jpeg$|.png$/i", $matches[1])) continue;
         $result = add_image($path, $matches[1], $tempdir.'/'.$matches[1], $_POST['description'], $status);
         unlink($tempdir.'/'.$matches[1]);
       }
 
-      if ($result)
-      {
+      if ($result) {
         $cameralife->Error("Filename: ".$outputline[1], __FILE__);
       }
     }
-  }
-  elseif (preg_match(':\.jpg$|\.png$|\.jpeg$:i', $_FILES['userfile']['name']))
-  {
+  } elseif (preg_match(':\.jpg$|\.png$|\.jpeg$:i', $_FILES['userfile']['name'])) {
     $temp = tempnam('', 'cameralife_');
 
     move_uploaded_file($_FILES['userfile']['tmp_name'], $temp)
@@ -182,9 +163,7 @@ if ( !function_exists('sys_get_temp_dir') )
 
     if ($result)
       $cameralife->Error("Error adding image: $result", __FILE__);
-  }
-  else
-  {
+  } else {
     $cameralife->Error('Unsupported filetype');
   }
 
@@ -192,4 +171,3 @@ if ( !function_exists('sys_get_temp_dir') )
     exit(0);
   else
     header("Location: ".$_POST['target']);
-?>

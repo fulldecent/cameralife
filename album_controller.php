@@ -24,14 +24,13 @@
 /**
 */
   $features=array('database','security');
-  require "main.inc";
+  require 'main.inc';
 
   if ($_POST['action'] != 'Create')
     $album = new Album($_POST['id'])
       or $cameralife->Error('this album does not exist');
 
-  if ($_POST['action'] == "Create")
-  {
+  if ($_POST['action'] == "Create") {
     $cameralife->Security->authorize('admin_albums',1);
 
     $topic = $_POST['param1'];
@@ -58,9 +57,7 @@
 
     if ($_POST['target'] != 'ajax')
       $_POST['target'] = $cameralife->base_url.'/album.php?id='.$newId;
-  }
-  elseif ($_POST['action'] == "Update")
-  {
+  } elseif ($_POST['action'] == "Update") {
     $cameralife->Security->authorize('admin_albums',1);
 
     $topic = $_POST['param2'];
@@ -69,14 +66,11 @@
 
     $album->Set('name', $_POST['param1']);
     $album->Set('topic', $topic);
-  }
-  elseif ($_POST['action'] == "Delete")
-  {
+  } elseif ($_POST['action'] == "Delete") {
     $cameralife->Security->authorize('admin_albums',1);
     $album->Erase();
 
-    if ($_POST['target'] != 'ajax')
-    {
+    if ($_POST['target'] != 'ajax') {
       // Are there other albums in this topic?
       $total = $cameralife->Database->SelectOne('albums','COUNT(*)',"topic='".$album->Get('topic')."'");
       if ($total)
@@ -84,9 +78,7 @@
       else
         $_POST['target'] = $cameralife->base_url.'/index.php';
     }
-  }
-  elseif ($_POST['action'] == 'Poster')
-  {
+  } elseif ($_POST['action'] == 'Poster') {
     $cameralife->Security->authorize('admin_albums',1);
     $album->Set('poster_id', $_POST['param1']);
   }
@@ -95,5 +87,3 @@
     exit(0);
   else
     header("Location: ".$_POST['target']);
-
-?>
