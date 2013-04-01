@@ -11,15 +11,15 @@
   /**
   */
 
-  $cameralife->GetFeature('security');
-  $cameralife->GetFeature('photostore');
-
-  $results = $album->GetPhotos();
-  $counts = $album->GetCounts();
-  $icon = $album->GetIcon();
-
-  $extrahead = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of '.$album->Get('name').'" href="'.$cameralife->base_url.'/rss.php&#63;q='.$album->Get('term').'"/>'; 
-  $cameralife->Theme->Header($cameralife->GetPref('sitename').': '.$album->Get('name'), 'album', $extrahead);
+$cameralife->GetFeature('security');
+$cameralife->GetFeature('photostore');
+$results = $album->GetPhotos();
+$counts = $album->GetCounts();
+$icon = $album->GetIcon();
+$start = isset($_GET['start']) ? intval($_GET['start']) : 0;
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'rand';
+$extrahead = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of '.$album->Get('name').'" href="'.$cameralife->base_url.'/rss.php&#63;q='.$album->Get('term').'"/>'; 
+$cameralife->Theme->Header($cameralife->GetPref('sitename').': '.$album->Get('name'), 'album', $extrahead);
 ?>
 <div id="sidebar">
 <?php
@@ -27,7 +27,7 @@
   $menu[] = $cameralife->GetIcon('small');
   $menu[] = $album->GetTopic()->GetIcon('small');
 
-  if ($cameralife->Security->authorize('admin_albums') && !$_GET['edit'])
+  if ($cameralife->Security->authorize('admin_albums') && !isset($_GET['edit']))
   {
     if (strpos($icon['href'], '&#63;') !== FALSE)
       $href = $icon['href'] . '&amp;id='.$album->Get('id').'&amp;edit=true';
@@ -53,7 +53,7 @@ echo '</div><div id="text">';
 #                               '('.$counts['photos'].' total photos)',
 #                               $menu);
 
-  if ($_GET['edit'] && $cameralife->Security->authorize('admin_albums'))
+  if (isset($_GET['edit']) && $cameralife->Security->authorize('admin_albums'))
   {
 ?>
     <div class="administrative" align=center>
@@ -95,7 +95,7 @@ echo '</div><div id="text">';
     </div>
 <?php
   }
-  if ($_GET['poster_id'])
+  if (isset($_GET['poster_id']))
   {
     $cameralife->Security->authorize('admin_albums',1);
     $album->SetPoster($_GET['poster_id']);
@@ -112,8 +112,7 @@ echo '</div><div id="text">';
   </div>
 <?php 
   $cameralife->Theme->Grid($results); 
-
-  $cameralife->Theme->PageSelector(($sort == 'rand()')?-1:$_GET['start'],$counts['photos'],12,"id=".$album->Get('id')); 
+  $cameralife->Theme->PageSelector(($sort == 'rand()')?-1:$start,$counts['photos'],12,"id=".$album->Get('id')); 
 ?>
 
 <form method="POST" action="">

@@ -10,18 +10,18 @@ require '../main.inc';
 $cameralife->base_url = dirname($cameralife->base_url);
 $cameralife->Security->authorize('admin_customize', 1); // Require
 
-if (!$_POST['showme'] && !$_POST['showreg'] && !$_POST['showunreg']) {
+if (!isset($_POST['showme']) && !isset($_POST['showreg']) && !isset($_POST['showunreg'])) {
   $_POST['showme'] = TRUE;
   $_POST['showreg'] = TRUE;
   $_POST['showunreg'] = TRUE;
 }
-if (!$_POST['showphotos'] && !$_POST['showalbums'] && !$_POST['showusers'] && !$_POST['showpreferences']) {
+if (!isset($_POST['showphotos']) && !isset($_POST['showalbums']) && !isset($_POST['showusers']) && !isset($_POST['showpreferences'])) {
   $_POST['showphotos'] = TRUE;
   $_POST['showalbums'] = TRUE;
   $_POST['showusers'] = TRUE;
   $_POST['showpreferences'] = TRUE;
 }
-if ($_POST['action'] == 'Commit changes') {
+if (isset($_POST['action']) && $_POST['action'] == 'Commit changes') {
   foreach ($_POST as $var => $val) {
     if (!is_numeric($var) || !is_numeric($val))
       continue;

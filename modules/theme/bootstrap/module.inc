@@ -14,6 +14,7 @@
     function BootstrapTheme() 
     {
       $this->name = 'Bootstrap';
+      $this->about = 'Sends all pages a marked-up Twitter Bootstrap content and style';
 
       $this->preferences[] = array('name'=>'main_thumbnails', 'desc'=>'Show random, most popular, latest photos...', 'type'=>array('1'=>'Show N thumbnails','0'=>'No'), 'default'=>'1');
       $this->preferences[] = array('name'=>'main_thumbnails_n', 'desc'=>'... N=', 'type'=>'number', 'default'=>'4');

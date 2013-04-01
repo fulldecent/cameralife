@@ -10,12 +10,12 @@ require '../main.inc';
 $cameralife->base_url = dirname($cameralife->base_url);
 $cameralife->Security->authorize('admin_customize', 1); // Require
 
-if (!$_POST['showme'] && !$_POST['showreg'] && !$_POST['showunreg']) {
+if (!isset($_POST['showme']) && !isset($_POST['showreg']) && !isset($_POST['showunreg'])) {
   $_POST['showme'] = TRUE;
   $_POST['showreg'] = TRUE;
   $_POST['showunreg'] = TRUE;
 }
-if ($_POST['action'] == 'Delete checked') {
+if (isset($_POST['action']) && $_POST['action'] == 'Delete checked') {
   foreach ($_POST as $var => $val) {
     if (!is_numeric($var) || !is_numeric($val))
       continue;

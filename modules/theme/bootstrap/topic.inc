@@ -1,29 +1,17 @@
-
 <?php
-/**
-*This file
-*<ul>
-*<li>Implements security feature - which albums are authorized for view</li>
-*<li>Creates albums</li>
-*<li>Displays and sorts albums</li>
-*</ul>
-*
-*<b>Note :</b> $cameralife and $topic are set by ShowPage()
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-  */
-  /**
-  */
-  # $cameralife and $topic are set by ShowPage()
+/** View one topic page
+ * NOTE: $cameralife and $topic are set by ShowPage()
+ *@author Will Entriken <cameralife@phor.net>
+ *@copyright Copyright (c) 2001-2009 Will Entriken
+ *@access public
+ */
 
-  $cameralife->GetFeature('security');
-  $cameralife->GetFeature('photostore');
-
-  $albums = $topic->GetAlbums();
-  $counts = $topic->GetCounts();
-
-  $cameralife->Theme->Header($cameralife->GetPref('sitename').' : '.htmlentities($topic->GetName()), 'topic');
+$cameralife->GetFeature('security');
+$cameralife->GetFeature('photostore');
+$albums = $topic->GetAlbums();
+$counts = $topic->GetCounts();
+$start = isset($_GET['start']) ? intval($_GET['start']) : 0;
+$cameralife->Theme->Header($cameralife->GetPref('sitename').' : '.htmlentities($topic->GetName()), 'topic');
 ?>
 <div id="text">
 <form name="form1" method=post action="album_controller.php">
@@ -45,7 +33,7 @@
 #                               "(".$counts['albums']." albums)",
 #                               $menu);
 
-  if ($_GET['edit'])
+  if (isset($_GET['edit']))
   {
     $cameralife->Security->authorize('admin_albums',1);
 ?>
@@ -87,9 +75,7 @@
   }
 
   $cameralife->Theme->Grid($albums);
-  
-  if ($sort == 'rand()') $start = -1;
-  $cameralife->Theme->PageSelector($start,$total,12,"name=".urlencode($_GET["name"]));
+  $cameralife->Theme->PageSelector($start,$counts['photos'],12,"name=".urlencode($_GET["name"]));
 ?>
 </form>
 

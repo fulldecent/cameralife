@@ -11,8 +11,8 @@ $cameralife->GetFeature('security');
 $cameralife->GetFeature('photostore');
 $cameralife->Theme->Header($cameralife->GetPref('sitename'));
 
-$_GET['page'] = $_GET['page'] ?: 'rand';
-list($sort,$type) = explode('-', $_GET['page']);
+$_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 'rand';
+list($sort,$type) = explode('-', $_GET['page'].'-');
 $search = new Search('');
 $search->SetPage(0, 11);
 $search->SetSort($sort); # rand, newest, newest-folders, unpopular

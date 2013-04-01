@@ -11,7 +11,7 @@ require '../main.inc';
 chdir ($cameralife->base_dir);
 $cameralife->base_url = dirname($cameralife->base_url);
 $cameralife->Security->authorize('admin_customize', 1); // Require
-$_GET['page'] or $_GET['page'] = 'flagged';
+$_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 'flagged';
 @ini_set('max_execution_time',9000); // for rescan
 
 // Handle form actions

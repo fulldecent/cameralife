@@ -19,7 +19,7 @@ require 'main.inc';
 is_numeric($_POST['id'])
   and $photo = new Photo($_POST['id'])
   or $cameralife->Error('this photo does not exist');
-if ($photo->Get['status'] != 0)
+if ($photo->Get('status') != 0)
   $cameralife->Security->authorize('admin_file', 'This file has been flagged or marked private');
 
 if ($_POST['action'] == 'flag') {

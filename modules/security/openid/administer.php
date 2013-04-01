@@ -22,7 +22,7 @@
 
   $cameralife->Security->authorize('admin_customize', 1); //require
 
-  $_GET['page'] or $_GET['page'] = 'users';
+  $_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 'users';
 
   foreach ($_POST as $key => $val) {
     if ($val == "delete")
@@ -32,7 +32,7 @@
   }
   $cameralife->SavePreferences();
 
-  public function html_select_auth($param_name)
+  function html_select_auth($param_name)
   {
     global $cameralife;
     global $prefnum;
@@ -68,44 +68,69 @@
     echo "</select>\n";
   }
 ?>
-<html>
-<head>
-  <title><?= $cameralife->GetPref('sitename') ?></title>
-  <link rel="stylesheet" href="../../../admin/admin.css">
-  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <script language="javascript">
-    public function changeall()
-    {
-      val = document.getElementById('status').value;
-      inputs = document.getElementsByTagName('select');
-      for (var i = 0; i < inputs.length; i++) {
-          inputs[i].value=val;
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><?= $cameralife->GetPref('sitename') ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
       }
-    }
-  </script>
-</head>
-<body>
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 
-<div id="header">
-<h1>Site Administration &ndash; Security Manager</h1>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script language="javascript">
+      public function changeall() {
+        val = document.getElementById('status').value;
+        inputs = document.getElementsByTagName('select');
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].value=val;
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <span class="brand"><a href="../../../"><?= $cameralife->GetPref('sitename') ?></a> / Administration</span>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+      <h1>Security Manager (openid)</h1>
+
+      <ul class="nav nav-tabs">
 <?php
-  $home = $cameralife->GetIcon('small');
-  echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
-?> |
-<a href="../../../admin/index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>
-</div>
-
-<h2>
-  Show:
-  <a href="?page=users">Users</a> |
-  <a href="?page=policies">Policies</a>
-</h2>
+foreach (array('users'=>'Users', 'policies'=>'Policies') as $id=>$name) {
+  $class = $_GET['page'] == $id ? 'active' : '';
+  echo "        <li class=\"$class\"><a href=\"?page=$id\">$name</a></li>\n";
+}
+?>
+      </ul>
 
 <?php
   if ($_GET['page'] == 'users') {
 ?>
     <form method="post">
-    <table align="center" cellspacing="2" border=1 width="100%">
+    <table class="table">
       <tr>
         <th width="16%">User
         <th width="16%">Group
@@ -162,7 +187,7 @@
 <?php } elseif ($_GET['page'] == 'policies') { ?>
     <form method="post" action="<?= $cameralife->base_url . '/admin/controller_prefs.php' ?>">
     <input type="hidden" name="target" value="<?= $cameralife->base_url .'/modules/security/'.$cameralife->GetPref('security').'/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
-    <table align="center" cellspacing="2" border=1 width="100%">
+    <table class="table">
       <tr>
         <th colspan=2>
           Permissions - <i>the minimum user class required to perform certain actions</i>
@@ -194,8 +219,8 @@
 <?php } ?>
 
 <p>
-  <input type="submit" value="Commit Changes">
-  <a href="users.php">(Revert to last saved)</a>
+  <input type="submit" value="Commit Changes" class="btn btn-primary">
+  <a href="users.php" class="btn">Revert to last saved</a>
 </p>
 
 </form>

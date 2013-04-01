@@ -91,8 +91,8 @@ HTML;
 foreach ($actions as $action) {
   $menu .= "  <li><a href=\"".htmlentities($action['href'])."\"";
   if (isset($action['onclick']))
-    $menu .= " onclick=\"{$action[onclick]}\"";
-  $menu .= "><i class=\"icon-{$action[icon]}\"></i> {$action[name]}</a></li>\n";
+    $menu .= " onclick=\"{$action['onclick']}\"";
+  $menu .= "><i class=\"icon-{$action['icon']}\"></i> {$action['name']}</a></li>\n";
 }
 $menu .= <<<HTML
 </ul>
@@ -223,7 +223,7 @@ $cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
 ?>
     <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST" name="form" id="delete" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'flag')?'':'display:none'?>">
       <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-      <input type="hidden" name="target" value="<?= $hrefinquery . 'referer='.urlencode($_SERVER['HTTP_REFERER']) ?>" />
+      <input type="hidden" name="target" value="<?= AddParam($icon['href'], 'referer', urlencode($_SERVER['HTTP_REFERER'])) ?>" />
       <input type="hidden" name="action" value="flag" />
       <legend>Thank you for taking the time to report bad content. Please choose the obvious problem with this photo.</legend>
       
