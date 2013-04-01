@@ -22,6 +22,7 @@
       $this->preferences[] = array('name'=>'main_folders', 'desc'=>'Folders on main page', 'type'=>array('0'=>"Don't show",'1'=>'Show N random folders, M photos each'), 'default'=>'1');
       $this->preferences[] = array('name'=>'main_folders_n', 'desc'=>'... N=', 'type'=>'number', 'default'=>'5');
       $this->preferences[] = array('name'=>'main_folders_m', 'desc'=>'... M=', 'type'=>'number', 'default'=>'5');
+      $this->preferences[] = array('name'=>'analytics', 'desc'=>'Tracking code for Google Analytics (optional)', 'type'=>'string', 'default'=>'');
     }
 
     function ShowPage($name, $object=NULL)
@@ -215,6 +216,25 @@ if ($cameralife->Security->GetName()) {
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
     <script src="<?= $cameralife->base_url ?>/bootstrap/js/bootstrap.min.js"></script>
+<?php
+      if ($cameralife->Theme->GetPref('analytics')) {
+?>
+<!--TRACKING CODE-->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '<?= $cameralife->Theme->GetPref('analytics') ?>']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!--END TRACKING CODE-->
+<?php
+      }
+?>
   </body>
 </html>
 <?php
