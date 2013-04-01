@@ -34,6 +34,8 @@ AUTOMATED RELEASE
 edit the first line, save this file, then paste into a terminal...
 -------------------
 
+edit CHANGELOG
+
 VERSION='2.6.4' # <-- EDIT THIS
 echo $VERSION > VERSION
 sed -i "/this..version/s/'.*'/'$VERSION'/" main.inc
@@ -44,7 +46,7 @@ git tag -a "v$VERSION" -m "Version $VERSION"
 git push --tags
 phpdoc -c phpdoc.ini
 
-#GOTO  http://freshmeat.net/projects/fdcl/releases/new
+#GOTO  http://freecode.com/projects/fdcl/releases/new
 #MAIL people in the MAILINGLIST file
 
 ===========================
