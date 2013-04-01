@@ -12,6 +12,7 @@
 $cameralife->GetFeature('security');
 $cameralife->GetFeature('photostore');
 $cameralife->GetFeature('imageprocessing');
+$icon = $photo->GetIcon();
 
 if (isset($_GET['referer']))
   $_SERVER['HTTP_REFERER'] = $_GET['referer'];
@@ -84,6 +85,9 @@ if ($photo->Get('status') == 0)
                      'icon'=>'print',
                      'href'=>html_entity_decode(AddParamRawUrlEncode('action','print')),
                      'onclick'=>"$('#print').show();return false");
+$actions[] = array('name'=>"Share on Facebook",
+                   'icon'=>'star',
+                   'href'=>'http://www.facebook.com/sharer.php?u='.$icon['href']);
 $menu = <<<HTML
 <ul class="nav nav-list">
   <li class="nav-header">Actions</li>
