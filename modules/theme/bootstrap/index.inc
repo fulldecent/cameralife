@@ -41,7 +41,10 @@ foreach ($results as $result) {
     echo '<div class="l1" style="-moz-transform:rotate('.rand(-10,10).'deg); -webkit-transform:rotate('.rand(-10,10).'deg)">';
     echo '<a href="'.$icon['href'].'" class="l2">';
     echo '<img src="'.$icon['image'].'" class="l3">';
-    echo '<div class="l4" style="width:'.($icon['width']).'px">'.$icon['name'].'</div>';
+    if (isset($icon['width']) && isset($icon['width']))
+        echo '<div class="l4" style="width:'.($icon['width']).'px">'.$icon['name'].'</div>';
+    else
+        echo '<div class="l4">'.$icon['name'].'</div>';
     echo '</a>';
     echo '</div>';
 }

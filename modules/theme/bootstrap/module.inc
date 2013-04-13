@@ -254,9 +254,15 @@ if ($cameralife->Security->GetName()) {
 
         echo '<div class="l1" style="margin-bottom:1em">'.PHP_EOL;
         echo '<a class="l2" href="'.$icon["href"].'">';
-        $imageattrs = array('alt'=>'thumb', 'width'=>$icon['width'], 'height'=>$icon['height'], 'class'=>'l3');
+        if (isset($icon['width']) && isset($icon['height'])) 
+            $imageattrs = array('alt'=>'thumb', 'width'=>$icon['width'], 'height'=>$icon['height'], 'class'=>'l3');
+        else
+            $imageattrs = array('alt'=>'thumb', 'class'=>'l3');
         $this->Image($icon["image"], $imageattrs);
-        echo '<div class="l4" style="width:'.$icon['width'].'px">'.$icon['name'].'</div>';
+        if (isset($icon['width']) && isset($icon['height'])) 
+            echo '<div class="l4" style="width:'.$icon['width'].'px">'.$icon['name'].'</div>';
+        else
+            echo '<div class="l4">'.$icon['name'].'</div>';
         echo '</a>'.PHP_EOL;
         echo '</div>'.PHP_EOL;
       }

@@ -17,7 +17,7 @@ if (isset($_GET['start'])&&is_numeric($_GET['start']))
 else 
   $folder->myLimit = "LIMIT 0, 20";
 
-if ($_GET['page'] == 'folders' || !$counts['photos']) {
+if (isset($_GET['page']) && $_GET['page'] == 'folders' || !$counts['photos']) {
   $_GET['page'] = 'folders';
   $results = $folder->GetChildren();
 } else {
@@ -54,8 +54,6 @@ $menu = array();
 ?>
 </ul>
 
-<h1>TODO: UPLOAD PHOTOS HERE</h1>
-
 <div id="text">
 <?php
 
@@ -75,13 +73,12 @@ $menu = array();
 
   $cameralife->Theme->Grid($results);
 
-  if ($sort == 'rand()') $start = -1;
-
   $icon = $folder->GetIcon();
+  $start = isset($_GET['start']) ? $_GET['start'] : 0;
   if ($_GET['page'] == "photos")
-    $cameralife->Theme->PageSelector($_GET['start'],$counts['photos'],20,$icon['href']);
+    $cameralife->Theme->PageSelector($start,$counts['photos'],20,$icon['href']);
   else // ($_GET['page'] == "folders")
-    $cameralife->Theme->PageSelector($_GET['start'],$counts['folders'],20,$icon['href']);
+    $cameralife->Theme->PageSelector($start,$counts['folders'],20,$icon['href']);
 
 ?>
 

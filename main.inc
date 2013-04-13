@@ -8,8 +8,8 @@
  * @copyright Copyright (c) 2001-2013 Will Entriken
  * @access public
  */
-#error_reporting(E_ALL);
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL);
+#error_reporting(E_ALL ^ E_NOTICE);
 ini_set('display_errors', '1');
 
 
@@ -193,7 +193,7 @@ class CameraLife extends CameraLifeModule # and View
     echo "  <h2>Camera Life has encountered an error!</h2>\n";
     echo "  <blockquote>".htmlentities($message)."</blockquote>\n";
 
-    if ($cameralife->Security && $cameralife->Security->authorize('admin_customize')) {
+    if (isset($cameralife->Security) && $cameralife->Security->authorize('admin_customize')) {
       echo "  You can have the backtrace, since you are an admin:\n";
       $calls = debug_backtrace();
       echo "  <dl>\n";
@@ -215,6 +215,7 @@ class CameraLife extends CameraLifeModule # and View
       }
       echo "  </dl>\n";
     }
+    echo "<p><a href=\"https://github.com/fulldecent/cameralife/issues/new\" class=\"btn\">Report to Camera Life Project</a></p>";
     echo "</div>\n";
     exit(1);
   }

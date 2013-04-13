@@ -46,13 +46,14 @@ class Folder extends Search
   public function GetAncestors()
   {
     $retval = array();
+    $full_path = '';
 
     if (strlen($this->path) > 1) {
       $retval[] = new Folder('', FALSE);
 
       foreach (explode("/",$this->path) as $dir) {
         if (!$dir) continue;
-        $full_path=$full_path.$dir."/";
+        $full_path = $full_path.$dir."/";
         if ($full_path == $this->path) continue;
         $retval[] = new Folder($full_path, FALSE);
       }

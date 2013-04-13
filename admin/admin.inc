@@ -18,7 +18,8 @@ function renderPrefsAsHTML($module)
   echo "<h2>Settings for ".$module->name."</h2>\n";
   echo "<form class=\"form-horizontal\" method=\"post\" action=\"controller_prefs.php\">\n";
   echo "<input type=\"hidden\" name=\"target\" value=\"".$_SERVER['PHP_SELF']."\" />\n";
-  echo "<p>".$module->about."</p>\n";
+  if (isset($module->about))
+      echo "<p>".$module->about."</p>\n";
   
   /*
           <div class="control-group">

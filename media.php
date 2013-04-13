@@ -28,6 +28,7 @@ if (!is_numeric($_GET['ver']))
 $extension = $photo->extension;
 
 if (!$cameralife->Security->authorize('admin_file')) {
+  $reason = null;
   if ($photo->Get('status')==1) $reason = "deleted";
   elseif ($photo->Get('status')==2) $reason = "marked as private";
   elseif ($photo->Get('status')==3) $reason = "uploaded but not revied";

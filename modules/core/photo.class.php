@@ -44,7 +44,6 @@ class Photo extends View
     } elseif (is_array($original)) { # A new image, given by an array
       $this->record['description'] = 'unnamed';
       $this->record['status'] = '0';
-      $this->record['fsize'] = filesize($fullpath);
       $this->record['created'] = date('Y-m-d');
       $this->record['modified'] = '0';
       $this->record['mtime'] = '0';

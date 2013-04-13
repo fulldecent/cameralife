@@ -26,19 +26,15 @@
     function GetCurUser()
     {
       global $_COOKIE, $cameralife;
-
       $cookiename = $this->GetPref('auth_cookie');
-      $authcookie = $_COOKIE[$cookiename];
 
-      if ($authcookie)
-      {
+      if (isset($_COOKIE[$cookiename])) {
+        $authcookie = $_COOKIE[$cookiename];
         $result = $cameralife->Database->Select('users','*',"cookie='$authcookie'");
         $this->curuser = $result->FetchAssoc()
           or $this->curuser = array('auth'=>'0');
-      }
-      else
-      {
-        $this->curuser = array('auth'=>'0');
+      } else {
+        $this->curuser = array('auth'=>'0','username'=>'');
       }
     }
   
@@ -156,9 +152,8 @@
     */
     function GetName () 
     { 
-      if (!isset ($this->curuser))
+      if (!isset($this->curuser))
         $this->GetCurUser();
-
       return $this->curuser['username'];
     }
 

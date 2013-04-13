@@ -16,26 +16,21 @@
 $cameralife->GetFeature('security');
 $cameralife->GetFeature('photostore');
 
-$start = $_GET['start'] + 0;
+$start = isset($_GET['start']) ? $_GET['start']+0 : 0;
 $search->SetPage($start);
 $counts = $search->GetCounts();
-if (($_GET['page'] == 'a') || (!isset($_GET['page']) && $counts['albums'] >0))
-{
+if ((isset($_GET['page']) && $_GET['page'] == 'a') || (!isset($_GET['page']) && $counts['albums'] >0)) {
   $_GET['page'] = 'a';
   $results = $search->GetAlbums();
-} 
-elseif (($_GET['page'] == 'f') || (!isset($_GET['page']) && $counts['folders']>0))
-{
+} elseif ((isset($_GET['page']) && $_GET['page'] == 'f') || (!isset($_GET['page']) && $counts['folders']>0)) {
   $_GET['page'] = 'f';
   $results = $search->GetFolders();
-} 
-else 
-{
+} else {
   $_GET['page'] = 'p';
   $results = $search->GetPhotos();
 }
 
-$header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of'.htmlentities($search->GetQuery()).'" href="'.$camerasife->base_url.'/rss.php?q='.urlencode($search->GetQuery()).'" />';
+$header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of'.htmlentities($search->GetQuery()).'" href="'.$cameralife->base_url.'/rss.php?q='.urlencode($search->GetQuery()).'" />';
 
 $sidebar = <<<HTML
     <ul class="nav nav-list">
@@ -54,7 +49,7 @@ HTML;
 
 $cameralife->Theme->Header('Site search', $sidebar, $header);
 
-if ($_GET['albumhelp']) {
+if (isset($_GET['albumhelp']) && $_GET['albumhelp']) {
 ?>
 <div class="alert alert-info alert-block">
   <button type="button" class="close" data-dismiss="alert">×</button>

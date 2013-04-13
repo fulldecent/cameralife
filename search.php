@@ -20,7 +20,7 @@ fclose ($log_handle);
 $counts = $search->GetCounts();
 
 ## You can search by going to http://camera.phor.net/SEARCHTERM
-if ($_SERVER['REDIRECT_STATUS'] == '404') {
+if (isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == '404') {
   $webbase = preg_replace('|.*//.*?/|', '', $cameralife->base_url);
   $query = preg_replace('|.*/|','',$_SERVER["REQUEST_URI"]);
   header('Location: '.$cameralife->base_url.'/search.php?q='.$query);
