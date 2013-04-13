@@ -11,11 +11,9 @@ $cameralife->GetFeature('photostore');
 $albums = $topic->GetAlbums();
 $counts = $topic->GetCounts();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
-$cameralife->Theme->Header($cameralife->GetPref('sitename').' : '.htmlentities($topic->GetName()), 'topic');
-?>
-<div id="text">
-<form name="form1" method=post action="album_controller.php">
-<?php
+
+/*
+TODO
   $menu = array();
   $menu[] = $cameralife->GetIcon('small');
   if ($cameralife->Security->authorize('admin_albums'))
@@ -28,10 +26,12 @@ $cameralife->Theme->Header($cameralife->GetPref('sitename').' : '.htmlentities($
                   'href'=>'search.php&#63;q='.urlencode($topic->GetName()),
                   'image'=>'small-search');
 
-#  $cameralife->Theme->TitleBar('Photo albums of '.$_GET['name'],
-#                               'topic',
-#                               "(".$counts['albums']." albums)",
-#                               $menu);
+*/
+
+$cameralife->Theme->Header($cameralife->GetPref('sitename').' : '.htmlentities($topic->GetName()), 'topic');
+?>
+<form name="form1" method=post action="album_controller.php">
+<?php
 
   if (isset($_GET['edit']))
   {
@@ -79,13 +79,17 @@ $cameralife->Theme->Header($cameralife->GetPref('sitename').' : '.htmlentities($
 ?>
 </form>
 
-<form method="POST" action="">
+<form method="POST">
 <p>
   Sort by <select name="sort">
 <?php
     $options = $topic->SortOptions();
-    foreach($options as $option)
-      echo "    <option ".$option[2]." value=\"".$option[0]."\">".$option[1]."</option>\n";
+    foreach($options as $option) {
+      if (isset($option[2]))
+        echo "    <option ".$option[2]." value=\"".$option[0]."\">".$option[1]."</option>\n";
+      else
+        echo "    <option value=\"".$option[0]."\">".$option[1]."</option>\n";
+    }
 ?>
   </select>
   <input type=submit value="Sort">

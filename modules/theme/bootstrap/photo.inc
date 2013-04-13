@@ -422,7 +422,6 @@ for ($i=1; $i<=5; $i++) {
 $result = $cameralife->Database->Select('comments', '*', 'photo_id='.$photo->Get('id'));
 while ($comment = $result->FetchAssoc())
 echo "<strong>".$comment['username']."</strong> <em>" . date('Y-m-d', strtotime($comment['date']))."</em><br>" .htmlentities($comment['comment']) . "<hr>";
-  echo "</p>";
       ?>
       <form action="<?= $cameralife->base_url ?>/photo_controller.php" method=POST name="form">
 <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">

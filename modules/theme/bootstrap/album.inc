@@ -115,7 +115,7 @@ echo '</div><div id="text">';
   $cameralife->Theme->PageSelector(($sort == 'rand()')?-1:$start,$counts['photos'],12,"id=".$album->Get('id')); 
 ?>
 
-<form method="POST" action="">
+<form method="POST">
 <p>
   Sort by <select name="sort">
 <?php

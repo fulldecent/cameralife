@@ -232,7 +232,7 @@ class Photo extends View
       return $url;
 
     if ($cameralife->GetPref('rewrite') == 'yes')
-      return $cameralife->base_url."/photos/".$this->record['id'].'.'.$this->extension.'?'.'scale='.$size.'&'.'ver='.($this->record['mtime']+0);
+      return $cameralife->base_url."/photos/".$this->record['id'].'.'.$this->extension.'?'.'scale='.$size.'&amp;'.'ver='.($this->record['mtime']+0);
     else
       return $cameralife->base_url.'/media.php&#63;id='.$this->record['id']."&amp;size=$size&amp;ver=".($this->record['mtime']+0);
   }
