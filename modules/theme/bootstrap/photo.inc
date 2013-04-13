@@ -19,7 +19,8 @@ if (isset($_GET['referer']))
 if (isset($_SERVER['HTTP_REFERER'])) {
   $_SERVER['HTTP_REFERER'] = str_replace($cameralife->base_url,'', $_SERVER['HTTP_REFERER']);
   $_SERVER['HTTP_REFERER'] = preg_replace('|^/|', '', $_SERVER['HTTP_REFERER']);
-}
+} else
+  $_SERVER['HTTP_REFERER'] = '';
 
 # Handy stuff
 $icon = $photo->GetIcon('small');
@@ -183,10 +184,10 @@ $cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
   {
 ?>
     <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST" name="form" id="renameform" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'rename')?'':'display:none'?>">
+      <p class="lead">The <strong>Title</strong> shows on this page and thumbnails of this photo elsewhere. <strong>Keywords</strong> are never displayed. Searches and Albums use the <strong>Title</strong> and <strong>Keywords</strong> to find photos.</p>
       <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
       <input type="hidden" name="target" value="<?= $icon['href'] ?>">
       <input type="hidden" name="action" value="rename">
-      <legend>The <strong>Title</strong> shows on this page and thumbnails of this photo elsewhere. <strong>Keywords</strong> are never displayed. Searches and Albums use the <strong>Title</strong> and <strong>Keywords</strong> to find photos.</legend>
       <div class="control-group">
         <label class="control-label" for="formtitle">Title</label>
         <div class="controls">
@@ -229,22 +230,22 @@ $cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
       <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
       <input type="hidden" name="target" value="<?= AddParam($icon['href'], 'referer', urlencode($_SERVER['HTTP_REFERER'])) ?>" />
       <input type="hidden" name="action" value="flag" />
-      <legend>Thank you for taking the time to report bad content. Please choose the obvious problem with this photo.</legend>
+      <p class="lead">Thank you for taking the time to report bad content. Please choose the obvious problem with this photo.</p>
       
       <label class="radio">
-        <input type="radio" name="param1" id="r1" value="indecent">
+        <input type="radio" name="param1" value="indecent">
         <strong>Indecent or Sensitive</strong> / Obsenity, nudity
       </label>
       <label class="radio">
-        <input type="radio" name="param1" id="r1" value="photography">
+        <input type="radio" name="param1" value="photography">
         <strong>Bad photography</strong> / Blurry, poor lighting, terrible cropping
       </label>
       <label class="radio">
-        <input type="radio" name="param1" id="r1" value="subject">
+        <input type="radio" name="param1" value="subject">
         <strong>Poor subject</strong> / The subject is uninteresting, eg: dirt
       </label>
       <label class="radio">
-        <input type="radio" name="param1" id="r1" value="bracketing">
+        <input type="radio" name="param1" value="bracketing">
         <strong>Bracketing</strong> / A very similar photo supersedes this one
       </label>
       <input class="btn btn-primary btn-danger" type="submit" value="Flag Photo" onclick="makeRequest('<?= $cameralife->base_url ?>/photo_controller.php','renameform',renameDone);return false">
@@ -318,37 +319,21 @@ $cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
 
 <?php
   }
-  elseif ($ask_user_to_login == true)
-  {
-?>
-    <div class="administrative" align=center>
-      Thank you for your contributions to <?= $cameralife->GetPref('sitename') ?>, please consider
-      <?php $cameralife->Theme->Image('small-login',array('align'=>'middle')) ?>
-      <b><a href="<?= $cameralife->base_url ?>/login.php">registering or logging in</a></b>.
-    </div>
-<?php
-  }
   if ($photo->Get('status') == 0)
   {
+    $json = '{"request":{"merchant":{"merchant-api-key":"","merchant-button-key":"13658928432161657"},"order":{"product":{"thumbnail":{"src":"'.$photo->GetMedia('thumbnail').'","width":"0","height":"0"},"source":{"file":{"dimensions":{"width":"'.$photo->Get('width').'","height":"'.$photo->Get('height').'","bleed":"0.3"},"usage":"full-product","filetype":"image","src":"'.$photo->GetMedia('photo').'","publicationId":"","pages":"1"}},"target":{"offering":{"id":"0"}},"title":""},"reference":""},"redirect":{"cancellation":{"href":""},"error":{"href":""},"thankyou":{"href":"'.$cameralife->base_url.'"}},"quantity":"1","currency":"USD","locale":"en_EN","filterCategory":"","filterSize":"","filterColour":"","filterOfferingId":"0"}}';
 ?>
-    <form action="http://www.digibug.com/dapi/order.php" method="POST" name="form" id="print" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'print')?'':'display:none'?>">
-      <input type="hidden" name="digibug_api_version" value="100">
-      <input type="hidden" name="company_id" value="1941">
-      <input type="hidden" name="event_id" value="5755">
-      <input type="hidden" name="cmd" value="addimg">
-      <input type="hidden" name="return_url" value="<?= $icon['href'] ?>">
-      <input type="hidden" name="num_images" value="2">
-      <input type="hidden" name="image_1" value="<?= $photo->GetMedia('photo') ?>">
-      <input type="hidden" name="image_height_1" value="<?= $photo->Get('height') ?>">
-      <input type="hidden" name="image_width_1" value="<?= $photo->Get('width') ?>">
-      <input type="hidden" name="thumb_1" value="<?= $photo->GetMedia('scaled') ?>">
-      <input type="hidden" name="thumb_height_1" value="<?= $photo->Get('tn_height') ?>">
-      <input type="hidden" name="thumb_width_1" value="<?= $photo->Get('tn_width') ?>">
-      <input type="hidden" name="title_1" value="<?= $photo->Get('description') ?>">
-      <legend>You can order prints of this photo from the Camera Life store.</legend>
-      <input class="btn btn-primary" type="submit" value="Order">
-      <a class="btn" href="<?= $icon['href'] ?>" onclick="$('#print').hide();return false">Cancel</a> 
-    </form>
+    <div id="print" class="well" style="<?=(isset($_GET['action']) && $_GET['action'] == 'print')?'':'display:none'?>">
+      <p class="lead">Order postcards, canvas prints and more styles of this photo.</p>
+      
+      <form action="http://secure.print.peecho.com/button/checkout/pay" method="post">
+        <input type="hidden" name="orderRequest" value="<?= htmlentities($json) ?>">
+        <input type="hidden" name="format" value="json">
+        <input type="hidden" name="apiType" value="spb">
+        <button class="btn btn-primary">Order prints</button>
+      </form>
+    </div>
+
 <?php
   }
 
