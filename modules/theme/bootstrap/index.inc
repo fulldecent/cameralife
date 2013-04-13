@@ -40,7 +40,7 @@ foreach ($results as $result) {
     $icon = $result->GetIcon();
     echo '<div class="l1" style="-moz-transform:rotate('.rand(-10,10).'deg); -webkit-transform:rotate('.rand(-10,10).'deg)">';
     echo '<a href="'.$icon['href'].'" class="l2">';
-    echo '<img src="'.$icon['image'].'" class="l3">';
+    echo '<img alt="'.$icon['name'].'" src="'.$icon['image'].'" class="l3">';
     if (isset($icon['width']) && isset($icon['width']))
         echo '<div class="l4" style="width:'.($icon['width']).'px">'.$icon['name'].'</div>';
     else
@@ -77,11 +77,11 @@ foreach ($results as $result) {
             $icon = $result->GetIcon();
             echo '<div class="l1" style="-moz-transform:rotate('.rand(-10,10).'deg); -webkit-transform:rotate('.rand(-10,10).'deg);">';
             echo '<a class="minipolaroid" href="'.$icon['href'].'">';
-            echo '<img width="'.($icon['width']/2).'" src="'.$icon['image'].'" alt="'.$icon['name'].'" />';
+            echo '<img width="'.intval($icon['width']/2).'" src="'.$icon['image'].'" alt="'.$icon['name'].'" />';
             echo '</a>';
             echo '</div>';
           }
-          echo "</div></li>";
+          echo "</div>";
         }
         $root = new Folder('');
         $icon = $root->GetIcon();
@@ -100,7 +100,7 @@ foreach ($results as $result) {
           $icon = $topic->GetIcon('small');
 
           echo "<tr><td><h3><a href=\"".$icon['href']."\">";
-          echo $cameralife->Theme->Image('small-topic', array('align'=>'middle'));
+          echo $cameralife->Theme->Image('small-topic');
           echo $icon['name']."</a></h3>\n";
 
           if ($cameralife->Theme->GetPref('main_topics')==2) // Link a couple albums

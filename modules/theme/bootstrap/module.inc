@@ -61,7 +61,6 @@
       }
 
       $image = array_merge($image, $extra);
-
       echo "<img";
       foreach ($image as $attr => $val)
         if ($val)  
@@ -148,9 +147,9 @@ if ($cameralife->Security->GetName()) {
 ?>
             <a class="btn pull-right" href="<?= $cameralife->Security->LoginURL() ?>">
               <i class="icon-user"></i>
-              <img src="http://facebook.com/favicon.ico" height=16 width=16>
-              <img src="http://google.com/favicon.ico" height=16 width=16>
-              <img src="http://yahoo.com/favicon.ico" height=16 width=16> Login
+              <img alt="facebook" src="http://facebook.com/favicon.ico" height=16 width=16>
+              <img alt="google" src="http://google.com/favicon.ico" height=16 width=16>
+              <img alt="yahoo" src="http://yahoo.com/favicon.ico" height=16 width=16> Login
             </a>
 <?php
   }

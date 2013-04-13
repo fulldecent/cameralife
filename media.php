@@ -21,7 +21,7 @@ $features=array('database','security','imageprocessing', 'photostore');
 require 'main.inc';
 
 $photo = new Photo($_GET['id']);
-$format = $_GET['scale'];
+$format = isset($_GET['scale']) ? $_GET['scale'] : null;
 if (!is_numeric($_GET['ver']))
   $cameralife->Error('Required number ver missing! Query string: '.htmlentities($_SERVER['QUERY_STRING']));
 

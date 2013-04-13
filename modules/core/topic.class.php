@@ -40,9 +40,9 @@ class Topic extends Search
     $retval = array();
 
     if ($cameralife->GetPref('rewrite') == 'yes')
-      $retval['href'] = $cameralife->base_url.'/topics/'.htmlentities($this->name);
+      $retval['href'] = $cameralife->base_url.'/topics/'.urlencode($this->name);
     else
-      $retval['href'] = $cameralife->base_url.'/topic.php&#63;name='.htmlentities($this->name);
+      $retval['href'] = $cameralife->base_url.'/topic.php&#63;name='.urlencode($this->name);
 
     $retval['name'] = htmlentities($this->name);
 

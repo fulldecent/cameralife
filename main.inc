@@ -223,7 +223,7 @@ class CameraLife extends CameraLifeModule # and View
 
 $cameralife = new CameraLife();
 
-if (count($GLOBALS['features']))
+if (isset($GLOBALS['features']) && count($GLOBALS['features']))
 foreach($features as $fcn)
   $cameralife->GetFeature($fcn);
 
