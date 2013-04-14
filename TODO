@@ -14,6 +14,14 @@ BASIC REGRESSION TESTING:
   mysqldump fdcl -d > setup/install.mysql # and add insert statements
   Test Amazon S3 http://github.com/technoweenie/parkplace
   Test Gallery API
+  
+  Test HTML Valid
+    http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2F
+    http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Fphotos%2F15608
+    http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Ftopics%2FPeople
+    http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Falbums%2F168
+    http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Ffolders%2F2012%2F2012-06%2520Pool%2520party%2F
+  
 
 SECURITY TESTING:
   Remove support for strip slashes / and remove all stripslashes!
@@ -26,6 +34,7 @@ SECURITY TESTING:
   PHP E_ALL strict?
   Login via OpenID / Facebook / Google / ...
   XSSme SQLinjectme wapiti
+  zaproxy
   
 Make a new flyover install video
 

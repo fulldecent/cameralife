@@ -342,7 +342,7 @@ if ($cameralife->Security->GetName()) {
           else 
             echo "<li><a class=\"disabled\" href=\"#\">&laquo;</a></li>";
         }
-        echo "</div>\n";
+        echo "</ul></div>\n";
       }
     }
   }

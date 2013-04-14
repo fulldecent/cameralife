@@ -47,14 +47,13 @@ $menu = array();
 <?php
   foreach($folder->GetAncestors() as $ancestor) {
     $icon = $ancestor->GetIcon('small');
-    echo "  <li><a href=\"{$icon['href']}\"><img src=\"".$cameralife->IconURL('small-folder')."\"> {$icon['name']}</a></li>\n";
+    echo "  <li><a href=\"{$icon['href']}\"><img alt=\"folder\" src=\"".$cameralife->IconURL('small-folder')."\"> {$icon['name']}</a>\n";
     echo "  <span class=\"divider\">/</span></li>";
   }
-  echo "        <li><img src=\"".$cameralife->IconURL('small-folder')."\"> $folder_name</li>\n";
+  echo "        <li><img alt=\"folder\" src=\"".$cameralife->IconURL('small-folder')."\"> $folder_name</li>\n";
 ?>
 </ul>
 
-<div id="text">
 <?php
 
   if ($counts['photos'] > 0)
@@ -86,13 +85,17 @@ $menu = array();
   Sort by <select name="sort">
 <?php
     $options = Search::SortOptions();
-    foreach($options as $option)
-      echo "    <option value=\"".$option[0]."\">".$option[1]."</option>\n";
+    foreach($options as $option) {
+      if (isset($option[2]))
+        echo "    <option ".$option[2]." value=\"".$option[0]."\">".$option[1]."</option>\n";
+      else
+        echo "    <option value=\"".$option[0]."\">".$option[1]."</option>\n";
+    }
 ?>
   </select>
   <input type=submit value="Sort">
 </p>
 
-</form>
-</body>
-</html>
+<?php
+  $cameralife->Theme->Footer();
+?>

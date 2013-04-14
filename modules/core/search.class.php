@@ -73,7 +73,7 @@ class Search extends View
     $retval[] = array('rand', 'Random');
     foreach ($retval as &$item) {
         list($id, $desc) = $item;
-        if (is_object($this) && $this->mySort==$id)
+        if (is_object($this) && isset($this->mySort) && $this->mySort==$id)
             $item[] = "selected";
     }
 

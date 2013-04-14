@@ -20,9 +20,9 @@ $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 $sort = isset($_GET['sort']) ? $_GET['sort'] : 'rand';
 $extrahead = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of '.$album->Get('name').'" href="'.$cameralife->base_url.'/rss.php&#63;q='.$album->Get('term').'"/>'; 
 $cameralife->Theme->Header($cameralife->GetPref('sitename').': '.$album->Get('name'), 'album', $extrahead);
-?>
-<div id="sidebar">
-<?php
+
+/* TODO
+
   $menu = array();
   $menu[] = $cameralife->GetIcon('small');
   $menu[] = $album->GetTopic()->GetIcon('small');
@@ -47,11 +47,8 @@ $cameralife->Theme->Header($cameralife->GetPref('sitename').': '.$album->Get('na
                   'onclick'=>"javascript:void(document.getElementById('help').style.display='');return false",
                   'image'=>'small-admin');
 
-echo '</div><div id="text">';
-#  $cameralife->Theme->TitleBar($album->Get('name'),
-#                               'album',
-#                               '('.$counts['photos'].' total photos)',
-#                               $menu);
+
+*/
 
   if (isset($_GET['edit']) && $cameralife->Security->authorize('admin_albums'))
   {
@@ -120,8 +117,12 @@ echo '</div><div id="text">';
   Sort by <select name="sort">
 <?php
     $options = $album->SortOptions();
-    foreach($options as $option)
-      echo "    <option ".$option[2]." value=\"".$option[0]."\">".$option[1]."</option>\n";
+    foreach($options as $option) {
+      if (isset($option[2]))
+        echo "    <option ".$option[2]." value=\"".$option[0]."\">".$option[1]."</option>\n";
+      else
+        echo "    <option value=\"".$option[0]."\">".$option[1]."</option>\n";
+    }
 ?>
   </select>
   <input type=submit value="Sort">
