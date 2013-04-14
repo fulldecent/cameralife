@@ -94,6 +94,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Camera Life version <?= $cameralife->version ?>">
     <meta name="author" content="<?= $cameralife->GetPref('owner_email') ?>">
+    <?= $extrahead ?>
 
     <!-- Le styles -->
     <link href="<?= $cameralife->base_url ?>/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -206,6 +207,7 @@ if ($cameralife->Security->GetName()) {
           <a href="<?= $cameralife->base_url ?>"><i class="icon-globe"></i> <?= $cameralife->GetPref('sitename') ?></a>
           <a href="mailto:<?= $cameralife->GetPref('owner_email') ?>"><i class="icon-envelope"></i> Contact site owner</a>
           <a href="<?= $cameralife->base_url ?>/stats.php"><i class="icon-signal"></i> Site stats</a>
+          <a href="http://fulldecent.github.com/cameralife"><i class="icon-globe"></i> Built with Camera Life</a>
         </p>
       </footer>
 
