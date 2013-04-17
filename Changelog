@@ -3,6 +3,7 @@ git  Will Entriken <cameralife AT phor.net>
 * Create PHP code style guidelines and adopt
 * Add Facebook photo sharing
 * Validate HTML (Bootstrap theme)
+* Drop unneded logs.value_old
 
 2.6.4  Will Entriken <cameralife AT phor.net>
 * Added support for OpenID login, this will be default soon

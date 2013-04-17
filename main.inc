@@ -22,7 +22,7 @@ if (file_exists(dirname(__FILE__).'/modules/config.inc')) {
 }
 
 // Is the software newer than the database?
-if (!isset($db_schema_version) || $db_schema_version < 2) {
+if (!isset($db_schema_version) || $db_schema_version < 3) {
   header('Location: http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']),'/').'/setup/upgrade/upgrade.php');
   die('Redirecting to upgrader...');
 }

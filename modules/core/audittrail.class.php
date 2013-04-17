@@ -30,7 +30,6 @@ class AuditTrail
     $log['record_id'] = $record_id;
     $log['value_field'] = $value_field;
     $log['value_new'] = $value_new;
-    $log['value_old'] = $value_old;
     $log['user_name'] = $cameralife->Security->GetName();
     $log['user_ip'] = $_SERVER['REMOTE_ADDR'];
     $log['user_date'] = date('Y-m-d');

@@ -227,7 +227,6 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
         `record_type` enum('album','photo','preference','user') NOT NULL default 'album',
         `record_id` int(11) NOT NULL default '0',
         `value_field` varchar(40) NOT NULL default '',
-        `value_old` text NOT NULL,
         `value_new` text NOT NULL,
         `user_name` varchar(30) NOT NULL default '',
         `user_ip` varchar(16) NOT NULL default '',

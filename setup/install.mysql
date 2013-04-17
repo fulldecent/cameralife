@@ -96,7 +96,6 @@ CREATE TABLE `logs` (
   `record_type` enum('album','photo','preference','user') NOT NULL DEFAULT 'album',
   `record_id` int(11) NOT NULL DEFAULT '0',
   `value_field` varchar(40) NOT NULL DEFAULT '',
-  `value_old` text NOT NULL,
   `value_new` text NOT NULL,
   `user_name` varchar(30) NOT NULL DEFAULT '',
   `user_ip` varchar(16) NOT NULL DEFAULT '',
