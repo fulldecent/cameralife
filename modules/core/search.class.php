@@ -97,7 +97,6 @@ class Search extends View
 
   public function SetPage($start, $pagesize=12)
   {
-//    $this->myLimit = 'LIMIT '.($page*$pagesize).','.$pagesize;
     $this->myLimit = 'LIMIT '.$start.','.$pagesize;
   }
 
@@ -121,7 +120,6 @@ class Search extends View
     $photos = array();
     while ($row = $query->FetchAssoc())
       $photos[] = new Photo($row['id']);
-
     return $photos;
   }
 

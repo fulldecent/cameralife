@@ -13,12 +13,9 @@ $cameralife->base_url = dirname($cameralife->base_url);
 chdir ($cameralife->base_dir);
 require 'admin.inc';
 $cameralife->Security->authorize('admin_file', 1); // Require
-$lastdone = (int) $_GET['lastdone']
-  or $lastdone = -1;
-$starttime = (int) $_GET['starttime']
-  or $starttime = time();
-$numdone = (int) $_GET['numdone']
-  or $numdone = 0;
+$lastdone = isset($_GET['lastdone']) ? (int) $_GET['lastdone'] : 0;
+$starttime = isset($_GET['starttime']) ? (int) $_GET['starttime'] : time();
+$numdone = isset($_GET['numdone']) ?(int) $_GET['numdone'] : 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">

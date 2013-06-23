@@ -57,7 +57,7 @@ $headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modul
 $actions = array(); // name=>, icon=>, href=>, onclick=>
 $actions[] = array('name'=>"View full-sized ({$photo->Get('width')} x {$photo->Get('height')}px)",
                    'icon'=>'fullscreen',
-                   'href'=>$photo->GetMedia('photo'));
+                   'href'=>$photo->GetMediaURL('photo'));
 $sizes = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
 sort($sizes);
 if (count($sizes)) foreach ($sizes as $size)
@@ -86,22 +86,17 @@ if ($photo->Get('status') == 0)
                      'icon'=>'print',
                      'href'=>html_entity_decode(AddParamRawUrlEncode('action','print')),
                      'onclick'=>"$('#print').show();return false");
-$actions[] = array('name'=>"Share on Facebook",
-                   'icon'=>'star',
-                   'href'=>'http://www.facebook.com/sharer.php?u='.$icon['href']);
-$menu = <<<HTML
-<ul class="nav nav-list">
-  <li class="nav-header">Actions</li>
-HTML;
+$menu = '<ul class="nav nav-list"><li class="nav-header">Actions</li>';
 foreach ($actions as $action) {
   $menu .= "  <li><a href=\"".htmlentities($action['href'])."\"";
   if (isset($action['onclick']))
     $menu .= " onclick=\"{$action['onclick']}\"";
   $menu .= "><i class=\"icon-{$action['icon']}\"></i> {$action['name']}</a></li>\n";
 }
-$menu .= <<<HTML
-</ul>
-HTML;
+$menu .= '</ul>';
+$menu .= '<ul class="nav nav-list"><li class="nav-header">Share</li>';
+$menu .= "  <li><a href=\"http://www.facebook.com/sharer.php?u='".htmlentities($icon['href'])."\"><i class=\"icon-star\"></i> Share on Facebook</a></li>\n";
+$menu .= '</ul>';
 /*
 
 

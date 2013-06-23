@@ -112,7 +112,7 @@ class CameraLife extends CameraLifeModule # and View
         $this->Database = new MysqlDatabase() ;
           break;
       case 'theme': 
-        if ($this->GetPref('iphone') && (stristr($_SERVER['HTTP_USER_AGENT'], 'iPhone') || stristr($_SERVER['HTTP_USER_AGENT'], 'iPod')) )
+        if ($this->GetPref('iphone') && isset($_SERVER['HTTP_USER_AGENT']) && (stristr($_SERVER['HTTP_USER_AGENT'], 'iPhone') || stristr($_SERVER['HTTP_USER_AGENT'], 'iPod')) )
           $implementation = 'iphone';
         else 
           $implementation = $this->GetPref('theme');

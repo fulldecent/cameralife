@@ -21,7 +21,8 @@ else
 $folder = new Folder($path);
 $icon = $folder->GetIcon();
 
-$cameralife->Theme->Header('Upload photos');
+$headers = '<script src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/dropzone.js"></script>';
+$cameralife->Theme->Header('Upload photos', NULL, $headers);
 ?>
 <BGSOUND src="<?= $cameralife->base_url ?>/filedone.wav">
 <h1>Uploading Photos</h1>
@@ -34,7 +35,7 @@ $cameralife->Theme->Header('Upload photos');
 ?>
 </ul>
 
-<form enctype="multipart/form-data" method=POST action="<?= $cameralife->base_url ?>/upload_controller.php" class="form-horizontal">
+<form id="dropzone" enctype="multipart/form-data" method=POST action="<?= $cameralife->base_url ?>/upload_controller.php" class="form-horizontal dropzone">
 <input type="hidden" name="target" value="<?= $icon['href'] ?>">
   <div class="control-group">
     <label class="control-label" for="path">Path:</label>
@@ -62,6 +63,10 @@ $cameralife->Theme->Header('Upload photos');
   </div>
 
 </form>
+
+<script>
+Dropzone.options.dropzone = { paramName: "userfile" };
+</script>
 <?php
   $cameralife->Theme->Footer();
 ?>

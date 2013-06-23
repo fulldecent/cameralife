@@ -11,18 +11,19 @@
   $features=array('database','theme','security', 'photostore');
   require 'main.inc';
 
-  $search = new Search($_GET['q']);
+  $query = isset($_GET['q']) ? $_GET['q'] : '';
+  $search = new Search($query);
   $search->SetSort('newest');
   $results = $search->GetFolders();
 
   header('Content-type: text/xml');
-  echo '<?xml version="1.0" encoding="UTF-8"?>';
+  echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 ?>
 <rss version="2.0">
   <channel>
-    <title><![CDATA[<?= $cameralife->GetPref('sitename') ?> - <?= $_GET['q'] ?>]]></title>
+    <title><![CDATA[<?= $cameralife->GetPref('sitename') ?> - <?= $query ?>]]></title>
     <link><?= $cameralife->base_url ?></link>
-    <description>Search results for '<?php $_GET['q'] ?>'</description>
+    <description>Search results for '<?php $query ?>'</description>
     <language>en-us</language>
 <?php
   foreach ($results as $result) {

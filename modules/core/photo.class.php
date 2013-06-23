@@ -225,16 +225,21 @@ class Photo extends View
       $this->image->Destroy();
   }
 
-  public function GetMedia($size='thumbnail')
+  public function GetMediaURL($size='thumbnail')
   {
     global $cameralife;
     if ($url = $cameralife->PhotoStore->GetURL($this, $size))
       return $url;
 
     if ($cameralife->GetPref('rewrite') == 'yes')
-      return $cameralife->base_url."/photos/".$this->record['id'].'.'.$this->extension.'?'.'scale='.$size.'&amp;'.'ver='.($this->record['mtime']+0);
+      return $cameralife->base_url."/photos/".$this->record['id'].'.'.$this->extension.'?'.'scale='.$size.'&'.'ver='.($this->record['mtime']+0);
     else
-      return $cameralife->base_url.'/media.php&#63;id='.$this->record['id']."&amp;size=$size&amp;ver=".($this->record['mtime']+0);
+      return $cameralife->base_url.'/media.php?id='.$this->record['id']."&size=$size&ver=".($this->record['mtime']+0);
+  }
+  /// DEPRECATED
+  public function GetMedia($size='thumbnail')
+  {
+    return htmlentities($this->GetMediaURL($size));
   }
 
   public function GetFolder()
@@ -288,32 +293,33 @@ class Photo extends View
     if ($exif===false)
       return $retval;
     else {
-      if ($exif['EXIF']['DateTimeOriginal']) {
+      $focallength = $exposuretime = NULL;
+      if (isset($exif['EXIF']['DateTimeOriginal'])) {
         $this->EXIF["Date taken"]=$exif['EXIF']['DateTimeOriginal'];
         $exifPieces = explode(" ", $this->EXIF["Date taken"]);
         $this->record['created'] = date("Y-m-d",strtotime(str_replace(":","-",$exifPieces[0])." ".$exifPieces[1]));
       }
-      if ($model = $exif['IFD0']['Model']) {
-        $this->EXIF["Camera Model"]=$model;
+      if (isset($exif['IFD0']['Model'])) {
+        $this->EXIF["Camera Model"] = $exif['IFD0']['Model'];
       }
-      if ($fnumber = $exif['COMPUTED']['ApertureFNumber']) {
-        $this->EXIF["Aperture"]=$fnumber;
+      if (isset($exif['COMPUTED']['ApertureFNumber'])) {
+        $this->EXIF["Aperture"] = $exif['COMPUTED']['ApertureFNumber'];
       }
-      if ($exposuretime = $exif['EXIF']['ExposureTime']) {
-        $this->EXIF["Speed"]=$exposuretime;
+      if (isset($exif['EXIF']['ExposureTime'])) {
+        $this->EXIF["Speed"] = $exif['EXIF']['ExposureTime'];
       }
-      if ($iso = $exif['EXIF']['ISOSpeedRatings']) {
-        $this->EXIF["ISO"]=$iso;
+      if (isset($exif['EXIF']['ISOSpeedRatings'])) {
+        $this->EXIF["ISO"] = $exif['EXIF']['ISOSpeedRatings'];
       }
-      if ($focallength = $exif['EXIF']['FocalLength']) {
-        if(preg_match('#([0-9]+)/([0-9]+)#', $focallength, $regs))
+      if (isset($exif['EXIF']['FocalLength'])) {
+        if(preg_match('#([0-9]+)/([0-9]+)#', $exif['EXIF']['FocalLength'], $regs))
         $focallength = $regs[1] / $regs[2];
         $this->EXIF["Focal distance"]="${focallength}mm";
       }
-      if ($focallength) {
+      if (isset($exif['EXIF']['FocalLength'])) {
         $ccd = 35;
-        if ($exif['COMPUTED']['CCDWidth'])
-        $ccd = str_replace('mm','',$exif['COMPUTED']['CCDWidth']);
+        if (isset($exif['COMPUTED']['CCDWidth']))
+          $ccd = str_replace('mm','',$exif['COMPUTED']['CCDWidth']);
         $fov = round(2*rad2deg(atan($ccd/2/$focallength)),2);
         //@link http://www.rags-int-inc.com/PhotoTechStuff/Lens101/
 
@@ -338,7 +344,7 @@ class Photo extends View
       if ($orient = $exif['IFD0']['Orientation']) {
         $this->EXIF["Orientation"]=$orient;
       }
-      if ($exif['GPS']) {
+      if (isset($exif['GPS']) && isset($exif['GPS']['GPSLatitude']) && $exif['GPS']['GPSLongitude']) {
         $lat = 0;
         if (count($exif['GPS']['GPSLatitude']) > 0)
           $lat += $this->GPS2num($exif['GPS']['GPSLatitude'][0]);
