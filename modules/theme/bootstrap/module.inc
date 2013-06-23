@@ -81,7 +81,7 @@
       global $cameralife;
       $this->menu = $menu;
 
-      $myfolder = new Folder ('upload/'.$cameralife->Security->GetName());
+      $myfolder = new Folder ('upload/'.$cameralife->Security->GetName().'/');
       $myfoldericon = $myfolder->GetIcon();
 
       $body = $onload ? "<body onLoad=\"$onload\">" : '<body>';
@@ -242,10 +242,9 @@ if ($cameralife->Security->GetName()) {
 <?php
     }
 
-    // query is an array of Icons, or an array of classes that have Icons
+    // Query is an array of Icons or classes that have Icons
     function Grid($query) 
     {
-    
       echo '<div>'.PHP_EOL;
       foreach ($query as $thumb) {
         if (is_array($thumb))
@@ -261,9 +260,12 @@ if ($cameralife->Security->GetName()) {
             $imageattrs = array('alt'=>'thumb', 'class'=>'l3');
         $this->Image($icon["image"], $imageattrs);
         if (isset($icon['width']) && isset($icon['height'])) 
-            echo '<div class="l4" style="width:'.$icon['width'].'px">'.$icon['name'].'</div>';
+            echo '<div class="l4" style="width:'.$icon['width'].'px">';
         else
-            echo '<div class="l4">'.$icon['name'].'</div>';
+            echo '<div class="l4">';
+        if ($icon['name'] != 'unnamed')
+            echo $icon['name'];
+        echo '</div>';
         echo '</a>'.PHP_EOL;
         echo '</div>'.PHP_EOL;
       }

@@ -75,7 +75,7 @@ if ($cameralife->Security->authorize('photo_delete'))
   $actions[] = array('name'=>"Flag photo",
                      'icon'=>'flag',
                      'href'=>html_entity_decode(AddParamRawUrlEncode('action','flag')),
-                     'onclick'=>"$('#delete').show();return false");
+                     'onclick'=>"$('#deleteform').show();return false");
 if ($cameralife->Security->authorize('photo_modify'))
   $actions[] = array('name'=>"Modify photo (rotate, revert, ...)",
                      'icon'=>'wrench',
@@ -198,7 +198,7 @@ $cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
       </div>
       <div class="control-group">
         <div class="controls">
-          <input class="btn btn-primary" type="submit" value="Save Changes" onclick="makeRequest('<?= $cameralife->base_url ?>/photo_controller.php','renameform',renameDone);return false">
+          <input class="btn btn-primary" type="submit" value="Save Changes" onclick="makeRequest('<?= $cameralife->base_url ?>/photo_controller.php','renameform',function(){$('h1').html($('form#renameform input[name=param1]').val())};return false">
           <a class="btn" href="<?= $icon['href'] ?>" onclick="$('#showHideRenameForm').show();$('#renameform').hide();return false">Cancel</a> 
         </div>
       </div>
@@ -221,7 +221,7 @@ $cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
       $target = $cameralife->base_url.'/index.php';
       
 ?>
-    <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST" name="form" id="delete" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'flag')?'':'display:none'?>">
+    <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST" name="form" id="deleteform" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'flag')?'':'display:none'?>">
       <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
       <input type="hidden" name="target" value="<?= AddParam($icon['href'], 'referer', urlencode($_SERVER['HTTP_REFERER'])) ?>" />
       <input type="hidden" name="action" value="flag" />
@@ -243,7 +243,7 @@ $cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
         <input type="radio" name="param1" value="bracketing">
         <strong>Bracketing</strong> / A very similar photo supersedes this one
       </label>
-      <input class="btn btn-primary btn-danger" type="submit" value="Flag Photo" onclick="makeRequest('<?= $cameralife->base_url ?>/photo_controller.php','renameform',renameDone);return false">
+      <input class="btn btn-primary btn-danger" type="submit" value="Flag Photo">
       <a class="btn" href="<?= $icon['href'] ?>" onclick="$('#delete').hide();return false">Cancel</a> 
     </form>
 <?php

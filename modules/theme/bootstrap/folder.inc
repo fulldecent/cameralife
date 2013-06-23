@@ -12,10 +12,10 @@
   
 $counts = $folder->GetCounts();
 
-if (isset($_GET['start'])&&is_numeric($_GET['start']))
-  $folder->myLimit = "LIMIT {$_GET['start']}, 20";
+if (isset($_GET['start']) && is_numeric($_GET['start']))
+  $folder->SetPage($_GET['start'], 25);
 else 
-  $folder->myLimit = "LIMIT 0, 20";
+  $folder->SetPage(0, 25);
 
 if (isset($_GET['page']) && $_GET['page'] == 'folders' || !$counts['photos']) {
   $_GET['page'] = 'folders';
@@ -39,8 +39,7 @@ $menu = array();
   $folder_name = $folder->Basename()
     or $folder_name = '(Top Level)';
 
-  $cameralife->Theme->Header($folder_name, 'folder');
-
+  $cameralife->Theme->Header($folder_name);
 ?>
 
 <ul class="breadcrumb">
@@ -75,9 +74,9 @@ $menu = array();
   $icon = $folder->GetIcon();
   $start = isset($_GET['start']) ? $_GET['start'] : 0;
   if ($_GET['page'] == "photos")
-    $cameralife->Theme->PageSelector($start,$counts['photos'],20,$icon['href']);
+    $cameralife->Theme->PageSelector($start,$counts['photos'],25,$icon['href']);
   else // ($_GET['page'] == "folders")
-    $cameralife->Theme->PageSelector($start,$counts['folders'],20,$icon['href']);
+    $cameralife->Theme->PageSelector($start,$counts['folders'],25,$icon['href']);
 
 ?>
 
