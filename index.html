@@ -4,37 +4,12 @@
     <meta charset="utf-8">
     <title>Camera Life</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <!-- Le styles -->
-    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-    </style>
+    <meta name="description" content="A PHP/MYSQL program for creating your own photo website">
+    <meta name="author" content="https://plus.google.com/117913021365449347166">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
     <link href="splashAssets/splash.css" rel="stylesheet">
-    <link href="Font-Awesome/css/font-awesome.css" rel="stylesheet">
-    <style type="text/css" rel="stylesheet">
-        [class^="icon-"], [class*=" icon-"] {
-            display: inline;
-            width: auto;
-            height: auto;
-            line-height: inherit;
-            vertical-align: baseline;
-            background-image: none;
-            background-position: 0% 0%;
-            background-repeat: repeat;
-        }
-    </style>
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    
     <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -46,34 +21,39 @@
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
-</script>
-<script type="text/javascript">
-function trackOutboundLink(link, category, action) { 
- 
-try { 
-_gaq.push(['_trackEvent', category , action]); 
-} catch(err){}
- 
-setTimeout(function() {
-document.location.href = link.href;
-}, 100);
-}
+  
+  function trackOutboundLink(link, category, action) { 
+    try { 
+      _gaq.push(['_trackEvent', category , action]); 
+    } catch(err){}
+    setTimeout(function() {
+      document.location.href = link.href;
+    }, 100);
+  }
 </script>
   </head>
-
   <body>
-
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="brand" href="http://phor.net">a William Entriken production</a>
-        </div>
+    <div class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <a class="navbar-brand" href="http://phor.net">a William Entriken production</a>
+        <p class="pull-right" style="padding-right:1em; padding-bottom:0; margin:0"><img alt="flags" src="splashAssets/flags.png" width=200></p>
+        <div class="pull-right">
+        
+<div id="google_translate_element" style="margin-top:8px"></div>
+<script type="text/javascript">
+function googleTranslateElementInit() {
+new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true, gaId: 'UA-52764-14'}, 'google_translate_element');
+}
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                          
+        </div>        
       </div>
     </div>
 
     <div class="container">
       <div class="row">
-        <div class="span8">
+        <div class="col-sm-8">
           <img alt="screenshot" src="splashAssets/screenshot1.png" id="ss1" style="width:350px;z-index:6;position:relative; ">
           <img alt="screenshot" src="splashAssets/screenshot2.png" id="ss2" 
           class="hidden-phone"
@@ -82,7 +62,7 @@ document.location.href = link.href;
           class="hidden-phone"
           style="width:250px;margin-left:-160px; z-index:4; position:relative; opacity:0">
         </div>
-        <div class="span4">
+        <div class="col-sm-4">
           <h1>Camera Life</h1>    
           <h2>Run your own photo website</h2>
           <a class="btn btn-large btn-primary" href="https://github.com/fulldecent/cameralife/zipball/master"><i class="icon-folder-open"></i> Get .zip</a>
@@ -98,30 +78,30 @@ document.location.href = link.href;
     <div style="background:#f2f2f2; margin-top:-20px; padding-top:60px">
     <div class="container">
       <div class="row">
-        <div class="span4">
+        <div class="col-sm-4">
           <h3><i class="icon-folder-open"></i> Great photo organization</h3>
           <p>Photos are sorted in folders and also by <a href="https://github.com/fulldecent/cameralife/wiki/Albums">albums/topics</a> with automatic categorization by keywords.</p>
         </div>
-        <div class="span4">
+        <div class="col-sm-4">
           <h3><i class="icon-list-ul"></i> Full audit trail</h3>
           <p>If you have open access and someone adds lame comments or photo descriptions, you can easily revert changes to the site.</p>
         </div>
-        <div class="span4">
+        <div class="col-sm-4">
           <h3><i class="icon-time"></i> Easy to install and try</h3>
           <p style="float:right"><a href="http://www.youtube.com/watch?v=aWDdMfyPwwo"><img src="http://cloudfront-assets.shivtr.com/assets/graphics/videoplaybtn-5332e695b5f0a5a1ce9fbd26032b6969.png" width="120" height="90" border="0" style="background:URL(http://img.youtube.com/vi/aWDdMfyPwwo/2.jpg)" /></a>
           <p>Install video onto a fresh install of Ubuntu desktop (1 minute 5 seconds flyover).</p>
         </div>
       </div>
       <div class="row">
-        <div class="span4">
+        <div class="col-sm-4">
           <h3><i class="icon-upload"></i> Easy to get photos in</h3>
           <p>Users can upload photos via the web, FTP access, <a href="http://zwily.com/iphoto/">iPhoto</a>, <a href="http://itunes.apple.com/us/app/igallery/id341048146?mt=8">iPhone</a>, <a href="http://gallery.menalto.com/wiki/Gallery_Remote">Mac/Windows/Linux</a> software, <a href="http://www.digikam.org/drupal/node/397">Digikam</a>, or any other product that supports the Gallery Remote protocol.</p>
         </div>
-        <div class="span4">
+        <div class="col-sm-4">
           <h3><i class="icon-magic"></i> Responsive</h3>
           <p>Supports OpenSearch and RSS. Is built using JQuery/AJAX for browsers, a custom theme for iPhone, but gracefully degrades without Javascript for accessibility... or if you want to load it on a cell phone made in the 90's</p>
         </div>
-        <div class="span4">
+        <div class="col-sm-4">
           <h3><i class="icon-random"></i> Integrates well with your site</h3>
           <p>Code is <a href="http://fdcl.sourceforge.net/docs/">documented</a> and integrates with <a href="http://camera.phor.net/cameralifedocs/default/DatabaseModule.html">your database</a> and <a href="http://camera.phor.net/cameralifedocs/default/SecurityModule.html">security model</a>. Photos store on your server, Amazon S3, a <a href="https://github.com/fulldecent/cameralife/wiki/Remote-server">remote FTP/SFTP server</a>, and rsync.net. It scales if you want to <a href="https://github.com/fulldecent/cameralife/wiki/Thumbnail-Server">offload thumbnailing</a> to separate server(s).</p>
         </div>
