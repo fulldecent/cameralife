@@ -54,7 +54,7 @@ foreach ($results as $result) {
 
 
 <div class="row">
-  <div class="span6">
+  <div class="col-sm-6">
     <h2>Folders</h2>
     <table class="table">
 <?php
@@ -89,7 +89,7 @@ foreach ($results as $result) {
 ?>
     </table>
   </div>
-  <div class="span6">
+  <div class="col-sm-6">
     <h2>Photo Albums</h2>
     <table class="table">
 <?php

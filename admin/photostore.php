@@ -22,16 +22,6 @@ require 'admin.inc';
 
     <!-- Le styles -->
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-    </style>
-    <link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -42,17 +32,15 @@ require 'admin.inc';
   </head>
 
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <span class="brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / <a href="index.php">Administration</a> / Photostore options</span>
-        </div>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <span class="navbar-brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
       </div>
     </div>
     <div class="container">
       <h2>Module</h2>
       <form class="form-horizontal well" method="post" action="controller_prefs.php">
-        <a onclick="$('#chgps').show();$('#chgpshead').hide()" class="btn" id="chgpshead">To change your photostore, click here</a>
+        <a onclick="$('#chgps').show();$('#chgpshead').hide()" class="btn btn-default" id="chgpshead">To change your photostore, click here</a>
         <div style="display:none" id="chgps">
           <h3>If you have no photos:</h3>
           <p>Just change the drop-down and configure below</p>
@@ -88,7 +76,7 @@ foreach ($cameralife->GetModules($feature) as $module) {
 }
 ?>
               </select>
-              <input type="submit" value="Choose" class="btn">
+              <input type="submit" value="Choose" class="btn btn-default">
             </div>
           </div>
         </div>

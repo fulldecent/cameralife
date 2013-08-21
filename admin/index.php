@@ -27,17 +27,8 @@ $numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($ca
 
     <!-- Le styles -->
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-    </style>
-    <link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -56,11 +47,9 @@ $numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($ca
   </head>
 
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <span class="brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
-        </div>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <span class="navbar-brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
       </div>
     </div>
     <div class="container">
@@ -74,87 +63,115 @@ else
 if ($cameralife->Security->authorize('admin_file')) {
 ?>
       <h1>Administration</h1>
-      <ul class="thumbnails">
-        <li class="span4">
-          <div class="thumbnail">
-            <h2>Logs</h2>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Logs</h3>
+            </div>
+            <div class="panel-body">
 <?php
 if ($numlog)
-  echo "<p class=\"alert\">There are $numlog logged actions since your last checkpoint</p>";
+  echo "<p class=\"alert alert-warning\">There are $numlog logged actions since your last checkpoint</p>";
 else
   echo "<p class=\"alert alert-info\">No changes have been made since your last checkpoint</p>";
 ?>
-            <p><a class="btn" href="logs.php"><i class="icon-step-backward"></i> View and rollback site actions &raquo;</a></p>
+              <p><a class="btn btn-default" href="logs.php"><i class="icon-step-backward"></i> View and rollback site actions &raquo;</a></p>
+            </div>
           </div>
-        </li>
-        <li class="span4">
-          <div class="thumbnail">
-            <h2>Comments</h2>
+        </div>
+        <div class="col-sm-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Comments</h3>
+            </div>
+            <div class="panel-body">
 <?php
 if ($numcomments)
-  echo "<p class=\"alert\">There are $numcomments comments since your last checkpoint</p>";
+  echo "<p class=\"alert alert-warning\">There are $numcomments comments since your last checkpoint</p>";
 else
   echo "<p class=\"alert alert-info\">No changes have been made since your last checkpoint</p>";
 ?>
-            <p><a class="btn" href="comments.php"><i class="icon-user"></i> View and censor site comments &raquo;</a></p>
+            <p><a class="btn btn-default" href="comments.php"><i class="icon-user"></i> View and censor site comments &raquo;</a></p>
+            </div>
           </div>
-        </li>
-        <li class="span4">
-          <div class="thumbnail">
-            <h2>File manager</h2>
-            <p>Private photos are also viewable here</p>
+        </div>
+        <div class="col-sm-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">File manager <small class="muted">and private photes</small></h3>
+            </div>
+            <div class="panel-body">
 <?php
 if ($numdel)
-  echo "<p class=\"alert alert-error\"><i class=\"icon-flag\"></i> $numdel photos have been flagged</p>";
+  echo "<p class=\"alert alert-danger\"><i class=\"icon-flag\"></i> $numdel photos have been flagged</p>";
 if ($numupl)
   echo "<p class=\"alert alert-info\">$numupl photos have been uploaded but not reviewed</p>";
 ?>
-            <p><a class="btn" href="files.php"><i class="icon-folder-open"></i> Manage files &raquo;</a></p>
+            <p><a class="btn btn-default" href="files.php"><i class="icon-folder-open"></i> Manage files &raquo;</a></p>
+            </div>
           </div>
-        </li>
-      </ul>
+        </div>
+      </div>
 <?php
 }
 if ($cameralife->Security->authorize('admin_customize')) {
 ?>
       <h1>Configuration</h1>
-      <ul class="thumbnails">
-        <li class="span3">
-          <div class="thumbnail">
-            <h2>Appearance</h2>
-            <p><a class="btn" href="appearance.php"><i class="icon-star-empty"></i> Set theme and iconset &raquo;</a></p>
+
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Appearance</h3>
+            </div>
+            <div class="panel-body">
+              <p><a class="btn btn-default" href="appearance.php"><i class="icon-star-empty"></i> Set theme and iconset &raquo;</a></p>
+            </div>
           </div>
-        </li>
-        <li class="span3">
-          <div class="thumbnail">
-            <h2>Security</h2>
+        </div>
+        <div class="col-sm-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Security</h3>
+            </div>
+            <div class="panel-body">
 <?php
 if ($numreg)
   echo "<p class=\"alert alert-info\">$numreg users have registered but not been confirmed</p>\n";
 ?>
-            <p><a class="btn" href="security.php"><i class="icon-lock"></i> Manage users &amp; security &raquo;</a></p>
+            <p><a class="btn btn-default" href="security.php"><i class="icon-lock"></i> Manage users &amp; security &raquo;</a></p>
+            </div>
           </div>
-        </li>
-        <li class="span3">
-          <div class="thumbnail">
-            <h2>Photo storage</h2>
-            <p>Your photos can be stored on your web server, a remote server, Amazon S3, etc.</p>
-            <p><a class="btn" href="photostore.php"><i class="icon-folder-open"></i> Configure photostore &raquo;</a></p>
+        </div>
+        <div class="col-sm-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Photo storage</h3>
+            </div>
+            <div class="panel-body">
+              <p>Your photos can be stored on your web server, a remote server, Amazon S3, etc.</p>
+              <p><a class="btn btn-default" href="photostore.php"><i class="icon-folder-open"></i> Configure photostore &raquo;</a></p>
+            </div>
           </div>
-        </li>
-        <li class="span3">
-          <div class="thumbnail">
-            <h2>Feedback</h2>
-            <p>How do you like Camera Life? Let us know.</p>
-            <p>
-              <a class="btn" href="register.php"><i class="icon-envelope"></i> Write feedback &raquo;</a>
-              <a class="btn" href="https://github.com/fulldecent/cameralife/issues"><i class="icon-flag"></i> Report an issue &raquo;</a>
-              <a class="btn" href="https://github.com/fulldecent/cameralife"><i class="icon-star"></i> Get project updates &raquo;</a>
-              <a class="btn" href="http://www.facebook.com/sharer.php?u=http://fulldecent.github.com/cameralife/"><i class="icon-star"></i> Like on Facebook &raquo;</a>
-            </p>
+        </div>
+        <div class="col-sm-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Feedback</h3>
+            </div>
+            <div class="panel-body">
+              <p>How do you like Camera Life? Let us know.</p>
+              <p>
+                <a class="btn btn-default" href="register.php"><i class="icon-envelope"></i> Write feedback &raquo;</a>
+                <a class="btn btn-default" href="https://github.com/fulldecent/cameralife/issues"><i class="icon-flag"></i> Report an issue &raquo;</a>
+                <a class="btn btn-default" href="https://github.com/fulldecent/cameralife"><i class="icon-star"></i> Get project updates &raquo;</a>
+                <a class="btn btn-default" href="http://www.facebook.com/sharer.php?u=http://fulldecent.github.com/cameralife/"><i class="icon-star"></i> Like on Facebook &raquo;</a>
+              </p>
+            </div>
           </div>
-        </li>
-      </ul>
+        </div>
+      </div>
 <?php
 }
 ?>

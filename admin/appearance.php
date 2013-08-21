@@ -23,17 +23,6 @@ require 'admin.inc';
 
     <!-- Le styles -->
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-    </style>
-    <link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -43,11 +32,9 @@ require 'admin.inc';
   </head>
 
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <span class="brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / <a href="index.php">Administration</a> / Appearance</span>
-        </div>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <span class="navbar-brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
       </div>
     </div>
     <div class="container">
@@ -60,9 +47,9 @@ require 'admin.inc';
         <input type="hidden" name="module2" value="CameraLife" />
         <input type="hidden" name="param2" value="iconset" />
 
-        <div class="control-group">
-          <label class="control-label" for="inputTheme">Theme engine</label>
-          <div class="controls">
+        <div class="form-group">
+          <label class="col-lg-2 control-label" for="inputTheme">Theme engine</label>
+          <div class="col-lg-10">
             <select name="value1" id="inputTheme" class="input-xxlarge">
 <?php
 $feature = 'theme';
@@ -76,12 +63,12 @@ foreach ($cameralife->GetModules($feature) as $module) {
 }
 ?>
             </select>
-            <input type="submit" value="Choose" class="btn">
+            <input type="submit" value="Choose" class="btn btn-default">
           </div>
         </div>
-        <div class="control-group">
-          <label class="control-label" for="inputIconset">Iconset</label>
-          <div class="controls">
+        <div class="form-group">
+          <label class="col-lg-2 control-label" for="inputIconset">Iconset</label>
+          <div class="col-lg-10">
             <select name="value2" id="inputIconset" class="input-xxlarge">
 <?php
 $feature = 'iconset';
@@ -95,7 +82,7 @@ foreach ($cameralife->GetModules($feature) as $module) {
 }
 ?>
             </select>
-            <input type="submit" value="Choose" class="btn">
+            <input type="submit" value="Choose" class="btn btn-default">
           </div>
         </div>
       </form>
@@ -103,35 +90,35 @@ foreach ($cameralife->GetModules($feature) as $module) {
       <h2>Site Parameters</h2>
 
       <form method="post" action="controller_prefs.php" class="form-horizontal">
-        <div class="control-group">
-          <label class="control-label" for="sitename">Site name</label>
-          <div class="controls">
+        <div class="form-group">
+          <label class="col-lg-2 control-label" for="sitename">Site name</label>
+          <div class="col-lg-10 controls">
             <input type="hidden" name="module1" value="CameraLife" />
             <input type="hidden" name="param1" value="sitename" />
             <input type="text" id="sitename" name="value1" size=30 value="<?= $cameralife->GetPref('sitename') ?>">
           </div>
         </div>
-        <div class="control-group">
-          <label class="control-label" for="siteabbr">Site abbreviation</label>
-          <div class="controls">
+        <div class="form-group">
+          <label class="col-lg-2 control-label" for="siteabbr">Site abbreviation</label>
+          <div class="col-lg-10 controls">
             <input type="hidden" name="module2" value="CameraLife" />
             <input type="hidden" name="param2" value="siteabbr" />
             <input type="text" id="siteabbr" name="value2" size=30 value="<?= $cameralife->GetPref('siteabbr') ?>">
             <span class="help-inline">used to refer to the main page</span>
           </div>
         </div>
-        <div class="control-group">
-          <label class="control-label" for="owner_email">Owner E-mail address</label>
-          <div class="controls">
+        <div class="form-group">
+          <label class="col-lg-2 control-label" for="owner_email">Owner E-mail address</label>
+          <div class="col-lg-10 controls">
             <input type="hidden" name="module3" value="CameraLife" />
             <input type="hidden" name="param3" value="owner_email" />
             <input type="text" id="owner_email" name="value3" size=30 value="<?= $cameralife->GetPref('owner_email') ?>">
             <span class="help-inline">shown if something goes wrong</span>
           </div>
         </div>
-        <div class="control-group">
-          <label class="control-label" for="rewrite">Use pretty URL's</label>
-          <div class="controls">
+        <div class="form-group">
+          <label class="col-lg-2 control-label" for="rewrite">Use pretty URL's</label>
+          <div class="col-lg-10 controls">
             <input type="hidden" name="module4" value="CameraLife" />
             <input type="hidden" name="param4" value="rewrite" />
             <select name="value4" id="rewrite">
@@ -140,9 +127,9 @@ foreach ($cameralife->GetModules($feature) as $module) {
             </select>
           </div>
         </div>
-        <div class="control-group">
-          <label class="control-label" for="iphone">Use the iPhone theme</label>
-          <div class="controls">
+        <div class="form-group">
+          <label class="col-lg-2 control-label" for="iphone">Use the iPhone theme</label>
+          <div class="col-lg-10 controls">
             <input type="hidden" name="module5" value="CameraLife" />
             <input type="hidden" name="param5" value="iphone" />
             <select name="value5" id="iphone">
@@ -152,9 +139,9 @@ foreach ($cameralife->GetModules($feature) as $module) {
             <span class="help-inline">shown on iPhones and iPod touches</span>
           </div>
         </div>
-        <div class="control-group">
-          <label class="control-label" for="autorotate">Autorotate photos</label>
-          <div class="controls">
+        <div class="form-group">
+          <label class="col-lg-2 control-label" for="autorotate">Autorotate photos</label>
+          <div class="col-lg-10 controls">
             <input type="hidden" name="module6" value="CameraLife" />
             <input type="hidden" name="param6" value="autorotate" />
             <select name="value6" id="autorotate">
@@ -164,35 +151,35 @@ foreach ($cameralife->GetModules($feature) as $module) {
             <span class="help-inline">Update existing photos with hacks/exif.php</span>
           </div>
         </div>
-        <div class="control-group">
-          <label class="control-label" for="thumbsize">Size for thumbnails</label>
-          <div class="controls">
+        <div class="form-group">
+          <label class="col-lg-2 control-label" for="thumbsize">Size for thumbnails</label>
+          <div class="col-lg-10 controls">
             <input type="hidden" name="module7" value="CameraLife" />
             <input type="hidden" name="param7" value="thumbsize" />
             <input type="number" id="thumbsize" name="value7" size=10 value="<?= $cameralife->GetPref('thumbsize') ?>">
             <span class="help-inline">in pixels</span>
           </div>
         </div>
-        <div class="control-group">
-          <label class="control-label" for="scaledsize">Size for preview images</label>
-          <div class="controls">
+        <div class="form-group">
+          <label class="col-lg-2 control-label" for="scaledsize">Size for preview images</label>
+          <div class="col-lg-10 controls">
             <input type="hidden" name="module8" value="CameraLife" />
             <input type="hidden" name="param8" value="scaledsize" />
             <input type="number" id="scaledsize" name="value8" size=30 value="<?= $cameralife->GetPref('scaledsize') ?>">
             <span class="help-inline">in pixels</span>
           </div>
         </div>
-        <div class="control-group">
-          <label class="control-label" for="optionsizes">Other sizes users can see</label>
-          <div class="controls">
+        <div class="form-group">
+          <label class="col-lg-2 control-label" for="optionsizes">Other sizes users can see</label>
+          <div class="col-lg-10 controls">
             <input type="hidden" name="module9" value="CameraLife" />
             <input type="hidden" name="param9" value="optionsizes" />
             <input type="text" id="optionsizes" name="value9" size=30 value="<?= join(',',preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'))) ?>">
             <span class="help-inline">comma separated (you can also leave this blank)</span>
           </div>
         </div>
-        <div class="control-group">
-          <div class="controls">
+        <div class="form-group">
+          <div class="col-lg-10 controls">
             <input type="submit" value="Save changes" class="btn btn-primary"/>
           </div>
         </div>

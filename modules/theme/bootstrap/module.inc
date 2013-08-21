@@ -98,17 +98,8 @@
 
     <!-- Le styles -->
     <link href="<?= $cameralife->base_url ?>/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?= $cameralife->base_url ?>/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
     <link href="<?= $cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))) ?>/css-extra/custom.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-    </style>
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -116,26 +107,23 @@
   </head>
   <?= $body ?>
   
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="<?= $cameralife->base_url ?>"><?= $cameralife->GetPref('sitename') ?></a>
-          <div class="btn-group pull-right">
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+      <div class="container">
+      <a class="navbar-brand" href="<?= $cameralife->base_url ?>"><?= $cameralife->GetPref('sitename') ?></a>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse">
+        <form class="navbar-form navbar-left" action="<?= $cameralife->base_url ?>/search.php" method="get">
+          <input type="text" class="form-control" placeholder="Search" name="q" />
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+        
 <?php
 if ($cameralife->Security->GetName()) {
-   $gravitarHTML = htmlentities("http://www.gravatar.com/avatar/".md5($cameralife->Security->GetName())."?s=16&d=identicon");
+ $gravitarHTML = htmlentities("http://www.gravatar.com/avatar/".md5($cameralife->Security->GetName())."?s=16&d=identicon");
 
 ?>  
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-              <img src="<?= $gravitarHTML ?>" height=16 width=16>
-              <?= $cameralife->Security->GetName() ?>
-              <span class="caret"></span>
-            </a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?= $gravitarHTML ?>" height=16 width=16> <?= $cameralife->Security->GetName() ?> <b class="caret"></b></a>  
             <ul class="dropdown-menu">
               <li><a href="<?= $myfoldericon['href'] ?>">My Uploads</a></li>
               <li><a href="<?= $cameralife->base_url.'/admin/index.php' ?>">Administer</a></li>
@@ -144,38 +132,32 @@ if ($cameralife->Security->GetName()) {
               <li><a href="<?= $cameralife->base_url.'/logout.php' ?>">Sign Out</a></li>
             </ul>
 <?php
-  } else {
+} else {
 ?>
-            <a class="btn pull-right" href="<?= $cameralife->Security->LoginURL() ?>">
+            <a class="btn btn-default narbar-right" href="<?= $cameralife->Security->LoginURL() ?>">
               <i class="icon-user"></i>
               <img alt="facebook" src="http://facebook.com/favicon.ico" height=16 width=16>
               <img alt="google" src="http://google.com/favicon.ico" height=16 width=16>
               <img alt="yahoo" src="http://yahoo.com/favicon.ico" height=16 width=16> Login
             </a>
 <?php
-  }
+}
 ?>
-          </div>
-          <a class="btn pull-right" href="<?= $cameralife->base_url ?>/upload.php">
-            <i class="icon-plus"></i>
-              Upload
-          </a>
-          <a class="btn pull-right" href="#">
-            <i class="icon-star"></i>
-              Get email updates
-          </a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li><form class="navbar-search" action="<?= $cameralife->base_url ?>/search.php" method="get">
-                  <input type="text" class="search-query span3" placeholder="Search" name="q" />
-                  </form>
-              </li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
+          </li>
+        </ul>
+        <a class="btn btn-default navbar-btn navbar-right" href="<?= $cameralife->base_url ?>/upload.php">
+          <i class="icon-plus"></i>
+            Upload
+        </a>
+        <a class="btn btn-default navbar-btn navbar-right" href="#">
+          <i class="icon-star"></i>
+            Get email updates
+        </a>
+      </div><!-- /.navbar-collapse -->
       </div>
-    </div>
-    <div class="container-fluid">
+    </nav>  
+    
+    <div class="container">
 <?php
       if ($this->menu) {
 ?>
@@ -318,7 +300,7 @@ if ($cameralife->Security->GetName()) {
     
       if ($total > $per_page) // Refuse to only show one page
       {
-        echo '<div class="pagination"><ul>';
+        echo '<ul class="pagination">';
 
         if ($start==-1) {
           echo "<span class='current'>Randomly showing <b>$per_page</b> of <b>$total</b></span> ";
@@ -346,7 +328,7 @@ if ($cameralife->Security->GetName()) {
           else 
             echo "<li><a class=\"disabled\" href=\"#\">&laquo;</a></li>";
         }
-        echo "</ul></div>\n";
+        echo "</ul>\n";
       }
     }
   }

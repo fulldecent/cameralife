@@ -43,17 +43,6 @@ $latestLog = $cameralife->Database->SelectOne('logs','max(id)');
 
     <!-- Le styles -->
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-    </style>
-    <link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -64,11 +53,9 @@ $latestLog = $cameralife->Database->SelectOne('logs','max(id)');
 
   <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <span class="brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / <a href="index.php">Administration</a> / Logs</span>
-        </div>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <span class="navbar-brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
       </div>
     </div>
     <div class="container">
@@ -82,8 +69,8 @@ if ($checkpointDate) {
         <input type="hidden" name="module1" value="CameraLife" />
         <input type="hidden" name="param1" value="checkpointlogs" />
         <input type="hidden" name="value1" value="0">
-        <input class="btn" type="submit" value="Reset checkpoint">
-        <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn"><i class="icon-info-sign"></i> Learn about checkpoints</a>
+        <input class="btn btn-default" type="submit" value="Reset checkpoint">
+        <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn btn-default"><i class="icon-info-sign"></i> Learn about checkpoints</a>
       </form>
 <?php
 } else {
@@ -94,8 +81,8 @@ if ($checkpointDate) {
         <input type="hidden" name="module1" value="CameraLife" />
         <input type="hidden" name="param1" value="checkpointlogs" />
         <input type="hidden" name="value1" value="<?= $latestLog ?>">
-        <input class="btn" type="submit" value="Hide logs up to now">
-        <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn"><i class="icon-info-sign"></i> Learn about checkpoints</a>
+        <input class="btn btn-default" type="submit" value="Hide logs up to now">
+        <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn btn-default"><i class="icon-info-sign"></i> Learn about checkpoints</a>
         </form>
 <?php
 }
@@ -141,15 +128,15 @@ if ($checkpointDate) {
         </div>
         <div class="control-group">
           <div class="controls">
-            <input type="submit" class="btn" value="Update" />
+            <input type="submit" class="btn btn-default" value="Update" />
           </div>
         </div>
       </form>
       <div class="pull-right well">
         <h2>Quick tools</h2>
-        <button class="btn" onClick='inps = document.getElementsByTagName("input"); for (a in inps) { b=inps[a]; if(b.type!="radio")continue; if(b.value=="") b.checked=true }; return false'>Set each item to the current value</button><br/>
-        <button class="btn" onClick='inps = document.getElementsByTagName("input"); c=0; for (a in inps) { b=inps[a]; if(b.type!="radio")continue; if(c)b.checked=true; c=(b.value=="")}; return false'>Set each item to the previous value</button><br/>
-        <button class="btn" onClick='inps = document.getElementsByTagName("input"); for(i=inps.length-1;i>=0;i--) { b=inps[i]; if(b.type!="radio")continue; b.checked=true }; return false'>Set each item to the oldest value</button><br/>
+        <button class="btn btn-default" onClick='inps = document.getElementsByTagName("input"); for (a in inps) { b=inps[a]; if(b.type!="radio")continue; if(b.value=="") b.checked=true }; return false'>Set each item to the current value</button><br/>
+        <button class="btn btn-default" onClick='inps = document.getElementsByTagName("input"); c=0; for (a in inps) { b=inps[a]; if(b.type!="radio")continue; if(c)b.checked=true; c=(b.value=="")}; return false'>Set each item to the previous value</button><br/>
+        <button class="btn btn-default" onClick='inps = document.getElementsByTagName("input"); for(i=inps.length-1;i>=0;i--) { b=inps[i]; if(b.type!="radio")continue; b.checked=true }; return false'>Set each item to the oldest value</button><br/>
       </div>
       <h2>Logged changes</h2>
       <form method="post" class="form" id="comments">
@@ -230,7 +217,7 @@ if ($checkpointDate) {
 ?>
         <p>
           <input class="btn btn-danger" type=submit name="action" value="Commit changes">
-          <a class="btn" href="?">Revert to last saved</a><br>
+          <a class="btn btn-default" href="?">Revert to last saved</a><br>
         </p>
       </form>
     </div>

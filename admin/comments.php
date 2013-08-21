@@ -37,17 +37,6 @@ $latestComment = $cameralife->Database->SelectOne('comments','max(id)');
 
     <!-- Le styles -->
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-    </style>
-    <link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -58,11 +47,9 @@ $latestComment = $cameralife->Database->SelectOne('comments','max(id)');
 
   <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <span class="brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / <a href="index.php">Administration</a> / Comments</span>
-        </div>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <span class="navbar-brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
       </div>
     </div>
     <div class="container">
@@ -76,8 +63,8 @@ if ($checkpointDate) {
         <input type="hidden" name="module1" value="CameraLife" />
         <input type="hidden" name="param1" value="checkpointcomments" />
         <input type="hidden" name="value1" value="0">
-        <input class="btn" type="submit" value="Reset checkpoint">
-        <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn"><i class="icon-info-sign"></i> Learn about checkpoints</a>
+        <input class="btn btn-default" type="submit" value="Reset checkpoint">
+        <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn btn-default"><i class="icon-info-sign"></i> Learn about checkpoints</a>
       </form>
 <?php
 } else {
@@ -88,8 +75,8 @@ if ($checkpointDate) {
         <input type="hidden" name="module1" value="CameraLife" />
         <input type="hidden" name="param1" value="checkpointcomments" />
         <input type="hidden" name="value1" value="<?= $latestComment ?>">
-        <input class="btn" type="submit" value="Hide comments up to now">
-        <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn"><i class="icon-info-sign"></i> Learn about checkpoints</a>
+        <input class="btn btn-default" type="submit" value="Hide comments up to now">
+        <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn btn-default"><i class="icon-info-sign"></i> Learn about checkpoints</a>
         </form>
 <?php
 }
@@ -108,14 +95,14 @@ if ($checkpointDate) {
          <input type="checkbox" name="showunreg" <?php if ($_POST["showunreg"]) echo " checked" ?>>
          <i class="icon-user"></i> Unregistered users
         </label>
-        <input class="btn" type=submit value="Update">
+        <input class="btn btn-default" type=submit value="Update">
       </form>
       <div class="pull-right well">
         <h2>Quick tools</h2>
-        <button class="btn" onclick="$('#comments :checkbox').slice(0,10).attr('checked',true)">Check the first 10 checkboxes</button><br/>
-        <button class="btn" onclick="$('#comments :checkbox').slice(0,50).attr('checked',true)">Check the first 50 checkboxes</button><br/>
-        <button class="btn" onclick="$('#comments :checkbox').slice(0,200).attr('checked',true)">Check the first 200 checkboxes</button><br/>
-        <button class="btn" onclick="$('#comments blockquote :contains(http://)').closest('label').children('input').attr('checked',true)">Check all with http://</button>
+        <button class="btn btn-default" onclick="$('#comments :checkbox').slice(0,10).attr('checked',true)">Check the first 10 checkboxes</button><br/>
+        <button class="btn btn-default" onclick="$('#comments :checkbox').slice(0,50).attr('checked',true)">Check the first 50 checkboxes</button><br/>
+        <button class="btn btn-default" onclick="$('#comments :checkbox').slice(0,200).attr('checked',true)">Check the first 200 checkboxes</button><br/>
+        <button class="btn btn-default" onclick="$('#comments blockquote :contains(http://)').closest('label').children('input').attr('checked',true)">Check all with http://</button>
       </div>
       <h2>Comments</h2>
       <form method="post" class="form" id="comments">
@@ -158,7 +145,7 @@ if ($checkpointDate) {
       $result2 = $cameralife->Database->Select('comments','*',$condition, 'ORDER BY id DESC');
 
       while ($row = $result2->FetchAssoc()) {
-        $byLine = ($row['username']?$row['username']:'Anonymous').' ('.$row['user_ip'].') '.$row['user_date'];
+        $byLine = ($row['username']?$row['username']:'Anonymous').' ('.$row['user_ip'].') '.$row['date'];
 ?>
             <label class="checkbox">
               <input type="checkbox" name="<?= $row['id'] ?>" value="<?= $row['id'] ?>">
@@ -177,7 +164,7 @@ if ($checkpointDate) {
 ?>
         <p>
           <input class="btn btn-danger" type=submit name="action" value="Delete checked">
-          <a class="btn" href="?">Revert to last saved</a><br>
+          <a class="btn btn-default" href="?">Revert to last saved</a><br>
         </p>
       </form>
     </div>

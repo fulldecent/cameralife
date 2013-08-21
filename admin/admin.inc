@@ -45,9 +45,9 @@ function renderPrefsAsHTML($module)
   else
   foreach ($module->preferences as $pref) {
     $prefnum++;
-    echo '<div class="control-group">';
-    echo '  <label class="control-label" for="'.$pref['name'].'">'.$pref['name'].'</label>';
-    echo '  <div class="controls">';
+    echo '<div class="form-group">';
+    echo '  <label class="col-lg-2 control-label" for="'.$pref['name'].'">'.$pref['name'].'</label>';
+    echo '  <div class="col-lg-10">';
     echo "    <input type=\"hidden\" name=\"module$prefnum\" value=\"".get_class($module)."\" />\n";
     echo "    <input type=\"hidden\" name=\"param$prefnum\" value=\"".$pref['name']."\" />\n";
 
