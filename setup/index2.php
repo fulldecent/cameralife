@@ -22,18 +22,7 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
     <meta charset="utf-8">
     <title>Install Camera Life</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Le styles -->
-    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <style type="text/css">
-    </style>
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-52764-13']);
@@ -48,41 +37,34 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
   </head>
 
   <body>
-
-    <div class="navbar">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand">INSTALL CAMERA LIFE</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li><a>1. Prerequisites</a></li>
-              <li class="active"><a>2. Database</a></li>
-              <li><a>3. Use Camera Life</a></li>
-            </ul>
-            <a class="btn pull-right" href="mailto:cameralifesupport@phor.net">
-              <i class="icon-envelope"></i>
-              Email support
-            </a>
-            <a class="btn pull-right" href="http://fulldecent.github.com/cameralife">
-              <i class="icon-home"></i>
-              Camera Life homepage
-            </a>
-          </div><!--/.nav-collapse -->
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <span class="navbar-brand">INSTALL CAMERA LIFE</span>
         </div>
+        <ul class="nav navbar-nav">
+          <li><a>1. Prerequisites</a></li>
+          <li class="active"><a>2. Database</a></li>
+          <li><a>3. Use Camera Life</a></li>
+        </ul>
+        <a class="btn btn-default navbar-btn pull-right" href="mailto:cameralifesupport@phor.net">
+          <i class="icon-envelope"></i>
+          Email support
+        </a>
+        <a class="btn btn-default navbar-btn pull-right" href="http://fulldecent.github.com/cameralife">
+          <i class="icon-home"></i>
+          Camera Life project page
+        </a>
       </div>
-    </div>
+    </nav>
 
-    <div class="container">
-
-      <div class="well">
+    <div class="jumbotron">
+      <div class="container">
         <h2>Installing to database</h2>
       </div>
+    </div>    
 
+    <div class="container">
 <?php
     if (!$_POST['host'])
       die ("You didn't specify a server to connect to, <a href=\"index.php\">go back</a> and try again");
@@ -257,7 +239,7 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
     $config[] = "\$db_user = '".$_POST['user']."';\n";
     $config[] = "\$db_pass = '".$_POST['pass']."';\n";
     $config[] = "\$db_prefix = '".$_POST['prefix']."';\n";
-    $config[] = "\$db_schema_version = 2;\n";
+    $config[] = "\$db_schema_version = 3;\n";
     $config[] = "?>\n";
 
     if ($fd = fopen('../modules/config.inc','x')) {
@@ -306,7 +288,7 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
   }
 ?>
 
-      <a class="btn btn-primary btn-large" href="index3.php">Continue --&gt;</a>
+      <a class="btn btn-primary btn-lg" href="index3.php">Continue --&gt;</a>
     </div> <!-- /container -->
 
     <!-- Le javascript

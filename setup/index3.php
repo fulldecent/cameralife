@@ -13,18 +13,7 @@
     <meta charset="utf-8">
     <title>Install Camera Life</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Le styles -->
-    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <style type="text/css">
-    </style>
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-52764-13']);
@@ -40,45 +29,40 @@
 
   <body>
 
-    <div class="navbar">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand">INSTALL CAMERA LIFE</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li><a>1. Prerequisites</a></li>
-              <li><a>2. Database</a></li>
-              <li class="active"><a>3. Use Camera Life</a></li>
-            </ul>
-            <a class="btn pull-right" href="mailto:cameralifesupport@phor.net">
-              <i class="icon-envelope"></i>
-              Email support
-            </a>
-            <a class="btn pull-right" href="http://fulldecent.github.com/cameralife">
-              <i class="icon-home"></i>
-              Camera Life homepage
-            </a>
-          </div><!--/.nav-collapse -->
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <span class="navbar-brand">INSTALL CAMERA LIFE</span>
         </div>
+        <ul class="nav navbar-nav">
+          <li><a>1. Prerequisites</a></li>
+          <li><a>2. Database</a></li>
+          <li class="active"><a>3. Use Camera Life</a></li>
+        </ul>
+        <a class="btn btn-default navbar-btn pull-right" href="mailto:cameralifesupport@phor.net">
+          <i class="icon-envelope"></i>
+          Email support
+        </a>
+        <a class="btn btn-default navbar-btn pull-right" href="http://fulldecent.github.com/cameralife">
+          <i class="icon-home"></i>
+          Camera Life project page
+        </a>
       </div>
-    </div>
+    </nav>
+
+    <div class="jumbotron">
+      <div class="container">
+        <h2 class="text-success"><i class="glyphicon glyphicon-ok"></i> You are running Camera Life <?php readfile('../VERSION') ?></h2>
+        <p>Thank you for choosing to install Camera Life. We hope you will find this software is easy to use and fun.
+        
+        <hr>
+        <p><a class="btn btn-default btn-large" target="_blank" href="https://github.com/fulldecent/cameralife"><i class="glyphicon glyphicon-star"></i> Star us on GitHub</a> to get important security updates</p>
+      </div>
+    </div>    
 
     <div class="container">
-
-<!--      <p style="text-align:center"><img src="images/intro1.png"><p> -->
-
-      <div class="well">
-        <h2>You are running Camera Life <?php readfile('../VERSION') ?></h2>
-        <p>Thank you for choosing to install Camera Life. We hope you will find this software is easy to use and fun.
-      </div>
-
       <div class="row">
-        <div class="span6">
+        <div class="col-sm-6">
           <h2>Get your photos ready</h2>
           <p>Collect some photos that you would like to use with the site. Now, either:</p>
           <ul>
@@ -91,7 +75,7 @@
             <li>Advanced setup: change your <a href="../admin/photostore.php" target="_blank">Photo Storage setup</a> to use your Amazon S3, or Flickr, or remote FTP storage</li>
           </ul>
         </div>
-        <div class="span6">
+        <div class="col-sm-6">
           <h2>Go have fun</h2>
           <p>You are now logged into your new site as <b>admin</b> with full privileges.
 Perform these quick tasks to bring your site up to date. This also counts as
@@ -108,9 +92,7 @@ a tutorial on how your site works.</p>
       <div class="well">
         <h2>
           You're done
-          <a class="btn btn-primary btn-large" href="../index.php"><i class="icon-arrow-right icon-white"></i> Check out your site</a>
-          <a class="btn btn-large" href="https://github.com/fulldecent/cameralife"><i class="icon-star"></i> Star on Github to get updates</a>
-          <a class="btn btn-large" href="mailto:cameralifeinstalled@phor.net"><i class="icon-envelope"></i> Send feedback</a>
+          <a class="btn btn-primary btn-large" href="../index.php" target="_blank"><i class="icon-arrow-right icon-white"></i> Check out your site</a>
         </h2>
       </div>
 
