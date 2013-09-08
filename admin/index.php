@@ -163,7 +163,6 @@ if ($numreg)
             <div class="panel-body">
               <p>How do you like Camera Life? Let us know.</p>
               <p>
-                <a class="btn btn-default" href="register.php"><i class="icon-envelope"></i> Write feedback &raquo;</a>
                 <a class="btn btn-default" href="https://github.com/fulldecent/cameralife/issues"><i class="icon-flag"></i> Report an issue &raquo;</a>
                 <a class="btn btn-default" href="https://github.com/fulldecent/cameralife"><i class="icon-star"></i> Get project updates &raquo;</a>
                 <a class="btn btn-default" href="http://www.facebook.com/sharer.php?u=http://fulldecent.github.com/cameralife/"><i class="icon-star"></i> Like on Facebook &raquo;</a>
