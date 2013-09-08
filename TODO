@@ -53,7 +53,7 @@ xargs -0 sed "1,10 s/@\(\W*\)version\W*[0-9.a-z]\+/@\1version $VERSION/" -i
 git commit -am "Releasing version $VERSION"
 git tag -a "v$VERSION" -m "Version $VERSION"
 git push --tags
-phpdoc -c phpdoc.ini
+phpdoc --directory . --target ../docs/ --title 'Camera Life Developer Manual' --ignore '*/*/*/phpFlickr-2.2.0/,*/*/*/php-openid-1.2.3/'
 
 #GOTO  http://freecode.com/projects/fdcl/releases/new
 #MAIL people in the MAILINGLIST file
