@@ -24,7 +24,7 @@ else
     $results = $search->GetPhotos();
 
 if ($counts['photos'] == 0)
-    echo '<div class="alert"><strong>Note!</strong> Camera Life has been successfully installed on this site. There are currently no photos on this site. For more information on setting up this site and adding photos, see <a href="setup/index3.php"><strong>the Setup page</strong></a>.</div>';
+    echo '<div class="alert alert-success"><strong>Note!</strong> Camera Life has been successfully installed on this site. There are currently no photos on this site. For more information on setting up this site and adding photos, see <a href="setup/index3.php"><strong>the Setup page</strong></a>.</div>';
 ?>
 
 <div class="well">
