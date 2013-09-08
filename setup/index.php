@@ -240,9 +240,19 @@ if ($continue) {
           <div class="col-sm-6">
             <h4>Use these instructions for <?= $system ?></h4>
 <?php if ($system == 'Ubuntu') { ?>
-              <pre>$ sudo mysql
-mysql&lt; CREATE DATABASE <b><span class="var-host">cameralife</span></b>;
-mysql&lt; GRANT ALL ON <b>cameralife</b>.* TO <b>user</b>@<b>localhost</b> IDENTIFIED BY '<b>pass</b>';</pre>
+              <table>
+                <tr>
+                  <td><pre>$
+mysql&gt; 
+mysql&gt;
+    -&gt; 
+    -&gt; </pre>
+                  <td><pre>sudo mysql
+CREATE DATABASE <b><span class="var-host">cameralife</span></b>;
+GRANT ALL ON <b>cameralife</b>.* 
+TO <b>user</b>@<b>localhost</b> 
+IDENTIFIED BY '<b>pass</b>';</pre>
+              </table>
 <?php } elseif ($system == 'CPanel') { ?>
               <ul>
                 <li><a target="_new" href="http://phor.net/cpanel">Login to cPanel</a></li>
