@@ -14,33 +14,40 @@
 //TODO: use bootstrap
 
 ?>
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <title><?= $cameralife->GetPref('sitename') ?></title>
-  <link rel="stylesheet" href="../../../admin/admin.css">
-  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <link rel="stylesheet" href="../../../bootstrap/css/bootstrap.min.css">
+  <meta charset="utf-8">
 </head>
 <body>
 
-<h1><?php echo ucwords($action) ?></h1>
-<form method="post" action="login_controller.php">
-<input type="hidden" name="target" value="<?= $cameralife->base_url.'/index.php' ?>">
-<table>
-  <tr><td>Username:<td><input type="text" name="param1" value="<?= $_POST["username"]?>">
-  <tr><td>Password:<td><input type="password" name="param2" value="">
-<?php if ($action == 'register') { ?>
-  <tr><td>Email:<td><input type="text" name="param3" value="">
-  <tr><td><td>
-    <input type="submit" name="action" value="Register">
-<?php } else { ?>
-  <tr><td><td>
-    <input type="submit" name="action" value="Login">
-  <tr><td><td>
-    <a href="?register">Or create an account</a>
-<?php } ?>
-</table>
+  <div class="container">
+    <div class="page-header">
+      <h1><?php echo ucwords($action) ?></h1>
+    </div>
 
-</form>
-</body>
+    <form class="form-inline" role="form" method="post" action="login_controller.php">
+      <input type="hidden" name="target" value="<?= $cameralife->base_url.'/index.php' ?>">
+      <div class="form-group">
+        <label class="sr-only" for="param1">Username</label>
+        <input type="text" class="form-control" id="param1" name="param1" value="<?= isset($_POST["username"]) ? $_POST["username"] : ''?>" placeholder="Enter username">
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="param2">Password</label>
+        <input type="password" class="form-control" id="param2" name="param2" placeholder="Password">
+      </div>
+<?php if ($action == 'register') { ?>
+      <div class="form-group">
+        <label class="sr-only" for="param3">Email</label>
+        <input type="email" class="form-control" id="param3" name="param3" placeholder="Enter Email">
+      </div>
+      <button type="submit" class="btn btn-default">Register</button>
+<?php } else { ?>
+      <button type="submit" class="btn btn-default">Login</button>
+      <a href="?register">Or create an account</a>
+<?php } ?>
+    </form>
+  </body>
 </html>

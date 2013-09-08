@@ -52,7 +52,7 @@ class CameraLife extends CameraLifeModule # and View
     $this->GetFeature('database');
     $this->LoadPreferences();
 
-    $this->preferences[] = array('name'=>'theme', 'type'=>'string', 'default'=>'sidebar');
+    $this->preferences[] = array('name'=>'theme', 'type'=>'string', 'default'=>'bootstrap');
     $this->preferences[] = array('name'=>'iconset', 'type'=>'string', 'default'=>'cartoonic');
     $this->preferences[] = array('name'=>'photostore', 'type'=>'string', 'default'=>'local');
     $this->preferences[] = array('name'=>'security', 'type'=>'string', 'default'=>'default');

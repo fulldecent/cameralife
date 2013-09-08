@@ -35,7 +35,7 @@
       global $_COOKIE, $cameralife;
 
       $cookiename = $this->GetPref('auth_cookie');
-      $authcookie = $_COOKIE[$cookiename];
+      $authcookie = isset($_COOKIE[$cookiename]) ? $_COOKIE[$cookiename] : NULL;
 
       if ($authcookie)
       {
@@ -150,8 +150,7 @@
     { 
       if (!isset ($this->curuser))
         $this->GetCurUser();
-
-      return $this->curuser['username'];
+      return isset($this->curuser['username']) ? $this->curuser['username'] : '';
     }
 
 //TODO is this mecessary? -- use REMOTE_ADDR or GetAddr consistently
