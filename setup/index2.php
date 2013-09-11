@@ -290,12 +290,5 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
 
       <a class="btn btn-primary btn-lg" href="index3.php">Continue --&gt;</a>
     </div> <!-- /container -->
-
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-    <script src="../bootstrap/js/bootstrap.min.js"></script>
-
   </body>
 </html>
