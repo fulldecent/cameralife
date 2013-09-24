@@ -4,11 +4,11 @@ RELEASE PROCESS / AND HACKING PROCESS
 
 CHECK ISSUES TRACKED IN GITHUB
 
-BASIC REGRESSION TESTING:
+BASIC REGRESSION AND VALIDATION TESTING:
   Check main theme in MSIE / http://netrenderer.com/
   Try to upload a non-image
   OpenSearch: http://friendfeed.com/bgolub/5e56afb1/i-like-how-google-chrome-deals-with-opensearch
-  Validate all HTML and CSS
+  HTML/CSS: http://validator.pro
   RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/rss.php%3Fq%3Dwill
   Try all the hacks
   mysqldump fdcl -d > setup/install.mysql # and add insert statements
@@ -25,10 +25,10 @@ BASIC REGRESSION TESTING:
 
 SECURITY TESTING:
   Remove support for strip slashes / and remove all stripslashes!
-  find . -follow \( -name ".svn" \) -prune -o -print | xargs grep -Hn //TODO
-  grep GET  -r modules/theme/*/*inc
-  grep PHP_SELF  -r modules/theme/*/*inc
-  grep Database -r modules/theme/*/*inc
+  git grep TODO
+  git grep GET -- modules/theme/
+  git grep PHP_SELF -- modules/theme/
+  git grep Database -- modules/theme
   grep '\./' */*php | grep -v requ
   check for inputs as arrays!
   PHP E_ALL strict?
@@ -43,9 +43,9 @@ AUTOMATED RELEASE
 edit the first line, save this file, then paste into a terminal...
 -------------------
 
-edit CHANGELOG
+edit Changelog
 
-VERSION='2.6.4' # <-- EDIT THIS
+VERSION='2.6.5' # <-- EDIT THIS
 echo $VERSION > VERSION
 sed -i "/this..version/s/'.*'/'$VERSION'/" main.inc
 grep -lIZr . . | grep -z -v '\.git' | # no binary, no git
