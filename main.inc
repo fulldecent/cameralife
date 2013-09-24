@@ -67,7 +67,6 @@ class CameraLife extends CameraLifeModule # and View
     $this->preferences[] = array('name'=>'owner_email', 'type'=>'string', 'default'=>'none@none.none');
 
     $this->preferences[] = array('name'=>'rewrite', 'type'=>'yesno', 'default'=>'no');
-    $this->preferences[] = array('name'=>'iphone', 'type'=>'yesno', 'default'=>'yes');
     $this->preferences[] = array('name'=>'autorotate', 'type'=>'yesno', 'default'=>'yes');
     $this->preferences[] = array('name'=>'tempdir', 'type'=>'string', 'default'=>'/tmp');
     $this->preferences[] = array('name'=>'thumbsize', 'type'=>'number', 'default'=>'150');
@@ -112,14 +111,6 @@ class CameraLife extends CameraLifeModule # and View
         $this->Database = new MysqlDatabase() ;
           break;
       case 'theme': 
-        if ($this->GetPref('iphone') && isset($_SERVER['HTTP_USER_AGENT']) && (stristr($_SERVER['HTTP_USER_AGENT'], 'iPhone') || stristr($_SERVER['HTTP_USER_AGENT'], 'iPod')) )
-          $implementation = 'iphone';
-        else 
-          $implementation = $this->GetPref('theme');
-        $this->RelativeInclude("modules/$feature/$implementation/module.inc");
-        $modulename = $implementation.$feature;
-        $this->$cutename = new $modulename;
-        break;
       case 'security': 
       case 'imageprocessing': 
       case 'photostore':

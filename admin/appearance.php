@@ -128,18 +128,6 @@ foreach ($cameralife->GetModules($feature) as $module) {
           </div>
         </div>
         <div class="form-group">
-          <label class="col-lg-2 control-label" for="iphone">Use the iPhone theme</label>
-          <div class="col-lg-10 controls">
-            <input type="hidden" name="module5" value="CameraLife" />
-            <input type="hidden" name="param5" value="iphone" />
-            <select name="value5" id="iphone">
-              <option <?= $cameralife->GetPref('iphone') == 'no' ? 'selected="selected"':'' ?>>no</option>
-              <option <?= $cameralife->GetPref('iphone') == 'yes' ? 'selected="selected"':'' ?>>yes</option>
-            </select>
-            <span class="help-inline">shown on iPhones and iPod touches</span>
-          </div>
-        </div>
-        <div class="form-group">
           <label class="col-lg-2 control-label" for="autorotate">Autorotate photos</label>
           <div class="col-lg-10 controls">
             <input type="hidden" name="module6" value="CameraLife" />

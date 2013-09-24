@@ -20,23 +20,6 @@ function renderPrefsAsHTML($module)
   echo "<input type=\"hidden\" name=\"target\" value=\"".$_SERVER['PHP_SELF']."\" />\n";
   if (isset($module->about))
       echo "<p>".$module->about."</p>\n";
-  
-  /*
-          <div class="control-group">
-          <label class="control-label" for="inputTheme">Theme engine</label>
-          <div class="controls">
-            <select name="value1" id="inputTheme" class="input-xxlarge">
-<option selected value="bootstrap"><b>Bootstrap</b> - <i>version 1.0.0 by Will Entriken</i></option>
-<option  value="debug"><b>Debug</b> - <i>version 1.2 by Will Entriken</i></option>
-<option  value="iphone"><b>iPhone</b> - <i>version 1.0.2 by Will Entriken</i></option>
-<option  value="light"><b>Light</b> - <i>version 1.0.1 by Will Entriken</i></option>
-<option  value="sidebar"><b>Sidebar</b> - <i>version 1.0.2 by Will Entriken</i></option>
-            </select>
-            <input type="submit" value="Choose" class="btn">
-          </div>
-        </div>
-*/
-  
   echo "<table>\n";
 
   $prefnum=0;

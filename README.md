@@ -46,9 +46,9 @@ the Gallery Remote protocol.
 
 5. Responsive
 
-  Supports OpenSearch and RSS. Is built using JQuery/AJAX for browsers, a 
-custom theme for iPhone, but gracefully degrades without Javascript for 
-accessibility... or if you want to load it on a cell phone made in the 90's
+  Supports OpenSearch and RSS. Is built using JQuery/AJAX for modernbrowsers, 
+but gracefully degrades without Javascript for accessibility... or if you want 
+to load it on a cell phone made in the 90's.
   
 6. Integrates well with your site
 
