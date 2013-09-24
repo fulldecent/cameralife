@@ -145,7 +145,17 @@ if ($cameralife->Security->GetName()) {
 ?>
           </li>
         </ul>
+<?php
+if (isset($_GET['path'])) {
+?>
+        <a class="btn btn-default navbar-btn navbar-right" href="<?= $cameralife->base_url ?>/upload.php?path=<?= htmlentities($_GET['path'])?>">
+<?php
+} else {
+?>
         <a class="btn btn-default navbar-btn navbar-right" href="<?= $cameralife->base_url ?>/upload.php">
+<?php
+}
+?>
           <i class="icon-plus"></i>
             Upload
         </a>

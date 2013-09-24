@@ -8,7 +8,7 @@
 $cameralife->GetFeature('security');
 $cameralife->GetFeature('photostore');
 
-if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$user['username'].'/')
+if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$cameralife->Security->GetName().'/')
 {
   $cameralife->Security->Authorize('admin_file', 1);
   $path = $_REQUEST['path'];
