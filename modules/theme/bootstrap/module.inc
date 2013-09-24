@@ -186,9 +186,10 @@ if ($cameralife->Security->GetName()) {
 
       <footer>
         <p>
-          <a href="<?= $cameralife->base_url ?>"><i class="icon-globe"></i> <?= $cameralife->GetPref('sitename') ?></a>
           <a href="mailto:<?= $cameralife->GetPref('owner_email') ?>"><i class="icon-envelope"></i> Contact site owner</a>
+          &nbsp;
           <a href="<?= $cameralife->base_url ?>/stats.php"><i class="icon-signal"></i> Site stats</a>
+          &nbsp;
           <a href="http://fulldecent.github.com/cameralife"><i class="icon-globe"></i> Built with Camera Life</a>
         </p>
       </footer>
