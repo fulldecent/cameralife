@@ -138,8 +138,8 @@ class Search extends View
       default:          $sort = 'albums.id desc';
     }
 
-    $condition = $this->mySearchAlbumCondition.' AND status=0 AND albums.poster_id=photos.id';
-    $query = $cameralife->Database->Select('photos, albums', 'albums.id', $condition, 'ORDER BY '.$sort.' '.$this->myLimit);
+    $condition = $this->mySearchAlbumCondition;
+    $query = $cameralife->Database->Select('albums', 'id', $condition, 'ORDER BY '.$sort.' '.$this->myLimit);
 
     $albums = array();
     while ($row = $query->FetchAssoc())

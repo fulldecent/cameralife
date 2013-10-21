@@ -4,7 +4,7 @@
  * The following variables are set by ShowPage()
  * <ul>
  * <li>$cameralife</li>
- * <li>$search </li>
+ * <li>$search</li>
  * </ul>
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 Will Entriken
@@ -15,10 +15,10 @@
 
 $cameralife->GetFeature('security');
 $cameralife->GetFeature('photostore');
-
 $start = isset($_GET['start']) ? $_GET['start']+0 : 0;
 $search->SetPage($start);
 $counts = $search->GetCounts();
+
 if ((isset($_GET['page']) && $_GET['page'] == 'a') || (!isset($_GET['page']) && $counts['albums'] >0)) {
   $_GET['page'] = 'a';
   $results = $search->GetAlbums();
@@ -80,10 +80,10 @@ foreach ($counts as $type=>$num) {
     if (count($class)) 
         echo " class=\"".implode(" ",$class)."\"";
     if ($num == 1 && substr($type,-1)=='s')
-        $type = substr($type, 0 -1);
+        $type = substr($type, 0, -1);
     $href = "&#63;q=".urlencode($search->GetQuery())."&amp;page=".$type[0];
     if ($num == 0)
-        $href = "#";
+        $href = "";
     echo "><a href=\"$href\">$num $type</a></li>".PHP_EOL;
 }
 echo "</ul>".PHP_EOL;
