@@ -5,21 +5,14 @@ Version 2.6
 Copyright (C) 2001-2012 William Entriken  
 https://github.com/fulldecent/cameralife  
 cameralife@phor.net
-  
-Camera Life is released under the terms of the GNU General Public License 
-as published by the Free Software Foundation; either version 2 of the 
-License, or (at your option) any later version. See the file LICENSE for 
-more information.
+
+Camera Life is a system for cataloging your photo collection. It gives users 
+the ability to search or browse your archive in intuitive ways, with an 
+attention to powerful administrative functions.
 
 ![Screenshot 1](http://fulldecent.github.com/cameralife/splashAssets/screenshot1.png)
 ![Screenshot 2](http://fulldecent.github.com/cameralife/splashAssets/screenshot2.png)
 ![Screenshot 3](http://fulldecent.github.com/cameralife/splashAssets/screenshot3.png)
-
-Introduction
---------------
-Camera Life is a system for cataloging your photo collection. It gives users 
-the ability to search or browse your archive in intuitive ways, with an 
-attention to powerful administrative functions.
 
 Features
 --------
