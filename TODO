@@ -56,10 +56,10 @@ git push --tags
 phpdoc --directory . --target ../docs/ --title 'Camera Life Developer Manual' --ignore '*/*/*/phpFlickr-2.2.0/,*/*/*/php-openid-1.2.3/'
 
 #GOTO  http://freecode.com/projects/fdcl/releases/new
-#MAIL people in the MAILINGLIST file
 
-===========================
-----------------------------
+--------- Do other static analysis?
+php phpcpd.phar  /var/www/cameralifeSVN/ ?
+PSR-2 cross compiler?
 
 ===================================
 WHEN MAKING CHANGES TO THE DATABASE

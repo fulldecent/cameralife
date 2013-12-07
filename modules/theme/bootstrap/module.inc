@@ -171,8 +171,8 @@ if (isset($_GET['path'])) {
 <?php
       if ($this->menu) {
 ?>
-      <div class="row-fluid">
-        <div class="span9">
+      <div class="row">
+        <div class="col-md-9">
 <?php
       }
     }
@@ -183,7 +183,7 @@ if (isset($_GET['path'])) {
       if ($this->menu) {
 ?>
         </div><!--/span-->
-        <div class="span3">
+        <div class="col-md-3">
           <div class="well sidebar-nav">
             <?= $this->menu ?>
           </div>
@@ -323,10 +323,10 @@ if (isset($_GET['path'])) {
           if ($last==0) $last=1;
       
           if ($first != $start)
-            echo "<li><a href=\"".AddParam($url,'start',$start-$per_page)."\">&laquo;</a></li>";
+              echo "<li><a href=\"".AddParam($url,'start',$start-$per_page)."\">&laquo;</a></li>";
           else
-            echo "<li><a class=\"disabled\" href=\"#\">&laquo;</a></li>";
-  
+              echo "<li class=\"disabled\"><span>&laquo;</span></li>";
+
           for ($i=$first; $i<=$last; $i+=$per_page) {
             if ($i==$start) 
                 echo "<li class=\"active\"><a href=\"".AddParam($url,'start',$i)."\">".($i/$per_page+1)."</a></li>";
@@ -335,9 +335,9 @@ if (isset($_GET['path'])) {
           }
   
           if ($last != $start)
-            echo "<li><a href=\"".AddParam($url,'start',$start+$per_page)."\">&raquo;</a></li>";
+              echo "<li><a href=\"".AddParam($url,'start',$start+$per_page)."\">&raquo;</a></li>";
           else 
-            echo "<li><a class=\"disabled\" href=\"#\">&laquo;</a></li>";
+              echo "<li class=\"disabled\"><span>&raquo;</span></li>";
         }
         echo "</ul>\n";
       }

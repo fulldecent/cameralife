@@ -97,57 +97,6 @@ $menu .= '</ul>';
 $menu .= '<ul class="nav nav-list"><li class="nav-header">Share</li>';
 $menu .= "  <li><a href=\"http://www.facebook.com/sharer.php?u='".htmlentities($icon['href'])."\"><i class=\"icon-star\"></i> Share on Facebook</a></li>\n";
 $menu .= '</ul>';
-/*
-
-
-  if ($cameralife->Security->authorize('admin_albums') && 
-      isset($_SERVER['HTTP_REFERER']) && 
-      (preg_match ("#album.php\?id=([0-9]+)#",$_SERVER['HTTP_REFERER'],$regs) || preg_match("#albums/([0-9]+)#",$_SERVER['HTTP_REFERER'],$regs)))
-  {
-#TODO a separate controller?
-    $album = new Album($regs[1]);
-    $alicon = $album->GetIcon('small');
-    if (strpos($alicon['href'], '&#63;') !== FALSE)
-      $alicon['href'] .= '&poster_id='.$photo->Get('id');
-    else 
-      $alicon['href'] .= '?poster_id='.$photo->Get('id');
-    $name = 'Use this for <b>'.$album->Get('name').'</b>';
-    $href = $alicon['href'];
-    echo "       <li><a href=\"$href\">$name</a></li>\n";
-  }
-  if ($photo->Get('status') == 0)
-  {
-    $href = $icon['href'].'&amp;action=print';
-    echo "       <li><a href=\"$href\">Order prints</a></li>\n";
-  }
-    echo "     </ul>\n";
-  echo "     <h1>Related photos</h1>\n";
-  echo "     <ul>\n";
-
-  $context = $photo->GetRelated();
-  foreach ($context as $cicon)
-  {
-    echo "       <li><a href=\"{$cicon['href']}\">{$cicon['name']}</a></li>\n";
-  }
-
-  echo "      </ul>";
-
-  if($photoPrev)
-  {
-    $img = $photoPrev->GetMedia('thumbnail');
-    echo "       <div class=\"item\"><a href='$prevhref'><img id=\"prevphoto\" style=\"margin: 0 10px\" src=\"$img\" alt=\"{$previcon['name']}\"></a>\n";
-    echo "       <a style=\"clear: left;\" href='$prevhref'>Previous photo</a><span class=\"description\">{$previcon['name']}</span></div>\n";
-  }
-  if($photoNext)
-  {
-    $img = $photoNext->GetMedia('thumbnail');
-    echo "       <div class=\"item\"><a href='$nexthref'><img id=\"nextphoto\" style=\"margin: 0 10px\" src=\"$img\" alt=\"{$nexticon['name']}\"></a>\n";
-    echo "       <a style=\"clear: left;\" href='$nexthref'>Next photo</a><span class=\"description\">{$nexticon['name']}</span></div>\n";
-  }
-
-  echo "    </div>"; # Sidebar
-*/
-
 
 $cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
 
@@ -166,7 +115,7 @@ $cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
 ?>
     <a href="<?= AddParamRawUrlEncode('action','rename') ?>" 
        id="showHideRenameForm"
-       class="btn btn-mini" 
+       class="btn btn-sm btn-default" 
        style="<?=(isset($_GET['action']) && $_GET['action'] == 'rename')?'display:none':''?>"
        onclick="$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false">edit</a>
 <?php 
@@ -183,23 +132,25 @@ $cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
       <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
       <input type="hidden" name="target" value="<?= $icon['href'] ?>">
       <input type="hidden" name="action" value="rename">
-      <div class="control-group">
-        <label class="control-label" for="formtitle">Title</label>
-        <div class="controls">
-          <input name="param1" type="text" id="formtitle" placeholder="Title" class="input-large" value="<?= htmlentities($photo->Get('description'), NULL, "UTF-8") ?>">
+      <div class="form-group">
+        <label for="formtitle" class="col-sm-2 control-label">Title</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="formtitle" placeholder="Title" name="param1" value="<?= htmlentities($photo->Get('description'), NULL, "UTF-8") ?>">
         </div>
       </div>
-      <div class="control-group">
-        <label class="control-label" for="tags">Keywords</label>
-        <div class="controls">
-          <input name="param2" type="text" id="tags" placeholder="Keywords" class="input-xxlarge" value="<?= htmlentities($photo->Get('tags'), NULL, "UTF-8") ?>">
-          <span class="help-inline">space separated</span>
+      <div class="form-group">
+        <label for="tags" class="col-sm-2 control-label">Keywords</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="tags" placeholder="Keywords" name="param2" value="<?= htmlentities($photo->Get('tags'), NULL, "UTF-8") ?>">
         </div>
       </div>
-      <div class="control-group">
-        <div class="controls">
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+        
           <input class="btn btn-primary" type="submit" value="Save Changes" onclick="makeRequest('<?= $cameralife->base_url ?>/photo_controller.php','renameform',function(){$('h1').html($('form#renameform input[name=param1]').val())};return false">
-          <a class="btn" href="<?= $icon['href'] ?>" onclick="$('#showHideRenameForm').show();$('#renameform').hide();return false">Cancel</a> 
+          <a class="btn btn-default" href="<?= $icon['href'] ?>" onclick="$('#showHideRenameForm').show();$('#renameform').hide();return false">Cancel</a> 
+
         </div>
       </div>
     </form>
@@ -244,7 +195,7 @@ $cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
         <strong>Bracketing</strong> / A very similar photo supersedes this one
       </label>
       <input class="btn btn-primary btn-danger" type="submit" value="Flag Photo">
-      <a class="btn" href="<?= $icon['href'] ?>" onclick="$('#delete').hide();return false">Cancel</a> 
+      <a class="btn btn-default" href="<?= $icon['href'] ?>" onclick="$('#delete').hide();return false">Cancel</a> 
     </form>
 <?php
   }
@@ -388,7 +339,7 @@ if ($exif = $photo->GetEXIF()) {
 
 <?php
 for ($i=1; $i<=5; $i++) {
-  echo "<button name=\"param1\" value=\"$i\" type=\"submit\" class=\"btn btn-mini\">";
+  echo "<button name=\"param1\" value=\"$i\" type=\"submit\" class=\"btn btn-sm btn-default\">";
   if ($i<=$rating)
     echo "<i class=\"icon-star\"></i>\n";
   else

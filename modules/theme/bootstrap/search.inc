@@ -15,10 +15,11 @@
 
 $cameralife->GetFeature('security');
 $cameralife->GetFeature('photostore');
+
+
 $start = isset($_GET['start']) ? $_GET['start']+0 : 0;
 $search->SetPage($start);
 $counts = $search->GetCounts();
-
 if ((isset($_GET['page']) && $_GET['page'] == 'a') || (!isset($_GET['page']) && $counts['albums'] >0)) {
   $_GET['page'] = 'a';
   $results = $search->GetAlbums();
