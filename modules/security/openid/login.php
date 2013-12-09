@@ -1,19 +1,34 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" >
-<head>
-    <title>jQuery OpenID Plugin</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="openid.css" />
-    <!-- jQuery OpenID Plugin 1.1 Copyright 2009 Jarrett Vance http://jvance.com/pages/jQueryOpenIdPlugin.xhtml -->
-</head>
-<body>
-<h2>Login to <em>
-<?php
+﻿<?php
     require '../../../main.inc';
-    echo $cameralife->GetPref('sitename')
 ?>
-</em>  using OpenID</h2>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Install Camera Life</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-52764-13']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+    </script>
+  </head>
+  <body>
+
+    <div class="container">
+      <h1><?php echo $cameralife->GetPref('sitename') ?>
+      <hr>
+      <h2>Login with OpenID <small>using any provider below</small></h2>
+
 <form class="openid" method="post" action="process.php">
-  <div><ul class="providers">
+  <div><ul class="list-unstyled">
   <li class="openid" title="OpenID"><img src="images/openidW.png" alt="icon" />
   <span><strong>http://{your-openid-url}</strong></span></li>
   <li class="direct" title="Google">
@@ -42,7 +57,7 @@
         <img src="images/verisign.png" alt="icon" /><span>http://<strong>username</strong>.pip.verisignlabs.com/</span></li>
   </ul></div>
   <fieldset>
-  <label for="openid_username">Enter your <span>Provider user name</span></label>
+  <label for="openid_username">Or enter your own <span>Provider user name</span></label>
   <div><span></span><input type="text" name="openid_username" /><span></span>
   <input type="submit" value="Login" /></div>
   </fieldset>

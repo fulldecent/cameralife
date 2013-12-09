@@ -139,7 +139,8 @@ if ($cameralife->Security->GetName()) {
             <i class="icon-user"></i>
             <img alt="facebook" src="http://facebook.com/favicon.ico" height=16 width=16>
             <img alt="google" src="http://google.com/favicon.ico" height=16 width=16>
-            <img alt="yahoo" src="http://yahoo.com/favicon.ico" height=16 width=16> Login
+            <img alt="yahoo" src="http://yahoo.com/favicon.ico" height=16 width=16>
+            Login / Free account
           </a>
 <?php
 }
