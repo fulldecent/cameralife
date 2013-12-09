@@ -43,16 +43,15 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
           <span class="navbar-brand">INSTALL CAMERA LIFE</span>
         </div>
         <ul class="nav navbar-nav">
-          <li><a>1. Prerequisites</a></li>
-          <li class="active"><a>2. Database</a></li>
-          <li><a>3. Use Camera Life</a></li>
+          <li class="active"><a>1. Setup</a></li>
+          <li><a>2. Use Camera Life</a></li>
         </ul>
         <a class="btn btn-default navbar-btn pull-right" href="mailto:cameralifesupport@phor.net">
-          <i class="icon-envelope"></i>
+          <i class="glyphicon glyphicon-envelope"></i>
           Email support
         </a>
         <a class="btn btn-default navbar-btn pull-right" href="http://fulldecent.github.com/cameralife">
-          <i class="icon-home"></i>
+          <i class="glyphicon glyphicon-home"></i>
           Camera Life project page
         </a>
       </div>

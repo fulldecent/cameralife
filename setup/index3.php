@@ -35,16 +35,15 @@
           <span class="navbar-brand">INSTALL CAMERA LIFE</span>
         </div>
         <ul class="nav navbar-nav">
-          <li><a>1. Prerequisites</a></li>
-          <li><a>2. Database</a></li>
+          <li><a>1. Setup</a></li>
           <li class="active"><a>3. Use Camera Life</a></li>
         </ul>
         <a class="btn btn-default navbar-btn pull-right" href="mailto:cameralifesupport@phor.net">
-          <i class="icon-envelope"></i>
+          <i class="glyphicon glyphicon-envelope"></i>
           Email support
         </a>
         <a class="btn btn-default navbar-btn pull-right" href="http://fulldecent.github.com/cameralife">
-          <i class="icon-home"></i>
+          <i class="glyphicon glyphicon-home"></i>
           Camera Life project page
         </a>
       </div>
@@ -92,7 +91,7 @@ a tutorial on how your site works.</p>
       <div class="well">
         <h2>
           You're done
-          <a class="btn btn-primary btn-large" href="../index.php" target="_blank"><i class="icon-arrow-right icon-white"></i> Check out your site</a>
+          <a class="btn btn-primary btn-large" href="../index.php" target="_blank"><i class="glyphicon glyphicon-arrow-right"></i> Check out your site</a>
         </h2>
       </div>
 
