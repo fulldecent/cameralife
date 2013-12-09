@@ -302,8 +302,9 @@ IDENTIFIED BY '<b>pass</b>';</pre>
                 <input type="text" id="prefix" name="prefix" placeholder="(optional)" class="form-control">
               </div>
             </div>
+            <hr>
             <div class="form-group">
-              <label class="col-lg-4 control-label" for="sitepass">New password for Camera Life</label>
+              <label class="col-lg-4 control-label" for="sitepass">New website admin password</label>
               <div class="col-lg-8">
                 <input type="password" id="sitepass" name="sitepass" value="" class="form-control">
               </div>

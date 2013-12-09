@@ -58,29 +58,34 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
+          <h2>Get your photos ready</h2>
+          <p><a href="../" target="_blank">Open your site</a> and login with OpenID. Then promote your account to an admin account.</p>
+          <p><a href="index4.php" target="_blank" class="btn btn-default">Promote my account to admin</a></p>
+        </div>
+        <div class="col-sm-4">
           <h2>Get your photos ready</h2>
           <p>Collect some photos for your new site. Now, either:</p>
           <ul>
-            <li>Place them in the folder <code>images/photos</code>, or
-            <li>Make your existing folder writable and change your photo directory in the
+            <li>Place them in the folder <code>images/photos</code>
+            <li>Make your existing folder writable and set your photo directory in the
                 <a href="../admin/photostore.php" target="_blank">Photo Storage setup</a>
             <li>Use the <a href="../upload.php" target="_blank">Upload Page</a></li>
             <li>Use <a href="http://zwily.com/iphoto/" target="_blank">iPhotoToGallery</a>, <a href="http://www.digikam.org/" target="_blank">digKkam</a>, <a href="http://gallery.menalto.com/wiki/Gallery_Remote" target="_blank">Gallery Remote</a> or any <a href="http://codex.gallery2.org/Other_Clients#Photonator_.28Mac_OS_X.29" target="_blank">other software</a> compatible with the Gallery Remote API</li>
 <!--            <li>Use rsync to photos from your desktop to your server</li> -->
-            <li>Advanced setup: change your <a href="../admin/photostore.php" target="_blank">Photo Storage setup</a> to use your Amazon S3, or Flickr, or remote FTP storage</li>
+            <li>Change your <a href="../admin/photostore.php" target="_blank">Photo Storage setup</a> to use Amazon S3, or Flickr, or remote FTP storage (advanced)</li>
           </ul>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <h2>Go have fun</h2>
           <p>You are now logged into your new site as <b>admin</b> with full privileges.
 Perform these quick tasks to bring your site up to date. This also counts as
 a tutorial on how your site works.</p>
           <ul>
             <li>Go to your <a href="../admin/appearance.php" target="_blank">Site Setup</a> page and name your site, you can change your theme while you're there
-            <li>Now go to your <a href="../admin/files.php" target="_blank">File Manager</a> page and Rescan Photos, do this whenever you add or change photos in your photo directory
+            <li>Now go to your <a href="../admin/files.php" target="_blank">File Manager</a> page and Rescan Photos, do this whenever you add or change photos in your photo directory if it doesn't happen automatically
             <li><a href="../search.php&#63;q=unnamed&amp;sort=photos.id" target="_blank">Search</a> for the unnamed pics you just imported and name some of them
-            <li><a href="http://fdcl.sourceforge.net/wiki/index.php/Albums" target="_blank">Learn about Albums</a>, and create a few
+            <li><a href="https://github.com/fulldecent/cameralife/wiki/Albums" target="_blank">Learn about Albums</a>, and create a few
           </ul>
         </div>
       </div>

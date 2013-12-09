@@ -55,7 +55,7 @@ class CameraLife extends CameraLifeModule # and View
     $this->preferences[] = array('name'=>'theme', 'type'=>'string', 'default'=>'bootstrap');
     $this->preferences[] = array('name'=>'iconset', 'type'=>'string', 'default'=>'cartoonic');
     $this->preferences[] = array('name'=>'photostore', 'type'=>'string', 'default'=>'local');
-    $this->preferences[] = array('name'=>'security', 'type'=>'string', 'default'=>'default');
+    $this->preferences[] = array('name'=>'security', 'type'=>'string', 'default'=>'openid');
     $this->preferences[] = array('name'=>'imageprocessing', 'type'=>'string', 'default'=>'gd');
 
     $this->preferences[] = array('name'=>'checkpointlogs', 'type'=>'number', 'default'=>'0');
