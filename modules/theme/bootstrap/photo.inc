@@ -241,19 +241,7 @@ $cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
           </div>
         </div>
       </form>
-      
-<!--
-      <script type="text/javascript" src="http://feather.aviary.com/js/feather.js"></script>
-      <div class="form-horizontal">
-        <div class="control-group">
-          <label class="control-label">Edit photo</label>
-          <div class="controls">
-            <a class="btn" onclick="return launchEditor('image1', 'http://images.aviary.com/imagesv5/feather_default.jpg');">Edit photo with Aviary</a>
-          </div>
-        </div>
-      </div>
--->
-      
+            
       <div class="form-horizontal">
         <div class="control-group">
           <div class="controls">
