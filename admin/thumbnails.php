@@ -21,41 +21,29 @@ $numdone = isset($_GET['numdone']) ?(int) $_GET['numdone'] : 0;
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Camera Life - Administration</title>
+    <title>Admin: Thumbnails</title> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="generator" content="Camera Life version <?= $cameralife->version ?>">
+    <meta name="author" content="<?= $cameralife->GetPref('owner_email') ?>">
 
     <!-- Le styles -->
-    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-    </style>
-    <link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <link href="<?= $cameralife->base_url ?>/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    <script src="../bootstrap/js/bootstrap.min.js"></script>
   </head>
-
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <span class="brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / <a href="index.php">Administration</a> / Thumbnails</span>
-        </div>
+
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <span class="navbar-brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
       </div>
     </div>
+    
     <div class="container">
+
       <h2>Update thumbnails</h2>
       <p>We are now caching thumbnails. This avoids a delay when a photo is viewed for the first time.</p>
 
@@ -63,17 +51,17 @@ $numdone = isset($_GET['numdone']) ?(int) $_GET['numdone'] : 0;
   $total = $cameralife->Database->SelectOne('photos', 'count(*)');
   $done = $cameralife->Database->SelectOne('photos', 'count(*)', "id <= $lastdone");
   $todo = $cameralife->Database->SelectOne('photos', 'count(*)', "id > $lastdone");
-  $timeleft = ceil((time()-$starttime) * $todo / ($numdone + $done/500 + 1) / 60);
+  $timeleft = ceil((time()-$starttime) * $todo / ($numdone + $done/1000 + 1) / 60);
 
   echo "<p>Progress: $done of $total done";
   if ($done != $total)
     echo " (about $timeleft minutes left)";
   echo "</p>\n";
-  echo '<div class="progress progress-striped active">';
-  echo '<div class="bar" style="width: '.($done/$total*100).'%;"></div>';
+  echo '<div class="progress">';
+  echo '<div class="progress-bar" style="width: '.($done/$total*100).'%;"></div>';
   echo '</div>';
 
-  $next1000 = $cameralife->Database->Select('photos', 'id', "id > $lastdone", 'ORDER BY id LIMIT 500');
+  $next1000 = $cameralife->Database->Select('photos', 'id', "id > $lastdone", 'ORDER BY id LIMIT 1000');
   $fixed = 0;
   flush();
   while (($next = $next1000->FetchAssoc()) && ($fixed < 10)) {
