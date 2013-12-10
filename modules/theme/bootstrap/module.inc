@@ -116,13 +116,13 @@
           <input type="text" class="form-control" placeholder="Search" name="q" />
         </form>
         <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown">
         
 <?php
 if ($cameralife->Security->GetName()) {
  $gravitarHTML = htmlentities("http://www.gravatar.com/avatar/".md5($cameralife->Security->GetName())."?s=16&d=identicon");
 
 ?>  
+          <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?= $gravitarHTML ?>" height=16 width=16> <?= $cameralife->Security->GetName() ?> <b class="caret"></b></a>  
             <ul class="dropdown-menu">
               <li><a href="<?= $myfoldericon['href'] ?>">My Uploads</a></li>
@@ -131,19 +131,20 @@ if ($cameralife->Security->GetName()) {
               <li class="divider"></li>
               <li><a href="<?= $cameralife->base_url.'/logout.php' ?>">Sign Out</a></li>
             </ul>
+          </li>
 <?php
 } else {
 ?>
-            <a class="btn btn-default narbar-right" href="<?= $cameralife->Security->LoginURL() ?>">
-              <i class="icon-user"></i>
-              <img alt="facebook" src="http://facebook.com/favicon.ico" height=16 width=16>
-              <img alt="google" src="http://google.com/favicon.ico" height=16 width=16>
-              <img alt="yahoo" src="http://yahoo.com/favicon.ico" height=16 width=16> Login
-            </a>
+          <a class="btn btn-default navbar-btn narbar-right" href="<?= $cameralife->Security->LoginURL() ?>">
+            <i class="icon-user"></i>
+            <img alt="facebook" src="http://facebook.com/favicon.ico" height=16 width=16>
+            <img alt="google" src="http://google.com/favicon.ico" height=16 width=16>
+            <img alt="yahoo" src="http://yahoo.com/favicon.ico" height=16 width=16>
+            Login / Free account
+          </a>
 <?php
 }
 ?>
-          </li>
         </ul>
 <?php
 if (isset($_GET['path'])) {

@@ -140,16 +140,15 @@ else {
           <span class="navbar-brand">INSTALL CAMERA LIFE</span>
         </div>
         <ul class="nav navbar-nav">
-          <li class="active"><a>1. Prerequisites</a></li>
-          <li><a>2. Database</a></li>
-          <li><a>3. Use Camera Life</a></li>
+          <li class="active"><a>1. Setup</a></li>
+          <li><a>2. Use Camera Life</a></li>
         </ul>
         <a class="btn btn-default navbar-btn pull-right" href="mailto:cameralifesupport@phor.net">
-          <i class="icon-envelope"></i>
+          <i class="glyphicon glyphicon-envelope"></i>
           Email support
         </a>
         <a class="btn btn-default navbar-btn pull-right" href="http://fulldecent.github.com/cameralife">
-          <i class="icon-home"></i>
+          <i class="glyphicon glyphicon-home"></i>
           Camera Life project page
         </a>
       </div>
@@ -216,11 +215,11 @@ foreach ($checkPrerequesites as $result) {
 }
 if ($continue) {
 ?>
-              Prerequisites OK <a class="btn btn-default" href=""><i class="icon-refresh"></i> Check again</a>
+              Prerequisites OK <a class="btn btn-default" href=""><i class="glyphicon glyphicon-refresh"></i> Check again</a>
 <?php
 } else {
 ?>
-              You must fix prerequisite errors before continuing <a class="btn btn-primary" href=""><i class="icon-refresh"></i> Check again</a>
+              You must fix prerequisite errors before continuing <a class="btn btn-primary" href=""><i class="glyphicon glyphicon-refresh"></i> Check again</a>
     </div>
   </body>
 </html>
@@ -303,8 +302,9 @@ IDENTIFIED BY '<b>pass</b>';</pre>
                 <input type="text" id="prefix" name="prefix" placeholder="(optional)" class="form-control">
               </div>
             </div>
+            <hr>
             <div class="form-group">
-              <label class="col-lg-4 control-label" for="sitepass">New password for Camera Life</label>
+              <label class="col-lg-4 control-label" for="sitepass">New website admin password</label>
               <div class="col-lg-8">
                 <input type="password" id="sitepass" name="sitepass" value="" class="form-control">
               </div>
