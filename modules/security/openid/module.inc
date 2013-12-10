@@ -32,7 +32,7 @@
         $authcookie = $_COOKIE[$cookiename];
         $result = $cameralife->Database->Select('users','*',"cookie='$authcookie'");
         $this->curuser = $result->FetchAssoc()
-          or $this->curuser = array('auth'=>'0');
+          or $this->curuser = array('auth'=>'0','username'=>'');
       } else {
         $this->curuser = array('auth'=>'0','username'=>'');
       }
