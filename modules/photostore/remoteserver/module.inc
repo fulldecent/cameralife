@@ -188,8 +188,7 @@
       }
     }
 
-//TODO
-    # hm??? any thounght?
+    /// Stub
     function SetPermissions() {}
 
     /**

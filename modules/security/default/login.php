@@ -11,8 +11,6 @@
     $action = 'register';
   else
     $action = 'login';
-//TODO: use bootstrap
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

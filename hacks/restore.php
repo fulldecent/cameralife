@@ -72,16 +72,12 @@
       while ($photo = $photos->FetchAssoc()) {
 
         if ($photo['modified']) {
-//TODO fix hardcoded file format
-// this first one could be /dev/null?
           $cameralife->PhotoStore->ModifyFile(new Photo($photo['id']), $_REQUEST['moddir'] . '/' . $photo['id'] . '_mod.jpg');
         }
 
         $ticket = $cameralife->PhotoStore->PutFile(new Photo($photo['id']), $_REQUEST['photodir'] . '/' . $photo['path'] . $photo['filename']);
 
-//TODO doing this twice is not efficient!
         if ($photo['modified']) {
-//TODO fix hardcoded file format
           $cameralife->PhotoStore->ModifyFile(new Photo($photo['id']), $_REQUEST['moddir'] . '/' . $photo['id'] . '_mod.jpg');
         }
 

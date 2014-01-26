@@ -159,7 +159,6 @@ class LocalPhotoStore extends PhotoStore
 
       $extension = $photo->extension;
 
-      ///TODO why are there NULLs and 0s in the database?
       if (!file_exists($this->CacheDir .'/'. $photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension) ||
           !file_exists($this->CacheDir .'/'. $photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension) ||
           (($photo->Get('modified')!=NULL&&($photo->Get('modified')>0)) && !file_exists($this->CacheDir .'/'. $photo->Get('id').'_mod.'.$extension)))

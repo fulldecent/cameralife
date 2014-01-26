@@ -113,7 +113,6 @@ class Photo extends View
 
     if (isset($this->image)) return;
     list ($file, $temp, $this->record['mtime']) = $cameralife->PhotoStore->GetFile($this);
-///TODO there shouldnt be three cases here
     if (is_null($this->record['modified']) || $this->record['modified'] == 0 || $this->record['modified'] == '') {
       $this->record['fsize'] = filesize($file);
       $this->record['created'] = date('Y-m-d', $this->record['mtime']);

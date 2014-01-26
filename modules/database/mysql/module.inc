@@ -11,15 +11,11 @@
   {
     var $myConnection;
     var $myPrefix;
-/**
-*@todo A better way to pass the variables- $db_host, $db_user, $db_pass, $db_name, $db_prefix;
 
-*/
     function MySqlDatabase ()
     {
       global $cameralife, $db_host, $db_user, $db_pass, $db_name, $db_prefix;
 
-      //TODO: find a better way to pass in these variables
       $this->myConnection = mysql_connect($db_host, $db_user, $db_pass)
         or die(mysql_error());
       mysql_select_db($db_name, $this->myConnection)

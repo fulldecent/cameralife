@@ -46,7 +46,6 @@ class AuditTrail
    */
   public function Undo($id)
   {
-//TODO: FACTOR THIS OUT use GetOld()
     global $cameralife;
 
     if (is_numeric($id)) {
@@ -168,7 +167,7 @@ class Receipt
     if ($this->myRecord['record_type']=='preference')
       return $cameralife;
     if ($this->myRecord['record_type']=='user')
-      return die("user receipt type"); //TODO wtf do I do here?
+      return die("user receipt type"); // wtf do I do here?
     $cameralife->Error("Invalid receipt type.");
   }
 

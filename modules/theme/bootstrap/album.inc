@@ -21,35 +21,6 @@ $sort = isset($_GET['sort']) ? $_GET['sort'] : 'rand';
 $extrahead = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of '.$album->Get('name').'" href="'.$cameralife->base_url.'/rss.php&#63;q='.$album->Get('term').'"/>'; 
 $cameralife->Theme->Header($cameralife->GetPref('sitename').': '.$album->Get('name'), 'album', $extrahead);
 
-/* TODO
-
-  $menu = array();
-  $menu[] = $cameralife->GetIcon('small');
-  $menu[] = $album->GetTopic()->GetIcon('small');
-
-  if ($cameralife->Security->authorize('admin_albums') && !isset($_GET['edit']))
-  {
-    if (strpos($icon['href'], '&#63;') !== FALSE)
-      $href = $icon['href'] . '&amp;id='.$album->Get('id').'&amp;edit=true';
-    else
-      $href = $icon['href'] . '&#63;id='.$album->Get('id').'&amp;edit=true';
-
-    echo '<div class="item"><a href="'.$href.'">Edit this Album</a></div>';
-  }
-
-  if (strpos($icon['href'], '&#63;') !== FALSE)
-    $href = $icon['href'] . '&amp;help';
-  else
-    $href = $icon['href'] . '&#63;help';
-
-  $menu[] = array('name'=>'Add photos to this Album',
-                  'href'=>$href,
-                  'onclick'=>"javascript:void(document.getElementById('help').style.display='');return false",
-                  'image'=>'small-admin');
-
-
-*/
-
   if (isset($_GET['edit']) && $cameralife->Security->authorize('admin_albums'))
   {
 ?>

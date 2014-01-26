@@ -12,10 +12,6 @@
   /**
 */
 
-//TODO: use bootstrap
-
-//TODO: don't let anyone access this page uness this module is live
-
   $features=array('database','security');
   require '../../../main.inc';
   $cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));

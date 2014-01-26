@@ -184,8 +184,7 @@
       // preparing HTTP PUT query
       $query = "GET /{$aws_path} HTTP/1.1\r\nHost: s3.amazonaws.com\r\nDate: $dt\r\nConnection: close\r\nAuthorization: AWS {$aws_key}:".$this->amazon_hmac($string2sign)."\r\n\r\n";
 
-      list($header, $resp) = $this->downloadREST($fp, $query);
-//TODO this is inefficient if we just uploaded the file
+      list($header, $resp) = $this->downloadREST($fp, $query); // this is inefficient if we just uploaded the file
 
       if (strpos($header, '200 OK') === false) // checking for error
         $cameralife->Error("Error GETting file from AWS: $header -- $resp", __FILE__, __LINE__); // response code is not 200 OK -- failure
@@ -252,9 +251,7 @@
       $photo->GenerateThumbnail();
     }
 
-//TODO
-    # hm??? any thoughts?
-    /**@todo We look forward to your inputs.
+    /** Stub
     */
     function SetPermissions() {}
 

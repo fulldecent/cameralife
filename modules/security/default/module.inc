@@ -134,7 +134,6 @@
      */
     function AdministerURL () 
     { 
-//TODO fix this
       global $cameralife;
       if ($this->authorize('admin_file') ||
           $this->authorize('admin_theme') ||
@@ -153,11 +152,7 @@
       return isset($this->curuser['username']) ? $this->curuser['username'] : '';
     }
 
-//TODO is this mecessary? -- use REMOTE_ADDR or GetAddr consistently
-    /* Returns the current user's IP address */
-    /**@return the current user's IP address 
-    */
-    
+    // Deprecated  
     function GetAddr () 
     {
       global $_SERVER;

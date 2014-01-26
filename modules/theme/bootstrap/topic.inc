@@ -12,22 +12,6 @@ $albums = $topic->GetAlbums();
 $counts = $topic->GetCounts();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
-/*
-TODO
-  $menu = array();
-  $menu[] = $cameralife->GetIcon('small');
-  if ($cameralife->Security->authorize('admin_albums'))
-  {
-    $menu[] = array('name'=>"Add an album to \"".htmlentities($topic->GetName())."\"",
-                    'href'=>"search.php&#63;albumhelp=1",
-                    'image'=>'small-album');
-  }
-  $menu[] = array('name'=>"Search for \"".htmlentities($topic->GetName())."\"",
-                  'href'=>'search.php&#63;q='.urlencode($topic->GetName()),
-                  'image'=>'small-search');
-
-*/
-
 $cameralife->Theme->Header($cameralife->GetPref('sitename').' : '.htmlentities($topic->GetName()), 'topic');
 ?>
 <form name="form1" method=post action="album_controller.php">

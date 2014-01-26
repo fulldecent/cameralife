@@ -1,16 +1,16 @@
 <?php
 
-/**Displays the folders path file on the page
- *@author Will Entriken <cameralife@phor.net>
- *@copyright Copyright (c) 2001-2009 Will Entriken
- *@access public
+/**
+ * Displays the folders path file on the page
+ * @author Will Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @access public
  */
 
 $features=array('database','theme','photostore', 'imageprocessing', 'security');
 require 'main.inc';
 
-##TODO: make the second param true there
-$folder = new Folder(stripslashes($_GET['path']), false);
+$folder = new Folder(stripslashes($_GET['path']), true);
 
 $count = array_sum($folder->GetCounts());
 if ($count == 0) {

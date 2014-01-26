@@ -124,7 +124,7 @@ class Folder extends Search
     $retval = array();
 
     if ($cameralife->GetPref('rewrite') == 'yes')
-      $retval['href'] = $cameralife->base_url.'/folders/'.str_replace(" ","%20",$this->path); //TODO WTF
+      $retval['href'] = $cameralife->base_url.'/folders/'.str_replace(" ","%20",$this->path); 
     else
       $retval['href'] = $cameralife->base_url.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
 

@@ -178,9 +178,7 @@
       return;
     }
 
-//TODO...
-    # hm??? any thounght?
-    /**@todo Do send in your ideas .We look forward to your inputs
+    /** Stub
     */
     function SetPermissions() {}
 

@@ -73,7 +73,6 @@
           unlink($file);
 
         if ($photo['modified']) {
-//TODO fix hardcoded file format
           list ($file, $temp, $tmp) = $cameralife->PhotoStore->Getfile(new Photo($photo['id']), 'modified');
           copy($file, $_REQUEST['moddir'] . '/' . $photo['id'] . '_mod.jpg');
           if ($temp)
