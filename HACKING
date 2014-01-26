@@ -3,50 +3,44 @@
 * https://github.com/fulldecent/cameralife
 *
 * Hacker guide
-*
-* Here is information for people looking to contribute.
-* First of all, don't read this documentation until you've installed and used the software.
+* Information for people looking to contribute.
 *
 
 Project goals:
  - Release often
- - Document code
- - Add themes
- - Integrate with CMS's
+ - Integrate with Content Management Systems
+ - Integrate with other great services
 
-Cool stuff:
- - We'd like to integrate with Picasa and Digikam
- - Better photo modification
+Feedback, hints and a couple patches are always coming, which is great. Code is highly modular, and patches are always coming from people integrating into their own site.
 
-Feedback, hints and a couple patches are always coming, which is great. Now that the code is highly modular, we are hoping for some more crazy patch writes.
-
-For more details, check the TODO file.
 
 *
 * What happens when the user loads a page?
 * A typical page load...
 *
 
-- The user load http://camera.phor.net/photos/5392
+ - The user loads http://camera.phor.net/photos/5392
 
-- Apache translates this according to: RewriteRule ^(.*)photos/(\d+) $1photo.php?id=$2&%{QUERY_STRING}
+ - Apache translates this using Rewrite into http://camera.phor.net/photo.php?id=5392
 
-- photo.php runs and instantiates main.inc which loads a CameraLife object and sets everything up
+ - photo.php runs and instantiates main.inc which loads a CameraLife object and sets everything up
 
-- photo.php uses $_GET['id'] to instantiate a Photo object. The photo class is defined in modules/core/photo.class.inc
+ - photo.php uses $_GET['id'] to instantiate a Photo object. The photo class is defined in modules/core/photo.class.inc
 
-- The photo class looks up information about the photo by retreiving from the database
+ - The photo class looks up information about the photo by retreiving from the database
 
-- The database functionality is delegated as a feature through CameraLife, and it is currently implemented by the MysqlDatabase class which lives in modules/database/mysql/mysql.inc
+ - The database functionality is delegated as a feature through CameraLife, and it is currently implemented by the MysqlDatabase class which lives in modules/database/mysql/mysql.inc
 
-- The currently loaded theme gets called a ShowPage function with 'photo' and the instantiated photo object
+ - photo.php delegates displaying the page through a Theme module (ShowPage function)
 
-- The theme is responsible for displaying stuff to the user
+ - The theme is responsible for displaying stuff to the user
 
-- Any post requests or ajax calls are sent to photo_controller.php
+ - Any post requests or ajax calls are sent to photo_controller.php
+
 
 *
 * Coding standards
 *
+
 We are preferring PSR-2 style PHP code, and all code will be accepted. Please also use phpdoc.
 
