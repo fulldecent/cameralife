@@ -44,7 +44,7 @@ edit the first line, save this file, then paste into a terminal...
 
 edit Changelog
 
-VERSION='2.6.6' # <-- EDIT THIS
+VERSION='2.6.7' # <-- EDIT THIS
 echo $VERSION > VERSION
 sed -i "/this..version/s/'.*'/'$VERSION'/" main.inc
 grep -lIZr . . | grep -z -v '\.git' | # no binary, no git

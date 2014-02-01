@@ -44,7 +44,7 @@ class CameraLife extends CameraLifeModule # and View
     $this->base_dir = dirname(__FILE__);
     $this->base_url = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']),'/');
 
-    $this->version = '2.6.6';
+    $this->version = '2.6.7';
 
     // Load preferences
     $this->GetFeature('core');
