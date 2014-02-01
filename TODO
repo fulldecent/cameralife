@@ -31,7 +31,6 @@ SECURITY TESTING:
   git grep Database -- modules/theme
   grep '\./' */*php | grep -v requ
   check for inputs as arrays!
-  PHP E_ALL strict?
   Login via OpenID / Facebook / Google / ...
   XSSme SQLinjectme wapiti
   zaproxy
