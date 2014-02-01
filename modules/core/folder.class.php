@@ -566,7 +566,7 @@ class Folder extends Search
 
     $selection = "DISTINCT SUBSTRING_INDEX(SUBSTR(path,".(strlen($this->path)+1)."),'/',1) AS basename";
     $condition = "path LIKE '".addslashes($this->path)."%/' AND status=0";
-    $result = $cameralife->Database->Select('photos', $selection, $condition, $extra);
+    $result = $cameralife->Database->Select('photos', $selection, $condition);
     while ($row = $result->FetchAssoc()) {
       $key = array_search($row['basename'], $fsdirs);
       if($key === FALSE)

@@ -105,8 +105,8 @@ class Search extends View
     global $cameralife;
 
     switch ($this->mySort) {
-      case 'newest':    $sort = 'id desc'; break;
-      case 'oldest':    $sort = 'id'; break;
+      case 'newest':    $sort = 'value desc, id desc'; break;
+      case 'oldest':    $sort = 'value, id'; break;
       case 'az':        $sort = 'description'; break;
       case 'za':        $sort = 'description desc'; break;
       case 'popular':   $sort = 'hits desc'; break;
@@ -116,7 +116,7 @@ class Search extends View
     }
 
     $condition = $this->mySearchPhotoCondition.' AND status=0';
-    $query = $cameralife->Database->Select('photos', 'id', $condition, 'ORDER BY '.$sort.' '.$this->myLimit);
+    $query = $cameralife->Database->Select('photos' , 'id', $condition, 'ORDER BY '.$sort.' '.$this->myLimit, 'LEFT JOIN exif ON photos.id=exif.photoid and exif.tag="Date taken"');
     $photos = array();
     while ($row = $query->FetchAssoc())
       $photos[] = new Photo($row['id']);

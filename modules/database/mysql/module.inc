@@ -26,7 +26,7 @@
     /** SELECT $selection FROM $table [WHERE $condition] [$extra]
     *
     */
-    function Select ($table, $selection='*', $condition='1', $extra='') 
+    function Select ($table, $selection='*', $condition='1', $extra='', $joins='') 
     {
       if ($condition == '') $condition = '1';
 
@@ -35,7 +35,7 @@
       foreach ($tables as $key=>$table) $tables[$key] = $this->myPrefix.trim($table);
       $table = implode(', ', $tables);
 
-      $sql = "SELECT $selection FROM $table WHERE $condition $extra";
+      $sql = "SELECT $selection FROM $table $joins WHERE $condition $extra";
 
       $query = mysql_query($sql, $this->myConnection)
         or die (mysql_error().'<pre>'.$sql.'</pre>');
