@@ -295,7 +295,7 @@ class Folder extends Search
       $photopath = $photo['path'].$filename;
 
       // Found in correct location
-      if ($new_files[$photopath]) {
+      if (isset($new_files[$photopath])) {
         # Bonus code, if this is local, we can do more verification
         if ($cameralife->GetPref('photostore')=='local' && $photo['fsize']) {
           $photofile = $cameralife->PhotoStore->PhotoDir."/$photopath";
@@ -317,12 +317,12 @@ class Folder extends Search
       }
 
       // Look for a photo in the same place, but with the filename capitalization changed
-      if ($new_files[strtolower($photopath)]) {
+      if (isset($new_files[strtolower($photopath)])) {
         unset ($new_files[strtolower($photopath)]);
         continue;
       }
 
-      if ($new_files[strtoupper($photopath)]) {
+      if (isset($new_files[strtoupper($photopath)])) {
         unset ($new_files[strtoupper($photopath)]);
         continue;
       }
@@ -391,6 +391,7 @@ class Folder extends Search
       // then this will find it
       //
       // (otherwise a photo that was moved and changed would be considered lost)
+      $lastmoved = NULL;
       foreach ($candidatephotopaths as $candidatephotopath) {
         $number = preg_replace('/[^\d]/','',$candidatephotopath);
 
