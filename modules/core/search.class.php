@@ -45,6 +45,8 @@ class Search extends View
       $this->mySort = $_GET['sort'];
     elseif (isset($_COOKIE['sort']))
       $this->mySort = $_COOKIE['sort'];
+    elseif (get_class($this) == 'Folder')
+      $this->mySort = 'az';
     else
       $this->mySort = 'newest';
 
@@ -151,18 +153,18 @@ class Search extends View
   public function GetFolders()
   {
     global $cameralife;
-
     switch ($this->mySort) {
       case 'newest':    $sort = 'id desc'; break;
       case 'oldest':    $sort = 'id'; break;
-      case 'az':        $sort = 'description'; break;
-      case 'za':        $sort = 'description desc'; break;
+      case 'az':        $sort = 'path'; break;
+      case 'za':        $sort = 'path desc'; break;
       case 'popular':   $sort = 'hits desc'; break;
       case 'unpopular': $sort = 'hits'; break;
       case 'rand':      $sort = 'rand()'; break;
       default:          $sort = 'id desc';
     }
 
+    // Another way to do it "DISTINCT SUBSTRING_INDEX(SUBSTR(path,".(strlen($this->path)+1)."),'/',1) AS basename";
     $condition = $this->mySearchFolderCondition.' AND status=0';
     $query = $cameralife->Database->Select('photos', 'path, MAX(mtime) as date', $condition, 'GROUP BY path ORDER BY '.$sort.' '.$this->myLimit);
     $folders = array();

@@ -79,10 +79,12 @@ $menu = array();
 
 ?>
 
-<p>
-  Sort by <select name="sort">
+<form class="form-inline">
+  <div class="form-group">
+    Sort by
+    <select name="sort" class="form-control input-sm" style="width:200px">
 <?php
-    $options = Search::SortOptions();
+    $options = $folder->SortOptions();    
     foreach($options as $option) {
       if (isset($option[2]))
         echo "    <option ".$option[2]." value=\"".$option[0]."\">".$option[1]."</option>\n";
@@ -90,9 +92,10 @@ $menu = array();
         echo "    <option value=\"".$option[0]."\">".$option[1]."</option>\n";
     }
 ?>
-  </select>
-  <input type=submit value="Sort">
-</p>
+    </select>
+    <input type=submit value="Sort" class="btn btn-default btn-sm">
+  </div>
+</form>
 
 <?php
   $cameralife->Theme->Footer();
