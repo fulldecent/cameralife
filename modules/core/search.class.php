@@ -15,6 +15,8 @@ class Search extends View
   public $mySql;
   public $myQuery;
   public $myCounts;
+  public $myStart;
+  public $myLimitCount;
 
   public function Search($query = '')
   {
@@ -51,10 +53,11 @@ class Search extends View
       $this->mySort = 'newest';
 
     if (isset($_GET['start']) && is_numeric($_GET['start']))
-      $start = $_GET['start'];
+      $this->myStart = $_GET['start'];
     else
-      $start = 0;
-    $this->myLimit = "LIMIT $start, 12";
+      $this->myStart = 0;
+    $this->myLimitCount = 12;
+    $this->myLimit = "LIMIT ".$this->myStart.",".$this->myLimitCount;
   }
 
   public function SetSort($sort)
@@ -99,7 +102,9 @@ class Search extends View
 
   public function SetPage($start, $pagesize=12)
   {
-    $this->myLimit = 'LIMIT '.$start.','.$pagesize;
+    $this->myStart = $start;
+    $this->myLimitCount = $pagesize;
+    $this->myLimit = "LIMIT ".$this->myStart.",".$this->myLimitCount;
   }
 
   public function GetPhotos()

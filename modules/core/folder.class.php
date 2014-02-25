@@ -40,6 +40,20 @@ class Folder extends Search
     $this->mySearchFolderCondition = "path LIKE '".mysql_real_escape_string($this->path)."%/' AND path NOT LIKE '".addslashes($this->path)."%/%/'";
   }
 
+  public function GetPrevious()
+  {
+    global $cameralife;
+    if ($this->myStart > 0) {
+      if ($cameralife->GetPref('rewrite') == 'yes')
+        $href = $cameralife->base_url.'/folders/'.str_replace(" ","%20",$this->path); 
+      else
+        $href = $cameralife->base_url.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
+      $href = AddParam($href, 'start', $this->myStart - $this->myLimitCount);
+      return $href;
+    }
+    return NULL;
+  }
+
   /**
    * @return $retval an array of folders
    */

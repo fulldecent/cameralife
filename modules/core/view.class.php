@@ -53,6 +53,12 @@ class View
 
   public function GetIcon($size='large') {}
 
+  /// A URL or NULL for the page logically before this one
+  public function GetPrevious() {}
+
+  /// A URL or NULL for the page logically after this one
+  public function GetNext() {}
+  
   public function ShowPage()
   {
     global $cameralife;

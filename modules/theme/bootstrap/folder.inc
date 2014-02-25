@@ -11,6 +11,8 @@
 # Magic vars GET:start, GET/POST:sort are handled in search.class.php
   
 $counts = $folder->GetCounts();
+$icon = $folder->GetIcon();
+$start = isset($_GET['start']) ? $_GET['start'] : 0;
 
 if (isset($_GET['start']) && is_numeric($_GET['start']))
   $folder->SetPage($_GET['start'], 25);
@@ -26,20 +28,28 @@ if (isset($_GET['page']) && $_GET['page'] == 'folders' || !$counts['photos']) {
 }
 
 $menu = array();
-  if ($folder->Path())
-    $menu[] = array('name'=>'Search for '.$folder->Basename(),
-                    'href'=>'search.php&#63;q='.$folder->Basename(),
-                    'image'=>'small-search');
+if ($folder->Path())
+  $menu[] = array('name'=>'Search for '.$folder->Basename(),
+                  'href'=>'search.php&#63;q='.$folder->Basename(),
+                  'image'=>'small-search');
 
-  if ($cameralife->Security->Authorize('admin_file'))
-    $menu[] = array('name'=>'Upload photo here',
-                    'href'=>$cameralife->base_url.'/upload.php&#63;path='.$folder->Path(),
-                    'image'=>'small-main');
-  
-  $folder_name = $folder->Basename()
-    or $folder_name = '(Top Level)';
+if ($cameralife->Security->Authorize('admin_file'))
+  $menu[] = array('name'=>'Upload photo here',
+                  'href'=>$cameralife->base_url.'/upload.php&#63;path='.$folder->Path(),
+                  'image'=>'small-main');
 
-  $cameralife->Theme->Header($folder_name);
+$folder_name = $folder->Basename()
+  or $folder_name = '(Top Level)';
+
+$headers = '';
+if ($folder->GetPrevious()) {
+  $headers = "<link rel=\"prev\" href=\"".$folder->GetPrevious()."\" />\n";
+}
+if ($folder->GetNext()) {
+  $headers = "<link rel=\"next\" href=\"".$folder->GetNext()."\" />\n";
+}
+
+$cameralife->Theme->Header($folder_name, NULL, $headers);
 ?>
 
 <ul class="breadcrumb">
@@ -70,8 +80,6 @@ $menu = array();
 
   $cameralife->Theme->Grid($results);
 
-  $icon = $folder->GetIcon();
-  $start = isset($_GET['start']) ? $_GET['start'] : 0;
   if ($_GET['page'] == "photos")
     $cameralife->Theme->PageSelector($start,$counts['photos'],25,$icon['href']);
   else // ($_GET['page'] == "folders")
