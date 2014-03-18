@@ -36,7 +36,7 @@
   /**
   */
 
-  $features=array('database','theme','security');
+  $features=array('theme','security');
   require 'main.inc';
 
   if (strtolower($_POST['action']) == 'login') {

@@ -13,7 +13,7 @@
  */
 
   @ini_set('max_execution_time',9000);
-  $features = array('database', 'security', 'imageprocessing', 'theme', 'photostore');
+  $features = array('security', 'imageprocessing', 'theme', 'photostore');
   require 'main.inc';
 
   /**

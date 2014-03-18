@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2001-2013 Will Entriken
  * @access public
  */
-$features=array('database','security', 'photostore', 'imageprocessing');
+$features=array('security', 'photostore', 'imageprocessing');
 @ini_set('max_execution_time',9000);
 require '../main.inc';
 $cameralife->Security->authorize('admin_customize', 1); // Require

@@ -20,7 +20,7 @@
 */
 /**
 */
-  $features=array('database', 'security', 'imageprocessing', 'photostore');
+  $features=array('security','imageprocessing','photostore');
   require 'main.inc';
 
 # try something

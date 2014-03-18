@@ -143,9 +143,6 @@ class LocalPhotoStore extends PhotoStore
       }
     }
 
-   // @internal unnessary, user does not access files directly
-    function SetPermissions() {}
-
     /**
      *  Ensures that thumbnails exist
      *

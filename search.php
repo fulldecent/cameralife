@@ -6,7 +6,7 @@
  * @access public
  */
 
-$features=array('database','theme');
+$features=array('theme');
 require 'main.inc';
 
 $search = new Search($_GET['q']);

@@ -12,7 +12,7 @@
   /**
 */
 
-  $features=array('database','security');
+  $features=array('security');
   require '../../../main.inc';
   $cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
 

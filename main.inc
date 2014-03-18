@@ -39,18 +39,14 @@ class CameraLife extends CameraLifeModule # and View
 
   function CameraLife()
   {
+    if(!ini_get('date.timezone'))
+      date_default_timezone_set('GMT');
     ini_set('magic_quotes_runtime', 0);
     ini_set('magic_quotes_sybase', 0);
     $this->base_dir = dirname(__FILE__);
     $this->base_url = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']),'/');
-
     $this->version = '2.6.7';
-
-    // Load preferences
-    $this->GetFeature('core');
-    $this->GetFeature('database');
-    $this->LoadPreferences();
-
+    
     $this->preferences[] = array('name'=>'theme', 'type'=>'string', 'default'=>'bootstrap');
     $this->preferences[] = array('name'=>'iconset', 'type'=>'string', 'default'=>'cartoonic');
     $this->preferences[] = array('name'=>'photostore', 'type'=>'string', 'default'=>'local');
@@ -70,8 +66,8 @@ class CameraLife extends CameraLifeModule # and View
     $this->preferences[] = array('name'=>'tempdir', 'type'=>'string', 'default'=>'/tmp');
     $this->preferences[] = array('name'=>'thumbsize', 'type'=>'number', 'default'=>'150');
     $this->preferences[] = array('name'=>'scaledsize', 'type'=>'number', 'default'=>'600');
-    $this->preferences[] = array('name'=>'optionsizes', 'type'=>'string', 'default'=>'');
-  }  
+    $this->preferences[] = array('name'=>'optionsizes', 'type'=>'string', 'default'=>'');    
+  }
     
   function RelativeInclude($file)
   {
@@ -98,17 +94,14 @@ class CameraLife extends CameraLifeModule # and View
         $this->Error('Circular reference in features :-(');
 
     $this->RelativeInclude("modules/$feature/module.inc");
-    $allfeatures = array('core'=>NULL, 'database'=>'Database', 'imageprocessing'=>'ImageProcessing', 'security'=>'Security', 'theme'=>'Theme', 'photostore'=>'PhotoStore');
+    $allfeatures = array('core'=>NULL, 'imageprocessing'=>'ImageProcessing', 'security'=>'Security', 'theme'=>'Theme', 'photostore'=>'PhotoStore');
     $cutename = $allfeatures[$feature];
     
     switch ($feature)
     {
       case 'core': 
+        $this->Database = new Database();
         break;
-      case 'database': 
-        $this->RelativeInclude('modules/database/mysql/module.inc');
-        $this->Database = new MysqlDatabase() ;
-          break;
       case 'theme': 
       case 'security': 
       case 'imageprocessing': 
@@ -181,16 +174,20 @@ class CameraLife extends CameraLifeModule # and View
     echo "<link rel=\"stylesheet\" href=\"{$this->base_url}/bootstrap/css/bootstrap.min.css\" />\n";
     echo "<div class=\"alert\">\n";
     echo "  <h2>Camera Life has encountered an error!</h2>\n";
-    echo "  <blockquote>".htmlentities($message)."</blockquote>\n";
+    echo "  <blockquote class=\"lead\">".htmlentities($message)."</blockquote>\n";
 
-    if (isset($cameralife->Security) && $cameralife->Security->authorize('admin_customize')) {
+    if (1||isset($cameralife->Security) && $cameralife->Security->authorize('admin_customize')) {
       echo "  You can have the backtrace, since you are an admin:\n";
       $calls = debug_backtrace();
       echo "  <dl>\n";
       foreach ($calls as $call) {
         echo "    <dt>{$call['file']}:{$call['line']} ";
-        $url = "http://camera.phor.net/docs/cameralife/{$call['class']}.html#{$call['function']}";
-        echo "<a target=\"_new\" href=\"$url\">".$call['class'].'::'.$call['function']."</a>()</dt>\n";
+        if (isset($call['class'])) {
+          $url = "http://camera.phor.net/docs/cameralife/{$call['class']}.html#{$call['function']}";
+          echo "<a target=\"_new\" href=\"$url\">".$call['class'].'::'.$call['function']."</a>()</dt>\n";
+        } else {
+          echo $call['function'];
+        }
         echo '    <dd><ul>';
         if (count($call['args']))
           foreach ($call['args'] as $callarg) {
@@ -212,6 +209,8 @@ class CameraLife extends CameraLifeModule # and View
 }
 
 $cameralife = new CameraLife();
+$cameralife->GetFeature('core');
+$cameralife->LoadPreferences();
 
 if (isset($GLOBALS['features']) && count($GLOBALS['features']))
 foreach($features as $fcn)

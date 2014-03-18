@@ -6,7 +6,7 @@
 */
 /**
 */
-  $features=array('database','theme');
+  $features=array('theme');
   require 'main.inc';
 
   $cameralife->Theme->ShowPage('upload');

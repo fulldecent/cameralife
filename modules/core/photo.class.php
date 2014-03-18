@@ -44,9 +44,9 @@ class Photo extends View
     } elseif (is_array($original)) { # A new image, given by an array
       $this->record['description'] = 'unnamed';
 
-      if (!preg_match('/^dscn/i', $this->record['filename']) && 
-        !preg_match('/^im/i', $this->record['filename'])) // useless filename
-        $this->record['description'] = preg_replace('/.[^.]+$/', '', ucwords($photo->Get('filename')));
+//      if (!preg_match('/^dscn/i', $this->record['filename']) && 
+//        !preg_match('/^im/i', $this->record['filename'])) // useless filename
+//        $this->record['description'] = preg_replace('/.[^.]+$/', '', ucwords($photo->Get('filename')));
 
       $this->record['status'] = '0';
       $this->record['created'] = date('Y-m-d');

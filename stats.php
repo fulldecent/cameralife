@@ -6,7 +6,7 @@
  *@todo Pass a stats object
  */
 
-$features=array('database','theme', 'security');
+$features=array('theme', 'security');
 require 'main.inc';
 
 $stats = new Stats;

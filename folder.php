@@ -7,7 +7,7 @@
  * @access public
  */
 
-$features=array('database','theme','photostore', 'imageprocessing', 'security');
+$features=array('theme','photostore', 'imageprocessing', 'security');
 require 'main.inc';
 
 $folder = new Folder(stripslashes($_GET['path']), true);

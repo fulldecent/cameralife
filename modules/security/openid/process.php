@@ -1,6 +1,6 @@
 <?php
 
-$features=array('database','theme','security');
+$features=array('theme','security');
 require '../../../main.inc';
 $cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
 

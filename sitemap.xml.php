@@ -7,7 +7,7 @@
  * @access public
  */
 
-  $features=array('database', 'security');
+  $features=array('security');
   require 'main.inc';
 
   $page = $_GET['page'];

@@ -7,7 +7,7 @@
  *@access public
  */
 
-  $features=array('database','theme','security', 'photostore');
+  $features=array('theme','security', 'photostore');
   require 'main.inc';
 
   $query = isset($_GET['q']) ? $_GET['q'] : '';

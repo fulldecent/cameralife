@@ -5,7 +5,7 @@
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2013 Will Entriken
  */
-$features=array('database','security', 'photostore');
+$features=array('security', 'photostore');
 require '../main.inc';
 $cameralife->base_url = dirname($cameralife->base_url);
 
