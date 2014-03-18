@@ -50,6 +50,7 @@ class CameraLife extends CameraLifeModule # and View
     $this->preferences[] = array('name'=>'theme', 'type'=>'string', 'default'=>'bootstrap');
     $this->preferences[] = array('name'=>'iconset', 'type'=>'string', 'default'=>'cartoonic');
     $this->preferences[] = array('name'=>'photostore', 'type'=>'string', 'default'=>'local');
+    $this->preferences[] = array('name'=>'filestore', 'type'=>'string', 'default'=>'local');
     $this->preferences[] = array('name'=>'security', 'type'=>'string', 'default'=>'openid');
     $this->preferences[] = array('name'=>'imageprocessing', 'type'=>'string', 'default'=>'gd');
 
@@ -94,7 +95,7 @@ class CameraLife extends CameraLifeModule # and View
         $this->Error('Circular reference in features :-(');
 
     $this->RelativeInclude("modules/$feature/module.inc");
-    $allfeatures = array('core'=>NULL, 'imageprocessing'=>'ImageProcessing', 'security'=>'Security', 'theme'=>'Theme', 'photostore'=>'PhotoStore');
+    $allfeatures = array('core'=>NULL, 'imageprocessing'=>'ImageProcessing', 'security'=>'Security', 'theme'=>'Theme', 'photostore'=>'PhotoStore', 'filestore'=>'FileStore');
     $cutename = $allfeatures[$feature];
     
     switch ($feature)
@@ -106,6 +107,7 @@ class CameraLife extends CameraLifeModule # and View
       case 'security': 
       case 'imageprocessing': 
       case 'photostore':
+      case 'filestore':
         $implementation = $this->GetPref($feature);
         $this->RelativeInclude("modules/$feature/$implementation/module.inc");
         $modulename = $implementation.$feature;
