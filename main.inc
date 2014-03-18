@@ -176,7 +176,7 @@ class CameraLife extends CameraLifeModule # and View
     echo "  <h2>Camera Life has encountered an error!</h2>\n";
     echo "  <blockquote class=\"lead\">".htmlentities($message)."</blockquote>\n";
 
-    if (1||isset($cameralife->Security) && $cameralife->Security->authorize('admin_customize')) {
+    if (isset($cameralife->Security) && $cameralife->Security->authorize('admin_customize')) {
       echo "  You can have the backtrace, since you are an admin:\n";
       $calls = debug_backtrace();
       echo "  <dl>\n";
