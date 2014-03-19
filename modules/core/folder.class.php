@@ -8,7 +8,7 @@
 
 class Folder extends Search
 {
-  public $path;
+  public $path; // Like: '/' or '/afolder' or '/parent/child'
 
   /**
   * This function should be constructed with either of the parameters Photo or Path.
@@ -347,7 +347,7 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
       $condition = "filename LIKE '".mysql_real_escape_string($newbase)."'";
       $result = $cameralife->Database->Select('photos','id, filename, path',$condition);
 
-      // Is anything in the photostore too similar (given available information) to let this photo in?
+      // Is anything in the filestore too similar (given available information) to let this photo in?
       if ($photo = $result->FetchAssoc()) {
         // With the case-insensitive LIKE above, this will handle files renamed only by case
         if (strcasecmp($photo['path'].$photo['filename'], $new_file) == 0) {
@@ -375,22 +375,9 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
         continue;
       }
 
-      # Bonus code
-      if ($cameralife->GetPref('filestore')=='local') {
-        $deletedfile = $cameralife->PhotoStore->DeletedDir ."/$newpath$newbase";
-        if (file_exists($deletedfile) && filesize($deletedfile) == filesize($cameralife->PhotoStore->PhotoDir . '/' . $new_file)) {
-          $error = "A file that was added to the photostore $new_file is the same as ";
-          $error .= "a file that was previoulsy deleted. Remove the new or the old file: ";
-          $error .= $cameralife->preferences['core']['deleted_dir'].'/'.$newbase;
-          $retval[] = $error;
-          continue;
-        }
-      }
-
       $retval[] = "Added $new_file\n";
 
       $photoObj = new Photo(array('filename'=>$newbase, 'path'=>$newpath));
-      # Don't need to add to the photostore, since its already there
       $photoObj->Destroy();
     }
 
@@ -398,15 +385,14 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
   }
 
   /**
-  * Does a quick compare of Database and Photostore and checks if they are same
+  * Does a quick compare of Database and FileStore and checks if they are same
   *
   * @return true or false
   */
   public function Fsck()
   {
     global $cameralife;
-die('DOME');
-    $files = $cameralife->PhotoStore->ListFiles($this->path, FALSE);
+    $files = $cameralife->FileStore->ListFiles('photo', $this->path, FALSE);
     if(!is_array($files)) return FALSE;
 
     $fsphotos = $fsdirs = array();
@@ -414,12 +400,6 @@ die('DOME');
       if (preg_match("/.jpg$|.jpeg$|.png$|.gif$/i",$file))
         $fsphotos[] = $file;
       else {
-
-        if ($cameralife->GetPref('filestore')=='local') {
-          if (!is_dir($cameralife->PhotoStore->GetPref('photo_dir') . '/' . $this->path . $file))
-            continue;
-        }
-
         $fsdirs[] = $file;
       }
     }

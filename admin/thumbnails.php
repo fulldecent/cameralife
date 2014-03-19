@@ -43,7 +43,6 @@ $numdone = isset($_GET['numdone']) ?(int) $_GET['numdone'] : 0;
     </div>
     
     <div class="container">
-
       <h2>Update thumbnails</h2>
       <p>We are now caching thumbnails. This avoids a delay when a photo is viewed for the first time.</p>
 
@@ -66,7 +65,7 @@ $numdone = isset($_GET['numdone']) ?(int) $_GET['numdone'] : 0;
   flush();
   while (($next = $next1000->FetchAssoc()) && ($fixed < 10)) {
     $curphoto = new Photo($next['id']);
-    if ($cameralife->PhotoStore->CheckThumbnails($curphoto)) {
+    if ($cameralife->FileStore->CheckThumbnails($curphoto)) {
       echo "<div>Updated #".$next['id']."</div>\n";
       flush();
       $fixed++;

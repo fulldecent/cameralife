@@ -1,5 +1,8 @@
 git  Will Entriken <cameralife AT phor.net>
-* Automatically name files if possable
+* Automatically name files if possible
+* Update PhotoStore API
+* Remove hacks
+* Do not delete photos
 
 2.6.6  Will Entriken <cameralife AT phor.net>
 * Improve install process

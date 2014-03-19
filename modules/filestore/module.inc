@@ -63,7 +63,7 @@ class FileStore extends CameraLifeModule
    * @param $secure - if secure, ensure this file will not be publicly accessible
    * @return none
    */
-  function SetPermissions($bucket, $path, $secure) {}
+  function SetPrivate($bucket, $path, $secure) {}
 
   /**
    * Erase a file

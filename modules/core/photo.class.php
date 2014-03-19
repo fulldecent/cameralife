@@ -90,10 +90,11 @@ class Photo extends View
     $receipt = NULL;
     if ($key != 'hits')
       $receipt = AuditTrail::Log('photo',$this->record['id'],$key,$this->record[$key],$value);
-/* TODO      
-    if ($key == 'status')
-      $cameralife->PhotoStore->SetPermissions($this);
-*/      
+    if ($key == 'status') {
+      $fullpath = rtrim('/'.ltrim($this->record['path'],'/'),'/').'/'.$this->record['filename'];
+      $cameralife->FileStore->SetPermissions('photo', $fullpath, $value!=0);
+//TODO: also set for _mod and _ thumbnails      
+    }
     $this->record[$key] = $value;
     $cameralife->Database->Update('photos', array($key=>$value), 'id='.$this->record['id']);
 
@@ -130,7 +131,7 @@ class Photo extends View
     if ($temp) unlink($file);
   }
 
-  /// Scale image to all needed sizes and save in photostore, update image/tn sizes
+  /// Scale image to all needed sizes and save in file store, update image/tn sizes
   /// also update fsize if this is unmodified.
   public function GenerateThumbnail()
   {
@@ -164,9 +165,11 @@ class Photo extends View
         $thumbsize = $dims;
     }
 
-    $cameralife->PhotoStore->PutThumbnails($this, $files);
-    foreach ($files as $size=>$file)
+    $fullpath = rtrim('/'.ltrim($this->record['path'],'/'),'/').'/'.$this->record['filename'];
+    foreach ($files as $size=>$file) {
+      $cameralife->FileStore->PutFile('other', '/'.$this->record['id'].'_'.$size.'.'.$this->extension, $file, $this->record['status']!=0);
       @unlink($file);
+    }
 
     $this->record['width'] = $imagesize[0];
     $this->record['height'] = $imagesize[1];
@@ -185,7 +188,7 @@ class Photo extends View
 
     $temp = tempnam($cameralife->GetPref('tempdir'), 'cameralife_');
     $this->image->Save($temp);
-    $cameralife->PhotoStore->ModifyFile($this, $temp); # $temp is unlinked by ModifyFile
+//TODO: unlink old thumbnails
     $this->record['mtime'] = time();
 
     $this->record['modified'] = 1;
@@ -209,22 +212,14 @@ class Photo extends View
   public function Erase()
   {
     global $cameralife;
-
-// TDODO DATABASE UNIQ PATH/FILENAME
-//TODO FIX DATABASE TO MAKE photos.path like '/a/dir' or '/'
-      $filename = $this->record['filename'];
-      $photopath = trim($this->record['path'], '/') . '/' . $filename;
-      $photopath = rtrim('/'.ltrim($this->record['path'],'/'),'/').'/'.$filename;
-    
-$cameralife->Error('DEBUG NEED TO ERASE'. $photopath);
-/* TODO
-    $cameralife->PhotoStore->EraseFile($this);
-*/    
+    $this->Set('status', 9);
+    /*
     $cameralife->Database->Delete('photos','id='.$this->record['id']);
     $cameralife->Database->Delete('logs',"record_type='photo' AND record_id=".$this->record['id']);
     $cameralife->Database->Delete('ratings',"id=".$this->record['id']);
     $cameralife->Database->Delete('comments',"photo_id=".$this->record['id']);
     $cameralife->Database->Delete('exif',"photoid=".$this->record['id']);
+    */
     $this->Destroy();
   }
 

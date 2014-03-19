@@ -30,7 +30,7 @@ class LocalFileStore extends FileStore
 
   /** 
    * GetURL
-   * LocalPhotoStore does not have special URLs to access the photos. 
+   * We don't not have special URLs to access the photos. 
    * The parent class defaults to returning FALSE.
    */
 
@@ -100,7 +100,7 @@ class LocalFileStore extends FileStore
    * @param $secure - if secure, ensure this file will not be publicly accessible
    * @return none
    */
-  function SetPermissions($bucket, $path, $secure)
+  function SetPrivate($bucket, $path, $secure)
   {
 die('NOT YET');
     return;
