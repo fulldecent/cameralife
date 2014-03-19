@@ -136,7 +136,6 @@ foreach ($cameralife->GetModules($feature) as $module) {
               <option <?= $cameralife->GetPref('autorotate') == 'no' ? 'selected="selected"':'' ?>>no</option>
               <option <?= $cameralife->GetPref('autorotate') == 'yes' ? 'selected="selected"':'' ?>>yes</option>
             </select>
-            <span class="help-inline">Update existing photos with hacks/exif.php</span>
           </div>
         </div>
         <div class="form-group">

@@ -10,7 +10,6 @@ BASIC REGRESSION AND VALIDATION TESTING:
   OpenSearch: http://friendfeed.com/bgolub/5e56afb1/i-like-how-google-chrome-deals-with-opensearch
   HTML/CSS: http://validator.pro
   RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/rss.php%3Fq%3Dwill
-  Try all the hacks
   mysqldump fdcl -d > setup/install.mysql # and add insert statements
   Test Amazon S3 http://github.com/technoweenie/parkplace
   Test Gallery API
