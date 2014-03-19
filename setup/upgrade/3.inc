@@ -48,7 +48,7 @@ function upgrade()
     die ("The database $db_name does not have tables in it. I don't know how you got to the
           upgrade utility, but it looks like you want the installer utility.");
 
-  $sql = "ALTER TABLE ${db_prefit}logs DROP COLUMN value_old;";
+  $sql = "ALTER TABLE ${db_prefix}logs DROP COLUMN value_old;";
   $result = mysql_query($sql,$setup_link)
     or die ("Update script failed: ".mysql_error());
 

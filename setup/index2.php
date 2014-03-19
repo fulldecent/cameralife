@@ -238,7 +238,7 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
     $config[] = "\$db_user = '".$_POST['user']."';\n";
     $config[] = "\$db_pass = '".$_POST['pass']."';\n";
     $config[] = "\$db_prefix = '".$_POST['prefix']."';\n";
-    $config[] = "\$db_schema_version = 3;\n";
+    $config[] = "\$db_schema_version = 4;\n";
     $config[] = "?>\n";
 
     if ($fd = fopen('../modules/config.inc','x')) {

@@ -9,7 +9,7 @@ if (file_exists(dirname(dirname(dirname(__FILE__))).'/modules/config.inc')) {
 }
 
 $installed_version = isset($db_schema_version) ? $db_schema_version : 0;
-$latest_version = 3;
+$latest_version = 4;
 
 ?>
 <html>
