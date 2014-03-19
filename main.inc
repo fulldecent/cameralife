@@ -172,7 +172,7 @@ class CameraLife extends CameraLifeModule # and View
   function Error($message, $file='', $line='')
   {
     global $cameralife;
-    echo "<link rel=\"stylesheet\" href=\"{$this->base_url}/bootstrap/css/bootstrap.min.css\" />\n";
+    echo "<script src=\"//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js\"></script>"
     echo "<div class=\"alert\">\n";
     echo "  <h2>Camera Life has encountered an error!</h2>\n";
     echo "  <blockquote class=\"lead\">".htmlentities($message)."</blockquote>\n";

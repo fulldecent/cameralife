@@ -97,7 +97,7 @@
     <?= $extrahead ?>
 
     <!-- Le styles -->
-    <link href="<?= $cameralife->base_url ?>/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
     <link href="<?= $cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))) ?>/css-extra/custom.css" rel="stylesheet">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -205,7 +205,7 @@ if (isset($_GET['path'])) {
         </p>
       </footer>
 
-    </div><!--/.fluid-container-->
+    </div>
 
     <!-- Le javascript
     ================================================== -->

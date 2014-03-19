@@ -27,7 +27,7 @@ $numdone = isset($_GET['numdone']) ?(int) $_GET['numdone'] : 0;
     <meta name="author" content="<?= $cameralife->GetPref('owner_email') ?>">
 
     <!-- Le styles -->
-    <link href="<?= $cameralife->base_url ?>/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>

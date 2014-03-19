@@ -75,7 +75,7 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="../../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -85,7 +85,6 @@
         padding: 9px 0;
       }
     </style>
-    <link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -104,7 +103,7 @@
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
-        <div class="container-fluid">
+        <div class="container">
           <span class="brand"><a href="../../../"><?= $cameralife->GetPref('sitename') ?></a> / Administration</span>
         </div>
       </div>

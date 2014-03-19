@@ -16,7 +16,7 @@
 <html lang="en">
 <head>
   <title><?= $cameralife->GetPref('sitename') ?></title>
-  <link rel="stylesheet" href="../../../bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <meta charset="utf-8">
 </head>
 <body>
