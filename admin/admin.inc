@@ -37,17 +37,17 @@ function renderPrefsAsHTML($module)
     $value = $module->GetPref($pref['name']);
 
     if ($pref['type'] == 'number') {
-      echo "      <input type=\"number\" name=\"value$prefnum\" value=\"$value\" />\n";
+      echo "      <input class=\"form-control\" type=\"number\" name=\"value$prefnum\" value=\"$value\" />\n";
     } elseif ($pref['type'] == 'string') {
-      echo "      <input type=\"text\" name=\"value$prefnum\" value=\"$value\" />\n";
+      echo "      <input class=\"form-control\" type=\"text\" name=\"value$prefnum\" value=\"$value\" />\n";
     } if ($pref['type'] == 'directory' || $pref['type'] == 'directoryrw') {
-      echo "      <input type=\"text\" name=\"value$prefnum\" value=\"$value\" />\n";
+      echo "      <input class=\"form-control\" type=\"text\" name=\"value$prefnum\" value=\"$value\" />\n";
       if (!is_dir($value) && !is_dir($cameralife->base_dir."/$value"))
         echo '<p class="text-error">This is not a directory</p>';
       elseif ($pref['type'] == 'directoryrw' && !is_writable($value) && !is_writable($cameralife->base_dir."/$value"))
         echo '<p class="text-error">This directory is not writable</p>';
     } elseif (is_array($pref['type'])) { // enumeration
-      echo "      <select name=\"value$prefnum\" />\n";
+      echo "      <select class=\"form-control\" name=\"value$prefnum\" />\n";
       foreach($pref['type'] as $index=>$desc) {
         if ($index == $value)
           echo "        <option selected value=\"$index\">$desc</option>\n";
@@ -59,7 +59,7 @@ function renderPrefsAsHTML($module)
       echo "      <select name=\"value$prefnum\" />\n";
       foreach(array('1'=>'Yes', '0'=>'No') as $index=>$desc) {
         if ($index == $value)
-          echo "        <option selected value=\"$index\">$desc</option>\n";
+          echo "        <option class=\"form-control\" selected value=\"$index\">$desc</option>\n";
         else
           echo "        <option value=\"$index\">$desc</option>\n";
       }

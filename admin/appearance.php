@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2001-2013 Will Entriken
  * @access public
  */
-$features=array('security', 'photostore', 'theme');
+$features=array('security', 'theme');
 require '../main.inc';
 $cameralife->base_url = dirname($cameralife->base_url);
 $cameralife->Security->authorize('admin_customize', 1); // Require

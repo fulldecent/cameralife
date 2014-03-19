@@ -1,9 +1,9 @@
 <?php
 /**
- * Retrieve a photo from the PhotoStore and feed it to the user
+ * Retrieve a photo from the FileStore and feed it to the user
  * This file makes asset security possible since the user does not directly access the photos.
  *
- * This gets linked to from Photo::GetMedia() when a PhotoStore::GetURL() returns FALSE
+ * This gets linked to from Photo::GetMedia() when a FileStore::GetURL() returns FALSE
  * You should understand that before continuing.
  *
  * Required GET variables
@@ -13,14 +13,14 @@
  *  <li>ver (mtime)</li>
  * </ul>
  * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @copyright Copyright (c) 2001-2014 Will Entriken
  * @access public
  */
 
-$features=array('security','imageprocessing', 'photostore');
+$features=array('security','imageprocessing', 'filestore');
 require 'main.inc';
 
-$photo = new Photo($_GET['id']);
+$photo = new Photo(intval($_GET['id']));
 $format = isset($_GET['scale']) ? $_GET['scale'] : null;
 if (!is_numeric($_GET['ver']))
   $cameralife->Error('Required number ver missing! Query string: '.htmlentities($_SERVER['QUERY_STRING']));
@@ -36,16 +36,20 @@ if (!$cameralife->Security->authorize('admin_file')) {
   if ($reason) $cameralife->Error("Photo access denied: $reason");
 }
 
-if ($format == 'photo' || $format == '')
-  list($file, $temp, $mtime) = $cameralife->PhotoStore->GetFile($photo, 'photo');
+if ($format == 'photo' || $format == '') {
+  if ($photo->Get('modified'))
+    list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->Get('id').'_mod.'.$extension);
+  else
+    list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('photo', '/'.$photo->Get('path').$photo->Get('filename'));
+}
 elseif ($format == 'scaled')
-  list($file, $temp, $mtime) = $cameralife->PhotoStore->GetFile($photo, $format);
+  list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension);
 elseif ($format == 'thumbnail')
-  list($file, $temp, $mtime) = $cameralife->PhotoStore->GetFile($photo, $format);
+  list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension);
 elseif (is_numeric($format)) {
   $valid = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
   if (in_array($format, $valid))
-    list($file, $temp, $mtime) = $cameralife->PhotoStore->GetFile($photo, $format);
+    list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->Get('id').'_'.$format.'.'.$extension);
   else
     $cameralife->Error('This image size has not been allowed');
 } else

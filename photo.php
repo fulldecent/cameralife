@@ -5,7 +5,7 @@
 * @access public
 */
 
-$features=array('theme','security');
+$features=array('theme','security','filestore');
 require 'main.inc';
 
 if (!Photo::PhotoExists($_GET['id'])) {

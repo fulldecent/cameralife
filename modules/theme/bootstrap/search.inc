@@ -14,7 +14,7 @@
 // $cameralife and $search are set by ShowPage()
 
 $cameralife->GetFeature('security');
-$cameralife->GetFeature('photostore');
+$cameralife->GetFeature('filestore');
 
 
 $start = isset($_GET['start']) ? $_GET['start']+0 : 0;

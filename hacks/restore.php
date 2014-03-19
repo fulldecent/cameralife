@@ -11,7 +11,7 @@
 */
   @ini_set('max_execution_time',9000);
 
-  $features=array('security','imageprocessing', 'photostore');
+  $features=array('security','imageprocessing', 'filestore');
   require '../main.inc';
   $cameralife->base_url = dirname($cameralife->base_url);
 
@@ -96,7 +96,7 @@
 <p>This tool will restore your backed up photos. <strong>USE ABSOLUTE PATHS</strong>.</p>
 
 <?php
-  if ($cameralife->GetPref('photostore') == 'flickr' && !is_writable(dirname(__FILE__))) {
+  if ($cameralife->GetPref('filestore') == 'flickr' && !is_writable(dirname(__FILE__))) {
     echo '<div style="background: red">I need to write into '.dirname(__FILE__).' please make it writable.</div>';
   }
 ?>

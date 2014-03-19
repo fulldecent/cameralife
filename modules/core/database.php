@@ -88,8 +88,6 @@ class Database
     return $result[0];
   }
   
-################################OLD STUFF BELOW HERE
-  
   function Update ($table, $values, $condition='1', $extra='')
   {
     global $cameralife;
@@ -133,7 +131,7 @@ class Database
     {
       $cameralife->Error('Database error: '.htmlentities($e->getMessage()));
     }
-    return $stmt->lastInsertId();
+    return $this->myDBH->lastInsertId();
   }
 
   function Delete ($table, $condition='1', $extra='', $bind=array())

@@ -10,7 +10,7 @@
 # Display a photo, edit a photo, link to relevant places
 
 $cameralife->GetFeature('security');
-$cameralife->GetFeature('photostore');
+$cameralife->GetFeature('filestore');
 $cameralife->GetFeature('imageprocessing');
 $icon = $photo->GetIcon();
 

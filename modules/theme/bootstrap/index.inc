@@ -8,7 +8,7 @@
  */
 
 $cameralife->GetFeature('security');
-$cameralife->GetFeature('photostore');
+$cameralife->GetFeature('filestore');
 $cameralife->Theme->Header($cameralife->GetPref('sitename'));
 
 $_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 'rand';

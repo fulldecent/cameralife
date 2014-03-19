@@ -3,7 +3,7 @@
   // Recaches EXIF data
 
   @ini_set('max_execution_time',9000);
-  $features=array('theme','security','imageprocessing', 'photostore');
+  $features=array('theme','security','imageprocessing', 'filestore');
   require '../main.inc';
   $cameralife->base_url = dirname($cameralife->base_url);
   chdir ($cameralife->base_dir);

@@ -13,7 +13,7 @@
  * @copyright Copyright (c) 2001-2009 Will Entriken
 */
 
-$features=array('imageprocessing','security','photostore');
+$features=array('imageprocessing','security','filestore');
 require 'main.inc';
 
 is_numeric($_POST['id'])

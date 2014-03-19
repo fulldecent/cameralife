@@ -4,7 +4,7 @@
 # mysql
 # CREATE TABLE likebetter (id INT, chosen BOOL, addr INT UNSIGNED, KEY(id), UNIQUE(id, addr, chosen));
 
-$features=array('theme','security','imageprocessing','photostore');
+$features=array('theme','security','imageprocessing','filestore');
 require '../main.inc';
 $cameralife->base_url = dirname($cameralife->base_url);
 chdir ($cameralife->base_dir);

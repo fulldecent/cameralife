@@ -90,8 +90,10 @@ class Photo extends View
     $receipt = NULL;
     if ($key != 'hits')
       $receipt = AuditTrail::Log('photo',$this->record['id'],$key,$this->record[$key],$value);
+/* TODO      
     if ($key == 'status')
       $cameralife->PhotoStore->SetPermissions($this);
+*/      
     $this->record[$key] = $value;
     $cameralife->Database->Update('photos', array($key=>$value), 'id='.$this->record['id']);
 
@@ -112,7 +114,8 @@ class Photo extends View
     global $cameralife;
 
     if (isset($this->image)) return;
-    list ($file, $temp, $this->record['mtime']) = $cameralife->PhotoStore->GetFile($this);
+    $fullpath = rtrim('/'.ltrim($this->record['path'],'/'),'/').'/'.$this->record['filename'];
+    list ($file, $temp, $this->record['mtime']) = $cameralife->FileStore->GetFile('photo',$fullpath);
     if (is_null($this->record['modified']) || $this->record['modified'] == 0 || $this->record['modified'] == '') {
       $this->record['fsize'] = filesize($file);
       $this->record['created'] = date('Y-m-d', $this->record['mtime']);
@@ -195,10 +198,11 @@ class Photo extends View
 
     if ($this->record['modified']) {
       $this->record['modified'] = 0;
-      $cameralife->PhotoStore->ModifyFile($this, NULL);
+      $cameralife->FileStore->EraseFile('other','/'.$this->record['id'].'_mod.'.$this->extension);
+      $cameralife->FileStore->EraseFile('other','/'.$this->record['id'].'_'.$cameralife->GetPref('scaledsize').'.'.$this->extension);
+      $cameralife->FileStore->EraseFile('other','/'.$this->record['id'].'_'.$cameralife->GetPref('scaledsize').'.'.$this->extension);
       $this->record['mtime'] = 0;
     }
-
     $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
   }
 
@@ -206,21 +210,22 @@ class Photo extends View
   {
     global $cameralife;
 
+// TDODO DATABASE UNIQ PATH/FILENAME
+//TODO FIX DATABASE TO MAKE photos.path like '/a/dir' or '/'
+      $filename = $this->record['filename'];
+      $photopath = trim($this->record['path'], '/') . '/' . $filename;
+      $photopath = rtrim('/'.ltrim($this->record['path'],'/'),'/').'/'.$filename;
+    
+$cameralife->Error('DEBUG NEED TO ERASE'. $photopath);
+/* TODO
     $cameralife->PhotoStore->EraseFile($this);
+*/    
     $cameralife->Database->Delete('photos','id='.$this->record['id']);
     $cameralife->Database->Delete('logs',"record_type='photo' AND record_id=".$this->record['id']);
     $cameralife->Database->Delete('ratings',"id=".$this->record['id']);
     $cameralife->Database->Delete('comments',"photo_id=".$this->record['id']);
     $cameralife->Database->Delete('exif',"photoid=".$this->record['id']);
     $this->Destroy();
-
-    # Bonus code
-    if (file_exists($cameralife->base_dir.'/deleted.log')) {
-      $fh = fopen($cameralife->base_dir.'/deleted.log', 'a')
-        or $cameralife->Error("Can't open ".$cameralife->base_dir.'/deleted.log', __FILE__, __LINE__);
-      fwrite($fh, date('Y-m-d H:i:s')."\t".$this->record['path'].$this->record['filename']."\n");
-      fclose($fh);
-    }
   }
 
   public function Destroy()
@@ -229,16 +234,38 @@ class Photo extends View
       $this->image->Destroy();
   }
 
-  public function GetMediaURL($size='thumbnail')
+  public function GetMediaURL($format='thumbnail')
   {
     global $cameralife;
-    if ($url = $cameralife->PhotoStore->GetURL($this, $size))
+    
+    $url = NULL;
+    if ($format == 'photo' || $format == '') {
+      if ($this->Get('modified'))
+        $url = $cameralife->FileStore->GetURL('other', '/'.$this->Get('id').'_mod.'.$this->extension);
+      else
+        $url = $cameralife->FileStore->GetURL('photos', '/'.$this->Get('path').$this->Get('filename'));
+    }
+    elseif ($format == 'scaled')
+      $url = $cameralife->FileStore->GetURL('other', '/'.$this->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$this->extension);
+    elseif ($format == 'thumbnail')
+      $url = $cameralife->FileStore->GetURL('other', '/'.$this->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$this->extension);
+    elseif (is_numeric($format)) {
+      $valid = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
+      if (in_array($format, $valid))
+        $url = $cameralife->FileStore->GetURL('other', '/'.$this->Get('id').'_'.$format.'.'.$this->extension);
+      else
+        $cameralife->Error('This image size has not been allowed');
+    } 
+    else
+      $cameralife->Error('Bad format parameter');
+    
+    if ($url)
       return $url;
 
     if ($cameralife->GetPref('rewrite') == 'yes')
-      return $cameralife->base_url."/photos/".$this->record['id'].'.'.$this->extension.'?'.'scale='.$size.'&'.'ver='.($this->record['mtime']+0);
+      return $cameralife->base_url."/photos/".$this->record['id'].'.'.$this->extension.'?'.'scale='.$format.'&'.'ver='.($this->record['mtime']+0);
     else
-      return $cameralife->base_url.'/media.php?id='.$this->record['id']."&size=$size&ver=".($this->record['mtime']+0);
+      return $cameralife->base_url.'/media.php?id='.$this->record['id']."&size=$format&ver=".($this->record['mtime']+0);
   }
   /// DEPRECATED
   public function GetMedia($size='thumbnail')

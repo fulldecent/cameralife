@@ -20,7 +20,7 @@
 */
 /**
 */
-  $features=array('security','imageprocessing','photostore');
+  $features=array('security','imageprocessing','filestore');
   require 'main.inc';
 
 # try something
@@ -263,7 +263,7 @@ session_start();
         $upload['status'] = 0;
 
         $photo = new Photo($upload);
-        $cameralife->PhotoStore->PutFile($photo, $temp);
+        $cameralife->FileStore->PutFile('photo', '/'.$upload['path'].$upload['filename'], $temp);
         @unlink($temp);
       }
     } else {

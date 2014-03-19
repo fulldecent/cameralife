@@ -1,7 +1,8 @@
 <?php
 /**
  * An implementation of FileStore that stores photos on your local filesystem
- * @see PhotoStore
+ * An example path is: '/folder/file.png', all paths start with '/'
+ * @see FileStore
  *
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2014 Will Entriken
@@ -37,7 +38,7 @@ class LocalFileStore extends FileStore
    * Gets a local filename for the requested resource. It is downloaded if necessary.
    *
    * @param $bucket - one of ('photo', 'other')
-   * @param $path - the location of the stored file, starts with '/'
+   * @param $path - the location of the stored file
    * @return an array with these elements:
    *     filename - string - the local file you requested
    *     temporary - boolean
@@ -68,7 +69,7 @@ class LocalFileStore extends FileStore
    * Save a file to the filestore
    *
    * @param $bucket - one of ('photo', 'other')
-   * @param $path - the location of the stored file, starts with '/'
+   * @param $path - the location of the stored file
    * @param $file - the local file which is to be put in the store
    * @param $secure - if secure, ensure this file will not be publicly accessible
    * @return none
@@ -94,13 +95,14 @@ class LocalFileStore extends FileStore
    * Sets whether the file must be secure
    *
    * @param $bucket - one of ('photo', 'other')
-   * @param $path - the location of the stored file, starts with '/'
+   * @param $path - the location of the stored file
    * @param $file - the local file which is to be put in the store
    * @param $secure - if secure, ensure this file will not be publicly accessible
    * @return none
    */
   function SetPermissions($bucket, $path, $secure)
   {
+die('NOT YET');
     return;
   }
 
@@ -135,7 +137,7 @@ class LocalFileStore extends FileStore
    * @param $recursive - whether to list recursively
    * @return an array of files, in the form 'path'=>basename(path)
    */
-  function ListFiles($bucket, $path='', $recursive=TRUE)
+  function ListFiles($bucket, $path='/', $recursive=TRUE)
   {
     global $cameralife;
     $fullpath = '';
@@ -159,21 +161,15 @@ class LocalFileStore extends FileStore
       while (false !== ($file = readdir($dir)))
       {
         if ($file[0]=='.') continue;
-        $childpath = $fullpath.$file;
-        if ($recursive && is_dir($childpath))
-          $children[] = $childpath . '/';
-        else if (is_file($childpath))
+        if (is_file($fullpath.$file))
           $retval[$path.$file] = $file;
+        else if ($recursive && is_dir($fullpath.$file))
+          $children[] = $path.$file.'/';
       }
       closedir($dir);
       sort($children);
-      if ($recursive) 
-      {
-        foreach($children as $child)
-        {
-          $retval += $this->ListFiles($bucket, $child, TRUE);
-        }
-      }
+      foreach($children as $child)
+        $retval += $this->ListFiles($bucket, $child, TRUE);
     }
     else
     {

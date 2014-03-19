@@ -5,7 +5,7 @@
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2013 Will Entriken
  */
-$features=array('security', 'photostore');
+$features=array('security', 'filestore');
 require '../main.inc';
 $cameralife->base_url = dirname($cameralife->base_url);
 
@@ -147,11 +147,11 @@ if ($numreg)
         <div class="col-sm-3">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">Photo storage</h3>
+              <h3 class="panel-title">File storage</h3>
             </div>
             <div class="panel-body">
               <p>Your photos can be stored on your web server, a remote server, Amazon S3, etc.</p>
-              <p><a class="btn btn-default" href="photostore.php"><i class="icon-folder-open"></i> Configure photostore &raquo;</a></p>
+              <p><a class="btn btn-default" href="filestore.php"><i class="icon-folder-open"></i> Configure filestore &raquo;</a></p>
             </div>
           </div>
         </div>

@@ -66,7 +66,7 @@ if (!isset($_POST['sitepasswd'])) {
         </form>
 <?php 
 } else {
-  $features=array('security', 'photostore', 'theme');
+  $features=array('security', 'filestore', 'theme');
   require '../main.inc';
   $count = $cameralife->Database->SelectOne('users','count(*)');
   $pass = $cameralife->Database->SelectOne('users','password','username="admin"');

@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public
  */
-$features=array('theme');
+$features=array('theme','filestore');
 require 'main.inc';
 $cameralife->Theme->ShowPage('index');
 ?>

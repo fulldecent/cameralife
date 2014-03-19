@@ -6,7 +6,7 @@
 */
 
 $cameralife->GetFeature('security');
-$cameralife->GetFeature('photostore');
+$cameralife->GetFeature('filestore');
 
 if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$cameralife->Security->GetName().'/')
 {

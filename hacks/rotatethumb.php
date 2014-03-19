@@ -10,7 +10,7 @@
  *@access public
  */
 
-  $features=array('security','imageprocessing', 'photostore');
+  $features=array('security','imageprocessing', 'filestore');
   require '../main.inc';
   $cameralife->base_url = dirname($cameralife->base_url);
 
@@ -22,7 +22,7 @@
   $photo = $result->FetchAssoc()
     or die('You have followed a stale link or have found a bug in this site :-)');
 
-  if ($cameralife->GetPref('photostore')!='local')
+  if ($cameralife->GetPref('filestore')!='local')
     die('This hack demands a local photostore');
 
   if (!is_dir($cameralife->PhotoStore->GetPref('cache_dir')))

@@ -7,7 +7,7 @@
  */
 
 # $cameralife and $album are set by ShowPage()
-$cameralife->GetFeature('photostore');
+$cameralife->GetFeature('filestore');
 
 $stats = new Stats;
 $counts = $stats->GetCounts();

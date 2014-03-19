@@ -12,7 +12,7 @@
   */
 
 $cameralife->GetFeature('security');
-$cameralife->GetFeature('photostore');
+$cameralife->GetFeature('filestore');
 $results = $album->GetPhotos();
 $counts = $album->GetCounts();
 $icon = $album->GetIcon();

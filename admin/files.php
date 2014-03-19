@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2001-2013 Will Entriken
  * @access public
  */
-$features=array('security', 'photostore');
+$features=array('security', 'filestore');
 require '../main.inc';
 chdir ($cameralife->base_dir);
 $cameralife->base_url = dirname($cameralife->base_url);
@@ -79,7 +79,7 @@ if ($_GET['page'] !== 'update') { // Show stuff
       <form method="post">
 <?php
   if ($_GET['page'] == 'flagged')
-    echo "<p class=\"lead\">Photos show up here when flagged. \"Erasing\" a photo deletes it, unless <a href=\"photostore.php\">your photostore</a> is set up to keep a copy.";
+    echo "<p class=\"lead\">Photos show up here when flagged. \"Erasing\" a photo deletes it.";
   else if ($_GET['page'] == 'private')
     echo '<p>Photos that have been marked private will show here.</p>';
   else if ($_GET['page'] == 'upload')
@@ -116,7 +116,7 @@ if ($_GET['page'] !== 'update') { // Show stuff
 </p>
 <?php
 } else { // Update DB
-  echo "<p>Updating the database to reflect any changes to the PhotoStore...</p>\n<ol>\n";
+  echo "<p>Updating the database to reflect any changes to the FileStore...</p>\n<ol>\n";
   flush();
 
   $output = Folder::Update();

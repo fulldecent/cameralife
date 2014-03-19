@@ -7,7 +7,7 @@
  */
   @ini_set('max_execution_time',9000);
 
-  $features=array('security','imageprocessing', 'photostore');
+  $features=array('security','imageprocessing', 'filestore');
   require '../main.inc';
   $cameralife->base_url = dirname($cameralife->base_url);
 

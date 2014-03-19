@@ -1,5 +1,5 @@
 <?php
-  $features=array('theme','security','imageprocessing','photostore');
+  $features=array('theme','security','imageprocessing','filestore');
   require '../main.inc';
   $cameralife->base_url = dirname($cameralife->base_url);
   $cameralife->Security->authorize('admin_file', 1); // Require
