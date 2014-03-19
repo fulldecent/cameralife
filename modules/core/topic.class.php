@@ -54,19 +54,13 @@ class Topic extends Search
     return $retval;
   }
 
-  # STATIC
-  /**
-  *This function is a static function
-  */
-  public function GetTopics()
+  public static function GetTopics()
   {
     global $cameralife;
-
     $retval = array();
     $result = $cameralife->Database->Select('albums','DISTINCT topic');
     while ($topic = $result->FetchAssoc())
       $retval[] = $topic['topic'];
-
     return $retval;
   }
 

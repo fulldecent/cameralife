@@ -81,7 +81,7 @@
       global $cameralife;
       $this->menu = $menu;
 
-      $myfolder = new Folder ('upload/'.$cameralife->Security->GetName().'/');
+      $myfolder = new Folder ('/upload/'.$cameralife->Security->GetName());
       $myfoldericon = $myfolder->GetIcon();
 
       $body = $onload ? "<body onLoad=\"$onload\">" : '<body>';

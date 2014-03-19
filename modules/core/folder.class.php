@@ -23,7 +23,7 @@ class Folder extends Search
     $this->path = $path;
     if (!strlen($path)) $this->path='/';
     $this->date = $date;
-die($path);
+
     if($sync && !$this->Fsck())
       Folder::Update();
 
@@ -89,7 +89,7 @@ die($path);
 
     $result = array();
     $selection = 'DISTINCT path';
-    $condition = "status=0 AND path LIKE '".$this->path."/%'";
+    $condition = "status=0 AND path LIKE '".$this->path."_%'"; //TODO THIS IS ACTUALLY WRONG
     $extra =     "ORDER BY $sort LIMIT $count";
     $family = $cameralife->Database->Select('photos', $selection, $condition, $extra);
     while ($youngin = $family->FetchAssoc())
