@@ -3,6 +3,7 @@ git  Will Entriken <cameralife AT phor.net>
 * Update PhotoStore API
 * Remove hacks
 * Do not delete photos
+* Use CDN for bootstrap
 
 2.6.6  Will Entriken <cameralife AT phor.net>
 * Improve install process

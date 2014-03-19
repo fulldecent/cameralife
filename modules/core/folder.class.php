@@ -17,25 +17,18 @@ class Folder extends Search
   * <b>Optional </b> When is the latest photo in this folder from, unixtime
   */
 
-  public function Folder($original = '', $sync=FALSE, $date=NULL)
+  public function Folder($path='/', $sync=FALSE, $date=NULL)
   {
     global $cameralife;
-
-    if (is_string($original)) { # This a path
-      if (strpos($original, '..') !== false)
-        $cameralife->Error('Tried to access a path which contains  ..', __FILE__, __LINE__);
-
-      $this->path = $original;
-    } elseif (get_class($original) == 'Photo') { # Extract the path from this Photo
-      $this->path = $original->Get('path');
-    }
+    $this->path = $path;
+    if (!strlen($path)) $this->path='/';
     $this->date = $date;
-
+die($path);
     if($sync && !$this->Fsck())
       Folder::Update();
 
     Search::Search('');
-    //todo use bind here, add a bind parameter to Search
+//todo use bind here, add a bind parameter to Search
     @$this->mySearchPhotoCondition = "path='".mysql_real_escape_string($this->path)."'";
     $this->mySearchAlbumCondition = "FALSE";
     @$this->mySearchFolderCondition = "path LIKE '".mysql_real_escape_string($this->path)."%/' AND path NOT LIKE '".addslashes($this->path)."%/%/'";
@@ -96,7 +89,7 @@ class Folder extends Search
 
     $result = array();
     $selection = 'DISTINCT path';
-    $condition = "status=0 AND path LIKE '".$this->path."%/'";
+    $condition = "status=0 AND path LIKE '".$this->path."/%'";
     $extra =     "ORDER BY $sort LIMIT $count";
     $family = $cameralife->Database->Select('photos', $selection, $condition, $extra);
     while ($youngin = $family->FetchAssoc())
@@ -120,7 +113,7 @@ class Folder extends Search
     }
 
     $selection = "DISTINCT SUBSTRING_INDEX(SUBSTR(path,".(strlen($this->path)+1)."),'/',1) AS basename";
-    $condition = "path LIKE '".addslashes($this->path)."%/' AND status=0";
+    $condition = "path LIKE '".addslashes($this->path)."/%' AND status=0";
     $extra =     "ORDER BY $sort ".$this->myLimit;
     $family = $cameralife->Database->Select('photos', $selection, $condition, $extra);
 
