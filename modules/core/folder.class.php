@@ -1,14 +1,23 @@
 <?php
 /**
+ * Folder class.
  * Access folders on the file system as objects
+ *
  * @author Will Entriken <cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @copyright Copyright (c) 2001-2014 Will Entriken
+ * @extends Search
  */
-
 class Folder extends Search
 {
-  public $path; // Like: '/' or '/afolder' or '/parent/child'
+  /**
+   * path
+   * Like: '/' or '/afolder' or '/parent/child'
+   *
+   * @var string
+   * @access public
+   */
+  public $path;
 
   /**
   * This function should be constructed with either of the parameters Photo or Path.
@@ -17,6 +26,7 @@ class Folder extends Search
   * <b>Optional </b> When is the latest photo in this folder from, unixtime
   */
 
+//TODO REMOVE THE SYNC AND DATE PARAM
   public function Folder($path='/', $sync=FALSE, $date=NULL)
   {
     global $cameralife;
@@ -39,7 +49,7 @@ class Folder extends Search
     global $cameralife;
     if ($this->myStart > 0) {
       if ($cameralife->GetPref('rewrite') == 'yes')
-        $href = $cameralife->base_url.'/folders/'.str_replace(" ","%20",$this->path); 
+        $href = $cameralife->base_url.'/folders'.str_replace(" ","%20",$this->path); 
       else
         $href = $cameralife->base_url.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
       $href = AddParam($href, 'start', $this->myStart - $this->myLimitCount);
@@ -48,26 +58,15 @@ class Folder extends Search
     return NULL;
   }
 
-  /**
-   * @return $retval an array of folders
-   */
   public function GetAncestors()
   {
     $retval = array();
-    $full_path = '';
-
-    if (strlen($this->path) > 1) {
-      $retval[] = new Folder('', FALSE);
-
-      foreach (explode("/",$this->path) as $dir) {
-        if (!$dir) continue;
-        $full_path = $full_path.$dir."/";
-        if ($full_path == $this->path) continue;
-        $retval[] = new Folder($full_path, FALSE);
-      }
+    $path = $this->path;
+    while ($path != '/') {
+      $path = dirname($path);
+      $retval[] = new Folder($path);
     }
-
-    return $retval;
+    return array_reverse($retval);
   }
 
   /**
@@ -130,7 +129,7 @@ class Folder extends Search
     $retval = array();
 
     if ($cameralife->GetPref('rewrite') == 'yes')
-      $retval['href'] = $cameralife->base_url.'/folders/'.str_replace(" ","%20",$this->path); 
+      $retval['href'] = $cameralife->base_url.'/folders'.str_replace(" ","%20",$this->path); 
     else
       $retval['href'] = $cameralife->base_url.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
 
@@ -149,6 +148,7 @@ class Folder extends Search
     return $retval;
   }
 
+//TODO: NO ENTITIES
   public function Path()
   {
     return htmlentities($this->path);

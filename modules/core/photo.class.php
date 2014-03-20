@@ -6,23 +6,53 @@
  * @version
  * @copyright Copyright (c) 2001-2009 Will Entriken
  */
-
-/**
- * This class is for getting and using photos
- * @var mixed $context an Album, Search or Folder from where the user retrieved the photo
- * @var mixed $contextPhotos the photos from the 'context', that is an Album ,a Folder or a Search result
- * @var mixed $contextPrev the previous photo in the 'context'
- * @var mixed $contextNext the next photo in the 'context'
- */
 class Photo extends View
 {
   public $record, $image;
 
-  public $context; // an Album, Search or Folder of where the user came from to get to this photo
-  public $contextPhotos; // photos from context
-  public $contextPrev; // the previous photo in context
-  public $contextNext; // the next photo in contex
+  /**
+   * The file extension, e.g. png
+   * 
+   * @var String
+   * @access public
+   */
   public $extension;
+
+  /**
+   * context
+   * an Album, Search or Folder of where the user came from to get to this photo
+   * 
+   * @var mixed
+   * @access private
+   */
+  private $context;
+  
+  /**
+   * contextPhotos
+   * An ordered set of photos in the same context as this one
+   * 
+   * @var mixed
+   * @access private
+   */
+  private $contextPhotos;
+
+  /**
+   * contextPrev
+   * the previous photo in context
+   * 
+   * @var mixed
+   * @access private
+   */
+  private $contextPrev;
+  
+  /**
+   * contextNext
+   * the next photo in contex
+   * 
+   * @var mixed
+   * @access private
+   */
+  private $contextNext;
 
   /**
   * To get an empty Photo pass nothing ie NULL
@@ -55,8 +85,6 @@ class Photo extends View
       $this->record = array_merge($this->record, $original);
 
       $this->record['id'] = $cameralife->Database->Insert('photos', $this->record);
-      // Generate the thumbnail later, when requested
-      //$this->GenerateThumbnail(); // Sets mtime, width, height, fsize
     }
     $this->context = false;
     $this->contextPrev = false;
@@ -423,7 +451,6 @@ class Photo extends View
   *<code>$search = new Search($this->Get('description'));</code>
   *Search for photos named as a user given description
 */
-
   public function GetRelated()
   {
     global $_SERVER, $cameralife;
@@ -503,12 +530,10 @@ class Photo extends View
     return $retval;
   }
 
-  // PRIVATE
   /**
-  *@access private
-  */
-
-  /// Convert "2/4" to 0.5 and "4" to 4
+   * Convert "2/4" to 0.5 and "4" to 4
+   * @access private
+   */
   public function GPS2num($num)
   {
     $parts = explode('/', $num);
@@ -544,16 +569,10 @@ class Photo extends View
     return $this->contextPhotos;
   }
 
-  // returns the previous photo or false if none exists
-  /**Returns previous photo
-  *else false if none exists
-  */
-
   public function GetPrevious()
   {
     if (!count($this->contextPhotos))
       $this->GetContext();
-
     return $this->contextPrev;
   }
 
@@ -562,8 +581,6 @@ class Photo extends View
   {
     if (!count($this->contextPhotos))
       $this->GetContext();
-
     return $this->contextNext;
   }
-
 }
