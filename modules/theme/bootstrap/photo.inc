@@ -53,65 +53,20 @@ if($photoNext) {
 $headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/photo.js"></script>';
 $headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/ajax.js"></script>';
 
-### Set up sidebar menu
-$actions = array(); // name=>, icon=>, href=>, onclick=>
-$actions[] = array('name'=>"View full-sized ({$photo->Get('width')} x {$photo->Get('height')}px)",
-                   'icon'=>'fullscreen',
-                   'href'=>$photo->GetMediaURL('photo'));
-$sizes = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
-sort($sizes);
-if (count($sizes)) foreach ($sizes as $size)
+$cameralife->Theme->Header($photo->Get('description'), NULL, $headers);
+
+if ($photo->Get('status') > 0)
 {
-  $actions[] = array('name'=>"View at ${size}px",
-                     'icon'=>'fullscreen',
-                     'href'=>html_entity_decode($photo->GetMedia($size)));
-}
-if ($cameralife->Security->authorize('photo_rename'))
-  $actions[] = array('name'=>"Rename photo",
-                     'icon'=>'font',
-                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','rename')),
-                     'onclick'=>"$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false");
-if ($cameralife->Security->authorize('photo_delete'))
-  $actions[] = array('name'=>"Flag photo",
-                     'icon'=>'flag',
-                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','flag')),
-                     'onclick'=>"$('#deleteform').show();return false");
-if ($cameralife->Security->authorize('photo_modify'))
-  $actions[] = array('name'=>"Modify photo (rotate, revert, ...)",
-                     'icon'=>'wrench',
-                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','modify')),
-                     'onclick'=>"$('#modify').show();return false");
-if ($photo->Get('status') == 0)
-  $actions[] = array('name'=>"Order prints online",
-                     'icon'=>'print',
-                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','print')),
-                     'onclick'=>"$('#print').show();return false");
-$menu = '<ul class="nav nav-list"><li class="nav-header">Actions</li>';
-foreach ($actions as $action) {
-  $menu .= "  <li><a href=\"".htmlentities($action['href'])."\"";
-  if (isset($action['onclick']))
-    $menu .= " onclick=\"{$action['onclick']}\"";
-  $menu .= "><i class=\"icon-{$action['icon']}\"></i> {$action['name']}</a></li>\n";
-}
-$menu .= '</ul>';
-$menu .= '<ul class="nav nav-list"><li class="nav-header">Share</li>';
-$menu .= "  <li><a href=\"http://www.facebook.com/sharer.php?u='".htmlentities($icon['href'])."\"><i class=\"icon-star\"></i> Share on Facebook</a></li>\n";
-$menu .= '</ul>';
-
-$cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
-
-  if ($photo->Get('status') > 0)
-  {
 ?>
   <div class="alert">This photo is not public</div>
 <?php
-  }
+}
 ?>
   <h1>
     <?= htmlentities($photo->Get('description'), NULL, "UTF-8") ?>
 <?php
-  if ($cameralife->Security->authorize('photo_rename'))
-  {
+if ($cameralife->Security->authorize('photo_rename'))
+{
 ?>
     <a href="<?= AddParamRawUrlEncode('action','rename') ?>" 
        id="showHideRenameForm"
@@ -119,7 +74,7 @@ $cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
        style="<?=(isset($_GET['action']) && $_GET['action'] == 'rename')?'display:none':''?>"
        onclick="$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false">edit</a>
 <?php 
-  } 
+} 
 ?>
   </h1>
 <?php
@@ -291,8 +246,8 @@ $cameralife->Theme->Header($photo->Get('description'), $menu, $headers);
 //  echo "</div>\n";
 ?>
 
-<div class="row-fluid">
-  <div class="span6">
+<div class="row">
+  <div class="col-md-4">
     <h2>Information</h2>
     <dl class="dl-horizontal">
 <?php
@@ -313,7 +268,7 @@ if ($exif = $photo->GetEXIF()) {
 ?>    
     </dl>
   </div>
-  <div class="span6">
+  <div class="col-md-4">
     <h2>Feedback</h2>
     <form action="<?= $cameralife->base_url?>/photo_controller.php" method=POST name="form">
       <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
@@ -357,15 +312,89 @@ $result = $cameralife->Database->Select('comments', '*', 'photo_id='.$photo->Get
 while ($comment = $result->FetchAssoc())
 echo "<strong>".$comment['username']."</strong> <em>" . date('Y-m-d', strtotime($comment['date']))."</em><br>" .htmlentities($comment['comment']) . "<hr>";
       ?>
-      <form action="<?= $cameralife->base_url ?>/photo_controller.php" method=POST name="form">
-<input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
-<input type="hidden" name="target" value="<?= $icon['href'] ?>">
-<input type="hidden" name="action" value="comment">
-<input name="param1">
-<input type="submit" value="Post comment" class="btn">
-</form>
+    <form action="<?= $cameralife->base_url ?>/photo_controller.php" method=POST name="form">
+      <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
+      <input type="hidden" name="target" value="<?= $icon['href'] ?>">
+      <input type="hidden" name="action" value="comment">
+      <input name="param1">
+      <input type="submit" value="Post comment" class="btn">
+    </form>
   </div>
-</div>
+  <div class="col-md-4">
+  <h2>Actions</h2>
+      
+<?php
+
+echo "<ul class=\"list-unstyled\">";
+echo "<li><a href=\"".$photo->GetMediaURL('photo')."\"><i class=\"icon-fullscreen\"></i> View full-sized ({$photo->Get('width')} x {$photo->Get('height')}px)</a></li>";
+
+if ($cameralife->Security->authorize('photo_rename'))
+  echo "<li><a onClick=\"$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false\" href=\"".html_entity_decode(AddParamRawUrlEncode('action','rename'))."\"><i class=\"icon-font\"></i> Rename photo</a></li>";
+
+if ($cameralife->Security->authorize('photo_delete'))
+  echo "<li><a onClick=\"$('#deleteform').show();return false\" href=\"".html_entity_decode(AddParamRawUrlEncode('action','flag'))."\"><i class=\"icon-flag\"></i> Flag photo</a></li>";
+
+if ($cameralife->Security->authorize('photo_modify'))
+  echo "<li><a onClick=\"$('#modify').show();return false\" href=\"".html_entity_decode(AddParamRawUrlEncode('action','modify'))."\"><i class=\"icon-wrench\"></i> Modify photo (rotate, revert, ...)</a></li>";
+
+if ($photo->Get('status') == 0)
+  echo "<li><a onClick=\"$('#print').show();return false\" href=\"".html_entity_decode(AddParamRawUrlEncode('action','print'))."\"><i class=\"icon-print\"></i> Order prints</a></li>";
+
+echo "<li><a href=\"http://www.facebook.com/sharer.php?u='".htmlentities($icon['href'])."\"><i class=\"icon-star\"></i> Share on Facebook</a></li>";
+
+echo "</ul>";
+
+/*
+### Set up sidebar menu
+$actions = array(); // name=>, icon=>, href=>, onclick=>
+$actions[] = array('name'=>"View full-sized ({$photo->Get('width')} x {$photo->Get('height')}px)",
+                   'icon'=>'fullscreen',
+                   'href'=>$photo->GetMediaURL('photo'));
+$sizes = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
+sort($sizes);
+if (count($sizes)) foreach ($sizes as $size)
+{
+  $actions[] = array('name'=>"View at ${size}px",
+                     'icon'=>'fullscreen',
+                     'href'=>html_entity_decode($photo->GetMedia($size)));
+}
+if ($cameralife->Security->authorize('photo_rename'))
+  $actions[] = array('name'=>"Rename photo",
+                     'icon'=>'font',
+                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','rename')),
+                     'onclick'=>"$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false");
+if ($cameralife->Security->authorize('photo_delete'))
+  $actions[] = array('name'=>"Flag photo",
+                     'icon'=>'flag',
+                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','flag')),
+                     'onclick'=>"$('#deleteform').show();return false");
+if ($cameralife->Security->authorize('photo_modify'))
+  $actions[] = array('name'=>"Modify photo (rotate, revert, ...)",
+                     'icon'=>'wrench',
+                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','modify')),
+                     'onclick'=>"$('#modify').show();return false");
+if ($photo->Get('status') == 0)
+  $actions[] = array('name'=>"Order prints online",
+                     'icon'=>'print',
+                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','print')),
+                     'onclick'=>"$('#print').show();return false");
+$menu = '<ul class="nav nav-list"><li class="nav-header">Actions</li>';
+foreach ($actions as $action) {
+  $menu .= "  <li><a href=\"".htmlentities($action['href'])."\"";
+  if (isset($action['onclick']))
+    $menu .= " onclick=\"{$action['onclick']}\"";
+  $menu .= "><i class=\"icon-{$action['icon']}\"></i> {$action['name']}</a></li>\n";
+}
+$menu .= '</ul>';
+$menu .= '<ul class="nav nav-list"><li class="nav-header">Share</li>';
+$menu .= "  <li><a href=\"http://www.facebook.com/sharer.php?u='".htmlentities($icon['href'])."\"><i class=\"icon-star\"></i> Share on Facebook</a></li>\n";
+$menu .= '</ul>';
+
+  echo $menu;
+  */
+?>
+    </div>
+  </div>
 
 <?php
   # Cache the next image the user is likely to look at

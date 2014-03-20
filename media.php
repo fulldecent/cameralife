@@ -39,8 +39,10 @@ if (!$cameralife->Security->authorize('admin_file')) {
 if ($format == 'photo' || $format == '') {
   if ($photo->Get('modified'))
     list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->Get('id').'_mod.'.$extension);
-  else
-    list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('photo', '/'.$photo->Get('path').$photo->Get('filename'));
+  else {
+    $fullpath = rtrim('/'.ltrim($photo->Get('path'),'/'),'/').'/'.$photo->Get('filename');
+    list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('photo', $fullpath);
+  }
 }
 elseif ($format == 'scaled')
   list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension);
