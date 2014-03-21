@@ -211,8 +211,8 @@ if (isset($_GET['path'])) {
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <!--    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.0/jquery.mobile.min.js"></script> -->
-    <script src="<?= $cameralife->base_url ?>/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="<?= $cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme') ?>/theme.js"></script>
 <?php
       if ($cameralife->Theme->GetPref('analytics')) {

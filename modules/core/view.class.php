@@ -35,15 +35,7 @@ class View
    * @return void
    */
   public function GetNext() {}
-  
-  /**
-   * GetPrevious function.
-   * A URL or NULL for the page logically following this one
-   * 
-   * @access public
-   * @return void
-   */
-     
+       
   /**
    * ShowPage function.
    * The the currently installed theme to display this view
