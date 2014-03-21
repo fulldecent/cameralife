@@ -39,7 +39,7 @@ the Gallery Remote protocol.
 
 5. Responsive
 
-  Supports OpenSearch and RSS. Is built using JQuery/AJAX for modernbrowsers, 
+  Supports OpenSearch, OpenGraph and RSS. Is built using JQuery/AJAX for modernbrowsers, 
 but gracefully degrades without Javascript for accessibility... or if you want 
 to load it on a cell phone made in the 90's.
   

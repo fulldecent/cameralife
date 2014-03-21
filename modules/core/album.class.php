@@ -108,7 +108,7 @@ class Album extends Search
   /** @param string $size size of the image (large)
   */
 
-  public function GetIcon($size='large')
+  public function GetIcon()
   {
     global $cameralife;
 

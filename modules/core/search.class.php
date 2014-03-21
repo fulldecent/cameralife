@@ -179,7 +179,7 @@ class Search extends View
     return $folders;
   }
 
-  public function GetIcon($size='large')
+  public function GetIcon()
   {
     global $cameralife;
 

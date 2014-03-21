@@ -305,7 +305,7 @@ class Photo extends View
   /**
   *Enables you to set icon size as large or small
   */
-  public function GetIcon($size='large')
+  public function GetIcon()
   {
     global $cameralife;
 

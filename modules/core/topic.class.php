@@ -1,13 +1,12 @@
 <?php
-
-    /**
-    *@author Will Entriken <WillEntriken @gmail.com>
-    *@access public
-    *@copyright Copyright (c) 2001-2009 Will Entriken
-    */
-     /**
-      *This class is for getting and using topics
-      */
+/**
+ * Topic class.
+ * 
+ * @author Will Entriken <WillEntriken @gmail.com>
+ * @access public
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @extends Search
+ */
 class Topic extends Search
 {
   public $name;
@@ -34,7 +33,7 @@ class Topic extends Search
     return $this->$item;
   }
 
-  public function GetIcon($size='large')
+  public function GetIcon()
   {
     global $cameralife;
     $retval = array();

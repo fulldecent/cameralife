@@ -123,7 +123,7 @@ class Folder extends Search
     return $result;
   }
 
-  public function GetIcon($size='large')
+  public function GetIcon()
   {
     global $cameralife;
     $retval = array();

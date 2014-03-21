@@ -16,11 +16,11 @@ class View
    * @param string $size (default: 'large')
    * @return array with keys: href, name, image 
    */
-  public function GetIcon($size='large') {}
+  public function GetIcon() {}
 
   /**
    * GetPrevious function.
-   * A URL or NULL for the page logically preceeding this one
+   * A URL or NULL for the View logically preceeding this one
    * 
    * @access public
    * @return void
@@ -29,7 +29,7 @@ class View
 
   /**
    * GetNext function.
-   * A URL or NULL for the page logically following this one
+   * A URL or NULL for the View logically following this one
    * 
    * @access public
    * @return void
@@ -38,7 +38,7 @@ class View
        
   /**
    * ShowPage function.
-   * The the currently installed theme to display this view
+   * Render this View using the currently installed theme
    * 
    * @access public
    * @return void
@@ -46,7 +46,7 @@ class View
   public function ShowPage()
   {
     global $cameralife;
-
+    $cameralife->GetFeature('theme');
     $cameralife->Theme->ShowPage(strtolower(get_class($this)), $this);
   }
 }
