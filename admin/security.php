@@ -50,11 +50,10 @@ require 'admin.inc';
 <?php
 $feature = 'security';
 foreach ($cameralife->GetModules($feature) as $module) {
-  include $cameralife->base_dir."/modules/$feature/$module/module-info.php";
-
+  $info = json_decode(file_get_contents($cameralife->base_dir."/modules/$feature/$module/module-info.json"));
   $selected = $cameralife->GetPref($feature) == basename($module) ? 'selected' : '';
-  echo "<option $selected value=\"$module\">";
-  echo "<b>$module_name</b> - <i>version $module_version by $module_author</i>";
+  echo "<option $selected value=\"{$module}\">";
+  echo "<b>{$info->name}</b> - <i>version {$info->version} by {$info->author}</i>";
   echo "</option>\n";
 }
 ?>

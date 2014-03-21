@@ -24,7 +24,7 @@ if (!$_GET['theme'] || eregi('[/\\]',$_GET['theme'])) {
 
   foreach (glob(dirname(__FILE__)."/$theme/*") as $image) {
     $image = basename($image);
-    if ($image[0] == '.' || strstr($image,'~') || strstr($image, 'php'))
+    if ($image[0] == '.' || strstr($image,'~') || strstr($image, 'json'))
       continue;
     eregi('(.*)\.(.*)',$image,$regs);
     $images[$regs[1]][] = $regs[2];

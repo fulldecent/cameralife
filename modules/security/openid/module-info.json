@@ -1,0 +1,9 @@
+{
+   "name":"OpenID",
+   "author":"Will Entriken",
+   "email":"cameralife@phor.net",
+   "version":"1.0.1",
+   "date":"2014-03-20",
+   "url":"http://fdcl.sourceforge.net",
+   "desc":"Implements security using OpenID. Based on jQuery OpenID Plug-in by Jarrett Vance and lightopenid by mewp"
+}
