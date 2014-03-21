@@ -34,16 +34,9 @@
       require dirname(__FILE__) . '/' . strtolower($name) . '.inc';
     }
 
-    function ImageURL($name) 
-    {
-//todo error checking
-      global $cameralife;
-
-      return $cameralife->base_url."/modules/iconset/".$cameralife->GetPref('iconset')."/$name";
-    }
-
     function Image($name, $extra=array()) 
     {
+      global $cameralife;
       if (preg_match('/src="([^"]*)"/i', $name)) # HTML IMG
       {
         $image['src'] = $regs[1];
@@ -56,7 +49,7 @@
       }
       else # Named asset, like 'small-album'
       {
-        $image['src'] = $this->ImageURL($name);
+        $image['src'] = $cameralife->IconURL($name);
         $image['alt'] = $name;
       }
 

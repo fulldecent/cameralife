@@ -159,14 +159,7 @@ class CameraLife extends CameraLifeModule # and View
 
   function IconURL($name)
   {
-    $imageTypes = '{[pP][nN][gG],[jJ][pP][eE][gG],[jJ][pP][gG],[gG][iI][fF]}';
-    $locations = array($this->base_dir."/modules/theme/".$this->GetPref('theme')."/iconset/$name.$imageTypes");
-    $locations[] = $this->base_dir."/modules/iconset/".$this->GetPref('iconset')."/$name.$imageTypes";
-    $candidateIcons = glob("{".implode(",",$locations)."}", GLOB_BRACE);
-    if (!count($candidateIcons))
-      $this->Error("Icon not found: $name $locations[0]", __FILE__, __LINE__);
-    $candidateIcon = substr($candidateIcons[0], strlen($this->base_dir));
-    return $this->base_url.$candidateIcon;
+    return $this->base_url."/modules/iconset/".$this->GetPref('iconset')."/$name.png";
   }
 
   function Error($message, $file='', $line='')
