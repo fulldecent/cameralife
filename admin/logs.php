@@ -23,7 +23,7 @@ if (!isset($_POST['showphotos']) && !isset($_POST['showalbums']) && !isset($_POS
 }
 if (isset($_POST['action']) && $_POST['action'] == 'Commit changes') {
   foreach ($_POST as $var => $val) {
-    if (!is_numeric($var) || !is_numeric($val))
+    if (!isset($var) || !is_numeric($val))
       continue;
     AuditTrail::Undo($val);
   }

@@ -47,14 +47,10 @@ class AuditTrail
   public function Undo($id)
   {
     global $cameralife;
-
-    if (is_numeric($id)) {
-      $result = $cameralife->Database->Select('logs', '*', 'id='.$id);
-      $receipt = $result->FetchAssoc();
-    }
-    if (!is_array($receipt))
+    if (!is_numeric($id))
       $cameralife->Error('Invalid receipt.');
-
+    $result = $cameralife->Database->Select('logs', '*', 'id='.$id);
+    $receipt = $result->FetchAssoc();
     $condition = 'record_id='.$receipt['record_id'];
     $condition .= " AND record_type='".$receipt['record_type']."'";
     $condition .= " AND value_field='".$receipt['value_field']."'";
