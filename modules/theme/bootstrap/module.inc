@@ -64,16 +64,17 @@
 
     /**
      * @access public
-     * @param string $title In <title> tag
+     * @param string the VIEW being displayed
      * @param string $menu Block of HTML to show on side of page in a well 
      * @param string $extrahead (default: '')
      * @param string $onload (default: '')
      * @return void
      */
-    function Header($title, $menu='', $extrahead='', $onload='')
+    function Header($view, $menu='', $extrahead='', $onload='')
     {
       global $cameralife;
       $this->menu = $menu;
+      $openGraph = $view->GetOpenGraph();
 
       $myfolder = new Folder ('/upload/'.$cameralife->Security->GetName());
       $myfolderURL = $myfolder->GetOpenGraph()['og:url'];
@@ -83,7 +84,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title><?= htmlentities($title, NULL, "UTF-8") ?></title> 
+    <title><?= htmlentities($openGraph['og:title'], NULL, "UTF-8") ?></title>
+    <meta property="og:title" content="<?= htmlentities($openGraph['og:title'], NULL, "UTF-8") ?>">
+    <meta property="og:type" content="<?= htmlentities($openGraph['og:type'], NULL, "UTF-8") ?>">
+    <meta property="og:url" content="<?= htmlentities($openGraph['og:url'], NULL, "UTF-8") ?>">
+    <meta property="og:image" content="<?= htmlentities($openGraph['og:image'], NULL, "UTF-8") ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Camera Life version <?= $cameralife->version ?>">
     <meta name="author" content="<?= $cameralife->GetPref('owner_email') ?>">

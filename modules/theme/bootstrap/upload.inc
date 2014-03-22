@@ -22,7 +22,7 @@ $folder = new Folder($path);
 $folderURL = $folder->GetOpenGraph()['og:url'];
 
 $headers = '<script src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/dropzone.js"></script>';
-$cameralife->Theme->Header('Upload photos', NULL, $headers);
+$cameralife->Theme->Header($cameralife, NULL, $headers); //TODO THIS IS INACCURATE
 ?>
 <BGSOUND src="<?= $cameralife->base_url ?>/filedone.wav">
 <h1>Uploading Photos</h1>

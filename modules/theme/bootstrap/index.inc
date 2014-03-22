@@ -9,7 +9,7 @@
 
 $cameralife->GetFeature('security');
 $cameralife->GetFeature('filestore');
-$cameralife->Theme->Header($cameralife->GetPref('sitename'));
+$cameralife->Theme->Header($cameralife);
 
 $_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 'rand';
 list($sort,$type) = explode('-', $_GET['page'].'-');

@@ -49,7 +49,7 @@ if ($folder->GetNext()) {
   $headers = "<link rel=\"next\" href=\"".$folder->GetNext()."\" />\n";
 }
 
-$cameralife->Theme->Header($folder_name, NULL, $headers);
+$cameralife->Theme->Header($folder, NULL, $headers);
 ?>
 
 <ul class="breadcrumb">

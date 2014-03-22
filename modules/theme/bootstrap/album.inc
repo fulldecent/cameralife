@@ -19,7 +19,7 @@ $openGraph = $album->GetOpenGraph();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 $sort = isset($_GET['sort']) ? $_GET['sort'] : 'rand';
 $extrahead = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of '.$album->Get('name').'" href="'.$cameralife->base_url.'/rss.php&#63;q='.$album->Get('term').'"/>'; 
-$cameralife->Theme->Header($cameralife->GetPref('sitename').': '.$album->Get('name'), 'album', $extrahead);
+$cameralife->Theme->Header($album, NULL, $extrahead);
 
   if (isset($_GET['edit']) && $cameralife->Security->authorize('admin_albums'))
   {

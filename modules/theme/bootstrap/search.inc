@@ -48,7 +48,7 @@ $sidebar .= <<<HTML
     </ul>
 HTML;
 
-$cameralife->Theme->Header('Site search', $sidebar, $header);
+$cameralife->Theme->Header($search, $sidebar, $header);
 
 if (isset($_GET['albumhelp']) && $_GET['albumhelp']) {
 ?>

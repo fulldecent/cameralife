@@ -15,7 +15,8 @@ $popular_photos = $stats->GetPopularPhotos();
 $popular_albums = $stats->GetPopularAlbums();
 $funfacts = $stats->GetFunFacts();
 
-$cameralife->Theme->Header($cameralife->GetPref('sitename').' - Stats');
+//TODO THIS IS NOT ACCURATE
+$cameralife->Theme->Header($cameralife);
 ?>
       <h1>Site stats</h1>
       <div class="row">

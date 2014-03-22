@@ -12,7 +12,7 @@ $albums = $topic->GetAlbums();
 $counts = $topic->GetCounts();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
-$cameralife->Theme->Header($cameralife->GetPref('sitename').' : '.htmlentities($topic->GetName()), 'topic');
+$cameralife->Theme->Header($topic);
 ?>
 <form name="form1" method=post action="album_controller.php">
 <?php

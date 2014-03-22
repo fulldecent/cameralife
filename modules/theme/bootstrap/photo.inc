@@ -61,7 +61,7 @@ if($photoNext) {
 $headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/photo.js"></script>';
 $headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/ajax.js"></script>';
 
-$cameralife->Theme->Header($photo->Get('description'), NULL, $headers);
+$cameralife->Theme->Header($photo, NULL, $headers);
 
 if ($photo->Get('status') > 0)
 {
