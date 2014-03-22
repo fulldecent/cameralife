@@ -15,7 +15,7 @@ $cameralife->GetFeature('security');
 $cameralife->GetFeature('filestore');
 $results = $album->GetPhotos();
 $counts = $album->GetCounts();
-$icon = $album->GetIcon();
+$openGraph = $album->GetOpenGraph();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 $sort = isset($_GET['sort']) ? $_GET['sort'] : 'rand';
 $extrahead = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of '.$album->Get('name').'" href="'.$cameralife->base_url.'/rss.php&#63;q='.$album->Get('term').'"/>'; 
@@ -42,8 +42,9 @@ $cameralife->Theme->Header($cameralife->GetPref('sitename').': '.$album->Get('na
             This album and others like it are:<td>
             <select name="param2">
             <?php 
-              foreach(Topic::GetTopics() as $thetopic)
+              foreach(Topic::GetTopics() as $topic)
               {
+                  $thetopic = $topic->name;
                   $selected = ($album->Get('topic') == $thetopic) ? 'selected' : '';
                   if ($album->Get('topic') == $topic) $preselect = true;
                   echo "<option $selected onclick=\"javascript:document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
@@ -57,7 +58,7 @@ $cameralife->Theme->Header($cameralife->GetPref('sitename').': '.$album->Get('na
           <td>
             <input type=submit name="action" value="Update">
             <input type=submit name="action" value="Delete">
-            <a href="<?= $icon['href'] ?>">(cancel)</a>
+            <a href="<?= htmlentities($openGraph['og:url']) ?>">(cancel)</a>
       </table>
     </form>
     </div>

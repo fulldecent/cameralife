@@ -11,7 +11,7 @@
 # Magic vars GET:start, GET/POST:sort are handled in search.class.php
   
 $counts = $folder->GetCounts();
-$icon = $folder->GetIcon();
+$openGraph = $folder->GetOpenGraph();
 $start = isset($_GET['start']) ? $_GET['start'] : 0;
 
 if (isset($_GET['start']) && is_numeric($_GET['start']))
@@ -55,8 +55,8 @@ $cameralife->Theme->Header($folder_name, NULL, $headers);
 <ul class="breadcrumb">
 <?php
   foreach($folder->GetAncestors() as $ancestor) {
-    $icon = $ancestor->GetIcon('small');
-    echo "  <li><a href=\"{$icon['href']}\"><img alt=\"folder\" src=\"".$cameralife->IconURL('small-folder')."\"> {$icon['name']}</a></li>";
+    $ancestorOpenGraph = $ancestor->GetOpenGraph();
+    echo '  <li><a href="'.htmlspecialchars($ancestorOpenGraph['og:url']).'"><img alt="folder" src="'.htmlspecialchars($cameralife->IconURL('small-folder')).'"> '.htmlentities($ancestorOpenGraph['og:title']).'</a></li>';
   }
   echo "        <li><img alt=\"folder\" src=\"".$cameralife->IconURL('small-folder')."\"> $folder_name</li>\n";
 ?>
@@ -70,8 +70,7 @@ $cameralife->Theme->Header($folder_name, NULL, $headers);
     $sections[] = array('name'=>$counts['folders']." folders", 'page_name'=>'folders');
 
   if (count($sections) >= 2) {
-    $icon = $folder->GetIcon();
-    $cameralife->Theme->MultiSection($sections, $icon['href']);
+    $cameralife->Theme->MultiSection($sections, $openGraph['og:url']);
   }
   elseif (count($sections == 1))
     echo "This folder contains ".strtolower($sections[0]['name']);
@@ -81,9 +80,9 @@ $cameralife->Theme->Header($folder_name, NULL, $headers);
   $cameralife->Theme->Grid($results);
 
   if ($_GET['page'] == "photos")
-    $cameralife->Theme->PageSelector($start,$counts['photos'],25,$icon['href']);
+    $cameralife->Theme->PageSelector($start,$counts['photos'],25,$openGraph['og:url']);
   else // ($_GET['page'] == "folders")
-    $cameralife->Theme->PageSelector($start,$counts['folders'],25,$icon['href']);
+    $cameralife->Theme->PageSelector($start,$counts['folders'],25,$openGraph['og:url']);
 
 ?>
 

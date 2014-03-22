@@ -301,28 +301,6 @@ class Photo extends View
     return new Folder($this->record['path'], FALSE);
   }
 
-  // small or large
-  /**
-  *Enables you to set icon size as large or small
-  */
-  public function GetIcon()
-  {
-    global $cameralife;
-
-    $retval = array('name'=>$this->record['description'],
-                 'image'=>($size=='large')?$this->GetMedia():'small-photo',
-                 'context'=>$this->record['hits'],
-                 'width'=>$this->record['tn_width'],
-                 'height'=>$this->record['tn_height']);
-
-    if ($cameralife->GetPref('rewrite') == 'yes')
-      $retval['href'] = $cameralife->base_url.'/photos/'.$this->record['id'];
-    else
-      $retval['href'] = $cameralife->base_url.'/photo.php&#63;id='.$this->record['id'];
-
-    return $retval;
-  }
-
   public function GetEXIF()
   {
     global $cameralife;
@@ -432,25 +410,12 @@ class Photo extends View
       $cameralife->Database->Insert('exif', array('photoid'=>$this->record['id'], 'tag'=>$tag, 'value'=>$value));
   }
 
-  // Returns an array of Icons of Views related to this photo
-  // one of them will have $icon['class'] = 'referer'
-  // We use the page's referer to find which is the referer
-  // also sets $this->context
-
-  /**The function Get Related returns an array of icons of possible views related to a photo.
-  *One of the icon will be denoted as $icon['class']='referer'
-  *The page's referer will be used to find the referer
-  *The function also sets $this->context
-  *
-  *<code>if (eregi ("album.php\?id=([0-9]*)",$_SERVER['HTTP_REFERER'],$regs) || eregi("albums/([0-9]+)",$_SERVER['HTTP_REFERER'],$regs))</code>
-  *The above line of code finds if the referer is an album
-  *<code>$result = $cameralife->Database->Select('albums','id,name',"'".addslashes($this->Get('description'))."' LIKE CONCAT('%',term,'%')");</code>
-  *Find all albums that contain this photo(this is incomplete and will be updated in the upcoming version)
-  *<code> if (eregi ("q=([^&]*)",$_SERVER['HTTP_REFERER'],$regs))</code>
-  *Checks if retrieved from a search
-  *<code>$search = new Search($this->Get('description'));</code>
-  *Search for photos named as a user given description
-*/
+  /**
+   * GetRelated function
+   * 
+   * @access public
+   * @return array - set of views that contain this photo
+   */
   public function GetRelated()
   {
     global $_SERVER, $cameralife;
@@ -467,66 +432,42 @@ class Photo extends View
         (preg_match("#album.php\?id=([0-9]*)#",$_SERVER['HTTP_REFERER'],$regs) || preg_match("#albums/([0-9]+)#",$_SERVER['HTTP_REFERER'],$regs)))
     {
       $album = new Album($regs[1]);
-
-      $icon = $album->GetTopic()->GetIcon('small');
-      $icon['name'] = 'Other ' . $icon['name'];
-      $retval[] = $icon;
-
-      $icon = $album->GetIcon('small');
-      $icon['class'] = 'referer tag';
-      $retval[] = $icon;
-
+      $retval[] = $album;
       $this->context = $album;
     }
 
     // Find all albums that contain this photo, this is not 100%
     $result = $cameralife->Database->Select('albums','id,name',"'".addslashes($this->Get('description'))."' LIKE CONCAT('%',term,'%')");
     while ($albumrecord = $result->FetchAssoc()) {
-//      if (is_a($this->context, 'Album') && $this->context->Get('id') == $album['id']) // PHP4
       if (($this->context instanceof Album) && $this->context->Get('id') == $albumrecord['id']) // PHP5
         continue;
-
       $album = new Album($albumrecord['id']);
-      $retval[] = $album->GetIcon('small');
+      $retval[] = $album;
     }
 
     // Did they come from a search??
-
     if (isset($_SERVER['HTTP_REFERER']) &&
         preg_match("#q=([^&]*)#",$_SERVER['HTTP_REFERER'],$regs))
     {
       $search = new Search($regs[1]);
-      $icon = $search->GetIcon('small');
-      $icon['class'] = 'referer';
-      $icon['href'] .= $extrasearch;
-      $retval[] = $icon;
-
+      $retval[] = $search;
       $this->context = $search;
     } else {
       // Find all photos named exactly like this
-
       $search = new Search($this->Get('description'));
       $counts = $search->GetCounts();
-
       if ($counts['photos'] > 1) {
-        $icon = $search->GetIcon('small');
-        $icon['name'] = 'Photos named the same';
-        $retval[] = $icon;
+        $retval[] = $search;
       }
     }
 
     if (strlen($this->Get('path')) > 0) {
-      $icon = $this->GetFolder()->GetIcon('small');
-
+      $folder = $this->GetFolder();
+      $retval[] = $folder;
       if (!$this->context) {
-        $this->context = $this->GetFolder();
-        $icon['class'] = 'referer';
-        $icon['rel'] = 'directory'; // an anchor attribute, to add semantics
+        $this->context = $folder;
       }
-
-      $retval[] = $icon;
     }
-
     return $retval;
   }
 
@@ -534,7 +475,7 @@ class Photo extends View
    * Convert "2/4" to 0.5 and "4" to 4
    * @access private
    */
-  public function GPS2num($num)
+  private function GPS2num($num)
   {
     $parts = explode('/', $num);
     if(count($parts) == 0)
@@ -582,5 +523,21 @@ class Photo extends View
     if (!count($this->contextPhotos))
       $this->GetContext();
     return $this->contextNext;
+  }
+
+  public function GetOpenGraph()
+  {
+    global $cameralife;
+    $retval = array();
+    $retval['og:title'] = $this->record['description'];
+    $retval['og:type'] = 'website';
+    $retval['og:url'] = $cameralife->base_url.'/photos/'.$this->record['id'];
+    if ($cameralife->GetPref('rewrite') == 'no')
+      $retval['og:url'] = $cameralife->base_url.'/photo.php?id='.$this->record['id'];
+    $retval['og:image'] = $this->GetMediaURL('thumbnail');
+    $retval['og:image:type'] = 'image/jpeg';
+    $retval['og:image:width'] = $this->record['tn_width'];
+    $retval['og:image:height'] = $this->record['tn_height'];
+    return $retval;    
   }
 }

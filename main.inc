@@ -149,12 +149,16 @@ class CameraLife extends CameraLifeModule # and View
     }
   }
 
-  function GetIcon($size='large')
+  public function GetOpenGraph()
   {
-    return array("name"=>$this->GetPref('siteabbr'),
-                 "href"=>$this->base_url.'/index.php',
-                 'image'=>($size=='large')?'main':'small-main',
-                 'rel'=>'home');
+    global $cameralife;
+    $retval = array();
+    $retval['og:title'] = $this->GetPref('siteabbr');
+    $retval['og:type'] = 'website';
+    $retval['og:url'] = $this->base_url.'/index.php';
+    $retval['og:image'] = $cameralife->IconURL('main');
+    $retval['og:image:type'] = 'image/png';
+    return $retval;    
   }
 
   function IconURL($name)

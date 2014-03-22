@@ -34,6 +34,7 @@
       require dirname(__FILE__) . '/' . strtolower($name) . '.inc';
     }
 
+//TODO: GET RID OF THIS, BECAUSE ALT CAN BE SET BETTER BY THE CALLER?
     function Image($name, $extra=array()) 
     {
       global $cameralife;
@@ -75,8 +76,7 @@
       $this->menu = $menu;
 
       $myfolder = new Folder ('/upload/'.$cameralife->Security->GetName());
-      $myfoldericon = $myfolder->GetIcon();
-
+      $myfolderURL = $myfolder->GetOpenGraph()['og:url'];
       $body = $onload ? "<body onLoad=\"$onload\">" : '<body>';
 ?>
 <!DOCTYPE html>
@@ -118,7 +118,7 @@ if ($cameralife->Security->GetName()) {
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?= $gravitarHTML ?>" height=16 width=16> <?= $cameralife->Security->GetName() ?> <b class="caret"></b></a>  
             <ul class="dropdown-menu">
-              <li><a href="<?= $myfoldericon['href'] ?>">My Uploads</a></li>
+              <li><a href="<?= $myfolderURL ?>">My Uploads</a></li>
               <li><a href="<?= $cameralife->base_url.'/admin/index.php' ?>">Administer</a></li>
               <li><a href="<?= $cameralife->base_url.'/admin/index.php' ?>">Customize this page</a></li>
               <li class="divider"></li>
@@ -231,29 +231,26 @@ if (isset($_GET['path'])) {
 <?php
     }
 
-    // Query is an array of Icons or classes that have Icons
-    function Grid($query) 
+    // Query is an array of Views
+    function Grid($views) 
     {
       echo '<div>'.PHP_EOL;
-      foreach ($query as $thumb) {
-        if (is_array($thumb))
-          $icon = $thumb;
-        else
-          $icon = $thumb->GetIcon();
+      foreach ($viewss as $view) {
+        $openGraph = $view->GetOpenGraph();
 
         echo '<div class="l1" style="margin-bottom:1em">'.PHP_EOL;
         echo '<a class="l2" href="'.$icon["href"].'">';
-        if (isset($icon['width']) && isset($icon['height'])) 
-            $imageattrs = array('alt'=>'thumb', 'width'=>$icon['width'], 'height'=>$icon['height'], 'class'=>'l3');
+        if (isset($openGraph['og:image:width']) && isset($openGraph['og:image:height']))
+            $imageattrs = array('alt'=>$openGraph['og:title'], 'width'=>$openGraph['og:image:width'], 'height'=>$openGraph['og:image:height'], 'class'=>'l3');
         else
-            $imageattrs = array('alt'=>'thumb', 'class'=>'l3');
-        $this->Image($icon["image"], $imageattrs);
-        if (isset($icon['width']) && isset($icon['height'])) 
-            echo '<div class="l4" style="width:'.$icon['width'].'px">';
+            $imageattrs = array('alt'=>$openGraph['og:title'], 'class'=>'l3');
+        $this->Image($openGraph['og:image'], $imageattrs);
+        if (isset($openGraph['og:image:width']) && isset($openGraph['og:image:height']))
+            echo '<div class="l4" style="width:'.$openGraph['og:image:width'].'px">';
         else
             echo '<div class="l4">';
-        if ($icon['name'] != 'unnamed')
-            echo $icon['name'];
+        if ($openGraph['og:title'] != 'unnamed')
+            echo htmlentities($openGraph['og:title']);
         echo '</div>';
         echo '</a>'.PHP_EOL;
         echo '</div>'.PHP_EOL;

@@ -179,15 +179,6 @@ class Search extends View
     return $folders;
   }
 
-  public function GetIcon()
-  {
-    global $cameralife;
-
-    return array('name'=>'Search for '.htmlentities($this->myQuery),
-                 'href'=>$cameralife->base_url."/search.php&#63;q=".urlencode($this->myQuery),
-                 'image'=>($size=='large')?'search':'small-search');
-  }
-
   public function GetQuery()
   {
     return $this->myQuery;

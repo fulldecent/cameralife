@@ -9,14 +9,28 @@
  */
 class View
 {
+  
   /**
-   * GetIcon function.
+   * GetOpenGraph function.
    * 
    * @access public
-   * @param string $size (default: 'large')
-   * @return array with keys: href, name, image 
+   * @return array
+   *   og:title REQUIRED
+   *   og:type "website" REQUIRED
+   *   og:url REQUIRED
+   *   og:description OPTIONAL
+   *   og:determiner "a" | "an" | "the" | "" OPTIONAL (modifies title)
+   *   og:site_name OPTIONAL
+   *   og:image URL to an image thumbnail REQUIRED
+   *   og:image:secure_url URL to an image thumbnail OPTIONAL 
+   *   og:image:type mimetype of thumbnail OPTIONAL
+   *   og:image:width size of thumbnail OPTIONAL
+   *   og:image:height size of thumbnail OPTIONAL
    */
-  public function GetIcon() {}
+  public function GetOpenGraph()
+  {
+    
+  }
 
   /**
    * GetPrevious function.

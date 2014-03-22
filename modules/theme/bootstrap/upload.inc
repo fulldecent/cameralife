@@ -19,7 +19,7 @@ else
   $path = 'upload/'.$cameralife->Security->GetName().'/';
 }
 $folder = new Folder($path);
-$icon = $folder->GetIcon();
+$folderURL = $folder->GetOpenGraph()['og:url'];
 
 $headers = '<script src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/dropzone.js"></script>';
 $cameralife->Theme->Header('Upload photos', NULL, $headers);
@@ -36,7 +36,7 @@ $cameralife->Theme->Header('Upload photos', NULL, $headers);
 </ul>
 
 <form id="dropzone" enctype="multipart/form-data" method=POST action="<?= $cameralife->base_url ?>/upload_controller.php" class="form-horizontal dropzone">
-<input type="hidden" name="target" value="<?= $icon['href'] ?>">
+<input type="hidden" name="target" value="<?= $folderURL ?>">
   <div class="control-group">
     <label class="control-label" for="path">Path:</label>
     <div class="controls">

@@ -166,25 +166,18 @@ if ($checkpointDate) {
     while ($record = $result->FetchAssoc()) {
       $receipt = new Receipt($record['maxid']);
       $object = $receipt->GetObject();
-      $icon = $object->GetIcon();
-    //var_dump($record);
-    /*
-      $photo = new Photo($record['photo_id']);
-      $icon = $photo->GetIcon('small');
-      $icon = $photo->GetIcon();
-      */
-  // echo "<P>";var_dump("THE ICON", $icon, $record, $object);echo "</p>";
-      $max = max($icon['width'], $icon['height']);
-      $width64 = $icon['width'] / $max * 64;
-      $height64 = $icon['height'] / $max * 64;
+      $openGraph = $object->GetOpenGraph();
+      $max = max($openGraph['og:image:width'], $openGraph['og:image:height']);
+      $width64 = $openGraph['og:image:width'] / $max * 64;
+      $height64 = $openGraph['og:image:height'] / $max * 64;
 
 ?>
         <div class="media">
-          <a class="pull-left" style="width: 64px" href="<?= $icon['href'] ?>">
-            <img class="media-object" data-src="holder.js/64x64" alt="thumbnail" style="width: <?= $width64?>px; height: <?= $height64 ?>px;" src="<?= $icon['image'] ?>">
+          <a class="pull-left" style="width: 64px" href="<?= htmlspecialchars($openGraph['og:url']) ?>">
+            <img class="media-object" data-src="holder.js/64x64" alt="thumbnail" style="width:<?= $width64 ?>px; height:<?= $height64 ?>px;" src="<?= htmlspecialchars($openGraph['og:image']) ?>">
           </a>
           <div class="media-body">
-            <h4 class="media-heading"><?= htmlentities($icon['name']) ?> (<?= $record['record_type'] ?>)</h4>
+            <h4 class="media-heading"><?= htmlentities($openGraph['og:title']) ?> (<?= $record['record_type'] ?>)</h4>
 <?php
       $chain = $receipt->GetChain();
       $arr = $chain[0]->GetOld();

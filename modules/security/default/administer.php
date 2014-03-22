@@ -85,8 +85,8 @@
 <div id="header">
 <h1>Site Administration &ndash; Security Manager</h1>
 <?php
-  $home = $cameralife->GetIcon('small');
-  echo '<a href="'.$home['href']."\"><img src=\"".$cameralife->IconURL('small-main')."\">".$home['name']."</a>\n";
+$homeOpenGraph = $cameralife->GetOpenGraph();
+echo '<a href="'.htmlspecialchars($homeOpenGraph['og:url'])."\"><img src=\"".htmlspecialchars($homeOpenGraph['og:image']).htmlentities($homeOpenGraph['title'])."</a>\n";
 ?> |
 <a href="../../../admin/index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>
 </div>

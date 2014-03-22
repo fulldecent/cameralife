@@ -105,33 +105,21 @@ class Album extends Search
     $cameralife->Database->Delete('albums','id='.$this->record['id']);
     $cameralife->Database->Delete('logs',"record_type='album' AND record_id=".$this->record['id']);
   }
-  /** @param string $size size of the image (large)
-  */
-
-  public function GetIcon()
+  
+  public function GetOpenGraph()
   {
     global $cameralife;
-
     $retval = array();
-
-    if ($cameralife->GetPref('rewrite') == 'yes')
-      $retval['href'] = $cameralife->base_url.'/albums/'.$this->record['id'];
-    else
-      $retval['href'] = $cameralife->base_url.'/album.php&#63;id='.$this->record['id'];
-
-    if ($size == 'large') {
-      $photo = $this->GetPoster();
-      $retval['image'] = $photo->GetMedia('thumbnail');
-      $retval['width'] = $photo->Get('tn_width');
-      $retval['height'] = $photo->Get('tn_height');
-    } else {
-      $retval['image'] = 'small-album';
-    }
-
-    $retval['name'] = $this->record['name'];
-    $retval['context'] = $this->record['hits'];
-    $retval['rel'] = 'tag';
-
-    return $retval;
+    $retval['og:title'] = $this->record['name'];
+    $retval['og:type'] = 'website';
+    $retval['og:url'] = $cameralife->base_url.'/albums/'.$this->record['id'];
+    if ($cameralife->GetPref('rewrite') == 'no')
+      $retval['og:url'] = $cameralife->base_url.'/album.php?id='.$this->record['id'];
+    $photo = $this->GetPoster();
+    $retval['og:image'] = $photo->GetMedia('thumbnail');
+    $retval['og:image:type'] = 'image/jpeg';
+    //$retval['og:image:width'] = 
+    //$retval['og:image:height'] = 
+    return $retval;    
   }
 }

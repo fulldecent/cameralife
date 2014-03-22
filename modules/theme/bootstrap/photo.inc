@@ -12,7 +12,7 @@
 $cameralife->GetFeature('security');
 $cameralife->GetFeature('filestore');
 $cameralife->GetFeature('imageprocessing');
-$icon = $photo->GetIcon();
+$openGraph = $photo->GetOpenGraph();
 
 if (isset($_GET['referer']))
   $_SERVER['HTTP_REFERER'] = $_GET['referer'];
@@ -23,9 +23,13 @@ if (isset($_SERVER['HTTP_REFERER'])) {
   $_SERVER['HTTP_REFERER'] = '';
 
 # Handy stuff
-$icon = $photo->GetIcon('small');
-if (isset($_SERVER['HTTP_REFERER']))
-  $icon['href'] .= (strpos($icon['href'], '&#63;') ? '&amp;' : '&#63;') . 'referer='.urlencode($_SERVER['HTTP_REFERER']);
+if (isset($_SERVER['HTTP_REFERER'])) {
+  //TODO USE parse-str and http_build_query
+  if (strpos($openGraph['og:url'], '?'))
+    $openGraph['og:url'] .= '&referer='.urlencode($_SERVER['HTTP_REFERER']);
+  else
+    $openGraph['og:url'] .= '?referer='.urlencode($_SERVER['HTTP_REFERER']);
+}
 $photoPrev = $photo->GetPrevious();
 $photoNext = $photo->GetNext();
 
@@ -38,16 +42,20 @@ else
 $headers = '<link rel="stylesheet" type="text/css" href="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/delicious.css" />'.PHP_EOL;
 
 if($photoPrev) {
-  $previcon = $photoPrev->GetIcon();
-  $previcon['href'] .= strpos($previcon['href'], '&#63;') ? '&amp;' : '&#63;';
-  $prevhref = $previcon['href'].'referer='.urlencode($_SERVER['HTTP_REFERER']);
-  $headers .= "<link rel=\"prev\" href=\"$prevhref\" />\n";
+  $prevOpenGraph = $photoPrev->GetOpenGraph();
+  if (strpos($prevOpenGraph['og:url'], '?'))
+    $prevOpenGraph['og:url'] .= '&referer='.urlencode($_SERVER['HTTP_REFERER']);
+  else
+    $prevOpenGraph['og:url'] .= '?referer='.urlencode($_SERVER['HTTP_REFERER']);
+  $headers .= '<link rel="prev" href="'.htmlspecialchars($prevOpenGraph['og:url']).'" />'.PHP_EOL;
 } 
 if($photoNext) {
-  $nexticon = $photoNext->GetIcon();
-  $nexticon['href'] .= strpos($nexticon['href'], '&#63;') ? '&amp;' : '&#63;';
-  $nexthref = $nexticon['href'].'referer='.urlencode($_SERVER['HTTP_REFERER']);
-  $headers .= "<link rel=\"next\" href=\"$nexthref\">\n";
+  $nextOpenGraph = $photoNext->GetOpenGraph();
+  if (strpos($nextOpenGraph['og:url'], '?'))
+    $nextOpenGraph['og:url'] .= '&referer='.urlencode($_SERVER['HTTP_REFERER']);
+  else
+    $nextOpenGraph['og:url'] .= '?referer='.urlencode($_SERVER['HTTP_REFERER']);
+  $headers .= '<link rel="next" href="'.htmlspecialchars($nextOpenGraph['og:url']).'" />'.PHP_EOL;
 }
 
 $headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/photo.js"></script>';
@@ -85,7 +93,7 @@ if ($cameralife->Security->authorize('photo_rename'))
     <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST" name="form" id="renameform" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'rename')?'':'display:none'?>">
       <p class="lead">The <strong>Title</strong> shows on this page and thumbnails of this photo elsewhere. <strong>Keywords</strong> are never displayed. Searches and Albums use the <strong>Title</strong> and <strong>Keywords</strong> to find photos.</p>
       <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
-      <input type="hidden" name="target" value="<?= $icon['href'] ?>">
+      <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>">
       <input type="hidden" name="action" value="rename">
       <div class="form-group">
         <label for="formtitle" class="col-sm-2 control-label">Title</label>
@@ -104,7 +112,7 @@ if ($cameralife->Security->authorize('photo_rename'))
         <div class="col-sm-offset-2 col-sm-10">
         
           <input class="btn btn-primary" type="submit" value="Save Changes" onclick="makeRequest('<?= $cameralife->base_url ?>/photo_controller.php','renameform',function(){$('h1').html($('form#renameform input[name=param1]').val())};return false">
-          <a class="btn btn-default" href="<?= $icon['href'] ?>" onclick="$('#showHideRenameForm').show();$('#renameform').hide();return false">Cancel</a> 
+          <a class="btn btn-default" href="<?= htmlspecialchars($openGraph['og:url']) ?>" onclick="$('#showHideRenameForm').show();$('#renameform').hide();return false">Cancel</a> 
 
         </div>
       </div>
@@ -115,11 +123,11 @@ if ($cameralife->Security->authorize('photo_rename'))
   {
     if ($photoNext)
     {
-      $target = $nexthref;
+      $target = $nextOpenGraph['og:url'];
     }
     elseif ($photoPrev)
     {
-      $target = $prevhref;
+      $target = $prevOpenGraph['og:url'];
     }
     elseif (isset($_SERVER['HTTP_REFERER']))
       $target = $cameralife->base_url.'/'.$_SERVER['HTTP_REFERER'];
@@ -129,7 +137,7 @@ if ($cameralife->Security->authorize('photo_rename'))
 ?>
     <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST" name="form" id="deleteform" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'flag')?'':'display:none'?>">
       <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-      <input type="hidden" name="target" value="<?= AddParam($icon['href'], 'referer', urlencode($_SERVER['HTTP_REFERER'])) ?>" />
+      <input type="hidden" name="target" value="<?= AddParam(htmlspecialchars($openGraph['og:url']), 'referer', urlencode($_SERVER['HTTP_REFERER'])) ?>" />
       <input type="hidden" name="action" value="flag" />
       <p class="lead">Thank you for taking the time to report bad content. Please choose the obvious problem with this photo.</p>
       
@@ -150,7 +158,7 @@ if ($cameralife->Security->authorize('photo_rename'))
         <strong>Bracketing</strong> / A very similar photo supersedes this one
       </label>
       <input class="btn btn-primary btn-danger" type="submit" value="Flag Photo">
-      <a class="btn btn-default" href="<?= $icon['href'] ?>" onclick="$('#delete').hide();return false">Cancel</a> 
+      <a class="btn btn-default" href="<?= htmlspecialchars($openGraph['og:url']) ?>" onclick="$('#delete').hide();return false">Cancel</a> 
     </form>
 <?php
   }
@@ -162,7 +170,7 @@ if ($cameralife->Security->authorize('photo_rename'))
 
       <form class="form-horizontal" action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
         <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-        <input type="hidden" name="target" value="<?= $icon['href'] ?>" />
+        <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>" />
         <input type="hidden" name="action" value="rotate" />
         <div class="control-group">
           <label class="control-label" for="tags">Rotate</label>
@@ -175,7 +183,7 @@ if ($cameralife->Security->authorize('photo_rename'))
       
       <form class="form-horizontal" action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
         <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-        <input type="hidden" name="target" value="<?= $icon['href'] ?>" />
+        <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>" />
         <input type="hidden" name="action" value="revert" />
         <div class="control-group">
           <label class="control-label" for="tags">Revert</label>
@@ -187,7 +195,7 @@ if ($cameralife->Security->authorize('photo_rename'))
 
       <form class="form-horizontal" action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
         <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
-        <input type="hidden" name="target" value="<?= $icon['href'] ?>" />
+        <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>" />
         <input type="hidden" name="action" value="rethumb" />
         <div class="control-group">
           <label class="control-label" for="tags">Regenerate Thumbnail</label>
@@ -200,7 +208,7 @@ if ($cameralife->Security->authorize('photo_rename'))
       <div class="form-horizontal">
         <div class="control-group">
           <div class="controls">
-            <a class="btn" href="<?= $icon['href'] ?>" onclick="$('#modify').hide();return false">Cancel</a> 
+            <a class="btn" href="<?= htmlspecialchars($openGraph['og:url']) ?>" onclick="$('#modify').hide();return false">Cancel</a> 
           </div>
         </div>
       </div>
@@ -232,7 +240,7 @@ if ($cameralife->Security->authorize('photo_rename'))
     echo '<form action="'.$cameralife->base_url.'/undo_controller.php" method="post">';
     echo '<input id="receiptid" type="hidden" name="id" value="'.$cameralife->receipt->Get('id').'" />';
     echo '<input type="hidden" name="action" value="undo" />';
-    echo '<input type="hidden" name="target" value="'.$icon['href'].'" />';
+    echo '<input type="hidden" name="target" value="'.htmlspecialchars($openGraph['og:url']).'" />';
     echo $cameralife->receipt->GetDescription().' <button type="submit">Undo</button></form></div>';
   }
   else
@@ -272,7 +280,7 @@ if ($exif = $photo->GetEXIF()) {
     <h2>Feedback</h2>
     <form action="<?= $cameralife->base_url?>/photo_controller.php" method=POST name="form">
       <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
-      <input type="hidden" name="target" value="<?= $icon['href'] ?>">
+      <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>">
       <input type="hidden" name="action" value="rate">
     
       <dl class="dl-horizontal">
@@ -314,7 +322,7 @@ echo "<strong>".$comment['username']."</strong> <em>" . date('Y-m-d', strtotime(
       ?>
     <form action="<?= $cameralife->base_url ?>/photo_controller.php" method=POST name="form">
       <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
-      <input type="hidden" name="target" value="<?= $icon['href'] ?>">
+      <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>">
       <input type="hidden" name="action" value="comment">
       <input name="param1">
       <input type="submit" value="Post comment" class="btn">
@@ -340,58 +348,9 @@ if ($cameralife->Security->authorize('photo_modify'))
 if ($photo->Get('status') == 0)
   echo "<li><a onClick=\"$('#print').show();return false\" href=\"".html_entity_decode(AddParamRawUrlEncode('action','print'))."\"><i class=\"icon-print\"></i> Order prints</a></li>";
 
-echo "<li><a href=\"http://www.facebook.com/sharer.php?u='".htmlentities($icon['href'])."\"><i class=\"icon-star\"></i> Share on Facebook</a></li>";
+echo "<li><a href=\"http://www.facebook.com/sharer.php?u='".rawurlencode(htmlspecialchars($openGraph['og:url']))."\"><i class=\"icon-star\"></i> Share on Facebook</a></li>";
 
 echo "</ul>";
-
-/*
-### Set up sidebar menu
-$actions = array(); // name=>, icon=>, href=>, onclick=>
-$actions[] = array('name'=>"View full-sized ({$photo->Get('width')} x {$photo->Get('height')}px)",
-                   'icon'=>'fullscreen',
-                   'href'=>$photo->GetMediaURL('photo'));
-$sizes = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
-sort($sizes);
-if (count($sizes)) foreach ($sizes as $size)
-{
-  $actions[] = array('name'=>"View at ${size}px",
-                     'icon'=>'fullscreen',
-                     'href'=>html_entity_decode($photo->GetMedia($size)));
-}
-if ($cameralife->Security->authorize('photo_rename'))
-  $actions[] = array('name'=>"Rename photo",
-                     'icon'=>'font',
-                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','rename')),
-                     'onclick'=>"$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false");
-if ($cameralife->Security->authorize('photo_delete'))
-  $actions[] = array('name'=>"Flag photo",
-                     'icon'=>'flag',
-                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','flag')),
-                     'onclick'=>"$('#deleteform').show();return false");
-if ($cameralife->Security->authorize('photo_modify'))
-  $actions[] = array('name'=>"Modify photo (rotate, revert, ...)",
-                     'icon'=>'wrench',
-                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','modify')),
-                     'onclick'=>"$('#modify').show();return false");
-if ($photo->Get('status') == 0)
-  $actions[] = array('name'=>"Order prints online",
-                     'icon'=>'print',
-                     'href'=>html_entity_decode(AddParamRawUrlEncode('action','print')),
-                     'onclick'=>"$('#print').show();return false");
-$menu = '<ul class="nav nav-list"><li class="nav-header">Actions</li>';
-foreach ($actions as $action) {
-  $menu .= "  <li><a href=\"".htmlentities($action['href'])."\"";
-  if (isset($action['onclick']))
-    $menu .= " onclick=\"{$action['onclick']}\"";
-  $menu .= "><i class=\"icon-{$action['icon']}\"></i> {$action['name']}</a></li>\n";
-}
-$menu .= '</ul>';
-$menu .= '<ul class="nav nav-list"><li class="nav-header">Share</li>';
-$menu .= "  <li><a href=\"http://www.facebook.com/sharer.php?u='".htmlentities($icon['href'])."\"><i class=\"icon-star\"></i> Share on Facebook</a></li>\n";
-$menu .= '</ul>';
-
-  echo $menu;
-  */
 ?>
     </div>
   </div>

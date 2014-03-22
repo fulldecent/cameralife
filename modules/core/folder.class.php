@@ -41,7 +41,7 @@ class Folder extends Search
 //todo use bind here, add a bind parameter to Search
     @$this->mySearchPhotoCondition = "path='".mysql_real_escape_string($this->path)."'";
     $this->mySearchAlbumCondition = "FALSE";
-    @$this->mySearchFolderCondition = "path LIKE '".mysql_real_escape_string($this->path)."%/' AND path NOT LIKE '".addslashes($this->path)."%/%/'";
+    @$this->mySearchFolderCondition = "path LIKE '".mysql_real_escape_string($this->path)."/%' AND path NOT LIKE '".mysql_real_escape_string($this->path)."/%/'";
   }
 
   public function GetPrevious()
@@ -111,41 +111,15 @@ class Folder extends Search
       default:          $sort = 'id desc';
     }
 
-    $selection = "DISTINCT SUBSTRING_INDEX(SUBSTR(path,".(strlen($this->path)+1)."),'/',1) AS basename";
+    $selection = "DISTINCT SUBSTR(path,".(strlen($this->path)+1).") AS basename";
     $condition = "path LIKE '".addslashes($this->path)."/%' AND status=0";
     $extra =     "ORDER BY $sort ".$this->myLimit;
     $family = $cameralife->Database->Select('photos', $selection, $condition, $extra);
 
     $result = array();
     while ($youngin = $family->FetchAssoc())
-      $result[] = new Folder($this->path . $youngin['basename'] . '/', FALSE);
-
+      $result[] = new Folder($this->path . $youngin['basename'], FALSE);
     return $result;
-  }
-
-  public function GetIcon()
-  {
-    global $cameralife;
-    $retval = array();
-
-    if ($cameralife->GetPref('rewrite') == 'yes')
-      $retval['href'] = $cameralife->base_url.'/folders'.str_replace(" ","%20",$this->path); 
-    else
-      $retval['href'] = $cameralife->base_url.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
-
-    if (basename($this->path))
-      $retval['name'] = $this->Basename();
-    else
-      $retval['name'] = '(All photos)';
-
-    if ($size=='large')
-      $retval['image'] = $cameralife->IconURL('folder');
-    else
-      $retval['image'] = $cameralife->IconURL('small-folder');
-
-    $retval['date'] = $this->date;
-
-    return $retval;
   }
 
 //TODO: NO ENTITIES
@@ -423,4 +397,25 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
 
     return (count($fsphotos) + count($fsdirs) == 0);
   }
+
+  public function GetOpenGraph()
+  {
+    global $cameralife;
+    $retval = array();
+    $retval['og:title'] = basename($this->path);
+    if ($this->path == '/')
+      $retval['og:title'] = '(All photos)';
+    $retval['og:type'] = 'website';
+    //TODO see https://stackoverflow.com/questions/22571355/the-correct-way-to-encode-url-path-parts
+    $retval['og:url'] = $cameralife->base_url.'/folders'.str_replace(" ","%20",$this->path); 
+    if ($cameralife->GetPref('rewrite') == 'no')
+      $retval['og:url'] = $cameralife->base_url.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
+    $retval['og:image'] = $cameralife->IconURL('folder');
+    $retval['og:image:type'] = 'image/png';
+    //$retval['og:image:width'] = 
+    //$retval['og:image:height'] = 
+    return $retval;    
+  }
+
+
 }

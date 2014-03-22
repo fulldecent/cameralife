@@ -23,6 +23,7 @@ class Topic extends Search
     $this->mySearchFolderCondition = "FALSE";
   }
 
+//TODO DEPRECATED?
   public function GetName()
   {
     return htmlentities($this->name);
@@ -33,34 +34,29 @@ class Topic extends Search
     return $this->$item;
   }
 
-  public function GetIcon()
-  {
-    global $cameralife;
-    $retval = array();
-
-    if ($cameralife->GetPref('rewrite') == 'yes')
-      $retval['href'] = $cameralife->base_url.'/topics/'.urlencode($this->name);
-    else
-      $retval['href'] = $cameralife->base_url.'/topic.php&#63;name='.urlencode($this->name);
-
-    $retval['name'] = htmlentities($this->name);
-
-    if ($size=='large')
-      $retval['image'] = $cameralife->IconURL('topic');
-    else
-      $retval['image'] = $cameralife->IconURL('small-topic');
-
-    return $retval;
-  }
-
   public static function GetTopics()
   {
     global $cameralife;
     $retval = array();
     $result = $cameralife->Database->Select('albums','DISTINCT topic');
     while ($topic = $result->FetchAssoc())
-      $retval[] = $topic['topic'];
+      $retval[] = new Topic($topic['topic']);
     return $retval;
   }
 
+  public function GetOpenGraph()
+  {
+    global $cameralife;
+    $retval = array();
+    $retval['og:title'] = $this->name;
+    $retval['og:type'] = 'website';
+    $retval['og:url'] = $cameralife->base_url.'/topics/'.rawurlencode($this->name);
+    if ($cameralife->GetPref('rewrite') == 'no')
+      $retval['og:url'] = $cameralife->base_url.'/topic.php?name='.rawurlencode($this->name);
+    $retval['og:image'] = $cameralife->IconURL('topic');
+    $retval['og:image:type'] = 'image/png';
+    //$retval['og:image:width'] = 
+    //$retval['og:image:height'] = 
+    return $retval;    
+  }
 }

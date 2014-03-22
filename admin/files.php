@@ -88,15 +88,13 @@ if ($_GET['page'] !== 'update') { // Show stuff
   $search->mySearchPhotoCondition = "status=$target_status OR 0";
   $search->SetPage(0, 9999);
   $photos = $search->GetPhotos();
-  $icons = array();
-
   echo '<div class="thumbnails">';
   $i=0;
   foreach ($photos as $photo) {
-    $icon = $photo->GetIcon();
+    $photoOpenGraph = $photo->GetOpenGraph();
     echo '<div class="col-sm-2"><div class="thumbnail text-center">';
-    echo '<a href="'.$icon['href'].'">';
-    echo '<img src="'.$icon['image'].'"></a><br />'.$icon['name'];
+    echo '<a href="'.htmlspecialchars($photoOpenGraph['og:url']).'">';
+    echo '<img src="'.htmlspecialchars($photoOpenGraph['og:image']).'"></a><br />'.htmlentities($photoOpenGraph['og:title']);
     echo '<select style="width:100%" name="'.$photo->Get('id').'">'.
                       '<option value="0" '.($target_status==0?'selected':'').'>Public</option>'.
                       '<option value="1" '.($target_status==1?'selected':'').'>Flagged</option>'.

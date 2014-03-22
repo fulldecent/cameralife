@@ -37,16 +37,16 @@ if ($counts['photos'] == 0)
     <div style="height: 170px" class="clipbox">
 <?php
 foreach ($results as $result) {
-    $icon = $result->GetIcon();
-    echo '<div class="l1" style="-moz-transform:rotate('.rand(-10,10).'deg); -webkit-transform:rotate('.rand(-10,10).'deg)">';
-    echo '<a href="'.$icon['href'].'" class="l2">';
-    echo '<img alt="'.$icon['name'].'" src="'.$icon['image'].'" class="l3">';
-    if (isset($icon['width']) && isset($icon['width']))
-        echo '<div class="l4" style="width:'.($icon['width']).'px">'.$icon['name'].'</div>';
-    else
-        echo '<div class="l4">'.$icon['name'].'</div>';
-    echo '</a>';
-    echo '</div>';
+  $resultOpenGraph = $result->GetOpenGraph();
+  echo '<div class="l1" style="-moz-transform:rotate('.rand(-10,10).'deg); -webkit-transform:rotate('.rand(-10,10).'deg)">';
+  echo '<a href="'.htmlspecialchars($resultOpenGraph['og:url']).'" class="l2">';
+  echo '<img alt="'.htmlspecialchars($resultOpenGraph['og:title']).'" src="'.htmlspecialchars($resultOpenGraph['og:image']).'" class="l3">';
+  if (isset($resultOpenGraph['og:image:width']) && isset($resultOpenGraph['og:image:height']))
+      echo '<div class="l4" style="width:'.($resultOpenGraph['og:image:width']).'px">'.htmlentities($resultOpenGraph['og:title']).'</div>';
+  else
+      echo '<div class="l4">'.htmlentities($resultOpenGraph['og:title']).'</div>';
+  echo '</a>';
+  echo '</div>';
 }
 ?>    
     </div>
@@ -59,14 +59,15 @@ foreach ($results as $result) {
     <table class="table">
 <?php
         $root = new Folder();
+        $rootOpenGraph = $root->GetOpenGraph();
         $root->SetSort('newest');
         $folders = $root->GetDescendants($cameralife->Theme->GetPref('main_folders_n'));
 
         foreach ($folders as $folder)
         {
-          $icon = $folder->GetIcon('small');
-          echo "<tr><td><h3><a href=\"".$icon['href']."\"> ";
-          echo $icon['name']."</a></h3>\n";
+          $folderOpenGraph = $folder->GetOpenGraph();
+          echo "<tr><td><h3><a href=\"".htmlspecialchars($folderOpenGraph['og:url'])."\"> ";
+          echo htmlentities($folderOpenGraph['og:title'])."</a></h3>\n";
 
           $folder->SetSort('rand');
           $folder->SetPage(0, 11);
@@ -74,18 +75,16 @@ foreach ($results as $result) {
           echo '<div style="height:80px" class="clipbox">';
           foreach($photos as $result)
           {
-            $icon = $result->GetIcon();
+            $photoOpenGraph = $result->GetOpenGraph();
             echo '<div class="l1" style="-moz-transform:rotate('.rand(-10,10).'deg); -webkit-transform:rotate('.rand(-10,10).'deg);">';
-            echo '<a class="minipolaroid" href="'.$icon['href'].'">';
-            echo '<img width="'.intval($icon['width']/2).'" src="'.$icon['image'].'" alt="'.$icon['name'].'" />';
+            echo '<a class="minipolaroid" href="'.htmlspecialchars($photoOpenGraph['og:url']).'">';
+            echo '<img width="'.intval($photoOpenGraph['og:image:width']/2).'" src="'.htmlspecialchars($photoOpenGraph['og:image']).'" alt="'.htmlentities($photoOpenGraph['og:title']).'" />';
             echo '</a>';
             echo '</div>';
           }
-          echo "</div>";
+          echo "</div>\n";
         }
-        $root = new Folder('');
-        $icon = $root->GetIcon();
-        echo "<tr><td><h3><a href=\"".$icon['href']."\">... show all folders</a></h3>";
+        echo "<tr><td><h3><a href=\"".htmlspecialchars($rootOpenGraph['og:url'])."\">... show all folders</a></h3>";
 ?>
     </table>
   </div>
@@ -94,14 +93,12 @@ foreach ($results as $result) {
     <table class="table">
 <?php
 
-        foreach (Topic::GetTopics() as $thetopic)
+        foreach (Topic::GetTopics() as $topic)
         {
-          $topic = new Topic($thetopic);
-          $icon = $topic->GetIcon('small');
-
-          echo "<tr><td><h3><a href=\"".$icon['href']."\">";
+          $openGraph = $topic->GetOpenGraph();
+          echo "<tr><td><h3><a href=\"".htmlentities($openGraph['og:url'])."\">";
           echo $cameralife->Theme->Image('small-topic');
-          echo $icon['name']."</a></h3>\n";
+          echo htmlentities($openGraph['og:title'])."</a></h3>\n";
 
           if ($cameralife->Theme->GetPref('main_topics')==2) // Link a couple albums
           {
@@ -113,9 +110,9 @@ foreach ($results as $result) {
             foreach($topic->GetAlbums() as $album)
             {
               if ($count++) echo ", ";
-              $icon = $album->GetIcon();
-              echo "<a href=\"".$icon['href']."\">".
-                    $icon['name']."</a>";
+              $openGraphAlbum = $album->GetOpenGraph();
+              echo "<a href=\"".htmlentities($openGraphAlbum['og:url'])."\">";
+              echo htmlentities($openGraphAlbum['og:title'])."</a>\n";
             }
           }
           echo ", ...</div>\n";

@@ -37,8 +37,9 @@ $cameralife->Theme->Header($cameralife->GetPref('sitename').' : '.htmlentities($
         <td>This album and others like it are:
         <td><select name="param1">
           <?php 
-            foreach (Topic::GetTopics() as $thetopic)
+            foreach (Topic::GetTopics() as $topic)
             {
+                  $thetopic = $topic->name;
                 $selected = ($album['topic'] == $thetopic) ? 'selected' : '';
                 if ($album['topic'] == $thetopic) $preselect = true;
                 echo "<option $selected onclick=\"javascript:document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";

@@ -94,8 +94,8 @@ echo "</ul>".PHP_EOL;
   echo "<form>";
   echo "<input type=hidden name=q value=\"".htmlentities($search->GetQuery())."\" />";
   echo "<input type=hidden name=page value=\"".htmlentities($_GET['page'])."\" />";
-  $icon = $search->GetIcon();
-  $href = AddParam($icon['href'], "page", $_GET['page']);
+  $openGraph = $search->GetOpenGragh();
+  $href = AddParam($openGraph['og:url'], "page", $_GET['page']);
   if ($_GET['page'] == "a")
     $cameralife->Theme->PageSelector($start,$counts['albums'],12,$href);
   else if ($_GET['page'] == "f")

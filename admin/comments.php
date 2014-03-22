@@ -126,19 +126,17 @@ if ($checkpointDate) {
     //var_dump($record);
 
       $photo = new Photo($record['photo_id']);
-      $icon = $photo->GetIcon('small');
-      $icon = $photo->GetIcon();
-      //echo "<P>";var_dump($icon);echo "</p>";
-      $max = max($icon['width'], $icon['height']);
-      $width64 = $icon['width'] / $max * 64;
-      $height64 = $icon['height'] / $max * 64;
+      $photoOpenGraph = $photo->GetOpenGraph();
+      $max = max($photoOpenGraph['og:image:width'], $photoOpenGraph['og:image:height']);
+      $width64 = $photoOpenGraph['og:image:width'] / $max * 64;
+      $height64 = $photoOpenGraph['og:image:height'] / $max * 64;
 ?>
         <div class="media">
-          <a class="pull-left" style="width: 64px" href="<?= $icon['href'] ?>">
-            <img class="media-object" data-src="holder.js/64x64" alt="thumbnail" style="width: <?= $width64?>px; height: <?= $height64 ?>px;" src="<?= $icon['image'] ?>">
+          <a class="pull-left" style="width: 64px" href="<?= htmlspecialchars($photoOpenGraph['og:url']) ?>">
+            <img class="media-object" data-src="holder.js/64x64" alt="thumbnail" style="width: <?= $width64?>px; height: <?= $height64 ?>px;" src="<?= htmlspecialchars($photoOpenGraph['og:image']) ?>">
           </a>
           <div class="media-body">
-            <h4 class="media-heading"><?= htmlentities($icon['name']) ?></h4>
+            <h4 class="media-heading"><?= htmlentities($photoOpenGraph['og:title']) ?></h4>
 <?php
       $condition = "photo_id = ".$record['photo_id'];
       $result2 = $cameralife->Database->Select('comments','*',$condition, 'ORDER BY id DESC');

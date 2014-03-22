@@ -41,8 +41,7 @@ if (!$counts['folders'] && $counts['albums'] == 1) {
 ## Sometimes we're sure a folder page is relevant - redirect there
 if (!$counts['albums'] && !$counts['photos'] && $counts['folders'] == 1) {
   list($folder) = $search->GetFolders();
-  $icon = $folder->GetIcon();
-  header('Location: '.$icon['href']);
+  header('Location: '.$folder->GetOpenGraph()['op:url'];
   exit(0);
 }
 
