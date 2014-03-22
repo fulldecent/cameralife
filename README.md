@@ -1,4 +1,4 @@
-Camera Life
+Camera Life [![Build Status](https://travis-ci.org/fulldecent/cameralife.png?branch=master)](https://travis-ci.org/fulldecent/cameralife)
 ===========
 
 Version 2.6  
