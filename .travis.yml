@@ -6,11 +6,12 @@ php:
   - 5.5
 
 before_script:
-  ## Composer
-  - sudo apt-get -qq install dnsutils
-  - curl -s http://getcomposer.org/installer | php
-  - php composer.phar install
-  - composer self-update
+# FUCK COMPOSER/TRAVIS
+#  ## Composer
+#  - sudo apt-get -qq install dnsutils
+#  - curl -s http://getcomposer.org/installer | php
+#  - php composer.phar install
+#  - composer self-update
   ## PHP_CodeSniffer
   - pear install pear/PHP_CodeSniffer
   - phpenv rehash
