@@ -156,13 +156,6 @@
       return $this->curuser['username'];
     }
 
-    // Deprecated
-    function GetAddr () 
-    {
-      global $_SERVER;
-      return $_SERVER['REMOTE_ADDR'];
-    }
-
     /* Determines if the user is authoried to performed the named action,
     ** if REQUIRED is set, nonauthorization is a fatal error.
     ** This function must at least support the actions named in the README

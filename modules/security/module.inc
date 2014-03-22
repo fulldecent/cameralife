@@ -38,13 +38,6 @@
     /* Returns the current user's name or the empty string if not logged in */
     function GetName () { }
 
-/* This is subject to change... is this necessary??? LMK */
-    /* Returns the current user's IP address */
-    /**Returns the current user's IP address
-    *This is subject to change.Do you find this feature is useful?Please email us your comments.
-    */
-    function GetAddr () { }
-
     /**Determines if the user is authoried to performed the named action,
      * if REQUIRED is set, nonauthorization is a fatal error.
      * This function must at least support the follwing actions 
