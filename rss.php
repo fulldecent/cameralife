@@ -24,7 +24,7 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
       xmlns:dc="http://purl.org/dc/elements/1.1/"
       xmlns:media="http://search.yahoo.com/mrss/">
   <title><?= htmlentities($cameralife->GetPref('sitename')) ?> - <?= htmlspecialchars($openGraph['og:title']) ?></title>
-  <link rel="self" href="<?= $cameralife->base_url.'/rss.php?q='.htmlentities($query) ?>"/>
+  <link rel="self" href="<?= $cameralife->baseURL.'/rss.php?q='.htmlentities($query) ?>"/>
   <link rel="alternate" type="text/html" href="<?= htmlspecialchars($openGraph['og:url']) ?>"/>
   <id>urn:CLsearch:thiscouldbebetter</id>
 
@@ -32,7 +32,7 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
   <generator uri="https://github.com/fulldecent/cameralife">Camera Life</generator>
   <author>
     <name><?= $cameralife->GetPref('sitename') ?> maintainer</name>
-    <uri><?= $cameralife->base_url ?></uri>
+    <uri><?= $cameralife->baseURL ?></uri>
   </author>
 
 <?php

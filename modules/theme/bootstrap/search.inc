@@ -31,7 +31,7 @@ if ((isset($_GET['page']) && $_GET['page'] == 'a') || (!isset($_GET['page']) && 
   $results = $search->GetPhotos();
 }
 
-$header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of'.htmlentities($search->GetQuery()).'" href="'.$cameralife->base_url.'/rss.php?q='.urlencode($search->GetQuery()).'" />';
+$header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of'.htmlentities($search->GetQuery()).'" href="'.$cameralife->baseURL.'/rss.php?q='.urlencode($search->GetQuery()).'" />';
 
 $sidebar = <<<HTML
     <ul class="nav nav-list">
@@ -94,7 +94,7 @@ echo "</ul>".PHP_EOL;
   echo "<form>";
   echo "<input type=hidden name=q value=\"".htmlentities($search->GetQuery())."\" />";
   echo "<input type=hidden name=page value=\"".htmlentities($_GET['page'])."\" />";
-  $openGraph = $search->GetOpenGragh();
+  $openGraph = $search->GetOpenGraph();
   $href = AddParam($openGraph['og:url'], "page", $_GET['page']);
   if ($_GET['page'] == "a")
     $cameralife->Theme->PageSelector($start,$counts['albums'],12,$href);

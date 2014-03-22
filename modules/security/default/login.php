@@ -5,7 +5,7 @@
   */
   $features=array('security');
   require '../../../main.inc';
-  $cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
+  $cameralife->baseURL = dirname(dirname(dirname($cameralife->baseURL)));
 
   if(isset($_GET['register']))
     $action = 'register';
@@ -27,7 +27,7 @@
     </div>
 
     <form class="form-inline" role="form" method="post" action="login_controller.php">
-      <input type="hidden" name="target" value="<?= $cameralife->base_url.'/index.php' ?>">
+      <input type="hidden" name="target" value="<?= $cameralife->baseURL.'/index.php' ?>">
       <div class="form-group">
         <label class="sr-only" for="param1">Username</label>
         <input type="text" class="form-control" id="param1" name="param1" value="<?= isset($_POST["username"]) ? $_POST["username"] : ''?>" placeholder="Enter username">

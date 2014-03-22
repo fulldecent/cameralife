@@ -17,7 +17,7 @@
 
 $features=array('security');
 require '../../../main.inc';
-$cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
+$cameralife->baseURL = dirname(dirname(dirname($cameralife->baseURL)));
 if (get_class($cameralife->Security) != 'OpenIDSecurity')
   $cameralife->Error("Can't access this page because the current security module is ".get_class($cameralife->Security));
 

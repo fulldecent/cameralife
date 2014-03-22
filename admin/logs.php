@@ -7,7 +7,7 @@
  */
 $features=array('security', 'filestore');
 require '../main.inc';
-$cameralife->base_url = dirname($cameralife->base_url);
+$cameralife->baseURL = dirname($cameralife->baseURL);
 $cameralife->Security->authorize('admin_customize', 1); // Require
 
 if (!isset($_POST['showme']) && !isset($_POST['showreg']) && !isset($_POST['showunreg'])) {

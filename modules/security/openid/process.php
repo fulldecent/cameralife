@@ -2,7 +2,7 @@
 
 $features=array('theme','security');
 require '../../../main.inc';
-$cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
+$cameralife->baseURL = dirname(dirname(dirname($cameralife->baseURL)));
 
 require 'lightopenid/openid.php';
 
@@ -31,7 +31,7 @@ try {
             $email = $attr['contact/email'];
             if (strlen($email)) {
                 $cameralife->Security->Login($id, $email);
-                header ('Location: '.$cameralife->base_url.'/index.php');
+                header ('Location: '.$cameralife->baseURL.'/index.php');
             } else {
                 die ('Enough detail (email address) was not provided to process your login.');
             }

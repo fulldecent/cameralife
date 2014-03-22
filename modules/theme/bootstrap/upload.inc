@@ -21,10 +21,10 @@ else
 $folder = new Folder($path);
 $folderURL = $folder->GetOpenGraph()['og:url'];
 
-$headers = '<script src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/dropzone.js"></script>';
+$headers = '<script src="'.$cameralife->baseURL.'/modules/theme/'.$cameralife->GetPref('theme').'/dropzone.js"></script>';
 $cameralife->Theme->Header($cameralife, NULL, $headers); //TODO THIS IS INACCURATE
 ?>
-<BGSOUND src="<?= $cameralife->base_url ?>/filedone.wav">
+<BGSOUND src="<?= $cameralife->baseURL ?>/filedone.wav">
 <h1>Uploading Photos</h1>
 <ul>
   <li>You can upload a photo in JPEG format or a ZIP of JPEG photos
@@ -35,7 +35,7 @@ $cameralife->Theme->Header($cameralife, NULL, $headers); //TODO THIS IS INACCURA
 ?>
 </ul>
 
-<form id="dropzone" enctype="multipart/form-data" method=POST action="<?= $cameralife->base_url ?>/upload_controller.php" class="form-horizontal dropzone">
+<form id="dropzone" enctype="multipart/form-data" method=POST action="<?= $cameralife->baseURL ?>/upload_controller.php" class="form-horizontal dropzone">
 <input type="hidden" name="target" value="<?= $folderURL ?>">
   <div class="control-group">
     <label class="control-label" for="path">Path:</label>

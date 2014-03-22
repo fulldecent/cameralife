@@ -21,7 +21,7 @@ class LocalFileStore extends FileStore
     $this->preferences[] = array('name'=>'deleted_dir', 'desc'=>'Deleted photos (...where they go when you "erase" them)', 'type'=>'directoryrw', 'default'=>'images/deleted');
 
     $prevdir = getcwd();
-    chdir($cameralife->base_dir);
+    chdir($cameralife->baseDir);
     $this->PhotoDir = rtrim(realpath($this->GetPref('photo_dir')), '/');
     $this->CacheDir = rtrim(realpath($this->GetPref('cache_dir')), '/');
     $this->DeletedDir = rtrim(realpath($this->GetPref('deleted_dir')), '/');

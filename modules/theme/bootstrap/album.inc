@@ -18,16 +18,16 @@ $counts = $album->GetCounts();
 $openGraph = $album->GetOpenGraph();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 $sort = isset($_GET['sort']) ? $_GET['sort'] : 'rand';
-$extrahead = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of '.$album->Get('name').'" href="'.$cameralife->base_url.'/rss.php&#63;q='.$album->Get('term').'"/>'; 
+$extrahead = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of '.$album->Get('name').'" href="'.$cameralife->baseURL.'/rss.php&#63;q='.$album->Get('term').'"/>'; 
 $cameralife->Theme->Header($album, NULL, $extrahead);
 
   if (isset($_GET['edit']) && $cameralife->Security->authorize('admin_albums'))
   {
 ?>
     <div class="administrative" align=center>
-    <form name="form1" method=post action="<?= $cameralife->base_url ?>/album_controller.php">
+    <form name="form1" method=post action="<?= $cameralife->baseURL ?>/album_controller.php">
     <input type="hidden" name="id" value="<?= $_GET['id'] ?>">
-    <input type="hidden" name="target" value="<?= $cameralife->base_url.'/album.php&#63;id='.$album->Get('id') ?>">
+    <input type="hidden" name="target" value="<?= $cameralife->baseURL.'/album.php&#63;id='.$album->Get('id') ?>">
       <p class="info" align=left>
         You are editing the Album named <b><?= $album->Get('name') ?></b>, which is a collection of photos 
         whose descriptions contain "<b><?= $album->Get('term') ?></b>".

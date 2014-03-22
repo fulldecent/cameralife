@@ -97,7 +97,7 @@
     <!-- Le styles -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
-    <link href="<?= $cameralife->base_url."/modules/theme/".(basename(dirname(__FILE__))) ?>/css-extra/custom.css" rel="stylesheet">
+    <link href="<?= $cameralife->baseURL."/modules/theme/".(basename(dirname(__FILE__))) ?>/css-extra/custom.css" rel="stylesheet">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -107,10 +107,10 @@
   
     <nav class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container">
-      <a class="navbar-brand" href="<?= $cameralife->base_url ?>"><?= $cameralife->GetPref('sitename') ?></a>
+      <a class="navbar-brand" href="<?= $cameralife->baseURL ?>"><?= $cameralife->GetPref('sitename') ?></a>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse">
-        <form class="navbar-form navbar-left" action="<?= $cameralife->base_url ?>/search.php" method="get">
+        <form class="navbar-form navbar-left" action="<?= $cameralife->baseURL ?>/search.php" method="get">
           <input type="text" class="form-control" placeholder="Search" name="q" />
         </form>
         <ul class="nav navbar-nav navbar-right">
@@ -124,10 +124,10 @@ if ($cameralife->Security->GetName()) {
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?= $gravitarHTML ?>" height=16 width=16> <?= $cameralife->Security->GetName() ?> <b class="caret"></b></a>  
             <ul class="dropdown-menu">
               <li><a href="<?= $myfolderURL ?>">My Uploads</a></li>
-              <li><a href="<?= $cameralife->base_url.'/admin/index.php' ?>">Administer</a></li>
-              <li><a href="<?= $cameralife->base_url.'/admin/index.php' ?>">Customize this page</a></li>
+              <li><a href="<?= $cameralife->baseURL.'/admin/index.php' ?>">Administer</a></li>
+              <li><a href="<?= $cameralife->baseURL.'/admin/index.php' ?>">Customize this page</a></li>
               <li class="divider"></li>
-              <li><a href="<?= $cameralife->base_url.'/logout.php' ?>">Sign Out</a></li>
+              <li><a href="<?= $cameralife->baseURL.'/logout.php' ?>">Sign Out</a></li>
             </ul>
           </li>
 <?php
@@ -147,11 +147,11 @@ if ($cameralife->Security->GetName()) {
 <?php
 if (isset($_GET['path'])) {
 ?>
-        <a class="btn btn-default navbar-btn navbar-right" href="<?= $cameralife->base_url ?>/upload.php?path=<?= htmlentities($_GET['path'])?>">
+        <a class="btn btn-default navbar-btn navbar-right" href="<?= $cameralife->baseURL ?>/upload.php?path=<?= htmlentities($_GET['path'])?>">
 <?php
 } else {
 ?>
-        <a class="btn btn-default navbar-btn navbar-right" href="<?= $cameralife->base_url ?>/upload.php">
+        <a class="btn btn-default navbar-btn navbar-right" href="<?= $cameralife->baseURL ?>/upload.php">
 <?php
 }
 ?>
@@ -197,7 +197,7 @@ if (isset($_GET['path'])) {
         <p>
           <a href="mailto:<?= $cameralife->GetPref('owner_email') ?>"><i class="icon-envelope"></i> Contact site owner</a>
           &nbsp;
-          <a href="<?= $cameralife->base_url ?>/stats.php"><i class="icon-signal"></i> Site stats</a>
+          <a href="<?= $cameralife->baseURL ?>/stats.php"><i class="icon-signal"></i> Site stats</a>
           &nbsp;
           <a href="http://fulldecent.github.com/cameralife"><i class="icon-globe"></i> Built with Camera Life</a>
         </p>
@@ -211,7 +211,7 @@ if (isset($_GET['path'])) {
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <!--    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.0/jquery.mobile.min.js"></script> -->
-    <script type="text/javascript" src="<?= $cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme') ?>/theme.js"></script>
+    <script type="text/javascript" src="<?= $cameralife->baseURL.'/modules/theme/'.$cameralife->GetPref('theme') ?>/theme.js"></script>
 <?php
       if ($cameralife->Theme->GetPref('analytics')) {
 ?>
@@ -240,11 +240,11 @@ if (isset($_GET['path'])) {
     function Grid($views) 
     {
       echo '<div>'.PHP_EOL;
-      foreach ($viewss as $view) {
+      foreach ($views as $view) {
         $openGraph = $view->GetOpenGraph();
 
         echo '<div class="l1" style="margin-bottom:1em">'.PHP_EOL;
-        echo '<a class="l2" href="'.$icon["href"].'">';
+        echo '<a class="l2" href="'.htmlentities($openGraph['og:url']).'">';
         if (isset($openGraph['og:image:width']) && isset($openGraph['og:image:height']))
             $imageattrs = array('alt'=>$openGraph['og:title'], 'width'=>$openGraph['og:image:width'], 'height'=>$openGraph['og:image:height'], 'class'=>'l3');
         else
@@ -276,7 +276,7 @@ if (isset($_GET['path'])) {
 */
 
     /// Taken an Icon to make base url
-    function MultiSection($sections, $base_url, $conjunction='and', $query=NULL)
+    function MultiSection($sections, $baseURL, $conjunction='and', $query=NULL)
     {
       global $_GET;
       $sectionhtml = array();
@@ -289,7 +289,7 @@ if (isset($_GET['path'])) {
         else
           echo "<li>";
       
-        $url = $base_url;
+        $url = $baseURL;
         $url = AddParam($url, 'page', $section['page_name']);
         if (isset($query))
           foreach($query as $p => $v)

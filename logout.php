@@ -15,4 +15,4 @@
   if (is_string($url))
     header('Location: '.$url);
   else
-    header('Location: '.$cameralife->base_url.'/index.php');
+    header('Location: '.$cameralife->baseURL.'/index.php');

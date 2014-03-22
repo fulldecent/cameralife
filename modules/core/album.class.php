@@ -112,9 +112,9 @@ class Album extends Search
     $retval = array();
     $retval['og:title'] = $this->record['name'];
     $retval['og:type'] = 'website';
-    $retval['og:url'] = $cameralife->base_url.'/albums/'.$this->record['id'];
+    $retval['og:url'] = $cameralife->baseURL.'/albums/'.$this->record['id'];
     if ($cameralife->GetPref('rewrite') == 'no')
-      $retval['og:url'] = $cameralife->base_url.'/album.php?id='.$this->record['id'];
+      $retval['og:url'] = $cameralife->baseURL.'/album.php?id='.$this->record['id'];
     $photo = $this->GetPoster();
     $retval['og:image'] = $photo->GetMedia('thumbnail');
     $retval['og:image:type'] = 'image/jpeg';

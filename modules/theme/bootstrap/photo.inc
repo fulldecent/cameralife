@@ -17,7 +17,7 @@ $openGraph = $photo->GetOpenGraph();
 if (isset($_GET['referer']))
   $_SERVER['HTTP_REFERER'] = $_GET['referer'];
 if (isset($_SERVER['HTTP_REFERER'])) {
-  $_SERVER['HTTP_REFERER'] = str_replace($cameralife->base_url,'', $_SERVER['HTTP_REFERER']);
+  $_SERVER['HTTP_REFERER'] = str_replace($cameralife->baseURL,'', $_SERVER['HTTP_REFERER']);
   $_SERVER['HTTP_REFERER'] = preg_replace('|^/|', '', $_SERVER['HTTP_REFERER']);
 } else
   $_SERVER['HTTP_REFERER'] = '';
@@ -39,7 +39,7 @@ else
   $rating = $avg = $cameralife->Database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->Get('id')." AND user_ip='".$_SERVER['REMOTE_ADDR']."'");
 
 ## Extra header...
-$headers = '<link rel="stylesheet" type="text/css" href="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/delicious.css" />'.PHP_EOL;
+$headers = '<link rel="stylesheet" type="text/css" href="'.$cameralife->baseURL.'/modules/theme/'.$cameralife->GetPref('theme').'/delicious.css" />'.PHP_EOL;
 
 if($photoPrev) {
   $prevOpenGraph = $photoPrev->GetOpenGraph();
@@ -58,8 +58,8 @@ if($photoNext) {
   $headers .= '<link rel="next" href="'.htmlspecialchars($nextOpenGraph['og:url']).'" />'.PHP_EOL;
 }
 
-$headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/photo.js"></script>';
-$headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/ajax.js"></script>';
+$headers .= '<script type="text/javascript" src="'.$cameralife->baseURL.'/modules/theme/'.$cameralife->GetPref('theme').'/photo.js"></script>';
+$headers .= '<script type="text/javascript" src="'.$cameralife->baseURL.'/modules/theme/'.$cameralife->GetPref('theme').'/ajax.js"></script>';
 
 $cameralife->Theme->Header($photo, NULL, $headers);
 
@@ -90,7 +90,7 @@ if ($cameralife->Security->authorize('photo_rename'))
   if ($cameralife->Security->authorize('photo_rename'))
   {
 ?>
-    <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST" name="form" id="renameform" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'rename')?'':'display:none'?>">
+    <form action="<?= $cameralife->baseURL ?>/photo_controller.php" method="POST" name="form" id="renameform" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'rename')?'':'display:none'?>">
       <p class="lead">The <strong>Title</strong> shows on this page and thumbnails of this photo elsewhere. <strong>Keywords</strong> are never displayed. Searches and Albums use the <strong>Title</strong> and <strong>Keywords</strong> to find photos.</p>
       <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
       <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>">
@@ -111,7 +111,7 @@ if ($cameralife->Security->authorize('photo_rename'))
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
         
-          <input class="btn btn-primary" type="submit" value="Save Changes" onclick="makeRequest('<?= $cameralife->base_url ?>/photo_controller.php','renameform',function(){$('h1').html($('form#renameform input[name=param1]').val())};return false">
+          <input class="btn btn-primary" type="submit" value="Save Changes" onclick="makeRequest('<?= $cameralife->baseURL ?>/photo_controller.php','renameform',function(){$('h1').html($('form#renameform input[name=param1]').val())};return false">
           <a class="btn btn-default" href="<?= htmlspecialchars($openGraph['og:url']) ?>" onclick="$('#showHideRenameForm').show();$('#renameform').hide();return false">Cancel</a> 
 
         </div>
@@ -130,12 +130,12 @@ if ($cameralife->Security->authorize('photo_rename'))
       $target = $prevOpenGraph['og:url'];
     }
     elseif (isset($_SERVER['HTTP_REFERER']))
-      $target = $cameralife->base_url.'/'.$_SERVER['HTTP_REFERER'];
+      $target = $cameralife->baseURL.'/'.$_SERVER['HTTP_REFERER'];
     else
-      $target = $cameralife->base_url.'/index.php';
+      $target = $cameralife->baseURL.'/index.php';
       
 ?>
-    <form action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST" name="form" id="deleteform" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'flag')?'':'display:none'?>">
+    <form action="<?= $cameralife->baseURL ?>/photo_controller.php" method="POST" name="form" id="deleteform" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'flag')?'':'display:none'?>">
       <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
       <input type="hidden" name="target" value="<?= AddParam(htmlspecialchars($openGraph['og:url']), 'referer', urlencode($_SERVER['HTTP_REFERER'])) ?>" />
       <input type="hidden" name="action" value="flag" />
@@ -168,7 +168,7 @@ if ($cameralife->Security->authorize('photo_rename'))
     <div id="modify" class="well" style="<?=(isset($_GET['action']) && $_GET['action'] == 'modify')?'':'display:none'?>">
       <legend>Modify photo. All modifications can be reverted.</legend>
 
-      <form class="form-horizontal" action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
+      <form class="form-horizontal" action="<?= $cameralife->baseURL ?>/photo_controller.php" method="POST">
         <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
         <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>" />
         <input type="hidden" name="action" value="rotate" />
@@ -181,7 +181,7 @@ if ($cameralife->Security->authorize('photo_rename'))
         </div>
       </form>
       
-      <form class="form-horizontal" action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
+      <form class="form-horizontal" action="<?= $cameralife->baseURL ?>/photo_controller.php" method="POST">
         <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
         <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>" />
         <input type="hidden" name="action" value="revert" />
@@ -193,7 +193,7 @@ if ($cameralife->Security->authorize('photo_rename'))
         </div>
       </form>
 
-      <form class="form-horizontal" action="<?= $cameralife->base_url ?>/photo_controller.php" method="POST">
+      <form class="form-horizontal" action="<?= $cameralife->baseURL ?>/photo_controller.php" method="POST">
         <input type="hidden" name="id" value="<?= $photo->Get('id') ?>" />
         <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>" />
         <input type="hidden" name="action" value="rethumb" />
@@ -218,7 +218,7 @@ if ($cameralife->Security->authorize('photo_rename'))
   }
   if ($photo->Get('status') == 0)
   {
-    $json = '{"request":{"merchant":{"merchant-api-key":"","merchant-button-key":"13658928432161657"},"order":{"product":{"thumbnail":{"src":"'.$photo->GetMedia('thumbnail').'","width":"0","height":"0"},"source":{"file":{"dimensions":{"width":"'.$photo->Get('width').'","height":"'.$photo->Get('height').'","bleed":"0.3"},"usage":"full-product","filetype":"image","src":"'.$photo->GetMedia('photo').'","publicationId":"","pages":"1"}},"target":{"offering":{"id":"0"}},"title":""},"reference":""},"redirect":{"cancellation":{"href":""},"error":{"href":""},"thankyou":{"href":"'.$cameralife->base_url.'"}},"quantity":"1","currency":"USD","locale":"en_EN","filterCategory":"","filterSize":"","filterColour":"","filterOfferingId":"0"}}';
+    $json = '{"request":{"merchant":{"merchant-api-key":"","merchant-button-key":"13658928432161657"},"order":{"product":{"thumbnail":{"src":"'.$photo->GetMedia('thumbnail').'","width":"0","height":"0"},"source":{"file":{"dimensions":{"width":"'.$photo->Get('width').'","height":"'.$photo->Get('height').'","bleed":"0.3"},"usage":"full-product","filetype":"image","src":"'.$photo->GetMedia('photo').'","publicationId":"","pages":"1"}},"target":{"offering":{"id":"0"}},"title":""},"reference":""},"redirect":{"cancellation":{"href":""},"error":{"href":""},"thankyou":{"href":"'.$cameralife->baseURL.'"}},"quantity":"1","currency":"USD","locale":"en_EN","filterCategory":"","filterSize":"","filterColour":"","filterOfferingId":"0"}}';
 ?>
     <div id="print" class="well" style="<?=(isset($_GET['action']) && $_GET['action'] == 'print')?'':'display:none'?>">
       <p class="lead">Order postcards, canvas prints and more styles of this photo.</p>
@@ -237,7 +237,7 @@ if ($cameralife->Security->authorize('photo_rename'))
   if (isset($cameralife->receipt))
   {
     echo '<div id="receipt" class="receipt">';
-    echo '<form action="'.$cameralife->base_url.'/undo_controller.php" method="post">';
+    echo '<form action="'.$cameralife->baseURL.'/undo_controller.php" method="post">';
     echo '<input id="receiptid" type="hidden" name="id" value="'.$cameralife->receipt->Get('id').'" />';
     echo '<input type="hidden" name="action" value="undo" />';
     echo '<input type="hidden" name="target" value="'.htmlspecialchars($openGraph['og:url']).'" />';
@@ -278,7 +278,7 @@ if ($exif = $photo->GetEXIF()) {
   </div>
   <div class="col-md-4">
     <h2>Feedback</h2>
-    <form action="<?= $cameralife->base_url?>/photo_controller.php" method=POST name="form">
+    <form action="<?= $cameralife->baseURL?>/photo_controller.php" method=POST name="form">
       <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
       <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>">
       <input type="hidden" name="action" value="rate">
@@ -320,7 +320,7 @@ $result = $cameralife->Database->Select('comments', '*', 'photo_id='.$photo->Get
 while ($comment = $result->FetchAssoc())
 echo "<strong>".$comment['username']."</strong> <em>" . date('Y-m-d', strtotime($comment['date']))."</em><br>" .htmlentities($comment['comment']) . "<hr>";
       ?>
-    <form action="<?= $cameralife->base_url ?>/photo_controller.php" method=POST name="form">
+    <form action="<?= $cameralife->baseURL ?>/photo_controller.php" method=POST name="form">
       <input type="hidden" name="id" value="<?= $photo->Get('id') ?>">
       <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>">
       <input type="hidden" name="action" value="comment">

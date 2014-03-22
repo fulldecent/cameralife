@@ -21,7 +21,7 @@
   {
     function SecurityModule () { }
   
-    /* Provides a URL, relative to $cameralife->base_url that the user can
+    /* Provides a URL, relative to $cameralife->baseURL that the user can
     ** login at
     */
     function LoginURL () { }
@@ -29,7 +29,7 @@
     /* Logs the user out. Returns true or and exit url if you really want to */
     function Logout () { }
 
-    /* Provides a URL, relative to $cameralife->base_url that the user can
+    /* Provides a URL, relative to $cameralife->baseURL that the user can
     ** go to, to administer users and permissions. Or returns FALSE, if the 
     ** user is not allowed to administer.
     */

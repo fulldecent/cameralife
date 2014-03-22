@@ -194,7 +194,7 @@ session_start();
       #echo "image.hidden.$i=".($photo->Get('status')>0?'true':'false')."\n";
       $i++;
     }
-    echo "baseurl=".$cameralife->base_url."/gallery_remote2.php?redirect=\n";
+    echo "baseurl=".$cameralife->baseURL."/gallery_remote2.php?redirect=\n";
     echo "image_count=".($i-1)."\n";
     echo "status=0\n"; #close
     echo "status_text=Fetch-album-images successful.\n";
