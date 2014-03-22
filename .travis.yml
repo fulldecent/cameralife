@@ -8,6 +8,7 @@ php:
 before_script:
   ## Composer
   - curl -s http://getcomposer.org/installer | php
+  - php composer.phar selfupdate
   - php composer.phar install
   ## PHP_CodeSniffer
   - pear install pear/PHP_CodeSniffer
