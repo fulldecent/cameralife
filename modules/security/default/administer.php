@@ -28,7 +28,7 @@
   }
   $cameralife->SavePreferences();
 
-  public function html_select_auth($param_name)
+  function html_select_auth($param_name)
   {
     global $cameralife;
     global $prefnum;

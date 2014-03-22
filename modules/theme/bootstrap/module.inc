@@ -93,7 +93,6 @@
     <meta name="generator" content="Camera Life version <?= $cameralife->version ?>">
     <meta name="author" content="<?= $cameralife->GetPref('owner_email') ?>">
     <?= $extrahead ?>
-
     <!-- Le styles -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
@@ -104,7 +103,6 @@
     <![endif]-->
   </head>
   <?= $body ?>
-  
     <nav class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container">
       <a class="navbar-brand" href="<?= $cameralife->baseURL ?>"><?= $cameralife->GetPref('sitename') ?></a>
@@ -114,7 +112,6 @@
           <input type="text" class="form-control" placeholder="Search" name="q" />
         </form>
         <ul class="nav navbar-nav navbar-right">
-        
 <?php
 if ($cameralife->Security->GetName()) {
  $gravitarHTML = htmlentities("http://www.gravatar.com/avatar/".md5($cameralife->Security->GetName())."?s=16&d=identicon");
@@ -130,9 +127,7 @@ if ($cameralife->Security->GetName()) {
               <li><a href="<?= $cameralife->baseURL.'/logout.php' ?>">Sign Out</a></li>
             </ul>
           </li>
-<?php
-} else {
-?>
+<?php } else { ?>
           <a class="btn btn-default navbar-btn narbar-right" href="<?= $cameralife->Security->LoginURL() ?>">
             <i class="icon-user"></i>
             <img alt="facebook" src="http://facebook.com/favicon.ico" height=16 width=16>
@@ -140,21 +135,13 @@ if ($cameralife->Security->GetName()) {
             <img alt="yahoo" src="http://yahoo.com/favicon.ico" height=16 width=16>
             Login / Free account
           </a>
-<?php
-}
-?>
+<?php } ?>
         </ul>
-<?php
-if (isset($_GET['path'])) {
-?>
+<?php if (isset($_GET['path'])) { ?>
         <a class="btn btn-default navbar-btn navbar-right" href="<?= $cameralife->baseURL ?>/upload.php?path=<?= htmlentities($_GET['path'])?>">
-<?php
-} else {
-?>
+<?php } else { ?>
         <a class="btn btn-default navbar-btn navbar-right" href="<?= $cameralife->baseURL ?>/upload.php">
-<?php
-}
-?>
+<?php } ?>
           <i class="icon-plus"></i>
             Upload
         </a>
@@ -167,9 +154,7 @@ if (isset($_GET['path'])) {
     </nav>  
     
     <div class="container">
-<?php
-      if ($this->menu) {
-?>
+<?php if ($this->menu) { ?>
       <div class="row">
         <div class="col-md-9">
 <?php

@@ -89,31 +89,20 @@ class CameraLife extends CameraLifeModule # and View
     if (!isset($this->loadedFeatures[$feature]))
       $loadedFeatures[$feature]='loading';
     elseif ($this->loadedFeatures[$feature]=='loaded')
-        return true;
+      return true;
     elseif ($this->loadedFeatures[$feature]=='loading')
-        $this->Error('Circular reference in features :-(');
+      $this->Error('Circular reference in features :-(');
 
-    $this->RelativeInclude("modules/$feature/module.inc");
-    $allfeatures = array('core'=>NULL, 'imageprocessing'=>'ImageProcessing', 'security'=>'Security', 'theme'=>'Theme', 'filestore'=>'FileStore');
+    $allfeatures = array('core'=>'Core', 'imageprocessing'=>'ImageProcessing', 'security'=>'Security', 'theme'=>'Theme', 'filestore'=>'FileStore');
+    if (!isset($allfeatures[$feature]))
+      $this->Error("Non-existant feature requested: $feature");
     $cutename = $allfeatures[$feature];
-    
-    switch ($feature)
-    {
-      case 'core': 
-        $this->Database = new Database();
-        break;
-      case 'theme': 
-      case 'security': 
-      case 'imageprocessing': 
-      case 'filestore':
-      case 'filestore':
-        $implementation = $this->GetPref($feature);
-        $this->RelativeInclude("modules/$feature/$implementation/module.inc");
-        $modulename = $implementation.$feature;
-        $this->$cutename = new $modulename;
-        break;
-      default:
-        $this->Error("Non-existant feature requested: $feature");
+    $this->RelativeInclude("modules/$feature/module.inc");
+    if ($feature != 'core') { // Need to load implementation
+      $implementation = $this->GetPref($feature);
+      $this->RelativeInclude("modules/$feature/$implementation/module.inc");
+      $modulename = $implementation.$feature;
+      $this->$cutename = new $modulename;
     }
     $this->loadedFeatures[$feature]='loaded';
   }
@@ -190,8 +179,6 @@ class CameraLife extends CameraLifeModule # and View
         if (count($call['args']))
           foreach ($call['args'] as $callarg) {
             echo "<li>".print_r($callarg, true)."</li>";
-//            var_dump($callarg);
-  //          echo "</li>";
           }
         echo "</ul></dd>\n";
 #       echo '<dd><p>For object details view source...</p><!--<pre>';
@@ -208,6 +195,7 @@ class CameraLife extends CameraLifeModule # and View
 
 $cameralife = new CameraLife();
 $cameralife->GetFeature('core');
+$cameralife->Database = new Database();
 $cameralife->LoadPreferences();
 
 if (isset($GLOBALS['features']) && count($GLOBALS['features']))
