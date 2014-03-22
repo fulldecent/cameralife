@@ -1,7 +1,7 @@
 <?php
 /**
  * Topic class.
- * 
+ *
  * @author Will Entriken <WillEntriken @gmail.com>
  * @access public
  * @copyright Copyright (c) 2001-2009 Will Entriken
@@ -41,6 +41,7 @@ class Topic extends Search
     $result = $cameralife->Database->Select('albums','DISTINCT topic');
     while ($topic = $result->FetchAssoc())
       $retval[] = new Topic($topic['topic']);
+
     return $retval;
   }
 
@@ -55,8 +56,8 @@ class Topic extends Search
       $retval['og:url'] = $cameralife->baseURL.'/topic.php?name='.rawurlencode($this->name);
     $retval['og:image'] = $cameralife->IconURL('topic');
     $retval['og:image:type'] = 'image/png';
-    //$retval['og:image:width'] = 
-    //$retval['og:image:height'] = 
-    return $retval;    
+    //$retval['og:image:width'] =
+    //$retval['og:image:height'] =
+    return $retval;
   }
 }

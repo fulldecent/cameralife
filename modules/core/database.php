@@ -9,29 +9,26 @@
  */
 class Database
 {
-  var $myConnection;
-  var $myPrefix;
-  var $myDBH;
+  public $myConnection;
+  public $myPrefix;
+  public $myDBH;
 
-  function Database()
+  public function Database()
   {
     global $cameralife, $db_host, $db_user, $db_pass, $db_name, $db_prefix;
 
-    try 
-    {
+    try {
       $this->myDBH = new PDO("mysql:host={$db_host};dbname={$db_name}", $db_user, $db_pass);
       $this->myDBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }
-    catch(Exception $e)
-    {
+    } catch (Exception $e) {
       $cameralife->Error('Database error: '.htmlentities($e->getMessage()));
     }
   }
 
-  /** 
+  /**
    * SELECT $selection FROM $table [WHERE $condition] [$extra]
    */
-  function Select ($table, $selection='*', $condition='1', $extra='', $joins='', $bind=array())
+  public function Select ($table, $selection='*', $condition='1', $extra='', $joins='', $bind=array())
   {
     global $cameralife;
     if (!$condition) $condition = '1';
@@ -41,26 +38,24 @@ class Database
     $table = implode(',', $tables);
     $sql = "SELECT $selection FROM $table $joins WHERE $condition $extra";
     $stmt = NULL;
-    try 
-    {
+    try {
       $stmt = $this->myDBH->prepare($sql);
       if (count($bind)) {
         foreach ($bind as $name=>$val)
           $stmt->bindValue(':'.$name, $val);
       }
       $stmt->execute();
-    }
-    catch(Exception $e)
-    {
+    } catch (Exception $e) {
       $cameralife->Error('Database error: '.htmlentities($e->getMessage()));
     }
+
     return new PDOIterator($stmt);
   }
-  
+
   /**
   * SELECT $selection FROM $table [WHERE $condition] [$extra]
   */
-  function SelectOne ($table, $selection, $condition='1', $extra='', $joins='', $bind=array())
+  public function SelectOne ($table, $selection, $condition='1', $extra='', $joins='', $bind=array())
   {
     global $cameralife;
     if (!$condition) $condition = '1';
@@ -71,8 +66,7 @@ class Database
     $sql = "SELECT $selection FROM $table $joins WHERE $condition $extra";
     $stmt = NULL;
     $result = NULL;
-    try 
-    {
+    try {
       $stmt = $this->myDBH->prepare($sql);
       if (count($bind)) {
         foreach ($bind as $name=>$val)
@@ -80,15 +74,14 @@ class Database
       }
       $stmt->execute();
       $result = $stmt->fetch(PDO::FETCH_NUM);
-    }
-    catch(Exception $e)
-    {
+    } catch (Exception $e) {
       $cameralife->Error('Database error: '.htmlentities($e->getMessage()));
     }
+
     return $result[0];
   }
-  
-  function Update ($table, $values, $condition='1', $extra='')
+
+  public function Update($table, $values, $condition='1', $extra='')
   {
     global $cameralife;
     $setstring = '';
@@ -96,22 +89,20 @@ class Database
       $setstring .= "`$key` = ?, ";
     $setstring = substr($setstring, 0, -2); // chop off last ', '
     $sql = "UPDATE ".$this->myPrefix."$table SET $setstring WHERE $condition $extra";
-    try 
-    {
+    try {
       $stmt = $this->myDBH->prepare($sql);
       $i = 1;
       foreach ($values as $val)
         $stmt->bindValue($i++, $val);
       $stmt->execute();
-    }
-    catch(Exception $e)
-    {
+    } catch (Exception $e) {
       $cameralife->Error('Database error: '.htmlentities($e->getMessage()));
     }
+
     return $stmt->rowCount();
   }
 
-  function Insert ($table, $values, $extra='')
+  public function Insert($table, $values, $extra='')
   {
     global $cameralife;
     $setstring = '';
@@ -119,59 +110,52 @@ class Database
       $setstring .= "`$key` = ?, ";
     $setstring = substr($setstring, 0, -2); // chop off last ', '
     $sql = "INSERT INTO ".$this->myPrefix."$table SET $setstring $extra";
-    try 
-    {
+    try {
       $stmt = $this->myDBH->prepare($sql);
       $i = 1;
       foreach ($values as $val)
         $stmt->bindValue($i++, $val);
       $stmt->execute();
-    }
-    catch(Exception $e)
-    {
+    } catch (Exception $e) {
       $cameralife->Error('Database error: '.htmlentities($e->getMessage()));
     }
+
     return $this->myDBH->lastInsertId();
   }
 
-  function Delete ($table, $condition='1', $extra='', $bind=array())
+  public function Delete ($table, $condition='1', $extra='', $bind=array())
   {
     global $cameralife;
     $sql = "DELETE FROM ".$this->myPrefix."$table WHERE $condition $extra";
-    try 
-    {
+    try {
       $stmt = $this->myDBH->prepare($sql);
       $i = 1;
       if (count($bind))
         foreach ($bind as $name=>$val)
           $stmt->bindValue(':'.$name, $val);
       $stmt->execute();
-    }
-    catch(Exception $e)
-    {
+    } catch (Exception $e) {
       $cameralife->Error('Database error: '.htmlentities($e->getMessage()));
     }
+
     return $stmt->rowCount();
   }
 }
 
 /*
- * PDO implementation of the iterator class 
+ * PDO implementation of the iterator class
  */
 class PDOIterator
 {
-  var $myResult;
+  public $myResult;
 
-  function PDOIterator($mysql_result)
+  public function PDOIterator($mysql_result)
   {
     $this->myResult = $mysql_result;
   }
 
-  function FetchAssoc () 
+  public function FetchAssoc()
   {
     return $this->myResult->fetch(PDO::FETCH_ASSOC);
   }
 }
-
-
-?>

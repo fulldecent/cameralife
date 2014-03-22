@@ -8,4 +8,3 @@
 $features=array('theme','filestore');
 require 'main.inc';
 $cameralife->Theme->ShowPage('index');
-?>

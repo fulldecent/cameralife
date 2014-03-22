@@ -127,6 +127,7 @@ class Search extends View
     $photos = array();
     while ($row = $query->FetchAssoc())
       $photos[] = new Photo($row['id']);
+
     return $photos;
   }
 

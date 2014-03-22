@@ -12,7 +12,7 @@ class Photo extends View
 
   /**
    * The file extension, e.g. png
-   * 
+   *
    * @var String
    * @access public
    */
@@ -21,16 +21,16 @@ class Photo extends View
   /**
    * context
    * an Album, Search or Folder of where the user came from to get to this photo
-   * 
+   *
    * @var mixed
    * @access private
    */
   private $context;
-  
+
   /**
    * contextPhotos
    * An ordered set of photos in the same context as this one
-   * 
+   *
    * @var mixed
    * @access private
    */
@@ -39,16 +39,16 @@ class Photo extends View
   /**
    * contextPrev
    * the previous photo in context
-   * 
+   *
    * @var mixed
    * @access private
    */
   private $contextPrev;
-  
+
   /**
    * contextNext
    * the next photo in contex
-   * 
+   *
    * @var mixed
    * @access private
    */
@@ -74,7 +74,7 @@ class Photo extends View
     } elseif (is_array($original)) { # A new image, given by an array
       $this->record['description'] = 'unnamed';
 
-//      if (!preg_match('/^dscn/i', $this->record['filename']) && 
+//      if (!preg_match('/^dscn/i', $this->record['filename']) &&
 //        !preg_match('/^im/i', $this->record['filename'])) // useless filename
 //        $this->record['description'] = preg_replace('/.[^.]+$/', '', ucwords($photo->Get('filename')));
 
@@ -121,7 +121,7 @@ class Photo extends View
     if ($key == 'status') {
       $fullpath = rtrim('/'.ltrim($this->record['path'],'/'),'/').'/'.$this->record['filename'];
       $cameralife->FileStore->SetPermissions('photo', $fullpath, $value!=0);
-//TODO: also set for _mod and _ thumbnails      
+//TODO: also set for _mod and _ thumbnails
     }
     $this->record[$key] = $value;
     $cameralife->Database->Update('photos', array($key=>$value), 'id='.$this->record['id']);
@@ -260,15 +260,14 @@ class Photo extends View
   public function GetMediaURL($format='thumbnail')
   {
     global $cameralife;
-    
+
     $url = NULL;
     if ($format == 'photo' || $format == '') {
       if ($this->Get('modified'))
         $url = $cameralife->FileStore->GetURL('other', '/'.$this->Get('id').'_mod.'.$this->extension);
       else
         $url = $cameralife->FileStore->GetURL('photos', '/'.$this->Get('path').$this->Get('filename'));
-    }
-    elseif ($format == 'scaled')
+    } elseif ($format == 'scaled')
       $url = $cameralife->FileStore->GetURL('other', '/'.$this->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$this->extension);
     elseif ($format == 'thumbnail')
       $url = $cameralife->FileStore->GetURL('other', '/'.$this->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$this->extension);
@@ -278,10 +277,9 @@ class Photo extends View
         $url = $cameralife->FileStore->GetURL('other', '/'.$this->Get('id').'_'.$format.'.'.$this->extension);
       else
         $cameralife->Error('This image size has not been allowed');
-    } 
-    else
+    } else
       $cameralife->Error('Bad format parameter');
-    
+
     if ($url)
       return $url;
 
@@ -412,7 +410,7 @@ class Photo extends View
 
   /**
    * GetRelated function
-   * 
+   *
    * @access public
    * @return array - set of views that contain this photo
    */
@@ -468,6 +466,7 @@ class Photo extends View
         $this->context = $folder;
       }
     }
+
     return $retval;
   }
 
@@ -514,6 +513,7 @@ class Photo extends View
   {
     if (!count($this->contextPhotos))
       $this->GetContext();
+
     return $this->contextPrev;
   }
 
@@ -522,6 +522,7 @@ class Photo extends View
   {
     if (!count($this->contextPhotos))
       $this->GetContext();
+
     return $this->contextNext;
   }
 
@@ -538,6 +539,7 @@ class Photo extends View
     $retval['og:image:type'] = 'image/jpeg';
     $retval['og:image:width'] = $this->record['tn_width'];
     $retval['og:image:height'] = $this->record['tn_height'];
-    return $retval;    
+
+    return $retval;
   }
 }

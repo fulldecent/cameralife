@@ -105,7 +105,7 @@ class Album extends Search
     $cameralife->Database->Delete('albums','id='.$this->record['id']);
     $cameralife->Database->Delete('logs',"record_type='album' AND record_id=".$this->record['id']);
   }
-  
+
   public function GetOpenGraph()
   {
     global $cameralife;
@@ -118,8 +118,8 @@ class Album extends Search
     $photo = $this->GetPoster();
     $retval['og:image'] = $photo->GetMedia('thumbnail');
     $retval['og:image:type'] = 'image/jpeg';
-    //$retval['og:image:width'] = 
-    //$retval['og:image:height'] = 
-    return $retval;    
+    //$retval['og:image:width'] =
+    //$retval['og:image:height'] =
+    return $retval;
   }
 }

@@ -49,12 +49,14 @@ class Folder extends Search
     global $cameralife;
     if ($this->myStart > 0) {
       if ($cameralife->GetPref('rewrite') == 'yes')
-        $href = $cameralife->baseURL.'/folders'.str_replace(" ","%20",$this->path); 
+        $href = $cameralife->baseURL.'/folders'.str_replace(" ","%20",$this->path);
       else
         $href = $cameralife->baseURL.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
       $href = AddParam($href, 'start', $this->myStart - $this->myLimitCount);
+
       return $href;
     }
+
     return NULL;
   }
 
@@ -66,6 +68,7 @@ class Folder extends Search
       $path = dirname($path);
       $retval[] = new Folder($path);
     }
+
     return array_reverse($retval);
   }
 
@@ -119,6 +122,7 @@ class Folder extends Search
     $result = array();
     while ($youngin = $family->FetchAssoc())
       $result[] = new Folder($this->path . $youngin['basename'], FALSE);
+
     return $result;
   }
 
@@ -152,7 +156,7 @@ class Folder extends Search
   /**
    * Updates the DB to match actual contents of photo bucket from filestore.
    * Returns an array of errors or warning.
-   * Tries very hard to avoid creating a new record and deleting an old if in fact the 
+   * Tries very hard to avoid creating a new record and deleting an old if in fact the
    * photo was simply moved.
    */
   public static function Update()
@@ -165,7 +169,7 @@ class Folder extends Search
     $result = $cameralife->Database->Select('photos','id,filename,path,fsize','','ORDER BY path,filename');
 
     // Verify each photo in the DB
-    while ($photo = $result->FetchAssoc()) {    
+    while ($photo = $result->FetchAssoc()) {
 //TODO FIX DATABASE TO MAKE photos.path like '/a/dir' or '/'
       $filename = $photo['filename'];
       $photopath = trim($photo['path'], '/') . '/' . $filename;
@@ -293,7 +297,7 @@ class Folder extends Search
       // Photo not found anywhere
       $retval[] = "$photopath was deleted from filesystem";
       $photoObj = new Photo($photo['id']);
-var_dump($filesInStoreNotYetMatchedToDB, $photopath);      
+var_dump($filesInStoreNotYetMatchedToDB, $photopath);
       $photoObj->Erase();
     }
 
@@ -407,15 +411,14 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
       $retval['og:title'] = '(All photos)';
     $retval['og:type'] = 'website';
     //TODO see https://stackoverflow.com/questions/22571355/the-correct-way-to-encode-url-path-parts
-    $retval['og:url'] = $cameralife->baseURL.'/folders'.str_replace(" ","%20",$this->path); 
+    $retval['og:url'] = $cameralife->baseURL.'/folders'.str_replace(" ","%20",$this->path);
     if ($cameralife->GetPref('rewrite') == 'no')
       $retval['og:url'] = $cameralife->baseURL.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
     $retval['og:image'] = $cameralife->IconURL('folder');
     $retval['og:image:type'] = 'image/png';
-    //$retval['og:image:width'] = 
-    //$retval['og:image:height'] = 
-    return $retval;    
+    //$retval['og:image:width'] =
+    //$retval['og:image:height'] =
+    return $retval;
   }
-
 
 }

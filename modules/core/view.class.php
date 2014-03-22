@@ -9,10 +9,10 @@
  */
 class View
 {
-  
+
   /**
    * GetOpenGraph function.
-   * 
+   *
    * @access public
    * @return array
    *   og:title REQUIRED
@@ -22,20 +22,20 @@ class View
    *   og:determiner "a" | "an" | "the" | "" OPTIONAL (modifies title)
    *   og:site_name OPTIONAL
    *   og:image URL to an image thumbnail REQUIRED
-   *   og:image:secure_url URL to an image thumbnail OPTIONAL 
+   *   og:image:secure_url URL to an image thumbnail OPTIONAL
    *   og:image:type mimetype of thumbnail OPTIONAL
    *   og:image:width size of thumbnail OPTIONAL
    *   og:image:height size of thumbnail OPTIONAL
    */
   public function GetOpenGraph()
   {
-    
+
   }
 
   /**
    * GetPrevious function.
    * A URL or NULL for the View logically preceeding this one
-   * 
+   *
    * @access public
    * @return void
    */
@@ -44,16 +44,16 @@ class View
   /**
    * GetNext function.
    * A URL or NULL for the View logically following this one
-   * 
+   *
    * @access public
    * @return void
    */
   public function GetNext() {}
-       
+
   /**
    * ShowPage function.
    * Render this View using the currently installed theme
-   * 
+   *
    * @access public
    * @return void
    */
@@ -64,4 +64,3 @@ class View
     $cameralife->Theme->ShowPage(strtolower(get_class($this)), $this);
   }
 }
-?>

@@ -43,8 +43,7 @@ if ($format == 'photo' || $format == '') {
     $fullpath = rtrim('/'.ltrim($photo->Get('path'),'/'),'/').'/'.$photo->Get('filename');
     list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('photo', $fullpath);
   }
-}
-elseif ($format == 'scaled')
+} elseif ($format == 'scaled')
   list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension);
 elseif ($format == 'thumbnail')
   list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension);

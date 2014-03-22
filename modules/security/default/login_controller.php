@@ -35,4 +35,3 @@ if ($_POST['target'] == 'ajax')
   exit(0);
 else
   header("Location: ".$_POST['target']);
-?>

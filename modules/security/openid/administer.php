@@ -28,7 +28,7 @@
   }
   $cameralife->SavePreferences();
 
-  function html_select_auth($param_name)
+  public function html_select_auth($param_name)
   {
     global $cameralife;
     global $prefnum;
@@ -91,7 +91,8 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <script language="javascript">
-      public function changeall() {
+      public function changeall()
+      {
         val = document.getElementById('status').value;
         inputs = document.getElementsByTagName('select');
         for (var i = 0; i < inputs.length; i++) {

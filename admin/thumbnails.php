@@ -21,7 +21,7 @@ $numdone = isset($_GET['numdone']) ?(int) $_GET['numdone'] : 0;
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Admin: Thumbnails</title> 
+    <title>Admin: Thumbnails</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Camera Life version <?= $cameralife->version ?>">
     <meta name="author" content="<?= $cameralife->GetPref('owner_email') ?>">
@@ -41,7 +41,7 @@ $numdone = isset($_GET['numdone']) ?(int) $_GET['numdone'] : 0;
         <span class="navbar-brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
       </div>
     </div>
-    
+
     <div class="container">
       <h2>Update thumbnails</h2>
       <p>We are now caching thumbnails. This avoids a delay when a photo is viewed for the first time.</p>
