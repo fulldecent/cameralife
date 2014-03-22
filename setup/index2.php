@@ -126,7 +126,7 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
         `mtime` bigint(20) NOT NULL default '0',
         `modified` int(1) NOT NULL default '0',
         PRIMARY KEY  (`id`),
-        UNIQUE KEY `id` (`id`)
+        UNIQUE KEY `path` (`path`, `filename`)
       );";
     mysql_query($SQL)
       or die(mysql_error() . ' ' . __LINE__);

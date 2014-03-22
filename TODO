@@ -17,6 +17,7 @@ BASIC REGRESSION AND VALIDATION TESTING:
   git grep -i Deprecated # create issues for these
   git grep -i TODO # create issues for these and remove from code?
   run phpmd
+  check for and fix PSR-1 and PSR-2 with php-cs-fixer # see issue https://github.com/fulldecent/cameralife/issues/5
   
   Test HTML Valid
     http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2F

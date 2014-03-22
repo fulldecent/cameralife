@@ -1,45 +1,38 @@
 <?php
-  /**Handles the LOGIN form directed from login.php
-   *
-   * Pass the following variables:
-   *<ul>
-   *<li>action = login or register</li>
-   *<li>param1 = username</li>
-   *<li>param2 = password</li>
-   *<li>param3 = email (optional)</li>
-   *<li>target = where to go afterwards or 'ajax'</li></ul>
-   *@todo The following code requires rework
-   *<code>elseif(strtolower($_POST['action']) == 'register')
-   *{
-    * $result = $cameralife->Security->Register($_POST['param1'], $_POST['param2'], $_POST['param3']);
-    * if (is_string($result))
-    *   $cameralife->Error($result);
-   *}
-
-   *if ($_POST['target'] == 'ajax')
-   *  exit(0);
-   *else
-     *header("Location: ".$_POST['target']);</code>
-   *@author Will Entriken <cameralife@phor.net>
-   *@copyright Copyright (c) 2001-2009 Will Entriken
-   *@access public
+/*
+ * Handles the LOGIN form directed from login.php
+ *
+ * Accepts these POST parameters
+ * <ul>
+ *  <li>action = login or register</li>
+ *  <li>param1 = username</li>
+ *  <li>param2 = password</li>
+ *  <li>param3 = email (optional)</li>
+ *  <li>target = where to go afterwards or 'ajax'</li>
+ * </ul>
+ * @author Will Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @access public
 */
 
-  $features=array('theme','security');
-  require '../../../main.inc';
-  $cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
+$features=array('security');
+require '../../../main.inc';
+$cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
+if (get_class($cameralife->Security) != 'OpenIDSecurity')
+  $cameralife->Error("Can't access this page because the current security module is ".get_class($cameralife->Security));
 
-  if (strtolower($_POST['action']) == 'login') {
-    $result = $cameralife->Security->Login($_POST['param1'], $_POST['param2']);
-    if (is_string($result))
-      $cameralife->Error($result);
-  } elseif (strtolower($_POST['action']) == 'register') {
-    $result = $cameralife->Security->Register($_POST['param1'], $_POST['param2'], $_POST['param3']);
-    if (is_string($result))
-      $cameralife->Error($result);
-  }
+if (strtolower($_POST['action']) == 'login') {
+  $result = $cameralife->Security->Login($_POST['param1'], $_POST['param2']);
+  if (is_string($result))
+    $cameralife->Error($result);
+} elseif (strtolower($_POST['action']) == 'register') {
+  $result = $cameralife->Security->Register($_POST['param1'], $_POST['param2'], $_POST['param3']);
+  if (is_string($result))
+    $cameralife->Error($result);
+}
 
-  if ($_POST['target'] == 'ajax')
-    exit(0);
-  else
-    header("Location: ".$_POST['target']);
+if ($_POST['target'] == 'ajax')
+  exit(0);
+else
+  header("Location: ".$_POST['target']);
+?>
