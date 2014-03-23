@@ -168,13 +168,12 @@ class CameraLife extends CameraLifeModule # and View
       $calls = debug_backtrace();
       echo "  <dl>\n";
       foreach ($calls as $call) {
-        echo "    <dt>{$call['file']}:{$call['line']} ";
+        $callText = $call['function'];
         if (isset($call['class'])) {
           $url = "http://camera.phor.net/docs/cameralife/{$call['class']}.html#{$call['function']}";
-          echo "<a target=\"_new\" href=\"$url\">".$call['class'].'::'.$call['function']."</a>()</dt>\n";
-        } else {
-          echo $call['function'];
+          $callText = "<a target=\"_new\" href=\"$url\">".$call['class'].'::'.$call['function']."</a>()";
         }
+        echo "    <dt>{$call['file']}:{$call['line']} $callText</dt>";
         echo '    <dd><ul>';
         if (count($call['args']))
           foreach ($call['args'] as $callarg) {

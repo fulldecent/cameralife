@@ -10,7 +10,7 @@ require 'main.inc';
 
 if (!Photo::PhotoExists($_GET['id'])) {
   header("HTTP/1.0 404 Not Found");
-  $cameralife->Error("Photo #".($original+1)." not found.", __FILE__, __LINE__);
+  $cameralife->Error("Photo #".intval($_GET['id'])." not found.");
 }
 
 $photo = new Photo($_GET['id']);
