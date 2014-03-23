@@ -102,7 +102,7 @@ session_start();
   {
     global $cameralife;
     $result = $cameralife->Security->Login($_POST['uname'], $_POST['password']);
-    setcookie('GALLERYSID', $_COOKIE[$cameralife->Security->GetPref('auth_cookie')], time()+60*60*24*30);
+    setcookie('GALLERYSID', $_COOKIE[$cameralife->Security->getPref('auth_cookie')], time()+60*60*24*30);
 
     if ($result === true) {
       echo "#__GR2PROTO__\n";

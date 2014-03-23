@@ -44,7 +44,7 @@ foreach ($_POST as $key=>$val) {
   <body>
     <div class="navbar navbar-inverse navbar-static-top">
       <div class="container">
-        <span class="navbar-brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
+        <span class="navbar-brand"><a href="../"><?= $cameralife->getPref("sitename") ?></a> / Administration</span>
       </div>
     </div>
     <div class="container">

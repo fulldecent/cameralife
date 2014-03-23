@@ -26,7 +26,7 @@
     function GetCurUser()
     {
       global $_COOKIE, $cameralife;
-      $cookiename = $this->GetPref('auth_cookie');
+      $cookiename = $this->getPref('auth_cookie');
 
       if (isset($_COOKIE[$cookiename])) {
         $authcookie = $_COOKIE[$cookiename];
@@ -47,8 +47,8 @@
       $email = mysql_real_escape_string($email);
 
       $cookie = mt_rand(0,1000000000000);
-      setcookie($this->GetPref('auth_cookie'),$cookie,time()+30000000,'/');
-      $_COOKIE[$this->GetPref('auth_cookie')] = $cookie;
+      setcookie($this->getPref('auth_cookie'),$cookie,time()+30000000,'/');
+      $_COOKIE[$this->getPref('auth_cookie')] = $cookie;
 
       $result = $cameralife->Database->Select('users','*',"password='$id'");
       if ($user = $result->FetchAssoc()) // User exists already
@@ -76,7 +76,7 @@
         $values['last_ip'] = $HTTP_SERVER_VARS["REMOTE_ADDR"];
         $values['email'] = $email;
         $cameralife->Database->Insert('users',$values);
-        setcookie($this->GetPref('auth_cookie'),$cookie,time()+30000000,'/');
+        setcookie($this->getPref('auth_cookie'),$cookie,time()+30000000,'/');
         return true;
       }
     }
@@ -115,7 +115,7 @@
       $values['last_ip'] = $HTTP_SERVER_VARS["REMOTE_ADDR"];
       $values['email'] = $email;
       $cameralife->Database->Insert('users',$values);
-      setcookie($this->GetPref('auth_cookie'),$cookie,time()+30000000,'/');
+      setcookie($this->getPref('auth_cookie'),$cookie,time()+30000000,'/');
       return true;
     }
 
@@ -127,7 +127,7 @@
     function logout ()
     {
       global $cameralife;
-      setcookie($this->GetPref('auth_cookie'),'',time(),'/');
+      setcookie($this->getPref('auth_cookie'),'',time(),'/');
       return true;
     }
 
@@ -174,14 +174,14 @@
       if (!isset ($this->curuser))
         $this->GetCurUser();
 
-      if (NULL == ($this->GetPref($auth_name)))
+      if (NULL == ($this->getPref($auth_name)))
         $cameralife->error("The privilege $auth_name does not exist.", __FILE__, __LINE__);
 
-      if ($this->curuser['auth'] < $this->GetPref($auth_name) && $required)
+      if ($this->curuser['auth'] < $this->getPref($auth_name) && $required)
       {
         $error = "<span style='font-size:x-large'>You are not authorized to view this page</span>\n";
         $error.= "<p>To view this page, you must have the <strong>$auth_name</strong> privilege.<br>\n";
-        $error.="This is given to all users of authorization level at least <strong>".$this->GetPref($auth_name)."</strong>.</p>\n";
+        $error.="This is given to all users of authorization level at least <strong>".$this->getPref($auth_name)."</strong>.</p>\n";
         if ($this->curuser['username'])
         {
           $error.= "<p>You are logged in as <strong>".$this->curuser['username']."</strong> with authorization level <strong>".$this->curuser['auth']."</strong>.</p>\n";
@@ -196,7 +196,7 @@
         $cameralife->error($error);
       }
 
-      return ($this->curuser['auth'] >= $this->GetPref($auth_name));
+      return ($this->curuser['auth'] >= $this->getPref($auth_name));
     }
   }
 

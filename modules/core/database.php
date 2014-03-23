@@ -13,7 +13,7 @@ class Database
   var $myPrefix;
   var $myDBH;
 
-  function database()
+  function __construct()
   {
 //TODO don't use global here
     global $cameralife, $db_host, $db_user, $db_pass, $db_name, $db_prefix;

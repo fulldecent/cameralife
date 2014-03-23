@@ -61,9 +61,10 @@ class Photo extends View
   * <b>Required fields <var>filename</var>, <var>path</var>, <var>username</var></b>
   * Optional fields <var>status</var>, <var>description</var>, <var>fsize</var>, <var>created</var>
   */
-  public function photo($original = NULL)
+  public function __construct($original = NULL)
   {
     global $cameralife;
+    parent::__construct();
 
     if (is_null($original)) {
       $this->record['id'] = NULL;
@@ -166,7 +167,7 @@ class Photo extends View
     global $cameralife;
 
     $this->loadImage(); // sets $this->EXIF and $this-record
-    if (($cameralife->GetPref('autorotate') == 'yes') && ($this->record['modified'] == NULL || $this->record['modified'] == 0)) {
+    if (($cameralife->getPref('autorotate') == 'yes') && ($this->record['modified'] == NULL || $this->record['modified'] == 0)) {
       if ($this->EXIF['Orientation'] == 3) {
         $this->rotate(180);
       } elseif ($this->EXIF['Orientation'] == 6) {
@@ -177,19 +178,19 @@ class Photo extends View
     }
     $imagesize = $this->image->GetSize();
 
-    preg_match_all('/[0-9]+/',$cameralife->GetPref('optionsizes'), $sizes);
+    preg_match_all('/[0-9]+/',$cameralife->getPref('optionsizes'), $sizes);
     $sizes = $sizes[0];
     if ($sizes == "") $sizes = array();
-    $sizes[] = $cameralife->GetPref('thumbsize');
-    $sizes[] = $cameralife->GetPref('scaledsize');
+    $sizes[] = $cameralife->getPref('thumbsize');
+    $sizes[] = $cameralife->getPref('scaledsize');
     $files = array();
     rsort($sizes);
 
     foreach ($sizes as $cursize) {
-      $tempfile = tempnam($cameralife->GetPref('tempdir'), 'cameralife_'.$cursize);
+      $tempfile = tempnam($cameralife->getPref('tempdir'), 'cameralife_'.$cursize);
       $dims = $this->image->Resize($tempfile, $cursize);
       $files[$cursize] = $tempfile;
-      if ($cursize == $cameralife->GetPref('thumbsize'))
+      if ($cursize == $cameralife->getPref('thumbsize'))
         $thumbsize = $dims;
     }
 
@@ -214,7 +215,7 @@ class Photo extends View
     $this->loadImage();
     $this->image->Rotate($angle);
 
-    $temp = tempnam($cameralife->GetPref('tempdir'), 'cameralife_');
+    $temp = tempnam($cameralife->getPref('tempdir'), 'cameralife_');
     $this->image->Save($temp);
 //TODO: unlink old thumbnails
     $this->record['mtime'] = time();
@@ -230,8 +231,8 @@ class Photo extends View
     if ($this->record['modified']) {
       $this->record['modified'] = 0;
       $cameralife->FileStore->EraseFile('other','/'.$this->record['id'].'_mod.'.$this->extension);
-      $cameralife->FileStore->EraseFile('other','/'.$this->record['id'].'_'.$cameralife->GetPref('scaledsize').'.'.$this->extension);
-      $cameralife->FileStore->EraseFile('other','/'.$this->record['id'].'_'.$cameralife->GetPref('scaledsize').'.'.$this->extension);
+      $cameralife->FileStore->EraseFile('other','/'.$this->record['id'].'_'.$cameralife->getPref('scaledsize').'.'.$this->extension);
+      $cameralife->FileStore->EraseFile('other','/'.$this->record['id'].'_'.$cameralife->getPref('scaledsize').'.'.$this->extension);
       $this->record['mtime'] = 0;
     }
     $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
@@ -269,11 +270,11 @@ class Photo extends View
         $url = $cameralife->FileStore->GetURL('photos', '/'.$this->get('path').$this->get('filename'));
     }
     elseif ($format == 'scaled')
-      $url = $cameralife->FileStore->GetURL('other', '/'.$this->get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$this->extension);
+      $url = $cameralife->FileStore->GetURL('other', '/'.$this->get('id').'_'.$cameralife->getPref('scaledsize').'.'.$this->extension);
     elseif ($format == 'thumbnail')
-      $url = $cameralife->FileStore->GetURL('other', '/'.$this->get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$this->extension);
+      $url = $cameralife->FileStore->GetURL('other', '/'.$this->get('id').'_'.$cameralife->getPref('thumbsize').'.'.$this->extension);
     elseif (is_numeric($format)) {
-      $valid = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
+      $valid = preg_split('/[, ]+/',$cameralife->getPref('optionsizes'));
       if (in_array($format, $valid))
         $url = $cameralife->FileStore->GetURL('other', '/'.$this->get('id').'_'.$format.'.'.$this->extension);
       else
@@ -285,7 +286,7 @@ class Photo extends View
     if ($url)
       return $url;
 
-    if ($cameralife->GetPref('rewrite') == 'yes')
+    if ($cameralife->getPref('rewrite') == 'yes')
       return $cameralife->base_url."/photos/".$this->record['id'].'.'.$this->extension.'?'.'scale='.$format.'&'.'ver='.($this->record['mtime']+0);
     else
       return $cameralife->base_url.'/media.php?id='.$this->record['id']."&size=$format&ver=".($this->record['mtime']+0);
@@ -532,7 +533,7 @@ class Photo extends View
     $retval['og:title'] = $this->record['description'];
     $retval['og:type'] = 'website';
     $retval['og:url'] = $cameralife->base_url.'/photos/'.$this->record['id'];
-    if ($cameralife->GetPref('rewrite') == 'no')
+    if ($cameralife->getPref('rewrite') == 'no')
       $retval['og:url'] = $cameralife->base_url.'/photo.php?id='.$this->record['id'];
     $retval['og:image'] = $this->getMediaURL('thumbnail');
     $retval['og:image:type'] = 'image/jpeg';

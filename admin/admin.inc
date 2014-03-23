@@ -34,7 +34,7 @@ function renderPrefsAsHTML($module)
     echo "    <input type=\"hidden\" name=\"module$prefnum\" value=\"".get_class($module)."\" />\n";
     echo "    <input type=\"hidden\" name=\"param$prefnum\" value=\"".$pref['name']."\" />\n";
 
-    $value = $module->GetPref($pref['name']);
+    $value = $module->getPref($pref['name']);
 
     if ($pref['type'] == 'number') {
       echo "      <input class=\"form-control\" type=\"number\" name=\"value$prefnum\" value=\"$value\" />\n";

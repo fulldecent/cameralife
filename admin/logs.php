@@ -28,8 +28,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'Commit changes') {
     AuditTrail::undo($val);
   }
 }
-$numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->GetPref('checkpointcomments')+0));
-$checkpointDate = strtotime($cameralife->Database->SelectOne('logs','max(user_date)','id='.($cameralife->GetPref('checkpointcomments')+0)));
+$numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->getPref('checkpointcomments')+0));
+$checkpointDate = strtotime($cameralife->Database->SelectOne('logs','max(user_date)','id='.($cameralife->getPref('checkpointcomments')+0)));
 $latestLog = $cameralife->Database->SelectOne('logs','max(id)');
 ?>
 <!DOCTYPE html>
@@ -54,7 +54,7 @@ $latestLog = $cameralife->Database->SelectOne('logs','max(id)');
 
     <div class="navbar navbar-inverse navbar-static-top">
       <div class="container">
-        <span class="navbar-brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
+        <span class="navbar-brand"><a href="../"><?= $cameralife->getPref("sitename") ?></a> / Administration</span>
       </div>
     </div>
     <div class="container">
@@ -159,7 +159,7 @@ if ($checkpointDate) {
       $condition .= "OR user_name = '' ";
     $condition .= ") ";
 
-    $condition .= " AND logs.id > ".($cameralife->GetPref('checkpointlogs')+0);
+    $condition .= " AND logs.id > ".($cameralife->getPref('checkpointlogs')+0);
     $extra = "GROUP BY record_id, record_type, value_field ORDER BY logs.id DESC";
 
     $result = $cameralife->Database->Select('logs','record_type, record_id, value_field, MAX(logs.id) as maxid',$condition,$extra);

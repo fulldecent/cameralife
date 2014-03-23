@@ -61,7 +61,7 @@ foreach ($results as $result) {
         $root = new Folder();
         $rootOpenGraph = $root->getOpenGraph();
         $root->setSort('newest');
-        $folders = $root->getDescendants($cameralife->Theme->GetPref('main_folders_n'));
+        $folders = $root->getDescendants($cameralife->Theme->getPref('main_folders_n'));
 
         foreach ($folders as $folder)
         {
@@ -100,7 +100,7 @@ foreach ($results as $result) {
           echo $cameralife->Theme->Image('small-topic');
           echo htmlentities($openGraph['og:title'])."</a></h3>\n";
 
-          if ($cameralife->Theme->GetPref('main_topics')==2) // Link a couple albums
+          if ($cameralife->Theme->getPref('main_topics')==2) // Link a couple albums
           {
             $topic->SetSort('rand');
             $topic->SetPage(0, 4);

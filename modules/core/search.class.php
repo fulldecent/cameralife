@@ -18,10 +18,11 @@ class Search extends View
   public $myStart;
   public $myLimitCount;
 
-  public function search($query = '')
+  public function __construct($query = '')
   {
     global $cameralife, $_POST, $_GET;
-
+    parent::__construct();
+    
     if (!get_magic_quotes_gpc())
       addslashes($this->myQuery=$query);
     else

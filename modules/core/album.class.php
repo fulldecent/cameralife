@@ -14,7 +14,7 @@ class Album extends Search
    *
    * @param mixed $original A unique ID
    */
-  public function album($original)
+  public function __construct($original)
   {
     global $cameralife;
 
@@ -40,8 +40,7 @@ class Album extends Search
     } else {
       $cameralife->error("Invalid album", __FILE__, __LINE__);
     }
-
-    Search::Search($this->record['term']);
+    parent::__construct($this->record['term']);
   }
 
   public function set($key, $value)
@@ -107,7 +106,7 @@ class Album extends Search
     $retval['og:title'] = $this->record['name'];
     $retval['og:type'] = 'website';
     $retval['og:url'] = $cameralife->base_url.'/albums/'.$this->record['id'];
-    if ($cameralife->GetPref('rewrite') == 'no')
+    if ($cameralife->getPref('rewrite') == 'no')
       $retval['og:url'] = $cameralife->base_url.'/album.php?id='.$this->record['id'];
     $photo = $this->getPoster();
     $retval['og:image'] = $photo->getMedia('thumbnail');

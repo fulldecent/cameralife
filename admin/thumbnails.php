@@ -24,7 +24,7 @@ $numdone = isset($_GET['numdone']) ?(int) $_GET['numdone'] : 0;
     <title>Admin: Thumbnails</title> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Camera Life version <?= $cameralife->version ?>">
-    <meta name="author" content="<?= $cameralife->GetPref('owner_email') ?>">
+    <meta name="author" content="<?= $cameralife->getPref('owner_email') ?>">
 
     <!-- Le styles -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -38,7 +38,7 @@ $numdone = isset($_GET['numdone']) ?(int) $_GET['numdone'] : 0;
 
     <div class="navbar navbar-inverse navbar-static-top">
       <div class="container">
-        <span class="navbar-brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
+        <span class="navbar-brand"><a href="../"><?= $cameralife->getPref("sitename") ?></a> / Administration</span>
       </div>
     </div>
     

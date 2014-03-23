@@ -11,13 +11,12 @@ class Topic extends Search
 {
   public $name;
 
-  public function topic($name)
+  public function __construct($name)
   {
     global $cameralife;
-
+    parent::__construct();  
     $this->name = $name;
 
-    Search::Search('');
     $this->mySearchAlbumCondition = "topic = '".mysql_real_escape_string($this->name)."'";
     $this->mySearchPhotoCondition = "FALSE";
     $this->mySearchFolderCondition = "FALSE";
@@ -51,7 +50,7 @@ class Topic extends Search
     $retval['og:title'] = $this->name;
     $retval['og:type'] = 'website';
     $retval['og:url'] = $cameralife->base_url.'/topics/'.rawurlencode($this->name);
-    if ($cameralife->GetPref('rewrite') == 'no')
+    if ($cameralife->getPref('rewrite') == 'no')
       $retval['og:url'] = $cameralife->base_url.'/topic.php?name='.rawurlencode($this->name);
     $retval['og:image'] = $cameralife->iconURL('topic');
     $retval['og:image:type'] = 'image/png';

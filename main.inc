@@ -37,8 +37,9 @@ class CameraLife extends CameraLifeModule # and View
   var $base_url; // like http://camera.phor.net or http://phor.net/life/camera
   var $receipt;
 
-  function CameraLife()
+  function __construct()
   {
+    parent::__construct();  
     if(!ini_get('date.timezone'))
       date_default_timezone_set('GMT');
     ini_set('magic_quotes_runtime', 0);
@@ -107,7 +108,7 @@ class CameraLife extends CameraLifeModule # and View
       case 'imageprocessing': 
       case 'filestore':
       case 'filestore':
-        $implementation = $this->GetPref($feature);
+        $implementation = $this->getPref($feature);
         $this->relativeInclude("modules/$feature/$implementation/module.inc");
         $modulename = $implementation.$feature;
         $this->$cutename = new $modulename;
@@ -153,7 +154,7 @@ class CameraLife extends CameraLifeModule # and View
   {
     global $cameralife;
     $retval = array();
-    $retval['og:title'] = $this->GetPref('siteabbr');
+    $retval['og:title'] = $this->getPref('siteabbr');
     $retval['og:type'] = 'website';
     $retval['og:url'] = $this->base_url.'/index.php';
     $retval['og:image'] = $cameralife->iconURL('main');
@@ -163,7 +164,7 @@ class CameraLife extends CameraLifeModule # and View
 
   function iconURL($name)
   {
-    return $this->base_url."/modules/iconset/".$this->GetPref('iconset')."/$name.png";
+    return $this->base_url."/modules/iconset/".$this->getPref('iconset')."/$name.png";
   }
 
   function error($message, $file='', $line='')

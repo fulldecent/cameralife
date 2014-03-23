@@ -32,7 +32,7 @@
          xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc><?= $baseurl ?>/sitemap.xml?page=common</loc>
-    <lastmod><?= $cameralife->GetPref('sitedate') ?></lastmod>
+    <lastmod><?= $cameralife->getPref('sitedate') ?></lastmod>
   </sitemap>
   <sitemap>
     <loc><?= $baseurl ?>/sitemap.xml?page=albums</loc>

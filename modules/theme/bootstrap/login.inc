@@ -32,7 +32,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title><?= $cameralife->GetPref('sitename') ?></title>
+  <title><?= $cameralife->getPref('sitename') ?></title>
   <?php if($location){echo "<meta http-equiv='refresh' content='1;url=$location'>";} ?>
   <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
 </head>

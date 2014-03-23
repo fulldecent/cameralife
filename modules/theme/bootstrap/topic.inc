@@ -39,10 +39,10 @@ $cameralife->Theme->Header($topic);
           <?php 
             foreach (Topic::getTopics() as $topic)
             {
-                  $thetopic = $topic->name;
-                $selected = ($album['topic'] == $thetopic) ? 'selected' : '';
-                if ($album['topic'] == $thetopic) $preselect = true;
-                echo "<option $selected onclick=\"javascript:document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
+              $thetopic = $topic->name;
+              $selected = ($album['topic'] == $thetopic) ? 'selected' : '';
+              if ($album['topic'] == $thetopic) $preselect = true;
+              echo "<option $selected onclick=\"javascript:document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
             }
           ?>
             <option value="othertopic" <?= $preselect ? '' : 'selected' ?> onclick="javascript:document.form1.topicother.disabled=false">(A new topic)</option>
@@ -59,7 +59,7 @@ $cameralife->Theme->Header($topic);
     exit();
   }
 
-  $cameralife->Theme->Grid($albums);
+  $cameralife->Theme->grid($albums);
   $cameralife->Theme->PageSelector($start,$counts['photos'],12,"name=".urlencode($_GET["name"]));
 ?>
 </form>

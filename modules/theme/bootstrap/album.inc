@@ -80,7 +80,7 @@ $cameralife->Theme->Header($album, NULL, $extrahead);
     To add photos to this album, edit any photo on the site and add "<b><?= $album->get('term') ?></b>" to its description.
   </div>
 <?php 
-  $cameralife->Theme->Grid($results); 
+  $cameralife->Theme->grid($results); 
   $cameralife->Theme->PageSelector(($sort == 'rand()')?-1:$start,$counts['photos'],12,"id=".$album->get('id'));
 ?>
 

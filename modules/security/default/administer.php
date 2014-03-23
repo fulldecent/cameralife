@@ -37,27 +37,27 @@
     echo "      <input type=\"hidden\" name=\"module$prefnum\" value=\"".get_class($cameralife->Security)."\" />\n";
     echo "      <input type=\"hidden\" name=\"param$prefnum\" value=\"".$param_name."\" />\n";
     echo "      <select name=\"value$prefnum\">\n";
-    if ($cameralife->Security->GetPref($param_name) == 0)
+    if ($cameralife->Security->getPref($param_name) == 0)
       echo "  <option selected value=\"0\">Anyone</option>\n";
     else
       echo "  <option value=\"0\">Anyone</option>\n";
-    if ($cameralife->Security->GetPref($param_name) == 1)
+    if ($cameralife->Security->getPref($param_name) == 1)
       echo "  <option selected value=\"1\">Unconfirmed registration</option>\n";
     else
       echo "  <option value=\"1\">Unconfirmed registration</option>\n";
-    if ($cameralife->Security->GetPref($param_name) == 2)
+    if ($cameralife->Security->getPref($param_name) == 2)
       echo "  <option selected value=\"2\">Confirmed registration</option>\n";
     else
       echo "  <option value=\"2\">Confirmed registration</option>\n";
-    if ($cameralife->Security->GetPref($param_name) == 3)
+    if ($cameralife->Security->getPref($param_name) == 3)
       echo "  <option selected value=\"3\">Privileged account</option>\n";
     else
       echo "  <option value=\"3\">Priviliged account</option>\n";
-    if ($cameralife->Security->GetPref($param_name) == 4)
+    if ($cameralife->Security->getPref($param_name) == 4)
       echo "  <option selected value=\"4\">Administrator</option>\n";
     else
       echo "  <option value=\"4\">Administrator</option>\n";
-    if ($cameralife->Security->GetPref($param_name) == 5)
+    if ($cameralife->Security->getPref($param_name) == 5)
       echo "  <option selected value=\"5\">Owner</option>\n";
     else
       echo "  <option value=\"5\">Owner</option>\n";
@@ -66,7 +66,7 @@
 ?>
 <html>
 <head>
-  <title><?= $cameralife->GetPref('sitename') ?></title>
+  <title><?= $cameralife->getPref('sitename') ?></title>
   <link rel="stylesheet" href="../../../admin/admin.css">
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
   <script language="javascript">
@@ -157,7 +157,7 @@ echo '<a href="'.htmlspecialchars($homeOpenGraph['og:url'])."\"><img src=\"".htm
 
 <?php } elseif ($_GET['page'] == 'policies') { ?>
     <form method="post" action="<?= $cameralife->base_url . '/admin/controller_prefs.php' ?>">
-    <input type="hidden" name="target" value="<?= $cameralife->base_url .'/modules/security/'.$cameralife->GetPref('security').'/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
+    <input type="hidden" name="target" value="<?= $cameralife->base_url .'/modules/security/'.$cameralife->getPref('security').'/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
     <table align="center" cellspacing="2" border=1 width="100%">
       <tr>
         <th colspan=2>

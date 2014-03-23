@@ -37,27 +37,27 @@
     echo "      <input type=\"hidden\" name=\"module$prefnum\" value=\"".get_class($cameralife->Security)."\" />\n";
     echo "      <input type=\"hidden\" name=\"param$prefnum\" value=\"".$param_name."\" />\n";
     echo "      <select name=\"value$prefnum\">\n";
-    if ($cameralife->Security->GetPref($param_name) == 0)
+    if ($cameralife->Security->getPref($param_name) == 0)
       echo "  <option selected value=\"0\">Anyone</option>\n";
     else
       echo "  <option value=\"0\">Anyone</option>\n";
-    if ($cameralife->Security->GetPref($param_name) == 1)
+    if ($cameralife->Security->getPref($param_name) == 1)
       echo "  <option selected value=\"1\">Unconfirmed registration</option>\n";
     else
       echo "  <option value=\"1\">Unconfirmed registration</option>\n";
-    if ($cameralife->Security->GetPref($param_name) == 2)
+    if ($cameralife->Security->getPref($param_name) == 2)
       echo "  <option selected value=\"2\">Confirmed registration</option>\n";
     else
       echo "  <option value=\"2\">Confirmed registration</option>\n";
-    if ($cameralife->Security->GetPref($param_name) == 3)
+    if ($cameralife->Security->getPref($param_name) == 3)
       echo "  <option selected value=\"3\">Privileged account</option>\n";
     else
       echo "  <option value=\"3\">Priviliged account</option>\n";
-    if ($cameralife->Security->GetPref($param_name) == 4)
+    if ($cameralife->Security->getPref($param_name) == 4)
       echo "  <option selected value=\"4\">Administrator</option>\n";
     else
       echo "  <option value=\"4\">Administrator</option>\n";
-    if ($cameralife->Security->GetPref($param_name) == 5)
+    if ($cameralife->Security->getPref($param_name) == 5)
       echo "  <option selected value=\"5\">Owner</option>\n";
     else
       echo "  <option value=\"5\">Owner</option>\n";
@@ -69,7 +69,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title><?= $cameralife->GetPref('sitename') ?></title>
+    <title><?= $cameralife->getPref('sitename') ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -104,7 +104,7 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <span class="brand"><a href="../../../"><?= $cameralife->GetPref('sitename') ?></a> / Administration</span>
+          <span class="brand"><a href="../../../"><?= $cameralife->getPref('sitename') ?></a> / Administration</span>
         </div>
       </div>
     </div>
@@ -181,7 +181,7 @@ foreach (array('users'=>'Users', 'policies'=>'Policies') as $id=>$name) {
 
 <?php } elseif ($_GET['page'] == 'policies') { ?>
     <form method="post" action="<?= $cameralife->base_url . '/admin/controller_prefs.php' ?>">
-    <input type="hidden" name="target" value="<?= $cameralife->base_url .'/modules/security/'.$cameralife->GetPref('security').'/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
+    <input type="hidden" name="target" value="<?= $cameralife->base_url .'/modules/security/'.$cameralife->getPref('security').'/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
     <table class="table">
       <tr>
         <th colspan=2>

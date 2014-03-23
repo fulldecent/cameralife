@@ -89,12 +89,12 @@ foreach ($counts as $type=>$num) {
 }
 echo "</ul>".PHP_EOL;
 
-  $cameralife->Theme->Grid($results);
+  $cameralife->Theme->grid($results);
 
   echo "<form>";
   echo "<input type=hidden name=q value=\"".htmlentities($search->getQuery())."\" />";
   echo "<input type=hidden name=page value=\"".htmlentities($_GET['page'])."\" />";
-  $openGraph = $search->GetOpenGragh();
+  $openGraph = $search->getOpenGraph();
   $href = AddParam($openGraph['og:url'], "page", $_GET['page']);
   if ($_GET['page'] == "a")
     $cameralife->Theme->PageSelector($start,$counts['albums'],12,$href);

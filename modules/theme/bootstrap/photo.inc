@@ -39,7 +39,7 @@ else
   $rating = $avg = $cameralife->Database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->get('id')." AND user_ip='".$_SERVER['REMOTE_ADDR']."'");
 
 ## Extra header...
-$headers = '<link rel="stylesheet" type="text/css" href="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/delicious.css" />'.PHP_EOL;
+$headers = '<link rel="stylesheet" type="text/css" href="'.$cameralife->base_url.'/modules/theme/'.$cameralife->getPref('theme').'/delicious.css" />'.PHP_EOL;
 
 if($photoPrev) {
   $prevOpenGraph = $photoPrev->GetOpenGraph();
@@ -58,8 +58,8 @@ if($photoNext) {
   $headers .= '<link rel="next" href="'.htmlspecialchars($nextOpenGraph['og:url']).'" />'.PHP_EOL;
 }
 
-$headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/photo.js"></script>';
-$headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/ajax.js"></script>';
+$headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->getPref('theme').'/photo.js"></script>';
+$headers .= '<script type="text/javascript" src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->getPref('theme').'/ajax.js"></script>';
 
 $cameralife->Theme->Header($photo, NULL, $headers);
 

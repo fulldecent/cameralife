@@ -13,8 +13,8 @@ $numdel = $cameralife->Database->SelectOne('photos','COUNT(*)','status=1');
 $numpri = $cameralife->Database->SelectOne('photos','COUNT(*)','status=2');
 $numupl = $cameralife->Database->SelectOne('photos','COUNT(*)','status=3');
 $numreg = $cameralife->Database->SelectOne('users','COUNT(*)','auth=1');
-$numlog = $cameralife->Database->SelectOne('logs','COUNT(*)','id>'.($cameralife->GetPref('checkpointlogs')+0));
-$numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->GetPref('checkpointcomments')+0));
+$numlog = $cameralife->Database->SelectOne('logs','COUNT(*)','id>'.($cameralife->getPref('checkpointlogs')+0));
+$numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->getPref('checkpointcomments')+0));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +49,7 @@ $numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($ca
   <body>
     <div class="navbar navbar-inverse navbar-static-top">
       <div class="container">
-        <span class="navbar-brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
+        <span class="navbar-brand"><a href="../"><?= $cameralife->getPref("sitename") ?></a> / Administration</span>
       </div>
     </div>
     <div class="container">

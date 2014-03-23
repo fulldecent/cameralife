@@ -45,11 +45,11 @@ if ($format == 'photo' || $format == '') {
   }
 }
 elseif ($format == 'scaled')
-  list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$extension);
+  list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->get('id').'_'.$cameralife->getPref('scaledsize').'.'.$extension);
 elseif ($format == 'thumbnail')
-  list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$extension);
+  list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->get('id').'_'.$cameralife->getPref('thumbsize').'.'.$extension);
 elseif (is_numeric($format)) {
-  $valid = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
+  $valid = preg_split('/[, ]+/',$cameralife->getPref('optionsizes'));
   if (in_array($format, $valid))
     list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->get('id').'_'.$format.'.'.$extension);
   else

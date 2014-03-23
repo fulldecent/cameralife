@@ -91,7 +91,7 @@
     <meta property="og:image" content="<?= htmlentities($openGraph['og:image'], NULL, "UTF-8") ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="Camera Life version <?= $cameralife->version ?>">
-    <meta name="author" content="<?= $cameralife->GetPref('owner_email') ?>">
+    <meta name="author" content="<?= $cameralife->getPref('owner_email') ?>">
     <?= $extrahead ?>
 
     <!-- Le styles -->
@@ -107,7 +107,7 @@
   
     <nav class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container">
-      <a class="navbar-brand" href="<?= $cameralife->base_url ?>"><?= $cameralife->GetPref('sitename') ?></a>
+      <a class="navbar-brand" href="<?= $cameralife->base_url ?>"><?= $cameralife->getPref('sitename') ?></a>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse">
         <form class="navbar-form navbar-left" action="<?= $cameralife->base_url ?>/search.php" method="get">
@@ -195,7 +195,7 @@ if (isset($_GET['path'])) {
 
       <footer>
         <p>
-          <a href="mailto:<?= $cameralife->GetPref('owner_email') ?>"><i class="icon-envelope"></i> Contact site owner</a>
+          <a href="mailto:<?= $cameralife->getPref('owner_email') ?>"><i class="icon-envelope"></i> Contact site owner</a>
           &nbsp;
           <a href="<?= $cameralife->base_url ?>/stats.php"><i class="icon-signal"></i> Site stats</a>
           &nbsp;
@@ -211,14 +211,14 @@ if (isset($_GET['path'])) {
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <!--    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.0/jquery.mobile.min.js"></script> -->
-    <script type="text/javascript" src="<?= $cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme') ?>/theme.js"></script>
+    <script type="text/javascript" src="<?= $cameralife->base_url.'/modules/theme/'.$cameralife->getPref('theme') ?>/theme.js"></script>
 <?php
-      if ($cameralife->Theme->GetPref('analytics')) {
+      if ($cameralife->Theme->getPref('analytics')) {
 ?>
 <!--TRACKING CODE-->
 <script type="text/javascript">
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '<?= $cameralife->Theme->GetPref('analytics') ?>']);
+  _gaq.push(['_setAccount', '<?= $cameralife->Theme->getPref('analytics') ?>']);
   _gaq.push(['_trackPageview']);
 
   (function() {
@@ -237,14 +237,14 @@ if (isset($_GET['path'])) {
     }
 
     // Query is an array of Views
-    function Grid($views) 
+    function grid($views) 
     {
       echo '<div>'.PHP_EOL;
-      foreach ($viewss as $view) {
+      foreach ($views as $view) {
         $openGraph = $view->GetOpenGraph();
 
         echo '<div class="l1" style="margin-bottom:1em">'.PHP_EOL;
-        echo '<a class="l2" href="'.$icon["href"].'">';
+        echo '<a class="l2" href="'.htmlspecialchars($openGraph['og:url']).'">';
         if (isset($openGraph['og:image:width']) && isset($openGraph['og:image:height']))
             $imageattrs = array('alt'=>$openGraph['og:title'], 'width'=>$openGraph['og:image:width'], 'height'=>$openGraph['og:image:height'], 'class'=>'l3');
         else

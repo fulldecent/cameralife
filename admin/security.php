@@ -32,7 +32,7 @@ require 'admin.inc';
   <body>
     <div class="navbar navbar-inverse navbar-static-top">
       <div class="container">
-        <span class="navbar-brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
+        <span class="navbar-brand"><a href="../"><?= $cameralife->getPref("sitename") ?></a> / Administration</span>
       </div>
     </div>
     <div class="container">
@@ -51,7 +51,7 @@ require 'admin.inc';
 $feature = 'security';
 foreach ($cameralife->getModules($feature) as $module) {
   $info = json_decode(file_get_contents($cameralife->base_dir."/modules/$feature/$module/module-info.json"));
-  $selected = $cameralife->GetPref($feature) == basename($module) ? 'selected' : '';
+  $selected = $cameralife->getPref($feature) == basename($module) ? 'selected' : '';
   echo "<option $selected value=\"{$module}\">";
   echo "<b>{$info->name}</b> - <i>version {$info->version} by {$info->author}</i>";
   echo "</option>\n";

@@ -22,8 +22,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'Delete checked') {
     $cameralife->Database->Delete('comments',"id=$var");
   }
 }
-$numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->GetPref('checkpointcomments')+0));
-$checkpointDate = strtotime($cameralife->Database->SelectOne('comments','max(date)','id='.($cameralife->GetPref('checkpointcomments')+0)));
+$numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->getPref('checkpointcomments')+0));
+$checkpointDate = strtotime($cameralife->Database->SelectOne('comments','max(date)','id='.($cameralife->getPref('checkpointcomments')+0)));
 $latestComment = $cameralife->Database->SelectOne('comments','max(id)');
 ?>
 <!DOCTYPE html>
@@ -48,7 +48,7 @@ $latestComment = $cameralife->Database->SelectOne('comments','max(id)');
 
     <div class="navbar navbar-inverse navbar-static-top">
       <div class="container">
-        <span class="navbar-brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
+        <span class="navbar-brand"><a href="../"><?= $cameralife->getPref("sitename") ?></a> / Administration</span>
       </div>
     </div>
     <div class="container">
@@ -118,7 +118,7 @@ if ($checkpointDate) {
     $checkpoint = $cameralife->Database->SelectOne('comments','MAX(id)');
     echo "<input type='hidden' name='checkpoint' value='$checkpoint'>\n";
 
-    $condition .= " AND id > ".($cameralife->GetPref('checkpointcomments')+0);
+    $condition .= " AND id > ".($cameralife->getPref('checkpointcomments')+0);
     $extra = "GROUP BY photo_id ORDER BY id DESC";
 
     $result = $cameralife->Database->Select('comments','*, MAX(id) as maxid',$condition,$extra);

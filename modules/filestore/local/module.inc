@@ -22,9 +22,9 @@ class LocalFileStore extends FileStore
 
     $prevdir = getcwd();
     chdir($cameralife->base_dir);
-    $this->PhotoDir = rtrim(realpath($this->GetPref('photo_dir')), '/');
-    $this->CacheDir = rtrim(realpath($this->GetPref('cache_dir')), '/');
-    $this->DeletedDir = rtrim(realpath($this->GetPref('deleted_dir')), '/');
+    $this->PhotoDir = rtrim(realpath($this->getPref('photo_dir')), '/');
+    $this->CacheDir = rtrim(realpath($this->getPref('cache_dir')), '/');
+    $this->DeletedDir = rtrim(realpath($this->getPref('deleted_dir')), '/');
     chdir($prevdir);
   } 
 

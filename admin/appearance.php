@@ -33,7 +33,7 @@ require 'admin.inc';
   <body>
     <div class="navbar navbar-inverse navbar-static-top">
       <div class="container">
-        <span class="navbar-brand"><a href="../"><?= $cameralife->GetPref("sitename") ?></a> / Administration</span>
+        <span class="navbar-brand"><a href="../"><?= $cameralife->getPref("sitename") ?></a> / Administration</span>
       </div>
     </div>
     <div class="container">
@@ -54,7 +54,7 @@ require 'admin.inc';
 $feature = 'theme';
 foreach ($cameralife->getModules($feature) as $module) {
   $info = json_decode(file_get_contents($cameralife->base_dir."/modules/$feature/$module/module-info.json"));
-  $selected = $cameralife->GetPref($feature) == basename($module) ? 'selected' : '';
+  $selected = $cameralife->getPref($feature) == basename($module) ? 'selected' : '';
   echo "<option $selected value=\"{$module}\">";
   echo "<b>{$info->name}</b> - <i>version {$info->version} by {$info->author}</i>";
   echo "</option>\n";
@@ -72,7 +72,7 @@ foreach ($cameralife->getModules($feature) as $module) {
 $feature = 'iconset';
 foreach ($cameralife->getModules($feature) as $module) {
   $info = json_decode(file_get_contents($cameralife->base_dir."/modules/$feature/$module/module-info.json"));
-  $selected = $cameralife->GetPref($feature) == basename($module) ? 'selected' : '';
+  $selected = $cameralife->getPref($feature) == basename($module) ? 'selected' : '';
   echo "<option $selected value=\"{$module}\">";
   echo "<b>{$info->name}</b> - <i>version {$info->version} by {$info->author}</i>";
   echo "</option>\n";
@@ -92,7 +92,7 @@ foreach ($cameralife->getModules($feature) as $module) {
           <div class="col-lg-10 controls">
             <input type="hidden" name="module1" value="CameraLife" />
             <input type="hidden" name="param1" value="sitename" />
-            <input type="text" id="sitename" name="value1" size=30 value="<?= $cameralife->GetPref('sitename') ?>">
+            <input type="text" id="sitename" name="value1" size=30 value="<?= $cameralife->getPref('sitename') ?>">
           </div>
         </div>
         <div class="form-group">
@@ -100,7 +100,7 @@ foreach ($cameralife->getModules($feature) as $module) {
           <div class="col-lg-10 controls">
             <input type="hidden" name="module2" value="CameraLife" />
             <input type="hidden" name="param2" value="siteabbr" />
-            <input type="text" id="siteabbr" name="value2" size=30 value="<?= $cameralife->GetPref('siteabbr') ?>">
+            <input type="text" id="siteabbr" name="value2" size=30 value="<?= $cameralife->getPref('siteabbr') ?>">
             <span class="help-inline">used to refer to the main page</span>
           </div>
         </div>
@@ -109,7 +109,7 @@ foreach ($cameralife->getModules($feature) as $module) {
           <div class="col-lg-10 controls">
             <input type="hidden" name="module3" value="CameraLife" />
             <input type="hidden" name="param3" value="owner_email" />
-            <input type="text" id="owner_email" name="value3" size=30 value="<?= $cameralife->GetPref('owner_email') ?>">
+            <input type="text" id="owner_email" name="value3" size=30 value="<?= $cameralife->getPref('owner_email') ?>">
             <span class="help-inline">shown if something goes wrong</span>
           </div>
         </div>
@@ -119,8 +119,8 @@ foreach ($cameralife->getModules($feature) as $module) {
             <input type="hidden" name="module4" value="CameraLife" />
             <input type="hidden" name="param4" value="rewrite" />
             <select name="value4" id="rewrite">
-              <option <?= $cameralife->GetPref('rewrite') == 'no' ? 'selected="selected"':'' ?>>no</option>
-              <option <?= $cameralife->GetPref('rewrite') == 'yes' ? 'selected="selected"':'' ?>>yes</option>
+              <option <?= $cameralife->getPref('rewrite') == 'no' ? 'selected="selected"':'' ?>>no</option>
+              <option <?= $cameralife->getPref('rewrite') == 'yes' ? 'selected="selected"':'' ?>>yes</option>
             </select>
           </div>
         </div>
@@ -130,8 +130,8 @@ foreach ($cameralife->getModules($feature) as $module) {
             <input type="hidden" name="module6" value="CameraLife" />
             <input type="hidden" name="param6" value="autorotate" />
             <select name="value6" id="autorotate">
-              <option <?= $cameralife->GetPref('autorotate') == 'no' ? 'selected="selected"':'' ?>>no</option>
-              <option <?= $cameralife->GetPref('autorotate') == 'yes' ? 'selected="selected"':'' ?>>yes</option>
+              <option <?= $cameralife->getPref('autorotate') == 'no' ? 'selected="selected"':'' ?>>no</option>
+              <option <?= $cameralife->getPref('autorotate') == 'yes' ? 'selected="selected"':'' ?>>yes</option>
             </select>
           </div>
         </div>
@@ -140,7 +140,7 @@ foreach ($cameralife->getModules($feature) as $module) {
           <div class="col-lg-10 controls">
             <input type="hidden" name="module7" value="CameraLife" />
             <input type="hidden" name="param7" value="thumbsize" />
-            <input type="number" id="thumbsize" name="value7" size=10 value="<?= $cameralife->GetPref('thumbsize') ?>">
+            <input type="number" id="thumbsize" name="value7" size=10 value="<?= $cameralife->getPref('thumbsize') ?>">
             <span class="help-inline">in pixels</span>
           </div>
         </div>
@@ -149,7 +149,7 @@ foreach ($cameralife->getModules($feature) as $module) {
           <div class="col-lg-10 controls">
             <input type="hidden" name="module8" value="CameraLife" />
             <input type="hidden" name="param8" value="scaledsize" />
-            <input type="number" id="scaledsize" name="value8" size=30 value="<?= $cameralife->GetPref('scaledsize') ?>">
+            <input type="number" id="scaledsize" name="value8" size=30 value="<?= $cameralife->getPref('scaledsize') ?>">
             <span class="help-inline">in pixels</span>
           </div>
         </div>
@@ -158,7 +158,7 @@ foreach ($cameralife->getModules($feature) as $module) {
           <div class="col-lg-10 controls">
             <input type="hidden" name="module9" value="CameraLife" />
             <input type="hidden" name="param9" value="optionsizes" />
-            <input type="text" id="optionsizes" name="value9" size=30 value="<?= join(',',preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'))) ?>">
+            <input type="text" id="optionsizes" name="value9" size=30 value="<?= join(',',preg_split('/[, ]+/',$cameralife->getPref('optionsizes'))) ?>">
             <span class="help-inline">comma separated (you can also leave this blank)</span>
           </div>
         </div>

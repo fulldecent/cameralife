@@ -5,14 +5,8 @@
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public
  */
-
 class AuditTrail
 {
-  public function AuditTrail()
-  {
-
-  }
-
   /**
    * Logs information about a user and a change to the database, so this can be undone later
    *

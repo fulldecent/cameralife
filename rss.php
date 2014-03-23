@@ -23,7 +23,7 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 <feed xmlns="http://www.w3.org/2005/Atom"
       xmlns:dc="http://purl.org/dc/elements/1.1/"
       xmlns:media="http://search.yahoo.com/mrss/">
-  <title><?= htmlentities($cameralife->GetPref('sitename')) ?> - <?= htmlspecialchars($openGraph['og:title']) ?></title>
+  <title><?= htmlentities($cameralife->getPref('sitename')) ?> - <?= htmlspecialchars($openGraph['og:title']) ?></title>
   <link rel="self" href="<?= $cameralife->base_url.'/rss.php?q='.htmlentities($query) ?>"/>
   <link rel="alternate" type="text/html" href="<?= htmlspecialchars($openGraph['og:url']) ?>"/>
   <id>urn:CLsearch:thiscouldbebetter</id>
@@ -31,7 +31,7 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
   <updated><?= date('c') ?></updated>
   <generator uri="https://github.com/fulldecent/cameralife">Camera Life</generator>
   <author>
-    <name><?= $cameralife->GetPref('sitename') ?> maintainer</name>
+    <name><?= $cameralife->getPref('sitename') ?> maintainer</name>
     <uri><?= $cameralife->base_url ?></uri>
   </author>
 

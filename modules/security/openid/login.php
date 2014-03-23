@@ -23,7 +23,7 @@
   <body>
 
     <div class="container">
-      <h1><?php echo $cameralife->GetPref('sitename') ?>
+      <h1><?php echo $cameralife->getPref('sitename') ?>
       <hr>
       <h2>Login with OpenID <small>using any provider below</small></h2>
 

@@ -77,7 +77,7 @@ $cameralife->Theme->Header($folder, NULL, $headers);
   else
     $cameralife->error('This folder does not exist.');
 
-  $cameralife->Theme->Grid($results);
+  $cameralife->Theme->grid($results);
 
   if ($_GET['page'] == "photos")
     $cameralife->Theme->PageSelector($start,$counts['photos'],25,$openGraph['og:url']);

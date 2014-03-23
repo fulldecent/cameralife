@@ -67,7 +67,7 @@ foreach ($popular_albums as $photo) {
             </div>
             <div class="panel-body">
               <ul>
-                <li><?= $cameralife->GetPref('sitename') ?> has been online since <?= $cameralife->GetPref('sitedate') ?> (<b><?= $counts['daysonline'] ?> days</b>).
+                <li><?= $cameralife->getPref('sitename') ?> has been online since <?= $cameralife->getPref('sitedate') ?> (<b><?= $counts['daysonline'] ?> days</b>).
 <?php
   shuffle($funfacts);
   for ($i = 0; $i < 3; $i++)

@@ -27,9 +27,11 @@ class Folder extends Search
   */
 
 //TODO REMOVE THE SYNC AND DATE PARAM
-  public function folder($path='/', $sync=FALSE, $date=NULL)
+  public function __construct($path='/', $sync=FALSE, $date=NULL)
   {
     global $cameralife;
+    parent::__construct();
+    
     $this->path = $path;
     if (!strlen($path)) $this->path='/';
     $this->date = $date;
@@ -37,7 +39,6 @@ class Folder extends Search
     if($sync && !$this->fsck())
       Folder::update();
 
-    Search::Search('');
 //todo use bind here, add a bind parameter to Search
     @$this->mySearchPhotoCondition = "path='".mysql_real_escape_string($this->path)."'";
     $this->mySearchAlbumCondition = "FALSE";
@@ -48,7 +49,7 @@ class Folder extends Search
   {
     global $cameralife;
     if ($this->myStart > 0) {
-      if ($cameralife->GetPref('rewrite') == 'yes')
+      if ($cameralife->getPref('rewrite') == 'yes')
         $href = $cameralife->base_url.'/folders'.str_replace(" ","%20",$this->path); 
       else
         $href = $cameralife->base_url.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
@@ -175,7 +176,7 @@ class Folder extends Search
       // Found in correct location
       if (isset($filesInStoreNotYetMatchedToDB[$photopath])) {
         # Bonus code, if this is local, we can do more verification
-        if ($cameralife->GetPref('filestore')=='local' && $photo['fsize']) {
+        if ($cameralife->getPref('filestore')=='local' && $photo['fsize']) {
           $photofile = $cameralife->FileStore->PhotoDir."/$photopath";
           $actualsize = filesize($photofile);
           // Found, but changed
@@ -327,7 +328,7 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
 
         # Bonus code
         $same = FALSE;
-        if ($cameralife->GetPref('filestore')=='local') {
+        if ($cameralife->getPref('filestore')=='local') {
           $a = file_get_contents($cameralife->FileStore->PhotoDir . $photoFullpath);
           $b = file_get_contents($cameralife->FileStore->PhotoDir . $new_file);
           if ($a == $b)
@@ -409,7 +410,7 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
     $retval['og:type'] = 'website';
     //TODO see https://stackoverflow.com/questions/22571355/the-correct-way-to-encode-url-path-parts
     $retval['og:url'] = $cameralife->base_url.'/folders'.str_replace(" ","%20",$this->path); 
-    if ($cameralife->GetPref('rewrite') == 'no')
+    if ($cameralife->getPref('rewrite') == 'no')
       $retval['og:url'] = $cameralife->base_url.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
     $retval['og:image'] = $cameralife->iconURL('folder');
     $retval['og:image:type'] = 'image/png';
