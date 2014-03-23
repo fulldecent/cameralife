@@ -50,7 +50,7 @@
       }
 
       $cameralife->userpreferences[get_class($this)][$key] = $value;
-      $cameralife->SavePreferences();
+      $cameralife->savePreferences();
     }
   }
 

@@ -70,7 +70,7 @@ $numdone = isset($_GET['numdone']) ?(int) $_GET['numdone'] : 0;
       flush();
       $fixed++;
     }
-    $curphoto->Destroy();
+    $curphoto->destroy();
     $lastdone = $next['id'];
   }
 

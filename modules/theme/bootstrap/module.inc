@@ -26,7 +26,7 @@
       $this->preferences[] = array('name'=>'analytics', 'desc'=>'Tracking code for Google Analytics (optional)', 'type'=>'string', 'default'=>'');
     }
 
-    function ShowPage($name, $object=NULL)
+    function showPage($name, $object=NULL)
     {
       global $cameralife, $_SERVER, $_GET, $_POST;
       $objectname = strtolower($name);
@@ -50,7 +50,7 @@
       }
       else # Named asset, like 'small-album'
       {
-        $image['src'] = $cameralife->IconURL($name);
+        $image['src'] = $cameralife->iconURL($name);
         $image['alt'] = $name;
       }
 
@@ -77,7 +77,7 @@
       $openGraph = $view->GetOpenGraph();
 
       $myfolder = new Folder ('/upload/'.$cameralife->Security->GetName());
-      $myfolderURL = $myfolder->GetOpenGraph()['og:url'];
+      $myfolderURL = $myfolder->getOpenGraph()['og:url'];
       $body = $onload ? "<body onLoad=\"$onload\">" : '<body>';
 ?>
 <!DOCTYPE html>

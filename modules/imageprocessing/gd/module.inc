@@ -29,7 +29,7 @@ class GDImageProcessingImage extends ImageProcessingImage
   {
     global $cameralife;
     if (!file_exists($filename))
-      $cameralife->Error('Trying to process non-existant image: '.$filename, __FILE__, __LINE__);
+      $cameralife->error('Trying to process non-existant image: '.$filename, __FILE__, __LINE__);
     $path_parts = pathinfo($filename);
     $this->extension = strtolower($path_parts['extension']);
 
@@ -40,13 +40,13 @@ class GDImageProcessingImage extends ImageProcessingImage
     elseif ($this->extension=='gif')
       $this->original_image = imagecreatefromgif($filename);
     else
-      $cameralife->Error('Trying to process image of unknown file format: '.$filename, __FILE__, __LINE__);
+      $cameralife->error('Trying to process image of unknown file format: '.$filename, __FILE__, __LINE__);
     $this->width = imagesx($this->original_image);
     $this->height = imagesy($this->original_image);
     $this->size = sqrt($this->width*$this->width + $this->height*$this->height);
   }
 
-  function Destroy()
+  function destroy()
   {
     imagedestroy($this->original_image);
     if (isset($this->scaled_image) && count($this->scaled_image) > 0)
@@ -54,7 +54,7 @@ class GDImageProcessingImage extends ImageProcessingImage
         imagedestroy($image);
   }
 
-  function Check()
+  function check()
   {
     return ($this->original_image == TRUE);
   }
@@ -107,17 +107,17 @@ class GDImageProcessingImage extends ImageProcessingImage
     if ($this->extension=='jpeg' || $this->extension=='jpg' || $this->extension=='') # wild guess
     {
       @imagejpeg($new_image, $filename, $quality)
-        or $cameralife->Error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
+        or $cameralife->error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
     }
     elseif ($this->extension=='png')
     {
       @imagepng($new_image, $filename, 9-$quality/11)
-        or $cameralife->Error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
+        or $cameralife->error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
     }
     elseif ($this->extension=='gif')
     {
       @imagegif($new_image, $filename, 9-$quality/11)
-        or $cameralife->Error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
+        or $cameralife->error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
     }
 
     $this->scaled_image[$newSize] = $new_image;
@@ -125,7 +125,7 @@ class GDImageProcessingImage extends ImageProcessingImage
     return array($new_width, $new_height);
   }
 
-  /**Rotate the image a 90, 180 or 270 degrees
+  /**rotate the image a 90, 180 or 270 degrees
   */
   function Rotate($degrees) 
   {
@@ -141,7 +141,7 @@ class GDImageProcessingImage extends ImageProcessingImage
       $this->width = $this->height;
       $this->height = $oldwidth;
     }
-    $this->Destroy();
+    $this->destroy();
     $this->original_image = $rotated;
   }
 

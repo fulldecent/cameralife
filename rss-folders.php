@@ -13,9 +13,9 @@ require 'main.inc';
 
 $query = isset($_GET['q']) ? $_GET['q'] : '';
 $search = new Search($query);
-$openGraph = $search->GetOpenGraph();
-$search->SetSort('newest');
-$views = $search->GetFolders();
+$openGraph = $search->getOpenGraph();
+$search->setSort('newest');
+$views = $search->getFolders();
 
 header('Content-type: text/xml');
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";

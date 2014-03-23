@@ -11,7 +11,7 @@ class View
 {
   
   /**
-   * GetOpenGraph function.
+   * getOpenGraph function.
    * 
    * @access public
    * @return array
@@ -27,7 +27,7 @@ class View
    *   og:image:width size of thumbnail OPTIONAL
    *   og:image:height size of thumbnail OPTIONAL
    */
-  public function GetOpenGraph()
+  public function getOpenGraph()
   {
     
   }
@@ -39,28 +39,28 @@ class View
    * @access public
    * @return void
    */
-  public function GetPrevious() {}
+  public function getPrevious() {}
 
   /**
-   * GetNext function.
+   * getNext function.
    * A URL or NULL for the View logically following this one
    * 
    * @access public
    * @return void
    */
-  public function GetNext() {}
+  public function getNext() {}
        
   /**
-   * ShowPage function.
+   * showPage function.
    * Render this View using the currently installed theme
    * 
    * @access public
    * @return void
    */
-  public function ShowPage()
+  public function showPage()
   {
     global $cameralife;
-    $cameralife->GetFeature('theme');
+    $cameralife->getFeature('theme');
     $cameralife->Theme->ShowPage(strtolower(get_class($this)), $this);
   }
 }

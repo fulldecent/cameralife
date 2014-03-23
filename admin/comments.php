@@ -126,7 +126,7 @@ if ($checkpointDate) {
     //var_dump($record);
 
       $photo = new Photo($record['photo_id']);
-      $photoOpenGraph = $photo->GetOpenGraph();
+      $photoOpenGraph = $photo->getOpenGraph();
       $max = max($photoOpenGraph['og:image:width'], $photoOpenGraph['og:image:height']);
       $width64 = $photoOpenGraph['og:image:width'] / $max * 64;
       $height64 = $photoOpenGraph['og:image:height'] / $max * 64;

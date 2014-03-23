@@ -6,47 +6,47 @@
  * @copyright Copyright (c) 2001-2009 Will Entriken
  */
 
-# $cameralife and $folder are set by ShowPage()
+# $cameralife and $folder are set by showPage()
 # Browses a give path for photos
 # Magic vars GET:start, GET/POST:sort are handled in search.class.php
   
-$counts = $folder->GetCounts();
-$openGraph = $folder->GetOpenGraph();
+$counts = $folder->getCounts();
+$openGraph = $folder->getOpenGraph();
 $start = isset($_GET['start']) ? $_GET['start'] : 0;
 
 if (isset($_GET['start']) && is_numeric($_GET['start']))
-  $folder->SetPage($_GET['start'], 25);
+  $folder->setPage($_GET['start'], 25);
 else 
-  $folder->SetPage(0, 25);
+  $folder->setPage(0, 25);
 
 if (isset($_GET['page']) && $_GET['page'] == 'folders' || !$counts['photos']) {
   $_GET['page'] = 'folders';
-  $results = $folder->GetChildren();
+  $results = $folder->getChildren();
 } else {
   $_GET['page'] = 'photos';
-  $results = $folder->GetPhotos();
+  $results = $folder->getPhotos();
 }
 
 $menu = array();
-if ($folder->Path())
-  $menu[] = array('name'=>'Search for '.$folder->Basename(),
-                  'href'=>'search.php&#63;q='.$folder->Basename(),
+if ($folder->path())
+  $menu[] = array('name'=>'Search for '.$folder->basename(),
+                  'href'=>'search.php&#63;q='.$folder->basename(),
                   'image'=>'small-search');
 
 if ($cameralife->Security->Authorize('admin_file'))
   $menu[] = array('name'=>'Upload photo here',
-                  'href'=>$cameralife->base_url.'/upload.php&#63;path='.$folder->Path(),
+                  'href'=>$cameralife->base_url.'/upload.php&#63;path='.$folder->path(),
                   'image'=>'small-main');
 
-$folder_name = $folder->Basename()
+$folder_name = $folder->basename()
   or $folder_name = '(Top Level)';
 
 $headers = '';
-if ($folder->GetPrevious()) {
-  $headers = "<link rel=\"prev\" href=\"".$folder->GetPrevious()."\" />\n";
+if ($folder->getPrevious()) {
+  $headers = "<link rel=\"prev\" href=\"".$folder->getPrevious()."\" />\n";
 }
-if ($folder->GetNext()) {
-  $headers = "<link rel=\"next\" href=\"".$folder->GetNext()."\" />\n";
+if ($folder->getNext()) {
+  $headers = "<link rel=\"next\" href=\"".$folder->getNext()."\" />\n";
 }
 
 $cameralife->Theme->Header($folder, NULL, $headers);
@@ -54,11 +54,11 @@ $cameralife->Theme->Header($folder, NULL, $headers);
 
 <ul class="breadcrumb">
 <?php
-  foreach($folder->GetAncestors() as $ancestor) {
+  foreach($folder->getAncestors() as $ancestor) {
     $ancestorOpenGraph = $ancestor->GetOpenGraph();
-    echo '  <li><a href="'.htmlspecialchars($ancestorOpenGraph['og:url']).'"><img alt="folder" src="'.htmlspecialchars($cameralife->IconURL('small-folder')).'"> '.htmlentities($ancestorOpenGraph['og:title']).'</a></li>';
+    echo '  <li><a href="'.htmlspecialchars($ancestorOpenGraph['og:url']).'"><img alt="folder" src="'.htmlspecialchars($cameralife->iconURL('small-folder')).'"> '.htmlentities($ancestorOpenGraph['og:title']).'</a></li>';
   }
-  echo "        <li><img alt=\"folder\" src=\"".$cameralife->IconURL('small-folder')."\"> $folder_name</li>\n";
+  echo "        <li><img alt=\"folder\" src=\"".$cameralife->iconURL('small-folder')."\"> $folder_name</li>\n";
 ?>
 </ul>
 
@@ -75,7 +75,7 @@ $cameralife->Theme->Header($folder, NULL, $headers);
   elseif (count($sections == 1))
     echo "This folder contains ".strtolower($sections[0]['name']);
   else
-    $cameralife->Error('This folder does not exist.');
+    $cameralife->error('This folder does not exist.');
 
   $cameralife->Theme->Grid($results);
 
@@ -91,7 +91,7 @@ $cameralife->Theme->Header($folder, NULL, $headers);
     Sort by
     <select name="sort" class="form-control input-sm" style="width:200px">
 <?php
-    $options = $folder->SortOptions();    
+    $options = $folder->sortOptions();
     foreach($options as $option) {
       if (isset($option[2]))
         echo "    <option ".$option[2]." value=\"".$option[0]."\">".$option[1]."</option>\n";

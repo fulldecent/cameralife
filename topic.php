@@ -11,10 +11,10 @@ require 'main.inc';
 
 $topic = new Topic($_GET['name']);
 
-$count = array_sum($topic->GetCounts());
+$count = array_sum($topic->getCounts());
 if (!isset($_GET['edit']) && $count == 0) {
   header("HTTP/1.0 404 Not Found");
-  $cameralife->Error("This folder does not exist.");
+  $cameralife->error("This folder does not exist.");
 }
 
-$topic->ShowPage();
+$topic->showPage();

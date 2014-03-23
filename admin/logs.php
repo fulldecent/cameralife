@@ -25,7 +25,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'Commit changes') {
   foreach ($_POST as $var => $val) {
     if (!is_numeric($var) || !is_numeric($val))
       continue;
-    AuditTrail::Undo($val);
+    AuditTrail::undo($val);
   }
 }
 $numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->GetPref('checkpointcomments')+0));
@@ -109,19 +109,19 @@ if ($checkpointDate) {
           <div class="controls">
             <label class="checkbox inline">
               <input type="checkbox" name="showphotos" <?php if ($_POST["showphotos"]) echo " checked" ?>>
-              <img src="<?= $cameralife->IconURL('small-photo') ?>"> Photos
+              <img src="<?= $cameralife->iconURL('small-photo') ?>"> Photos
             </label>
             <label class="checkbox inline">
               <input type="checkbox" name="showalbums" <?php if ($_POST["showalbums"]) echo " checked" ?>>
-              <img src="<?= $cameralife->IconURL('small-album') ?>"> Albums
+              <img src="<?= $cameralife->iconURL('small-album') ?>"> Albums
             </label>
             <label class="checkbox inline">
               <input type="checkbox" name="showusers" <?php if ($_POST["showusers"]) echo " checked" ?>>
-              <img src="<?= $cameralife->IconURL('small-login') ?>"> Users
+              <img src="<?= $cameralife->iconURL('small-login') ?>"> Users
             </label>
             <label class="checkbox inline">
               <input type="checkbox" name="showpreferences" <?php if ($_POST["showpreferences"]) echo " checked" ?>>
-              <img src="<?= $cameralife->IconURL('small-admin') ?>"> Preferences
+              <img src="<?= $cameralife->iconURL('small-admin') ?>"> Preferences
             </label>
           </div>
         </div>
@@ -165,7 +165,7 @@ if ($checkpointDate) {
     $result = $cameralife->Database->Select('logs','record_type, record_id, value_field, MAX(logs.id) as maxid',$condition,$extra);
     while ($record = $result->FetchAssoc()) {
       $receipt = new Receipt($record['maxid']);
-      $object = $receipt->GetObject();
+      $object = $receipt->getObject();
       $openGraph = $object->GetOpenGraph();
       $max = max($openGraph['og:image:width'], $openGraph['og:image:height']);
       $width64 = $openGraph['og:image:width'] / $max * 64;
@@ -179,15 +179,15 @@ if ($checkpointDate) {
           <div class="media-body">
             <h4 class="media-heading"><?= htmlentities($openGraph['og:title']) ?> (<?= $record['record_type'] ?>)</h4>
 <?php
-      $chain = $receipt->GetChain();
+      $chain = $receipt->getChain();
       $arr = $chain[0]->GetOld();
       $oldValue = $arr['value']; $fromReceipt = $arr['fromReceipt'];
       echo '<label class="checkbox">';
       echo '<input type="radio" name="'.$record['maxid'].'" value="'.$chain[0]->Get('id').'"> ';
       if ($fromReceipt)
-        echo htmlentities($oldValue).' <span class="label label-info"> '.$receipt->Get('value_field').' from before checkpoint</span>';
+        echo htmlentities($oldValue).' <span class="label label-info"> '.$receipt->get('value_field').' from before checkpoint</span>';
       else
-        echo htmlentities($oldValue).' <span class="label"> default '.$receipt->Get('value_field').'</span>';
+        echo htmlentities($oldValue).' <span class="label"> default '.$receipt->get('value_field').'</span>';
       echo '</label>';
       for ($i=0; $i<count($chain)-1; $i++) {
 ?>

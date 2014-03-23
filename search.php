@@ -17,7 +17,7 @@ fwrite($log_handle, $_GET["q"]."\n");
 fclose ($log_handle);
 */
 
-$counts = $search->GetCounts();
+$counts = $search->getCounts();
 
 ## You can search by going to http://camera.phor.net/SEARCHTERM
 if (isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == '404') {
@@ -40,9 +40,9 @@ if (!$counts['folders'] && $counts['albums'] == 1) {
 
 ## Sometimes we're sure a folder page is relevant - redirect there
 if (!$counts['albums'] && !$counts['photos'] && $counts['folders'] == 1) {
-  list($folder) = $search->GetFolders();
+  list($folder) = $search->getFolders();
   header('Location: '.$folder->GetOpenGraph()['op:url'];
   exit(0);
 }
 
-$search->ShowPage();
+$search->showPage();

@@ -1,7 +1,7 @@
 <?php
 /**
  * Stats class.
- * Get stat information about the whole photo collection
+ * get stat information about the whole photo collection
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public
@@ -10,12 +10,12 @@ class Stats
 {
   public $counts;
 
-  public function Stats()
+  public function stats()
   {
     $this->counts = array();
   }
 
-  public function GetCounts()
+  public function getCounts()
   {
     global $cameralife;
 
@@ -32,7 +32,7 @@ class Stats
     return $this->counts;
   }
 
-  public function GetPopularPhotos()
+  public function getPopularPhotos()
   {
     global $cameralife;
 
@@ -44,7 +44,7 @@ class Stats
     return $popular_photos;
   }
 
-  public function GetPopularAlbums()
+  public function getPopularAlbums()
   {
     global $cameralife;
 
@@ -56,10 +56,10 @@ class Stats
     return $popular_albums;
   }
 
-  public function GetFunFacts()
+  public function getFunFacts()
   {
     if (empty($this->counts))
-      $this->GetCounts();
+      $this->getCounts();
 
     $funfacts[] = 'If these photos were taken with a film camera, they would have used <strong>'.
                   (round($this->counts['photos'] / 24, 0)).'</strong> rolls of film.';

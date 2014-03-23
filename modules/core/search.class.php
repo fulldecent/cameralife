@@ -18,7 +18,7 @@ class Search extends View
   public $myStart;
   public $myLimitCount;
 
-  public function Search($query = '')
+  public function search($query = '')
   {
     global $cameralife, $_POST, $_GET;
 
@@ -60,13 +60,13 @@ class Search extends View
     $this->myLimit = "LIMIT ".$this->myStart.",".$this->myLimitCount;
   }
 
-  public function SetSort($sort)
+  public function setSort($sort)
   {
     $this->mySort = $sort;
   }
 
   # static function, and a not static function...
-  public function SortOptions()
+  public function sortOptions()
   {
     $retval = array();
     $retval[] = array('newest', 'Newest First');
@@ -85,7 +85,7 @@ class Search extends View
     return $retval;
   }
 
-  public function GetCounts()
+  public function getCounts()
   {
     global $cameralife;
 
@@ -100,14 +100,14 @@ class Search extends View
     return $this->myCounts;
   }
 
-  public function SetPage($start, $pagesize=12)
+  public function setPage($start, $pagesize=12)
   {
     $this->myStart = $start;
     $this->myLimitCount = $pagesize;
     $this->myLimit = "LIMIT ".$this->myStart.",".$this->myLimitCount;
   }
 
-  public function GetPhotos()
+  public function getPhotos()
   {
     global $cameralife;
 
@@ -130,7 +130,7 @@ class Search extends View
     return $photos;
   }
 
-  public function GetAlbums()
+  public function getAlbums()
   {
     global $cameralife;
 
@@ -155,7 +155,7 @@ class Search extends View
     return $albums;
   }
 
-  public function GetFolders()
+  public function getFolders()
   {
     global $cameralife;
     switch ($this->mySort) {
@@ -179,7 +179,7 @@ class Search extends View
     return $folders;
   }
 
-  public function GetQuery()
+  public function getQuery()
   {
     return $this->myQuery;
   }

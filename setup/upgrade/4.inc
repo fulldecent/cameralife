@@ -3,7 +3,7 @@
 $script_info = <<<HERE
 This will make the following changes:
 <ul>
-  <li>Set photos.path to have the format /path instead of path/</li>
+  <li>set photos.path to have the format /path instead of path/</li>
   <li>Create an index on photos.path | photos.filename</li>
 </ul>
 HERE;

@@ -1,7 +1,7 @@
 <?php
  /**This "API" is subject to change; specifically the URL part will be altered.
   *
-  *The following named security actions must be supported by Authorize():
+  *The following named security actions must be supported by authorize():
   *<ul>
   *  <li>photo_rename</li>
   *  <li>photo_delete</li>
@@ -20,27 +20,27 @@
   class SecurityModule extends CameraLifeModule
   {
     function SecurityModule () { }
-  
+
     /* Provides a URL, relative to $cameralife->base_url that the user can
     ** login at
     */
-    function LoginURL () { }
+    function loginURL () { }
 
     /* Logs the user out. Returns true or and exit url if you really want to */
-    function Logout () { }
+    function logout () { }
 
     /* Provides a URL, relative to $cameralife->base_url that the user can
-    ** go to, to administer users and permissions. Or returns FALSE, if the 
+    ** go to, to administer users and permissions. Or returns FALSE, if the
     ** user is not allowed to administer.
     */
-    function AdministerURL () { }
+    function administerURL () { }
 
     /* Returns the current user's name or the empty string if not logged in */
-    function GetName () { }
+    function getName () { }
 
     /**Determines if the user is authoried to performed the named action,
      * if REQUIRED is set, nonauthorization is a fatal error.
-     * This function must at least support the follwing actions 
+     * This function must at least support the follwing actions
      * <ul>
      *  <li>photo_rename</li>
      *  <li>photo_delete</li>
@@ -51,8 +51,8 @@
      *  <li>admin_theme </li>
      *  <li>admin_customize</li>
      * </ul>
-     */  
-    function Authorize ($action, $required=false) { }
+     */
+    function authorize ($action, $required=false) { }
   }
 
 ?>

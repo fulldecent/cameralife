@@ -19,16 +19,16 @@ $features=array('security');
 require '../../../main.inc';
 $cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
 if (get_class($cameralife->Security) != 'OpenIDSecurity')
-  $cameralife->Error("Can't access this page because the current security module is ".get_class($cameralife->Security));
+  $cameralife->error("Can't access this page because the current security module is ".get_class($cameralife->Security));
 
 if (strtolower($_POST['action']) == 'login') {
   $result = $cameralife->Security->Login($_POST['param1'], $_POST['param2']);
   if (is_string($result))
-    $cameralife->Error($result);
+    $cameralife->error($result);
 } elseif (strtolower($_POST['action']) == 'register') {
   $result = $cameralife->Security->Register($_POST['param1'], $_POST['param2'], $_POST['param3']);
   if (is_string($result))
-    $cameralife->Error($result);
+    $cameralife->error($result);
 }
 
 if ($_POST['target'] == 'ajax')

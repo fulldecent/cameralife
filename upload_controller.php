@@ -74,26 +74,26 @@
   $status = 0;
 
   if (!$_FILES)
-    $cameralife->Error('No file was uploaded.', __FILE__, __LINE__);
+    $cameralife->error('No file was uploaded.', __FILE__, __LINE__);
 
   $condition = "filename='".$_FILES['userfile']['name']."'";
   $cameralife->Database->SelectOne('photos','COUNT(*)',$condition)
-    and $cameralife->Error("The filename \"".$_FILES['userfile']['name']."\" is already used in system. Please rename the image and try uploading again.");
+    and $cameralife->error("The filename \"".$_FILES['userfile']['name']."\" is already used in system. Please rename the image and try uploading again.");
 
   if (preg_match('|/|',$_FILES['userfile']['name']))
-    $cameralife->Error("It appears you are hacking, that is disallowed.", __FILE__, __LINE__);
+    $cameralife->error("It appears you are hacking, that is disallowed.", __FILE__, __LINE__);
 
   if ($_FILES['userfile']['size'] < 4096)
-    $cameralife->Error("The file is too small, minimum size is 4kb", __FILE__);
+    $cameralife->error("The file is too small, minimum size is 4kb", __FILE__);
 
   if ($_FILES['userfile']['error'] == UPLOAD_ERR_INI_SIZE)
-    $cameralife->Error("The file was too big for the server.", __FILE__);
+    $cameralife->error("The file was too big for the server.", __FILE__);
 
   if ($_FILES['userfile']['error'] == UPLOAD_ERR_PARTIAL)
-    $cameralife->Error("The file was only partially uploaded.", __FILE__);
+    $cameralife->error("The file was only partially uploaded.", __FILE__);
 
   if ($_FILES['userfile']['error'] == UPLOAD_ERR_NO_FILE)
-    $cameralife->Error("No file was selected for upload.", __FILE__);
+    $cameralife->error("No file was selected for upload.", __FILE__);
 
 if ( !function_exists('sys_get_temp_dir') ) {
     // Based on http://www.phpit.net/
@@ -149,7 +149,7 @@ if ( !function_exists('sys_get_temp_dir') ) {
       }
 
       if ($result) {
-        $cameralife->Error("Filename: ".$outputline[1], __FILE__);
+        $cameralife->error("Filename: ".$outputline[1], __FILE__);
       }
     }
   } elseif (preg_match(':\.jpg$|\.png$|\.jpeg$:i', $_FILES['userfile']['name'])) {
@@ -162,9 +162,9 @@ if ( !function_exists('sys_get_temp_dir') ) {
     @unlink ($temp);
 
     if ($result)
-      $cameralife->Error("Error adding image: $result", __FILE__);
+      $cameralife->error("error adding image: $result", __FILE__);
   } else {
-    $cameralife->Error('Unsupported filetype');
+    $cameralife->error('Unsupported filetype');
   }
 
   if ($_POST['target'] == 'ajax')

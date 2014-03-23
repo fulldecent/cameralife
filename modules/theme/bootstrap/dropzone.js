@@ -187,7 +187,7 @@ require.relative = function(parent) {
   };
 
   /**
-   * Check if module is defined at `path`.
+   * check if module is defined at `path`.
    */
 
   localRequire.exists = function(path) {
@@ -335,7 +335,7 @@ Emitter.prototype.listeners = function(event){
 };
 
 /**
- * Check if this emitter has `event` handlers.
+ * check if this emitter has `event` handlers.
  *
  * @param {String} event
  * @return {Boolean}

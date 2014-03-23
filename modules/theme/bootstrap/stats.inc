@@ -6,14 +6,14 @@
  * @access public
  */
 
-# $cameralife and $album are set by ShowPage()
-$cameralife->GetFeature('filestore');
+# $cameralife and $album are set by showPage()
+$cameralife->getFeature('filestore');
 
 $stats = new Stats;
-$counts = $stats->GetCounts();
-$popular_photos = $stats->GetPopularPhotos();
-$popular_albums = $stats->GetPopularAlbums();
-$funfacts = $stats->GetFunFacts();
+$counts = $stats->getCounts();
+$popular_photos = $stats->getPopularPhotos();
+$popular_albums = $stats->getPopularAlbums();
+$funfacts = $stats->getFunFacts();
 
 //TODO THIS IS NOT ACCURATE
 $cameralife->Theme->Header($cameralife);

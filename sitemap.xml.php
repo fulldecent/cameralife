@@ -15,7 +15,7 @@
 
   $baseurl = $cameralife->base_url;
   $stats = new Stats;
-  $counts = $stats->GetCounts();
+  $counts = $stats->getCounts();
 
   header('Content-type: text/xml');
   echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";

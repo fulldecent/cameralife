@@ -70,7 +70,7 @@ if(@fopen($url, 'r'))
   $checkPrerequesites[] = array('desc'=>'Mod rewrite is set up correctly, you can use pretty URLs', 'type'=>'success');
 else {
   $checkPrerequesites[] = array('desc'=>'MOD REWRITE is not set up, enable this to use pretty URLs.', 'type'=>'warning');
-  $fixes[] = array('Ubuntu'=>'Set up MOD REWRITE to get pretty URLs, see <a href="http://stackoverflow.com/q/869092" target="_blank">http://stackoverflow.com/q/869092</a>',
+  $fixes[] = array('Ubuntu'=>'set up MOD REWRITE to get pretty URLs, see <a href="http://stackoverflow.com/q/869092" target="_blank">http://stackoverflow.com/q/869092</a>',
                    'CPanel'=>'Contact your host to set up MOD REWRITE for pretty URLs');
 }
 

@@ -5,8 +5,8 @@
  *@access public
 */
 
-$cameralife->GetFeature('security');
-$cameralife->GetFeature('filestore');
+$cameralife->getFeature('security');
+$cameralife->getFeature('filestore');
 
 if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$cameralife->Security->GetName().'/')
 {
@@ -19,7 +19,7 @@ else
   $path = 'upload/'.$cameralife->Security->GetName().'/';
 }
 $folder = new Folder($path);
-$folderURL = $folder->GetOpenGraph()['og:url'];
+$folderURL = $folder->getOpenGraph()['og:url'];
 
 $headers = '<script src="'.$cameralife->base_url.'/modules/theme/'.$cameralife->GetPref('theme').'/dropzone.js"></script>';
 $cameralife->Theme->Header($cameralife, NULL, $headers); //TODO THIS IS INACCURATE

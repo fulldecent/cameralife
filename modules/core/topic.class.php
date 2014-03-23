@@ -11,7 +11,7 @@ class Topic extends Search
 {
   public $name;
 
-  public function Topic($name)
+  public function topic($name)
   {
     global $cameralife;
 
@@ -24,17 +24,17 @@ class Topic extends Search
   }
 
 //TODO DEPRECATED?
-  public function GetName()
+  public function getName()
   {
     return htmlentities($this->name);
   }
 
-  public function Get($item)
+  public function get($item)
   {
     return $this->$item;
   }
 
-  public static function GetTopics()
+  public static function getTopics()
   {
     global $cameralife;
     $retval = array();
@@ -44,7 +44,7 @@ class Topic extends Search
     return $retval;
   }
 
-  public function GetOpenGraph()
+  public function getOpenGraph()
   {
     global $cameralife;
     $retval = array();
@@ -53,7 +53,7 @@ class Topic extends Search
     $retval['og:url'] = $cameralife->base_url.'/topics/'.rawurlencode($this->name);
     if ($cameralife->GetPref('rewrite') == 'no')
       $retval['og:url'] = $cameralife->base_url.'/topic.php?name='.rawurlencode($this->name);
-    $retval['og:image'] = $cameralife->IconURL('topic');
+    $retval['og:image'] = $cameralife->iconURL('topic');
     $retval['og:image:type'] = 'image/png';
     //$retval['og:image:width'] = 
     //$retval['og:image:height'] = 

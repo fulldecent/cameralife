@@ -26,7 +26,7 @@
     else
       $cameralife->Database->Update('users',array('auth'=>$val),"id='$key'");
   }
-  $cameralife->SavePreferences();
+  $cameralife->savePreferences();
 
   function html_select_auth($param_name)
   {
@@ -141,7 +141,7 @@ foreach (array('users'=>'Users', 'policies'=>'Policies') as $id=>$name) {
         $count_photos = $cameralife->Database->SelectOne('photos','COUNT(*)',"username='".$curuser["username"]."'");
 
         echo "<tr><td>\n";
-        echo '<img src="'.$cameralife->IconURL('small-login').'">';
+        echo '<img src="'.$cameralife->iconURL('small-login').'">';
         echo $curuser["username"]."\n";
         echo "  <td><select name=\"".$curuser["id"]."\">\n";
         if($curuser["auth"] == 1)

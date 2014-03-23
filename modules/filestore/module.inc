@@ -15,7 +15,7 @@ class FileStore extends CameraLifeModule
   /**
    * Gets a URL for the client to access the selected resource. Or return FALSE.
    * If FALSE, the caller must construct a URL to media.php which will
-   * GetFile() the file and proxy it to the user.
+   * getFile() the file and proxy it to the user.
    * 
    * (Implementation note: make sure non-public photos do not have 
    * publicly accessible urls)
@@ -24,7 +24,7 @@ class FileStore extends CameraLifeModule
    * @param $path - the location of the stored file, starts with '/'
    * @return a URL or FALSE
    */
-  function GetURL($bucket, $path) 
+  function getURL($bucket, $path)
   {
     return FALSE;
   }
@@ -41,7 +41,7 @@ class FileStore extends CameraLifeModule
    *
    * If temporary is TRUE, the caller is responsible for deleting this file when done.
    */
-  function GetFile($bucket, $path) {}
+  function getFile($bucket, $path) {}
 
   /**
    * Save a file to the filestore
@@ -52,7 +52,7 @@ class FileStore extends CameraLifeModule
    * @param $secure - if secure, ensure this file will not be publicly accessible
    * @return none
    */
-  function PutFile($bucket, $path, $file, $secure=0) {}
+  function putFile($bucket, $path, $file, $secure=0) {}
 
   /**
    * Sets whether the file must be secure
@@ -63,17 +63,17 @@ class FileStore extends CameraLifeModule
    * @param $secure - if secure, ensure this file will not be publicly accessible
    * @return none
    */
-  function SetPrivate($bucket, $path, $secure) {}
+  function setPrivate($bucket, $path, $secure) {}
 
   /**
-   * Erase a file
+   * erase a file
    *
    * @param $bucket - one of ('photo', 'other')
    * @param $path - the location of the stored file, starts with '/'
    *
    * @return none
    */
-  function EraseFile($bucket, $path) {}
+  function eraseFile($bucket, $path) {}
 
   /**
    * Returns a list of all files in the filestore
@@ -83,6 +83,6 @@ class FileStore extends CameraLifeModule
    * @param $recursive - whether to list recursively
    * @return an array of files, in the form 'path'=>basename(path)
    */
-  function ListFiles($bucket, $path='', $recursive=TRUE) {}
+  function listFiles($bucket, $path='', $recursive=TRUE) {}
 }
 ?>

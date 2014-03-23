@@ -34,7 +34,7 @@
     /* Clean up */
     /**Clean up
     */
-    function Destroy() { }
+    function destroy() { }
 
     /* Make sure image loaded OK
       return TRUE on success
@@ -43,7 +43,7 @@
     *Returns TRUE on success
     *
     */
-    function Check() { }
+    function check() { }
     
     /* Returns (width, height) of this img
     */

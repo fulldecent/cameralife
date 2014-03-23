@@ -69,31 +69,31 @@ class CameraLife extends CameraLifeModule # and View
     $this->preferences[] = array('name'=>'optionsizes', 'type'=>'string', 'default'=>'');    
   }
     
-  function RelativeInclude($file)
+  function relativeInclude($file)
   {
     if (file_exists($this->base_dir."/$file"))
       require $this->base_dir."/$file";
     else
-      $this->Error("File does not exist: ".$this->base_dir."/$file");
+      $this->error("File does not exist: ".$this->base_dir."/$file");
   }
 
-  function GetModules($feature)
+  function getModules($feature)
   {
     $modules = glob($this->base_dir."/modules/$feature/*", GLOB_ONLYDIR);
     $modules = array_map('basename', $modules);
     return $modules;
   }
 
-  function GetFeature($feature)
+  function getFeature($feature)
   {
     if (!isset($this->loaded_features[$feature]))
       $loaded_features[$feature]='loading';
     elseif ($this->loaded_features[$feature]=='loaded')
         return true;
     elseif ($this->loaded_features[$feature]=='loading')
-        $this->Error('Circular reference in features :-(');
+        $this->error('Circular reference in features :-(');
 
-    $this->RelativeInclude("modules/$feature/module.inc");
+    $this->relativeInclude("modules/$feature/module.inc");
     $allfeatures = array('core'=>NULL, 'imageprocessing'=>'ImageProcessing', 'security'=>'Security', 'theme'=>'Theme', 'filestore'=>'FileStore');
     $cutename = $allfeatures[$feature];
     
@@ -108,17 +108,17 @@ class CameraLife extends CameraLifeModule # and View
       case 'filestore':
       case 'filestore':
         $implementation = $this->GetPref($feature);
-        $this->RelativeInclude("modules/$feature/$implementation/module.inc");
+        $this->relativeInclude("modules/$feature/$implementation/module.inc");
         $modulename = $implementation.$feature;
         $this->$cutename = new $modulename;
         break;
       default:
-        $this->Error("Non-existant feature requested: $feature");
+        $this->error("Non-existant feature requested: $feature");
     }
     $this->loaded_features[$feature]='loaded';
   }
 
-  function LoadPreferences()
+  function loadPreferences()
   {
     $query = $this->Database->Select('preferences','*');
     while ($result = $query->FetchAssoc())
@@ -127,7 +127,7 @@ class CameraLife extends CameraLifeModule # and View
     }
   }
 
-  function SavePreferences()
+  function savePreferences()
   {
     foreach($this->userpreferences as $module => $moduleprefs)
     {
@@ -149,24 +149,24 @@ class CameraLife extends CameraLifeModule # and View
     }
   }
 
-  public function GetOpenGraph()
+  public function getOpenGraph()
   {
     global $cameralife;
     $retval = array();
     $retval['og:title'] = $this->GetPref('siteabbr');
     $retval['og:type'] = 'website';
     $retval['og:url'] = $this->base_url.'/index.php';
-    $retval['og:image'] = $cameralife->IconURL('main');
+    $retval['og:image'] = $cameralife->iconURL('main');
     $retval['og:image:type'] = 'image/png';
     return $retval;    
   }
 
-  function IconURL($name)
+  function iconURL($name)
   {
     return $this->base_url."/modules/iconset/".$this->GetPref('iconset')."/$name.png";
   }
 
-  function Error($message, $file='', $line='')
+  function error($message, $file='', $line='')
   {
     global $cameralife;
     echo "<link rel=\"stylesheet\" href=\"//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css\">";
@@ -207,17 +207,17 @@ class CameraLife extends CameraLifeModule # and View
 }
 
 $cameralife = new CameraLife();
-$cameralife->GetFeature('core');
-$cameralife->LoadPreferences();
+$cameralife->getFeature('core');
+$cameralife->loadPreferences();
 
 if (isset($GLOBALS['features']) && count($GLOBALS['features']))
 foreach($features as $fcn)
-  $cameralife->GetFeature($fcn);
+  $cameralife->getFeature($fcn);
 
 if (isset($_GET['receipt']) && is_numeric ($_GET['receipt']))
 {
   $receipt = new Receipt($_GET['receipt']);
-  if ($receipt->IsValid())
+  if ($receipt->isValid())
     $cameralife->receipt = $receipt;
 }
 

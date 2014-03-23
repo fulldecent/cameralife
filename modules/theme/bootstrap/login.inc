@@ -7,7 +7,7 @@
 *
 *<b>Note</b> 
 *<ul><li>It precedes the index page</li>
-*<li>$cameralife and $album are set by ShowPage()</li></ul>
+*<li>$cameralife and $album are set by showPage()</li></ul>
 *@author Will Entriken<cameralife@phor.net>
 *@access public
 *@copyright Copyright (c) 2001-2009 Will Entriken
@@ -17,14 +17,14 @@
 *
 *
 */
-  # $cameralife and $album are set by ShowPage()
+  # $cameralife and $album are set by showPage()
 
-  $cameralife->GetFeature('security');
-  $cameralife->GetFeature('filestore');
+  $cameralife->getFeature('security');
+  $cameralife->getFeature('filestore');
 
   # Handles logging in and registering... then sends 'em to the index page
 
-  $cameralife->GetFeature('security');
+  $cameralife->getFeature('security');
 
   $_GET['page']
     or $_GET['page'] = 'login';

@@ -31,12 +31,12 @@ foreach ($_POST as $key => $val) {
 foreach ($prefs as $pref) {
   if (isset($pref['module']) && isset($pref['param']) && isset($pref['value'])) {
     $cameralife->userpreferences[$pref['module']][$pref['param']] = $pref['value'];
-    $cameralife->SavePreferences();
+    $cameralife->savePreferences();
   } else
     die ('passed wrong');
 }
 
 if (!isset($_POST['target']))
-  die ('Error: no target set!');
+  die ('error: no target set!');
 
 header("Location: ".$_POST['target']);

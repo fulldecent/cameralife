@@ -1,35 +1,29 @@
 <?php
-  # the class for getting and using albums
 /**
-*Enables you to get albums
-  *@author Will Entriken <cameralife@phor.net>
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  *@access public
-  */
-  /**
-  *For getting and using albums
-  */
-
+ * Model class for albums
+ * @author Will Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @access public
+ */
 class Album extends Search
 {
   public $record;
   /**
-  *
-  *<code>is_array($orginal)</code> will be a new album given in parts
-  *<code>is_numeric($original)</code> is an ID
-  *
-  *@param mixed $original A unique ID
-  */
-  public function Album($original)
+   *<code>is_array($orginal)</code> will be a new album given in parts
+   *<code>is_numeric($original)</code> is an ID
+   *
+   * @param mixed $original A unique ID
+   */
+  public function album($original)
   {
     global $cameralife;
 
     if (is_array($original)) { # A new album, given by parts
       $search = new Search($original['term']);
-      $count = $search->GetCounts();
+      $count = $search->getCounts();
       if ($count['photos'] == 0)
-        die ("Error making album, no photos with term");
-      $result = $search->GetPhotos();
+        die ("error making album, no photos with term");
+      $result = $search->getPhotos();
 
       $this->record['topic'] = $original['topic'];
       $this->record['name'] = $original['name'];
@@ -41,64 +35,64 @@ class Album extends Search
       $this->record = $result->FetchAssoc();
       if (!$this->record) {
         header("HTTP/1.0 404 Not Found");
-        $cameralife->Error("Album #".($original+0)." not found.");
+        $cameralife->error("Album #".($original+0)." not found.");
       }
     } else {
-      $cameralife->Error("Invalid album", __FILE__, __LINE__);
+      $cameralife->error("Invalid album", __FILE__, __LINE__);
     }
 
     Search::Search($this->record['term']);
   }
 
-  public function Set($key, $value)
+  public function set($key, $value)
   {
     global $cameralife;
 
     $receipt = NULL;
     if ($key != 'hits')
-      $receipt = AuditTrail::Log('album',$this->record['id'],$key,$this->record[$key],$value);
+      $receipt = AuditTrail::log('album',$this->record['id'],$key,$this->record[$key],$value);
     $this->record[$key] = $value;
     $cameralife->Database->Update('albums', array($key=>$value), 'id='.$this->record['id']);
 
     return $receipt;
   }
 
-  public function Get($key)
+  public function get($key)
   {
     return $this->record[$key];
   }
 
-  public function GetPoster()
+  public function getPoster()
   {
-    if (Photo::PhotoExists($this->record['poster_id']))
+    if (Photo::photoExists($this->record['poster_id']))
       return new Photo($this->record['poster_id']);
     else {
-      $photos = $this->GetPhotos();
+      $photos = $this->getPhotos();
 
       return $photos[0];
     }
 
   }
 
-  public function SetPoster($poster)
+  public function setPoster($poster)
   {
     global $cameralife;
 
     if (!is_numeric($poster))
-      $cameralife->Error("Failed to set poster for album", __FILE__, __LINE__);
+      $cameralife->error("Failed to set poster for album", __FILE__, __LINE__);
 
     $cameralife->Database->SelectOne('photos','COUNT(*)','status=1 AND id='.$_GET['poster_id'])
-      or $cameralife->Error('The selected poster photo does not exist', __FILE__, __LINE__);
+      or $cameralife->error('The selected poster photo does not exist', __FILE__, __LINE__);
 
-    $this->Set('poster_id', $_GET['poster_id']);
+    $this->set('poster_id', $_GET['poster_id']);
   }
 
-  public function GetTopic()
+  public function getTopic()
   {
     return new Topic($this->record['topic']);
   }
 
-  public function Erase()
+  public function erase()
   {
     global $cameralife;
 
@@ -106,7 +100,7 @@ class Album extends Search
     $cameralife->Database->Delete('logs',"record_type='album' AND record_id=".$this->record['id']);
   }
   
-  public function GetOpenGraph()
+  public function getOpenGraph()
   {
     global $cameralife;
     $retval = array();
@@ -115,8 +109,8 @@ class Album extends Search
     $retval['og:url'] = $cameralife->base_url.'/albums/'.$this->record['id'];
     if ($cameralife->GetPref('rewrite') == 'no')
       $retval['og:url'] = $cameralife->base_url.'/album.php?id='.$this->record['id'];
-    $photo = $this->GetPoster();
-    $retval['og:image'] = $photo->GetMedia('thumbnail');
+    $photo = $this->getPoster();
+    $retval['og:image'] = $photo->getMedia('thumbnail');
     $retval['og:image:type'] = 'image/jpeg';
     //$retval['og:image:width'] = 
     //$retval['og:image:height'] = 

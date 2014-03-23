@@ -1,6 +1,6 @@
 <?php
 /*
- * Set filestore module
+ * set filestore module
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2013 Will Entriken
  * @access public
@@ -59,7 +59,7 @@ require 'admin.inc';
               <select name="value1" id="inputTheme" class="form-control">
 <?php
 $feature = 'filestore';
-foreach ($cameralife->GetModules($feature) as $module) {
+foreach ($cameralife->getModules($feature) as $module) {
   echo "<option $selected value=\"$module\">";
   echo "<b>$module</b>";
   echo "</option>\n";

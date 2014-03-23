@@ -10,7 +10,7 @@
  *<code>{
    * list($photoid, $type) = split('XXX', $_GET['redirect']);
    * $photo = new Photo($photoid);
-   * header('Location: '.html_entity_decode($photo->GetMedia($type)));
+   * header('Location: '.html_entity_decode($photo->getMedia($type)));
    * exit(0);
  * }
 *</code>
@@ -31,7 +31,7 @@ session_start();
   if ($_GET['redirect']) {
     list($photoid, $type) = split('XXX', $_GET['redirect']);
     $photo = new Photo($photoid);
-    header('Location: '.html_entity_decode($photo->GetMedia($type)));
+    header('Location: '.html_entity_decode($photo->getMedia($type)));
     exit(0);
   }
 
@@ -170,19 +170,19 @@ session_start();
     $folder = new Folder(unescapeforgr($_POST['set_albumName']));
     $i=1;
 
-    foreach ($folder->GetPhotos() as $photo) {
-#      echo "image.name.$i=".$photo->GetMedia('photo')."\n";
+    foreach ($folder->getPhotos() as $photo) {
+#      echo "image.name.$i=".$photo->getMedia('photo')."\n";
       echo "image.name.$i=".$photo->Get('id')."XXXphoto\n";
       echo "image.raw_width.$i=".$photo->Get('width')."\n";
       echo "image.raw_height.$i=".$photo->Get('height')."\n";
       echo "image.raw_filesize.$i=".$photo->Get('fsize')."\n";
 
-#      echo "image.resizedName.$i=".$photo->GetMedia('scaled')."\n";
+#      echo "image.resizedName.$i=".$photo->getMedia('scaled')."\n";
       echo "image.resizedName.$i=".$photo->Get('id')."XXXscaled\n";
-      #echo "image.resized_width.$i=".$photo->Get('width')."\n";
-      #echo "image.resized_height.$i=".$photo->Get('height')."\n";
+      #echo "image.resized_width.$i=".$photo->get('width')."\n";
+      #echo "image.resized_height.$i=".$photo->get('height')."\n";
 
-#      echo "image.thumbName.$i=".$photo->GetMedia('thumb')."\n";
+#      echo "image.thumbName.$i=".$photo->getMedia('thumb')."\n";
       echo "image.thumbName.$i=".$photo->Get('id')."XXXthumbnail\n";
       echo "image.thumb_width.$i=".$photo->Get('tn_width')."\n";
       echo "image.thumb_height.$i=".$photo->Get('tn_height')."\n";
@@ -190,8 +190,8 @@ session_start();
       echo "image.caption.$i=".$photo->Get('description')."\n";
       echo "image.clicks.$i=".$photo->Get('hits')."\n";
 
-      #echo "image.forceExtension.$i=".$photo->Get('filename')."\n";
-      #echo "image.hidden.$i=".($photo->Get('status')>0?'true':'false')."\n";
+      #echo "image.forceExtension.$i=".$photo->get('filename')."\n";
+      #echo "image.hidden.$i=".($photo->get('status')>0?'true':'false')."\n";
       $i++;
     }
     echo "baseurl=".$cameralife->base_url."/gallery_remote2.php?redirect=\n";
@@ -254,7 +254,7 @@ session_start();
       if (!$error) {
         $temp = tempnam('', 'cameralife_');
         move_uploaded_file($_FILES['userfile']['tmp_name'], $temp)
-          or $cameralife->Error("Could not upload the photo, is the destination writable?");
+          or $cameralife->error("Could not upload the photo, is the destination writable?");
 
         $upload['filename'] = $filename;
         $upload['path'] = $path;

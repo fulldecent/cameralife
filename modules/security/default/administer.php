@@ -26,7 +26,7 @@
     else
       $cameralife->Database->Update('users',array('auth'=>$val),"id='$key'");
   }
-  $cameralife->SavePreferences();
+  $cameralife->savePreferences();
 
   public function html_select_auth($param_name)
   {
@@ -85,10 +85,10 @@
 <div id="header">
 <h1>Site Administration &ndash; Security Manager</h1>
 <?php
-$homeOpenGraph = $cameralife->GetOpenGraph();
+$homeOpenGraph = $cameralife->getOpenGraph();
 echo '<a href="'.htmlspecialchars($homeOpenGraph['og:url'])."\"><img src=\"".htmlspecialchars($homeOpenGraph['og:image']).htmlentities($homeOpenGraph['title'])."</a>\n";
 ?> |
-<a href="../../../admin/index.php"><img src="<?= $cameralife->IconURL('small-admin')?>">Site Administration</a>
+<a href="../../../admin/index.php"><img src="<?= $cameralife->iconURL('small-admin')?>">Site Administration</a>
 </div>
 
 <h2>
@@ -117,7 +117,7 @@ echo '<a href="'.htmlspecialchars($homeOpenGraph['og:url'])."\"><img src=\"".htm
         $count_photos = $cameralife->Database->SelectOne('photos','COUNT(*)',"username='".$curuser["username"]."'");
 
         echo "<tr><td>\n";
-        echo '<img src="'.$cameralife->IconURL('small-login').'">';
+        echo '<img src="'.$cameralife->iconURL('small-login').'">';
         echo $curuser["username"]."\n";
         echo "  <td><select name=\"".$curuser["id"]."\">\n";
         if($curuser["auth"] == 1)

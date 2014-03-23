@@ -1,15 +1,15 @@
 <?php
 /** View one topic page
- * NOTE: $cameralife and $topic are set by ShowPage()
+ * NOTE: $cameralife and $topic are set by showPage()
  *@author Will Entriken <cameralife@phor.net>
  *@copyright Copyright (c) 2001-2009 Will Entriken
  *@access public
  */
 
-$cameralife->GetFeature('security');
-$cameralife->GetFeature('filestore');
-$albums = $topic->GetAlbums();
-$counts = $topic->GetCounts();
+$cameralife->getFeature('security');
+$cameralife->getFeature('filestore');
+$albums = $topic->getAlbums();
+$counts = $topic->getCounts();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
 $cameralife->Theme->Header($topic);
@@ -37,7 +37,7 @@ $cameralife->Theme->Header($topic);
         <td>This album and others like it are:
         <td><select name="param1">
           <?php 
-            foreach (Topic::GetTopics() as $topic)
+            foreach (Topic::getTopics() as $topic)
             {
                   $thetopic = $topic->name;
                 $selected = ($album['topic'] == $thetopic) ? 'selected' : '';
@@ -52,7 +52,7 @@ $cameralife->Theme->Header($topic);
         <td>
         <td>
           <input type=submit name="action" value="Create">
-          <a href="search.php&#63;q=<?= urlencode($topic->GetName()) ?>">(cancel)</a>
+          <a href="search.php&#63;q=<?= urlencode($topic->getName()) ?>">(cancel)</a>
     </table>
   </div>
 <?php
@@ -68,7 +68,7 @@ $cameralife->Theme->Header($topic);
 <p>
   Sort by <select name="sort">
 <?php
-    $options = $topic->SortOptions();
+    $options = $topic->sortOptions();
     foreach($options as $option) {
       if (isset($option[2]))
         echo "    <option ".$option[2]." value=\"".$option[0]."\">".$option[1]."</option>\n";

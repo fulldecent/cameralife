@@ -61,7 +61,7 @@ class Photo extends View
   * <b>Required fields <var>filename</var>, <var>path</var>, <var>username</var></b>
   * Optional fields <var>status</var>, <var>description</var>, <var>fsize</var>, <var>created</var>
   */
-  public function Photo($original = NULL)
+  public function photo($original = NULL)
   {
     global $cameralife;
 
@@ -70,13 +70,13 @@ class Photo extends View
     } elseif (is_numeric($original)) { # This is an ID
       $result = $cameralife->Database->Select('photos','*', "id=$original");
       $this->record = $result->FetchAssoc()
-        or $cameralife->Error("Photo #$original not found", __FILE__, __LINE__);
+        or $cameralife->error("Photo #$original not found", __FILE__, __LINE__);
     } elseif (is_array($original)) { # A new image, given by an array
       $this->record['description'] = 'unnamed';
 
 //      if (!preg_match('/^dscn/i', $this->record['filename']) && 
 //        !preg_match('/^im/i', $this->record['filename'])) // useless filename
-//        $this->record['description'] = preg_replace('/.[^.]+$/', '', ucwords($photo->Get('filename')));
+//        $this->record['description'] = preg_replace('/.[^.]+$/', '', ucwords($photo->get('filename')));
 
       $this->record['status'] = '0';
       $this->record['created'] = date('Y-m-d');
@@ -98,12 +98,12 @@ class Photo extends View
       $this->extension = strtolower($path_parts['extension']);
   }
 
-  public static function PhotoExists($original)
+  public static function photoExists($original)
   {
     global $cameralife;
 
     if(!is_numeric($original))
-      $cameralife->Error("Input needs to be a number", __FILE__, __LINE__);
+      $cameralife->error("Input needs to be a number", __FILE__, __LINE__);
 
     $result = $cameralife->Database->Select('photos','*', "id=$original");
     $a = $result->FetchAssoc();
@@ -111,13 +111,13 @@ class Photo extends View
     return $a != 0;
   }
 
-  public function Set($key, $value)
+  public function set($key, $value)
   {
     global $cameralife;
 
     $receipt = NULL;
     if ($key != 'hits')
-      $receipt = AuditTrail::Log('photo',$this->record['id'],$key,$this->record[$key],$value);
+      $receipt = AuditTrail::log('photo',$this->record['id'],$key,$this->record[$key],$value);
     if ($key == 'status') {
       $fullpath = rtrim('/'.ltrim($this->record['path'],'/'),'/').'/'.$this->record['filename'];
       $cameralife->FileStore->SetPermissions('photo', $fullpath, $value!=0);
@@ -129,7 +129,7 @@ class Photo extends View
     return $receipt;
   }
 
-  public function Get($key)
+  public function get($key)
   {
     if (isset($this->record[$key]))
       return $this->record[$key];
@@ -137,8 +137,8 @@ class Photo extends View
       return null;
   }
 
-  /// Initialize the <var>$this->image</var> variable and collect fsize and $this->LoadEXIF if possible
-  public function LoadImage($onlyWantEXIF = false)
+  /// Initialize the <var>$this->image</var> variable and collect fsize and $this->loadEXIF if possible
+  public function loadImage($onlyWantEXIF = false)
   {
     global $cameralife;
 
@@ -148,31 +148,31 @@ class Photo extends View
     if (is_null($this->record['modified']) || $this->record['modified'] == 0 || $this->record['modified'] == '') {
       $this->record['fsize'] = filesize($file);
       $this->record['created'] = date('Y-m-d', $this->record['mtime']);
-      $this->LoadEXIF($file);
+      $this->loadEXIF($file);
     }
 
     if (!$onlyWantEXIF) {
       $this->image = $cameralife->ImageProcessing->CreateImage($file)
-        or $cameralife->Error("Bad photo load: $file",__FILE__,__LINE__);
-      if (!$this->image->Check()) $cameralife->Error("Bad photo processing: $file",__FILE__,__LINE__);
+        or $cameralife->error("Bad photo load: $file",__FILE__,__LINE__);
+      if (!$this->image->Check()) $cameralife->error("Bad photo processing: $file",__FILE__,__LINE__);
     }
     if ($temp) unlink($file);
   }
 
   /// Scale image to all needed sizes and save in file store, update image/tn sizes
   /// also update fsize if this is unmodified.
-  public function GenerateThumbnail()
+  public function generateThumbnail()
   {
     global $cameralife;
 
-    $this->LoadImage(); // sets $this->EXIF and $this-record
+    $this->loadImage(); // sets $this->EXIF and $this-record
     if (($cameralife->GetPref('autorotate') == 'yes') && ($this->record['modified'] == NULL || $this->record['modified'] == 0)) {
       if ($this->EXIF['Orientation'] == 3) {
-        $this->Rotate(180);
+        $this->rotate(180);
       } elseif ($this->EXIF['Orientation'] == 6) {
-        $this->Rotate(90);
+        $this->rotate(90);
       } elseif ($this->EXIF['Orientation'] == 8) {
-        $this->Rotate(270);
+        $this->rotate(270);
       }
     }
     $imagesize = $this->image->GetSize();
@@ -207,11 +207,11 @@ class Photo extends View
     $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
   }
 
-  public function Rotate($angle)
+  public function rotate($angle)
   {
     global $cameralife;
 
-    $this->LoadImage();
+    $this->loadImage();
     $this->image->Rotate($angle);
 
     $temp = tempnam($cameralife->GetPref('tempdir'), 'cameralife_');
@@ -223,7 +223,7 @@ class Photo extends View
     $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
   }
 
-  public function Revert()
+  public function revert()
   {
     global $cameralife;
 
@@ -237,10 +237,10 @@ class Photo extends View
     $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
   }
 
-  public function Erase()
+  public function erase()
   {
     global $cameralife;
-    $this->Set('status', 9);
+    $this->set('status', 9);
     /*
     $cameralife->Database->Delete('photos','id='.$this->record['id']);
     $cameralife->Database->Delete('logs',"record_type='photo' AND record_id=".$this->record['id']);
@@ -248,39 +248,39 @@ class Photo extends View
     $cameralife->Database->Delete('comments',"photo_id=".$this->record['id']);
     $cameralife->Database->Delete('exif',"photoid=".$this->record['id']);
     */
-    $this->Destroy();
+    $this->destroy();
   }
 
-  public function Destroy()
+  public function destroy()
   {
     if ($this->image)
       $this->image->Destroy();
   }
 
-  public function GetMediaURL($format='thumbnail')
+  public function getMediaURL($format='thumbnail')
   {
     global $cameralife;
     
     $url = NULL;
     if ($format == 'photo' || $format == '') {
-      if ($this->Get('modified'))
-        $url = $cameralife->FileStore->GetURL('other', '/'.$this->Get('id').'_mod.'.$this->extension);
+      if ($this->get('modified'))
+        $url = $cameralife->FileStore->GetURL('other', '/'.$this->get('id').'_mod.'.$this->extension);
       else
-        $url = $cameralife->FileStore->GetURL('photos', '/'.$this->Get('path').$this->Get('filename'));
+        $url = $cameralife->FileStore->GetURL('photos', '/'.$this->get('path').$this->get('filename'));
     }
     elseif ($format == 'scaled')
-      $url = $cameralife->FileStore->GetURL('other', '/'.$this->Get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$this->extension);
+      $url = $cameralife->FileStore->GetURL('other', '/'.$this->get('id').'_'.$cameralife->GetPref('scaledsize').'.'.$this->extension);
     elseif ($format == 'thumbnail')
-      $url = $cameralife->FileStore->GetURL('other', '/'.$this->Get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$this->extension);
+      $url = $cameralife->FileStore->GetURL('other', '/'.$this->get('id').'_'.$cameralife->GetPref('thumbsize').'.'.$this->extension);
     elseif (is_numeric($format)) {
       $valid = preg_split('/[, ]+/',$cameralife->GetPref('optionsizes'));
       if (in_array($format, $valid))
-        $url = $cameralife->FileStore->GetURL('other', '/'.$this->Get('id').'_'.$format.'.'.$this->extension);
+        $url = $cameralife->FileStore->GetURL('other', '/'.$this->get('id').'_'.$format.'.'.$this->extension);
       else
-        $cameralife->Error('This image size has not been allowed');
+        $cameralife->error('This image size has not been allowed');
     } 
     else
-      $cameralife->Error('Bad format parameter');
+      $cameralife->error('Bad format parameter');
     
     if ($url)
       return $url;
@@ -291,17 +291,17 @@ class Photo extends View
       return $cameralife->base_url.'/media.php?id='.$this->record['id']."&size=$format&ver=".($this->record['mtime']+0);
   }
   /// DEPRECATED
-  public function GetMedia($size='thumbnail')
+  public function getMedia($size='thumbnail')
   {
-    return htmlentities($this->GetMediaURL($size));
+    return htmlentities($this->getMediaURL($size));
   }
 
-  public function GetFolder()
+  public function getFolder()
   {
     return new Folder($this->record['path'], FALSE);
   }
 
-  public function GetEXIF()
+  public function getEXIF()
   {
     global $cameralife;
 
@@ -316,7 +316,7 @@ class Photo extends View
     return $this->EXIF;
   }
 
-  public function LoadEXIF($file)
+  public function loadEXIF($file)
   {
     global $cameralife;
 
@@ -411,12 +411,12 @@ class Photo extends View
   }
 
   /**
-   * GetRelated function
+   * getRelated function
    * 
    * @access public
    * @return array - set of views that contain this photo
    */
-  public function GetRelated()
+  public function getRelated()
   {
     global $_SERVER, $cameralife;
 
@@ -437,9 +437,9 @@ class Photo extends View
     }
 
     // Find all albums that contain this photo, this is not 100%
-    $result = $cameralife->Database->Select('albums','id,name',"'".addslashes($this->Get('description'))."' LIKE CONCAT('%',term,'%')");
+    $result = $cameralife->Database->Select('albums','id,name',"'".addslashes($this->get('description'))."' LIKE CONCAT('%',term,'%')");
     while ($albumrecord = $result->FetchAssoc()) {
-      if (($this->context instanceof Album) && $this->context->Get('id') == $albumrecord['id']) // PHP5
+      if (($this->context instanceof Album) && $this->context->get('id') == $albumrecord['id']) // PHP5
         continue;
       $album = new Album($albumrecord['id']);
       $retval[] = $album;
@@ -454,15 +454,15 @@ class Photo extends View
       $this->context = $search;
     } else {
       // Find all photos named exactly like this
-      $search = new Search($this->Get('description'));
-      $counts = $search->GetCounts();
+      $search = new Search($this->get('description'));
+      $counts = $search->getCounts();
       if ($counts['photos'] > 1) {
         $retval[] = $search;
       }
     }
 
-    if (strlen($this->Get('path')) > 0) {
-      $folder = $this->GetFolder();
+    if (strlen($this->get('path')) > 0) {
+      $folder = $this->getFolder();
       $retval[] = $folder;
       if (!$this->context) {
         $this->context = $folder;
@@ -487,10 +487,10 @@ class Photo extends View
     return floatval($parts[0]) / floatval($parts[1]);
   }
 
-  public function GetContext()
+  public function getContext()
   {
     if (!$this->context)
-      $this->GetRelated();
+      $this->getRelated();
 
     if (!count($this->contextPhotos)) {
       $this->context->SetPage(0,99);
@@ -498,9 +498,9 @@ class Photo extends View
       $this->contextPhotos = $this->context->GetPhotos(); /* Using the base class, how hot is that? */
       $last = new Photo();
       foreach ($this->contextPhotos as $cur) {
-        if ($cur->Get('id') == $this->Get('id') && $last->Get('id'))
+        if ($cur->Get('id') == $this->get('id') && $last->get('id'))
           $this->contextPrev = $last;
-        if ($last->Get('id') == $this->Get('id'))
+        if ($last->get('id') == $this->get('id'))
           $this->contextNext = $cur;
         $last = $cur;
       }
@@ -510,22 +510,22 @@ class Photo extends View
     return $this->contextPhotos;
   }
 
-  public function GetPrevious()
+  public function getPrevious()
   {
     if (!count($this->contextPhotos))
-      $this->GetContext();
+      $this->getContext();
     return $this->contextPrev;
   }
 
   // returns the next photo or false if none exists
-  public function GetNext()
+  public function getNext()
   {
     if (!count($this->contextPhotos))
-      $this->GetContext();
+      $this->getContext();
     return $this->contextNext;
   }
 
-  public function GetOpenGraph()
+  public function getOpenGraph()
   {
     global $cameralife;
     $retval = array();
@@ -534,7 +534,7 @@ class Photo extends View
     $retval['og:url'] = $cameralife->base_url.'/photos/'.$this->record['id'];
     if ($cameralife->GetPref('rewrite') == 'no')
       $retval['og:url'] = $cameralife->base_url.'/photo.php?id='.$this->record['id'];
-    $retval['og:image'] = $this->GetMediaURL('thumbnail');
+    $retval['og:image'] = $this->getMediaURL('thumbnail');
     $retval['og:image:type'] = 'image/jpeg';
     $retval['og:image:width'] = $this->record['tn_width'];
     $retval['og:image:height'] = $this->record['tn_height'];

@@ -13,8 +13,9 @@ class Database
   var $myPrefix;
   var $myDBH;
 
-  function Database()
+  function database()
   {
+//TODO don't use global here
     global $cameralife, $db_host, $db_user, $db_pass, $db_name, $db_prefix;
 
     try 
@@ -24,14 +25,14 @@ class Database
     }
     catch(Exception $e)
     {
-      $cameralife->Error('Database error: '.htmlentities($e->getMessage()));
+      $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
   }
 
   /** 
    * SELECT $selection FROM $table [WHERE $condition] [$extra]
    */
-  function Select ($table, $selection='*', $condition='1', $extra='', $joins='', $bind=array())
+  function select ($table, $selection='*', $condition='1', $extra='', $joins='', $bind=array())
   {
     global $cameralife;
     if (!$condition) $condition = '1';
@@ -52,7 +53,7 @@ class Database
     }
     catch(Exception $e)
     {
-      $cameralife->Error('Database error: '.htmlentities($e->getMessage()));
+      $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
     return new PDOIterator($stmt);
   }
@@ -60,7 +61,7 @@ class Database
   /**
   * SELECT $selection FROM $table [WHERE $condition] [$extra]
   */
-  function SelectOne ($table, $selection, $condition='1', $extra='', $joins='', $bind=array())
+  function selectOne ($table, $selection, $condition='1', $extra='', $joins='', $bind=array())
   {
     global $cameralife;
     if (!$condition) $condition = '1';
@@ -83,12 +84,12 @@ class Database
     }
     catch(Exception $e)
     {
-      $cameralife->Error('Database error: '.htmlentities($e->getMessage()));
+      $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
     return $result[0];
   }
   
-  function Update ($table, $values, $condition='1', $extra='')
+  function update ($table, $values, $condition='1', $extra='')
   {
     global $cameralife;
     $setstring = '';
@@ -106,12 +107,12 @@ class Database
     }
     catch(Exception $e)
     {
-      $cameralife->Error('Database error: '.htmlentities($e->getMessage()));
+      $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
     return $stmt->rowCount();
   }
 
-  function Insert ($table, $values, $extra='')
+  function insert ($table, $values, $extra='')
   {
     global $cameralife;
     $setstring = '';
@@ -129,12 +130,12 @@ class Database
     }
     catch(Exception $e)
     {
-      $cameralife->Error('Database error: '.htmlentities($e->getMessage()));
+      $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
     return $this->myDBH->lastInsertId();
   }
 
-  function Delete ($table, $condition='1', $extra='', $bind=array())
+  function delete ($table, $condition='1', $extra='', $bind=array())
   {
     global $cameralife;
     $sql = "DELETE FROM ".$this->myPrefix."$table WHERE $condition $extra";
@@ -149,7 +150,7 @@ class Database
     }
     catch(Exception $e)
     {
-      $cameralife->Error('Database error: '.htmlentities($e->getMessage()));
+      $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
     return $stmt->rowCount();
   }
@@ -167,7 +168,7 @@ class PDOIterator
     $this->myResult = $mysql_result;
   }
 
-  function FetchAssoc () 
+  function fetchAssoc ()
   {
     return $this->myResult->fetch(PDO::FETCH_ASSOC);
   }

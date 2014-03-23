@@ -27,15 +27,15 @@ class Folder extends Search
   */
 
 //TODO REMOVE THE SYNC AND DATE PARAM
-  public function Folder($path='/', $sync=FALSE, $date=NULL)
+  public function folder($path='/', $sync=FALSE, $date=NULL)
   {
     global $cameralife;
     $this->path = $path;
     if (!strlen($path)) $this->path='/';
     $this->date = $date;
 
-    if($sync && !$this->Fsck())
-      Folder::Update();
+    if($sync && !$this->fsck())
+      Folder::update();
 
     Search::Search('');
 //todo use bind here, add a bind parameter to Search
@@ -44,7 +44,7 @@ class Folder extends Search
     @$this->mySearchFolderCondition = "path LIKE '".mysql_real_escape_string($this->path)."/%' AND path NOT LIKE '".mysql_real_escape_string($this->path)."/%/'";
   }
 
-  public function GetPrevious()
+  public function getPrevious()
   {
     global $cameralife;
     if ($this->myStart > 0) {
@@ -58,7 +58,7 @@ class Folder extends Search
     return NULL;
   }
 
-  public function GetAncestors()
+  public function getAncestors()
   {
     $retval = array();
     $path = $this->path;
@@ -72,7 +72,7 @@ class Folder extends Search
   /**
    * @return some decentants, or all if count==0
    */
-  public function GetDescendants($count = 0)
+  public function getDescendants($count = 0)
   {
     global $cameralife;
     switch ($this->mySort) {
@@ -97,7 +97,8 @@ class Folder extends Search
     return $result;
   }
 
-  public function GetChildren()
+//TODO SHOULD JUST BE FROM SUPERCLASS
+  public function getChildren()
   {
     global $cameralife;
     switch ($this->mySort) {
@@ -123,17 +124,17 @@ class Folder extends Search
   }
 
 //TODO: NO ENTITIES
-  public function Path()
+  public function path()
   {
     return htmlentities($this->path);
   }
 
-  public function Basename()
+  public function basename()
   {
     return basename(htmlentities($this->path));
   }
 
-  public function Dirname()
+  public function dirname()
   {
     return dirname(htmlentities($this->path));
   }
@@ -155,7 +156,7 @@ class Folder extends Search
    * Tries very hard to avoid creating a new record and deleting an old if in fact the 
    * photo was simply moved.
    */
-  public static function Update()
+  public static function update()
   {
     global $cameralife;
 
@@ -181,10 +182,10 @@ class Folder extends Search
           if ($actualsize != $photo['fsize']) {
             $retval[] = "$photopath was changed, flushing cache";
             $photoObj = new Photo($photo['id']);
-            $photoObj->Revert();
-            $photoObj->LoadImage(true); // TRUE == onlyWantEXIF
-            $photoObj->Revert(); // saves $photo->record
-            $photoObj->Destroy();
+            $photoObj->revert();
+            $photoObj->loadImage(true); // TRUE == onlyWantEXIF
+            $photoObj->revert(); // saves $photo->record
+            $photoObj->destroy();
           }
         }
         unset ($filesInStoreNotYetMatchedToDB[$photopath]);
@@ -294,7 +295,7 @@ class Folder extends Search
       $retval[] = "$photopath was deleted from filesystem";
       $photoObj = new Photo($photo['id']);
 var_dump($filesInStoreNotYetMatchedToDB, $photopath);      
-      $photoObj->Erase();
+      $photoObj->erase();
     }
 
     /**
@@ -345,7 +346,7 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
       $retval[] = "Added $new_file\n";
 
       $photoObj = new Photo(array('filename'=>$newbase, 'path'=>$newpath));
-      $photoObj->Destroy();
+      $photoObj->destroy();
     }
 
     return $retval;
@@ -356,7 +357,7 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
   *
   * @return true or false
   */
-  public function Fsck()
+  public function fsck()
   {
     global $cameralife;
     $files = $cameralife->FileStore->ListFiles('photo', $this->path, FALSE);
@@ -398,7 +399,7 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
     return (count($fsphotos) + count($fsdirs) == 0);
   }
 
-  public function GetOpenGraph()
+  public function getOpenGraph()
   {
     global $cameralife;
     $retval = array();
@@ -410,7 +411,7 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
     $retval['og:url'] = $cameralife->base_url.'/folders'.str_replace(" ","%20",$this->path); 
     if ($cameralife->GetPref('rewrite') == 'no')
       $retval['og:url'] = $cameralife->base_url.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
-    $retval['og:image'] = $cameralife->IconURL('folder');
+    $retval['og:image'] = $cameralife->iconURL('folder');
     $retval['og:image:type'] = 'image/png';
     //$retval['og:image:width'] = 
     //$retval['og:image:height'] = 

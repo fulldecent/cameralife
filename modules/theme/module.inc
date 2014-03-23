@@ -20,6 +20,6 @@
     *  @param string $name the name of the page
     *  @param mixed $object any extra data
     */
-    function ShowPage($name, $object=NULL) {}
+    function showPage($name, $object=NULL) {}
   }
 ?>

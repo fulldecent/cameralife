@@ -21,8 +21,9 @@ class AuditTrail
    * @param string $value_field field being changed
    * @param string $value_old old field value
    * @param string $value_new new field value
+   * @return Receipt of the action performed
    */
-  public function Log($record_type, $record_id, $value_field, $value_old, $value_new)
+  public function log($record_type, $record_id, $value_field, $value_old, $value_new)
   {
     global $user, $_SERVER, $cameralife;
     if ($value_old==$value_new) return;
@@ -39,12 +40,12 @@ class AuditTrail
   }
 
   /**
-   * Revert Camera Life to the state before the specified action took effect
+   * revert Camera Life to the state before the specified action took effect
    *
    * This also removes said action from the logs.
    * @param int $id is the ID of the receipt representing action to revert
    */
-  public function Undo($id)
+  public function undo($id)
   {
     global $cameralife;
 
@@ -53,7 +54,7 @@ class AuditTrail
       $receipt = $result->FetchAssoc();
     }
     if (!is_array($receipt))
-      $cameralife->Error('Invalid receipt.');
+      $cameralife->error('Invalid receipt.');
 
     $condition = 'record_id='.$receipt['record_id'];
     $condition .= " AND record_type='".$receipt['record_type']."'";
@@ -91,10 +92,10 @@ class AuditTrail
           if ($result)
             $oldvalue = $result['id'];
           else
-            $cameralife->Error("Cannot find a poster for the album #".$record['record_id'], __FILE__, __LINE__);
+            $cameralife->error("Cannot find a poster for the album #".$record['record_id'], __FILE__, __LINE__);
           break;
         default:
-          $cameralife->Error("I don't know how to undo the parameter ".$receipt['record_type'].'_'.$receipt['value_field'], __FILE__, __LINE__);
+          $cameralife->error("I don't know how to undo the parameter ".$receipt['record_type'].'_'.$receipt['value_field'], __FILE__, __LINE__);
       }
     }
 
@@ -117,20 +118,20 @@ class Receipt
   public $myRecord;
 
   /// Retrieves a recepit from the database. Receipt records are created by Log().
-  public function Receipt($id)
+  public function receipt($id)
   {
     global $cameralife;
 
     if (!is_numeric($id))
-      $cameralife->Error("Invalid receipt id", __FILE__, __LINE__);
+      $cameralife->error("Invalid receipt id", __FILE__, __LINE__);
     $result = $cameralife->Database->Select('logs', '*', 'id='.$id);
     $this->myRecord = $result->FetchAssoc();
     if (!is_array($this->myRecord))
-      $cameralife->Error("Invalid receipt id #$id", __FILE__, __LINE__);
+      $cameralife->error("Invalid receipt id #$id", __FILE__, __LINE__);
   }
 
   /// Returns true if this receipt represents the most recent change to the affected record
-  public function IsValid()
+  public function isValid()
   {
     global $cameralife;
 
@@ -144,12 +145,12 @@ class Receipt
     return ($new['id'] == $this->myRecord['id']);
   }
 
-  public function Get($item)
+  public function get($item)
   {
     return $this->myRecord[$item];
   }
 
-  public function GetDescription()
+  public function getDescription()
   {
     if ($this->myRecord['record_type']=='photo' && $this->myRecord['value_field'] == 'description')
       return 'The description has been updated.';
@@ -158,7 +159,7 @@ class Receipt
     return 'Action completed.';
   }
 
-  public function GetObject()
+  public function getObject()
   {
     if ($this->myRecord['record_type']=='photo')
       return new Photo($this->myRecord['record_id']);
@@ -172,7 +173,7 @@ class Receipt
   }
 
   // Returns all receipts from this back to the beginning
-  public function GetChain($checkpoint=-1)
+  public function getChain($checkpoint=-1)
   {
     global $cameralife;
     $retval = array();
@@ -190,7 +191,7 @@ class Receipt
 
   // Finds the previous record value
   // returns: {value:OLDVALUE,fromReceipt:TRUE|FALSE}
-  public function GetOld()
+  public function getOld()
   {
     global $cameralife;
 
@@ -225,10 +226,10 @@ class Receipt
           if ($result)
             return array('value'=>$result['id'], 'fromReceipt'=>FALSE);
           else
-            $cameralife->Error("Cannot find a poster for the album #".$this->myRecord['record_id'], __FILE__, __LINE__);
+            $cameralife->error("Cannot find a poster for the album #".$this->myRecord['record_id'], __FILE__, __LINE__);
           break;
         default:
-          $cameralife->Error("I don't know how to undo the parameter ".$this->myRecord['record_type'].'_'.$this->myRecord['value_field'], __FILE__, __LINE__);
+          $cameralife->error("I don't know how to undo the parameter ".$this->myRecord['record_type'].'_'.$this->myRecord['value_field'], __FILE__, __LINE__);
       }
     }
   }

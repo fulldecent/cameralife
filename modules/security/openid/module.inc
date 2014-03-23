@@ -82,7 +82,7 @@
     }
 
 
-    function LoginURL () 
+    function loginURL ()
     { 
       global $cameralife;
       return $cameralife->base_url."/modules/security/openid/login.php";
@@ -124,7 +124,7 @@
     *@return true | exit URL if you really want to quit the cameralife site
     */
     
-    function Logout ()
+    function logout ()
     {
       global $cameralife;
       setcookie($this->GetPref('auth_cookie'),'',time(),'/');
@@ -136,7 +136,7 @@
      *  Or 
      *@return FALSE if the user is not allowed to administer.
      */
-    function AdministerURL () 
+    function administerURL ()
     { 
       global $cameralife;
       if ($this->authorize('admin_file') ||
@@ -149,7 +149,7 @@
     /* Returns the current user's name or the empty string if not logged in */
     /**@return the current user's name or the empty string if not logged in 
     */
-    function GetName () 
+    function getName ()
     { 
       if (!isset($this->curuser))
         $this->GetCurUser();
@@ -166,7 +166,7 @@
     * This function must at least support the actions named in the README file, of the directory of the file you are currently reading at this
     * time.
     */
-    function Authorize ($auth_name, $required=false) 
+    function authorize ($auth_name, $required=false)
     {
       global $cameralife;
 
@@ -175,7 +175,7 @@
         $this->GetCurUser();
 
       if (NULL == ($this->GetPref($auth_name)))
-        $cameralife->Error("The privilege $auth_name does not exist.", __FILE__, __LINE__);
+        $cameralife->error("The privilege $auth_name does not exist.", __FILE__, __LINE__);
 
       if ($this->curuser['auth'] < $this->GetPref($auth_name) && $required)
       {
@@ -193,7 +193,7 @@
           $error.= "<p>You may attempt to <a href='".$cameralife->base_url."/login.php'>log in here,</a>\n";
           $error.= "<p>Do you have cookies disabled?</p>\n";
         }
-        $cameralife->Error($error);
+        $cameralife->error($error);
       }
 
       return ($this->curuser['auth'] >= $this->GetPref($auth_name));

@@ -52,7 +52,7 @@ require 'admin.inc';
             <select name="value1" id="inputTheme" class="input-xxlarge">
 <?php
 $feature = 'theme';
-foreach ($cameralife->GetModules($feature) as $module) {
+foreach ($cameralife->getModules($feature) as $module) {
   $info = json_decode(file_get_contents($cameralife->base_dir."/modules/$feature/$module/module-info.json"));
   $selected = $cameralife->GetPref($feature) == basename($module) ? 'selected' : '';
   echo "<option $selected value=\"{$module}\">";
@@ -70,7 +70,7 @@ foreach ($cameralife->GetModules($feature) as $module) {
             <select name="value2" id="inputIconset" class="input-xxlarge">
 <?php
 $feature = 'iconset';
-foreach ($cameralife->GetModules($feature) as $module) {
+foreach ($cameralife->getModules($feature) as $module) {
   $info = json_decode(file_get_contents($cameralife->base_dir."/modules/$feature/$module/module-info.json"));
   $selected = $cameralife->GetPref($feature) == basename($module) ? 'selected' : '';
   echo "<option $selected value=\"{$module}\">";

@@ -8,14 +8,14 @@
 $features=array('theme','security','filestore');
 require 'main.inc';
 
-if (!Photo::PhotoExists($_GET['id'])) {
+if (!Photo::photoExists($_GET['id'])) {
   header("HTTP/1.0 404 Not Found");
-  $cameralife->Error("Photo #".($original+1)." not found.", __FILE__, __LINE__);
+  $cameralife->error("Photo #".($original+1)." not found.", __FILE__, __LINE__);
 }
 
 $photo = new Photo($_GET['id']);
-if ($photo->Get('status') != 0)
+if ($photo->get('status') != 0)
   $cameralife->Security->authorize('admin_file', 'This file has been flagged or marked private');
-$photo->Set('hits', $photo->Get('hits') + 1);
+$photo->set('hits', $photo->get('hits') + 1);
 
-$photo->ShowPage();
+$photo->showPage();

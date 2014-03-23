@@ -19,9 +19,9 @@ foreach ($_POST as $key=>$val) {
   if (!is_int($key)) continue;
   $curphoto = new Photo($key);
   if ($val>=0 && $val<=3)
-    $curphoto->Set('status', $val);
+    $curphoto->set('status', $val);
   else // Erased file
-    $curphoto->Erase();
+    $curphoto->erase();
 }
 ?>
 <!DOCTYPE html>
@@ -86,8 +86,8 @@ if ($_GET['page'] !== 'update') { // Show stuff
 
   $search = new Search('');
   $search->mySearchPhotoCondition = "status=$target_status OR 0";
-  $search->SetPage(0, 9999);
-  $photos = $search->GetPhotos();
+  $search->setPage(0, 9999);
+  $photos = $search->getPhotos();
   echo '<div class="thumbnails">';
   $i=0;
   foreach ($photos as $photo) {
@@ -116,7 +116,7 @@ if ($_GET['page'] !== 'update') { // Show stuff
   echo "<p>Updating the database to reflect any changes to the FileStore...</p>\n<ol>\n";
   flush();
 
-  $output = Folder::Update();
+  $output = Folder::update();
   foreach($output as $line)
     echo "<li>$line</li>\n";
 

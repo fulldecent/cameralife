@@ -1,27 +1,27 @@
 <?php
 /** Indexing of photos
  *
- * NOTE: $cameralife set by ShowPage()
+ * NOTE: $cameralife set by showPage()
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public
  */
 
-$cameralife->GetFeature('security');
-$cameralife->GetFeature('filestore');
+$cameralife->getFeature('security');
+$cameralife->getFeature('filestore');
 $cameralife->Theme->Header($cameralife);
 
 $_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 'rand';
 list($sort,$type) = explode('-', $_GET['page'].'-');
 $search = new Search('');
-$search->SetPage(0, 11);
-$search->SetSort($sort); # rand, newest, newest-folders, unpopular
-$counts = $search->GetCounts();
+$search->setPage(0, 11);
+$search->setSort($sort); # rand, newest, newest-folders, unpopular
+$counts = $search->getCounts();
 
 if ($type == 'folders')
-    $results = $search->GetFolders();
+    $results = $search->getFolders();
 else
-    $results = $search->GetPhotos();
+    $results = $search->getPhotos();
 
 if ($counts['photos'] == 0)
     echo '<div class="alert alert-success"><strong>Note!</strong> Camera Life has been successfully installed on this site. There are currently no photos on this site. For more information on setting up this site and adding photos, see <a href="setup/index3.php"><strong>the Setup page</strong></a>.</div>';
@@ -59,9 +59,9 @@ foreach ($results as $result) {
     <table class="table">
 <?php
         $root = new Folder();
-        $rootOpenGraph = $root->GetOpenGraph();
-        $root->SetSort('newest');
-        $folders = $root->GetDescendants($cameralife->Theme->GetPref('main_folders_n'));
+        $rootOpenGraph = $root->getOpenGraph();
+        $root->setSort('newest');
+        $folders = $root->getDescendants($cameralife->Theme->GetPref('main_folders_n'));
 
         foreach ($folders as $folder)
         {
@@ -93,7 +93,7 @@ foreach ($results as $result) {
     <table class="table">
 <?php
 
-        foreach (Topic::GetTopics() as $topic)
+        foreach (Topic::getTopics() as $topic)
         {
           $openGraph = $topic->GetOpenGraph();
           echo "<tr><td><h3><a href=\"".htmlentities($openGraph['og:url'])."\">";

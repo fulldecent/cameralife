@@ -29,7 +29,7 @@ class LocalFileStore extends FileStore
   } 
 
   /** 
-   * GetURL
+   * getURL
    * We don't not have special URLs to access the photos. 
    * The parent class defaults to returning FALSE.
    */
@@ -46,7 +46,7 @@ class LocalFileStore extends FileStore
    *
    * If temporary is TRUE, the caller is responsible for deleting this file when done.
    */
-  function GetFile($bucket, $path)
+  function getFile($bucket, $path)
   {
     global $cameralife;
     $fullpath = '';
@@ -57,10 +57,10 @@ class LocalFileStore extends FileStore
     else if ($bucket == 'deleted')
       $fullpath = $this->DeletedDir.$path;
     else
-      $cameralife->Error("The FileStore bucket <b>$bucket</b> is invalid");
+      $cameralife->error("The FileStore bucket <b>$bucket</b> is invalid");
 
     if (!file_exists($fullpath))
-      $cameralife->Error("The FileStore file cannot be found");
+      $cameralife->error("The FileStore file cannot be found");
 
     return array($fullpath, FALSE, filemtime($fullpath));
   }
@@ -74,7 +74,7 @@ class LocalFileStore extends FileStore
    * @param $secure - if secure, ensure this file will not be publicly accessible
    * @return none
    */
-  function PutFile($bucket, $path, $file, $secure=0)
+  function putFile($bucket, $path, $file, $secure=0)
   {
     global $cameralife;
     $fullpath = '';
@@ -85,7 +85,7 @@ class LocalFileStore extends FileStore
     else if ($bucket == 'deleted')
       $fullpath = $this->DeletedDir.$path;
     else
-      $cameralife->Error("The FileStore bucket <b>$bucket</b> is invalid");
+      $cameralife->error("The FileStore bucket <b>$bucket</b> is invalid");
     
     @mkdir(dirname($fullpath, 0666, true));
     rename($file, $fullpath);
@@ -100,21 +100,21 @@ class LocalFileStore extends FileStore
    * @param $secure - if secure, ensure this file will not be publicly accessible
    * @return none
    */
-  function SetPrivate($bucket, $path, $secure)
+  function setPrivate($bucket, $path, $secure)
   {
 die('NOT YET');
     return;
   }
 
   /**
-   * Erase a file
+   * erase a file
    *
    * @param $bucket - one of ('photo', 'other')
    * @param $path - the location of the stored file, starts with '/'
    *
    * @return none
    */
-  function EraseFile($bucket, $path)
+  function eraseFile($bucket, $path)
   {
     global $cameralife;
     $fullpath = '';
@@ -125,7 +125,7 @@ die('NOT YET');
     else if ($bucket == 'deleted')
       $fullpath = $this->DeletedDir.$path;
     else
-      $cameralife->Error("The FileStore bucket <b>$bucket</b> is invalid");
+      $cameralife->error("The FileStore bucket <b>$bucket</b> is invalid");
     unlink($fullpath);
   }
 
@@ -137,7 +137,7 @@ die('NOT YET');
    * @param $recursive - whether to list recursively
    * @return an array of files, in the form 'path'=>basename(path)
    */
-  function ListFiles($bucket, $path='/', $recursive=TRUE)
+  function listFiles($bucket, $path='/', $recursive=TRUE)
   {
     global $cameralife;
     $fullpath = '';
@@ -148,7 +148,7 @@ die('NOT YET');
     else if ($bucket == 'deleted')
       $fullpath = $this->DeletedDir.$path;
     else
-      $cameralife->Error("The FileStore bucket <b>$bucket</b> is invalid");
+      $cameralife->error("The FileStore bucket <b>$bucket</b> is invalid");
 
     #FEATURE // add " NOCL" to the end of a folder to exclude it
     if (strpos($path, ' NOCL') !== FALSE)
@@ -169,11 +169,11 @@ die('NOT YET');
       closedir($dir);
       sort($children);
       foreach($children as $child)
-        $retval += $this->ListFiles($bucket, $child, TRUE);
+        $retval += $this->listFiles($bucket, $child, TRUE);
     }
     else
     {
-      $cameralife->Error('Failed to open file directory');
+      $cameralife->error('Failed to open file directory');
     }
     return $retval;
   }

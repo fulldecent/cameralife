@@ -28,7 +28,7 @@
 
   if ($_POST['action'] != 'Create')
     $album = new Album($_POST['id'])
-      or $cameralife->Error('this album does not exist');
+      or $cameralife->error('this album does not exist');
 
   if ($_POST['action'] == "Create") {
     $cameralife->Security->authorize('admin_albums',1);
@@ -50,7 +50,7 @@
     if ($result)
         $poster_id = $result['id'];
     else
-        $cameralife->Error("There are no matching photos. Please create an album only after adding photos that can go in it.");
+        $cameralife->error("There are no matching photos. Please create an album only after adding photos that can go in it.");
 
     $album_record = array('topic'=>$topic, 'name'=>$name, 'term'=>$term, 'poster_id'=>$poster_id);
     $newId = $cameralife->Database->Insert('albums',$album_record);
@@ -64,23 +64,23 @@
     if ($topic == 'othertopic')
       $topic = $_POST['param3'];
 
-    $album->Set('name', $_POST['param1']);
-    $album->Set('topic', $topic);
+    $album->set('name', $_POST['param1']);
+    $album->set('topic', $topic);
   } elseif ($_POST['action'] == "Delete") {
     $cameralife->Security->authorize('admin_albums',1);
-    $album->Erase();
+    $album->erase();
 
     if ($_POST['target'] != 'ajax') {
       // Are there other albums in this topic?
-      $total = $cameralife->Database->SelectOne('albums','COUNT(*)',"topic='".$album->Get('topic')."'");
+      $total = $cameralife->Database->SelectOne('albums','COUNT(*)',"topic='".$album->get('topic')."'");
       if ($total)
-        $_POST['target'] = $cameralife->base_url.'/topic.php?name='.$album->Get('topic');
+        $_POST['target'] = $cameralife->base_url.'/topic.php?name='.$album->get('topic');
       else
         $_POST['target'] = $cameralife->base_url.'/index.php';
     }
   } elseif ($_POST['action'] == 'Poster') {
     $cameralife->Security->authorize('admin_albums',1);
-    $album->Set('poster_id', $_POST['param1']);
+    $album->set('poster_id', $_POST['param1']);
   }
 
   if ($_POST['target'] == 'ajax')
