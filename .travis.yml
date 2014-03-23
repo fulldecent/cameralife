@@ -34,12 +34,12 @@ script:
   ## PHP Copy/Paste Detector
   - php phpcpd.phar --verbose .
   ## PHP Mess Detector
-  - phpmd . text cleancode
-  - phpmd . text codesize
-  - phpmd . text controversial
-  - phpmd . text design
-  - phpmd . text naming
-  - phpmd . text unusedcode
+  - phpmd . text cleancode --exclude lightopenid
+  - phpmd . text codesize --exclude lightopenid
+  - phpmd . text controversial --exclude lightopenid
+  - phpmd . text design --exclude lightopenid
+  - phpmd . text naming --exclude lightopenid
+  - phpmd . text unusedcode --exclude lightopenid
   ## PHPLOC
   - php phploc.phar .
 
