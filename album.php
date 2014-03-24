@@ -1,12 +1,12 @@
 <?php
 /**
-* Displays an album page
-* @author Will Entriken <cameralife@phor.net>
-* @copyright Copyright (c) 2001-2009 Will Entriken
-* @access public
-*/
+ * Displays an album page
+ * @author Will Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @access public
+ */
 
-$features=array('theme');
+$features = array('theme');
 require 'main.inc';
 
 $album = new Album($_GET['id']);

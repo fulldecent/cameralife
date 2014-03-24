@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Topic class.
  *
@@ -9,54 +10,56 @@
  */
 class Topic extends Search
 {
-  public $name;
+    public $name;
 
-  public function __construct($name)
-  {
-    global $cameralife;
-    parent::__construct();
-    $this->name = $name;
+    public function __construct($name)
+    {
+        global $cameralife;
+        parent::__construct();
+        $this->name = $name;
 
-    $this->mySearchAlbumCondition = "topic = '".mysql_real_escape_string($this->name)."'";
-    $this->mySearchPhotoCondition = "FALSE";
-    $this->mySearchFolderCondition = "FALSE";
-  }
+        $this->mySearchAlbumCondition = "topic = '" . mysql_real_escape_string($this->name) . "'";
+        $this->mySearchPhotoCondition = "FALSE";
+        $this->mySearchFolderCondition = "FALSE";
+    }
 
 //TODO DEPRECATED?
-  public function getName()
-  {
-    return htmlentities($this->name);
-  }
+    public function getName()
+    {
+        return htmlentities($this->name);
+    }
 
-  public function get($item)
-  {
-    return $this->$item;
-  }
+    public function get($item)
+    {
+        return $this->$item;
+    }
 
-  public static function getTopics()
-  {
-    global $cameralife;
-    $retval = array();
-    $result = $cameralife->database->Select('albums','DISTINCT topic');
-    while ($topic = $result->FetchAssoc())
-      $retval[] = new Topic($topic['topic']);
+    public static function getTopics()
+    {
+        global $cameralife;
+        $retval = array();
+        $result = $cameralife->database->Select('albums', 'DISTINCT topic');
+        while ($topic = $result->FetchAssoc()) {
+            $retval[] = new Topic($topic['topic']);
+        }
 
-    return $retval;
-  }
+        return $retval;
+    }
 
-  public function getOpenGraph()
-  {
-    global $cameralife;
-    $retval = array();
-    $retval['og:title'] = $this->name;
-    $retval['og:type'] = 'website';
-    $retval['og:url'] = $cameralife->baseURL.'/topics/'.rawurlencode($this->name);
-    if ($cameralife->getPref('rewrite') == 'no')
-      $retval['og:url'] = $cameralife->baseURL.'/topic.php?name='.rawurlencode($this->name);
-    $retval['og:image'] = $cameralife->iconURL('topic');
-    $retval['og:image:type'] = 'image/png';
-    //$retval['og:image:width'] =
-    //$retval['og:image:height'] =
-    return $retval;
-  }
+    public function getOpenGraph()
+    {
+        global $cameralife;
+        $retval = array();
+        $retval['og:title'] = $this->name;
+        $retval['og:type'] = 'website';
+        $retval['og:url'] = $cameralife->baseURL . '/topics/' . rawurlencode($this->name);
+        if ($cameralife->getPref('rewrite') == 'no') {
+            $retval['og:url'] = $cameralife->baseURL . '/topic.php?name=' . rawurlencode($this->name);
+        }
+        $retval['og:image'] = $cameralife->iconURL('topic');
+        $retval['og:image:type'] = 'image/png';
+        //$retval['og:image:width'] =
+        //$retval['og:image:height'] =
+        return $retval;
+    }
 }

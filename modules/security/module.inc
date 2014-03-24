@@ -1,42 +1,52 @@
 <?php
- /**This "API" is subject to change; specifically the URL part will be altered.
-  *
-  *The following named security actions must be supported by authorize():
-  *<ul>
-  *  <li>photo_rename</li>
-  *  <li>photo_delete</li>
-  *  <li>photo_modify</li>
-  *  <li>admin_albums</li>
-  *  <li>photo_upload</li>
-  *  <li>admin_file</li>
-  *  <li>admin_theme </li>
-  *  <li>admin_customize</li>
-  *</ul>
-  *@author Will Entriken <cameralife@phor.net>
-  *@access public
-  *@copyright Copyright (c) 2001-2009 Will Entriken
-  */
 
-  class SecurityModule extends CameraLifeModule
-  {
-    function SecurityModule () { }
+/**This "API" is subject to change; specifically the URL part will be altered.
+ *
+ *The following named security actions must be supported by authorize():
+ *<ul>
+ *  <li>photo_rename</li>
+ *  <li>photo_delete</li>
+ *  <li>photo_modify</li>
+ *  <li>admin_albums</li>
+ *  <li>photo_upload</li>
+ *  <li>admin_file</li>
+ *  <li>admin_theme </li>
+ *  <li>admin_customize</li>
+ *</ul>
+ * @author Will Entriken <cameralife@phor.net>
+ * @access public
+ * @copyright Copyright (c) 2001-2009 Will Entriken
+ */
+class SecurityModule extends CameraLifeModule
+{
+    function SecurityModule()
+    {
+    }
 
     /* Provides a URL, relative to $cameralife->baseURL that the user can
     ** login at
     */
-    function loginURL () { }
+    function loginURL()
+    {
+    }
 
     /* Logs the user out. Returns true or and exit url if you really want to */
-    function logout () { }
+    function logout()
+    {
+    }
 
     /* Provides a URL, relative to $cameralife->baseURL that the user can
     ** go to, to administer users and permissions. Or returns FALSE, if the
     ** user is not allowed to administer.
     */
-    function administerURL () { }
+    function administerURL()
+    {
+    }
 
     /* Returns the current user's name or the empty string if not logged in */
-    function getName () { }
+    function getName()
+    {
+    }
 
     /**Determines if the user is authoried to performed the named action,
      * if REQUIRED is set, nonauthorization is a fatal error.
@@ -52,7 +62,9 @@
      *  <li>admin_customize</li>
      * </ul>
      */
-    function authorize ($action, $required=false) { }
-  }
+    function authorize($action, $required = false)
+    {
+    }
+}
 
 ?>

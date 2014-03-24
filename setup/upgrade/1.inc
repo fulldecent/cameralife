@@ -7,10 +7,10 @@ HERE;
 
 function canupgrade()
 {
-  return false;
+    return false;
 }
 
 function upgrade()
 {
-  die('Automatic upgrade not supported from version 0 to 1.');
+    die('Automatic upgrade not supported from version 0 to 1.');
 }

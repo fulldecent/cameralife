@@ -1,9 +1,9 @@
 {
-   "name":"Cartoonic",
-   "author":"Will Entriken",
-   "email":"cameralife@phor.net",
-   "version":"1.0.3",
-   "date":"2014-03-20",
-   "url":"http://fdcl.sourceforge.net",
-   "desc":"This is second attempt at making a theme. Basically I'm trying to imitate myself on photogenic by tracing stuff in sodipodi. We'll see how this works out. Most images are distributed as png, gif, and svg files, for maximum reusability. P.S. I'm a noob with SVG."
+    "name": "Cartoonic",
+    "author": "Will Entriken",
+    "email": "cameralife@phor.net",
+    "version": "1.0.3",
+    "date": "2014-03-20",
+    "url": "http://fdcl.sourceforge.net",
+    "desc": "This is second attempt at making a theme. Basically I'm trying to imitate myself on photogenic by tracing stuff in sodipodi. We'll see how this works out. Most images are distributed as png, gif, and svg files, for maximum reusability. P.S. I'm a noob with SVG."
 }

@@ -8,92 +8,104 @@
 
 $continue = true;
 if (file_exists('../modules/config.inc')) {
-  die("Camera Life already appears to be set up, because modules/config.inc exists.");
+    die("Camera Life already appears to be set up, because modules/config.inc exists.");
 }
 
 // Pretend like the user will authenticate by giving them a cookie.
-setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
+setcookie("cameralifeauth", $HTTP_SERVER_VARS['REMOTE_ADDR'], time() + 3600, '/');
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Install Camera Life</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-52764-13']);
-  _gaq.push(['_trackPageview']);
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-52764-13']);
+        _gaq.push(['_trackPageview']);
 
-  (function () {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
     </script>
-  </head>
+</head>
 
-  <body>
-    <nav class="navbar navbar-default" role="navigation">
-      <div class="container">
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
         <div class="navbar-header">
-          <span class="navbar-brand">INSTALL CAMERA LIFE</span>
+            <span class="navbar-brand">INSTALL CAMERA LIFE</span>
         </div>
         <ul class="nav navbar-nav">
-          <li class="active"><a>1. Setup</a></li>
-          <li><a>2. Use Camera Life</a></li>
+            <li class="active"><a>1. Setup</a></li>
+            <li><a>2. Use Camera Life</a></li>
         </ul>
         <a class="btn btn-default navbar-btn pull-right" href="mailto:cameralifesupport@phor.net">
-          <i class="glyphicon glyphicon-envelope"></i>
-          Email support
+            <i class="glyphicon glyphicon-envelope"></i>
+            Email support
         </a>
         <a class="btn btn-default navbar-btn pull-right" href="http://fulldecent.github.com/cameralife">
-          <i class="glyphicon glyphicon-home"></i>
-          Camera Life project page
+            <i class="glyphicon glyphicon-home"></i>
+            Camera Life project page
         </a>
-      </div>
-    </nav>
-
-    <div class="jumbotron">
-      <div class="container">
-        <h2>Installing to database</h2>
-      </div>
     </div>
+</nav>
 
+<div class="jumbotron">
     <div class="container">
+        <h2>Installing to database</h2>
+    </div>
+</div>
+
+<div class="container">
 <?php
-    if (!$_POST['host'])
-      die ("You didn't specify a server to connect to, <a href=\"index.php\">go back</a> and try again");
-    if (!$_POST['name'])
-      die ("You didn't specify a database, <a href=\"index.php\">go back</a> and try again");
-    if (!$_POST['user'])
-      die ("You didn't specify a username, <a href=\"index.php\">go back</a> and try again");
-    if (!$_POST['pass'])
-      die ("You didn't specify a password, <a href=\"index.php\">go back</a> and try again");
-    if (!$_POST['sitepass'])
-      die ("You didn't specify a site password, <a href=\"index.php\">go back</a> and try again");
-    $prefix = $_POST['prefix'];
+if (!$_POST['host']) {
+    die ("You didn't specify a server to connect to, <a href=\"index.php\">go back</a> and try again");
+}
+if (!$_POST['name']) {
+    die ("You didn't specify a database, <a href=\"index.php\">go back</a> and try again");
+}
+if (!$_POST['user']) {
+    die ("You didn't specify a username, <a href=\"index.php\">go back</a> and try again");
+}
+if (!$_POST['pass']) {
+    die ("You didn't specify a password, <a href=\"index.php\">go back</a> and try again");
+}
+if (!$_POST['sitepass']) {
+    die ("You didn't specify a site password, <a href=\"index.php\">go back</a> and try again");
+}
+$prefix = $_POST['prefix'];
 
-    $setup_link = @mysql_connect($_POST['host'],$_POST['user'],$_POST['pass'])
-      or die ("I couldn't connect using those credentials, <a href=\"index.php\">go back</a> and try again");
+$setup_link = @mysql_connect($_POST['host'], $_POST['user'], $_POST['pass'])
+    or die ("I couldn't connect using those credentials, <a href=\"index.php\">go back</a> and try again");
 
-    @mysql_select_db($_POST['name'], $setup_link)
-      or die ("I couldn't select that database, <a href=\"index.php\">go back</a> and try again");
+@mysql_select_db($_POST['name'], $setup_link)
+    or die ("I couldn't select that database, <a href=\"index.php\">go back</a> and try again");
 
-    $result = mysql_query('SHOW TABLES FROM '.$_POST['name'].' WHERE tables_in_'.$_POST['name'].' LIKE "'.$_POST['prefix'].'%"',$setup_link);
-    if (mysql_fetch_array($result))
-      die ("The database ".$_POST['name']." has tables in it. The installer will not change
+$result = mysql_query(
+    'SHOW TABLES FROM ' . $_POST['name'] . ' WHERE tables_in_' . $_POST['name'] . ' LIKE "' . $_POST['prefix'] . '%"',
+    $setup_link
+);
+if (mysql_fetch_array($result)) {
+    die ("The database " . $_POST['name'] . " has tables in it. The installer will not change
             the existing tables! To upgrade, consult the <a href='../UPGRADE'>UPGRADE</a> file");
+}
 ?>
 
-      <h3>Logged in to database...</h3>
+<h3>Logged in to database...</h3>
 
-  <?php
+<?php
 
-    $SQL = "
+$SQL = "
       CREATE TABLE `${prefix}albums` (
         `id` int(11) NOT NULL auto_increment,
         `topic` varchar(20) NOT NULL default '',
@@ -103,10 +115,10 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
         `hits` bigint(20) NOT NULL default '0',
         PRIMARY KEY  (`id`)
       );";
-    mysql_query($SQL)
-      or die(mysql_error() . ' ' . __LINE__);
+mysql_query($SQL)
+or die(mysql_error() . ' ' . __LINE__);
 
-    $SQL = "
+$SQL = "
       CREATE TABLE `${prefix}photos` (
         `id` int(11) NOT NULL auto_increment,
         `filename` varchar(255) NOT NULL default '',
@@ -128,10 +140,10 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
         PRIMARY KEY  (`id`),
         UNIQUE KEY `path` (`path`, `filename`)
       );";
-    mysql_query($SQL)
-      or die(mysql_error() . ' ' . __LINE__);
+mysql_query($SQL)
+or die(mysql_error() . ' ' . __LINE__);
 
-    $SQL = "
+$SQL = "
       CREATE TABLE `${prefix}ratings` (
         `id` int(11) NOT NULL,
         `username` varchar(30) default NULL,
@@ -143,10 +155,10 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
         KEY `id_2` (`id`,`username`,`user_ip`),
         KEY `id_4` (`id`)
       );";
-    mysql_query($SQL)
-      or die(mysql_error() . ' ' . __LINE__);
+mysql_query($SQL)
+or die(mysql_error() . ' ' . __LINE__);
 
-    $SQL = "
+$SQL = "
       CREATE TABLE `${prefix}comments` (
         `id` int(11) NOT NULL auto_increment,
         `photo_id` int(11) NOT NULL,
@@ -157,10 +169,10 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
         PRIMARY KEY  (`id`),
         KEY `id` (`photo_id`)
       );";
-    mysql_query($SQL)
-      or die(mysql_error() . ' ' . __LINE__);
+mysql_query($SQL)
+or die(mysql_error() . ' ' . __LINE__);
 
-    $SQL = "
+$SQL = "
       CREATE TABLE `${prefix}preferences` (
         `prefmodule` varchar(64) NOT NULL default 'core',
         `prefkey` varchar(64) NOT NULL default '',
@@ -168,13 +180,13 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
         `prefdefault` varchar(255) NOT NULL default '',
         PRIMARY KEY  (`prefmodule`,`prefkey`)
       );";
-    mysql_query($SQL)
-      or die(mysql_error() . ' ' . __LINE__);
+mysql_query($SQL)
+or die(mysql_error() . ' ' . __LINE__);
 
-    mysql_query("INSERT INTO `${prefix}preferences` VALUES('CameraLife','sitedate',NOW(),NOW())")
-      or die(mysql_error() . ' ' . __LINE__);
+mysql_query("INSERT INTO `${prefix}preferences` VALUES('CameraLife','sitedate',NOW(),NOW())")
+or die(mysql_error() . ' ' . __LINE__);
 
-    $SQL = "
+$SQL = "
       CREATE TABLE `${prefix}users` (
         `id` int(10) NOT NULL auto_increment,
         `username` varchar(30) NOT NULL default '',
@@ -188,10 +200,10 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
         UNIQUE KEY `username` (`username`),
         UNIQUE KEY `id` (`id`)
       );";
-    mysql_query($SQL)
-      or die(mysql_error() . ' ' . __LINE__);
+mysql_query($SQL)
+or die(mysql_error() . ' ' . __LINE__);
 
-    $SQL = "
+$SQL = "
       CREATE TABLE `${prefix}exif` (
         `photoid` int(11) NOT NULL,
         `tag` varchar(50) NOT NULL,
@@ -199,10 +211,10 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
         PRIMARY KEY  (`photoid`,`tag`),
         KEY `photoid` (`photoid`)
       );";
-    mysql_query($SQL)
-      or die(mysql_error() . ' ' . __LINE__);
+mysql_query($SQL)
+or die(mysql_error() . ' ' . __LINE__);
 
-    $SQL = "
+$SQL = "
       CREATE TABLE `${prefix}logs` (
         `id` int(11) NOT NULL auto_increment,
         `record_type` enum('album','photo','preference','user') NOT NULL default 'album',
@@ -214,80 +226,87 @@ setcookie("cameralifeauth",$HTTP_SERVER_VARS['REMOTE_ADDR'],time()+3600, '/');
         `user_date` date NOT NULL default '0000-00-00',
         PRIMARY KEY  (`id`)
       );";
-    mysql_query($SQL)
-      or die(mysql_error() . ' ' . __LINE__);
+mysql_query($SQL)
+or die(mysql_error() . ' ' . __LINE__);
 
-    echo "<p>Creating tables...</p>";
+echo "<p>Creating tables...</p>";
 
-    $salted_password = crypt($_POST['sitepass'],'admin');
-    $SQL = "INSERT INTO ${prefix}users (username, password, auth, cookie, last_online)
-            VALUES ('admin','$salted_password',5,'".$HTTP_SERVER_VARS['REMOTE_ADDR']."',NOW())";
-    mysql_query($SQL)
-      or die(mysql_error() . ' ' . __LINE__);
+$salted_password = crypt($_POST['sitepass'], 'admin');
+$SQL = "INSERT INTO ${prefix}users (username, password, auth, cookie, last_online)
+            VALUES ('admin','$salted_password',5,'" . $HTTP_SERVER_VARS['REMOTE_ADDR'] . "',NOW())";
+mysql_query($SQL)
+or die(mysql_error() . ' ' . __LINE__);
 
-    echo "<p>Creating admin account</p>";
+echo "<p>Creating admin account</p>";
 
-  ?>
+?>
 
 <h3>Writing configuration file</h3>
 
-  <?php
-    $config[] = "<?php\n";
-    $config[] = "\$db_host = '".$_POST['host']."';\n";
-    $config[] = "\$db_name = '".$_POST['name']."';\n";
-    $config[] = "\$db_user = '".$_POST['user']."';\n";
-    $config[] = "\$db_pass = '".$_POST['pass']."';\n";
-    $config[] = "\$db_prefix = '".$_POST['prefix']."';\n";
-    $config[] = "\$db_schema_version = 4;\n";
-    $config[] = "?>\n";
+<?php
+$config[] = "<?php\n";
+$config[] = "\$db_host = '" . $_POST['host'] . "';\n";
+$config[] = "\$db_name = '" . $_POST['name'] . "';\n";
+$config[] = "\$db_user = '" . $_POST['user'] . "';\n";
+$config[] = "\$db_pass = '" . $_POST['pass'] . "';\n";
+$config[] = "\$db_prefix = '" . $_POST['prefix'] . "';\n";
+$config[] = "\$db_schema_version = 4;\n";
+$config[] = "?>\n";
 
-    if ($fd = fopen('../modules/config.inc','x')) {
-      foreach ($config as $line)
-        fwrite ($fd, $line);
-      fclose($fd);
-
-      echo "<p>Writing configuration file...</p>";
-      echo "<p>Configuration is complete.</p>";
-    } else {
-      echo "<p>I cannot write your config file modules/config.inc ";
-      echo "Please create this file and paste in the following:<pre class='code'>";
-      foreach ($config as $line)
-        echo htmlentities($line) . "\n";
-      echo "</pre></p>";
+if ($fd = fopen('../modules/config.inc', 'x')) {
+    foreach ($config as $line) {
+        fwrite($fd, $line);
     }
-  ?>
+    fclose($fd);
+
+    echo "<p>Writing configuration file...</p>";
+    echo "<p>Configuration is complete.</p>";
+} else {
+    echo "<p>I cannot write your config file modules/config.inc ";
+    echo "Please create this file and paste in the following:<pre class='code'>";
+    foreach ($config as $line) {
+        echo htmlentities($line) . "\n";
+    }
+    echo "</pre></p>";
+}
+?>
 
 <h3>Setting up .htaccess</h3>
 
 <?php
-  $htaccess = file('../.htaccess');
-  if (!$htaccess)
+$htaccess = file('../.htaccess');
+if (!$htaccess) {
     $htaccess = file('example.htaccess');
-  if (!$htaccess)
+}
+if (!$htaccess) {
     die('Serious error, could not read htaccess file from setup directory or base directory');
+}
 
-  $fixed = 0;
-  $dir = dirname(dirname($_SERVER['PHP_SELF']));
-  $dir = trim($dir, '/');
-  $newht = preg_replace('/RewriteBase .*/',"RewriteBase /$dir/",$htaccess,1,$fixed);
+$fixed = 0;
+$dir = dirname(dirname($_SERVER['PHP_SELF']));
+$dir = trim($dir, '/');
+$newht = preg_replace('/RewriteBase .*/', "RewriteBase /$dir/", $htaccess, 1, $fixed);
 
-  if ($fd = fopen('../.htaccess','w+')) {
-    foreach ($newht as $line)
-      fwrite ($fd, $line);
+if ($fd = fopen('../.htaccess', 'w+')) {
+    foreach ($newht as $line) {
+        fwrite($fd, $line);
+    }
     fclose($fd);
 
     echo "<p>Writing .htaccess file...</p>";
     echo "<p>.htaccess is complete.</p>";
-  } else {
-    echo "<p>I cannot write your ".dirname(dirname(__FILE__))."/.htaccess file. ";
+} else {
+    echo "<p>I cannot write your " . dirname(dirname(__FILE__)) . "/.htaccess file. ";
     echo "Please create this file and paste in the following:<pre class='code'>";
-    foreach ($newht as $line)
-      echo htmlentities($line) . "\n";
+    foreach ($newht as $line) {
+        echo htmlentities($line) . "\n";
+    }
     echo "</pre></p>";
-  }
+}
 ?>
 
-      <a class="btn btn-primary btn-lg" href="index3.php">Continue --&gt;</a>
-    </div> <!-- /container -->
-  </body>
+<a class="btn btn-primary btn-lg" href="index3.php">Continue --&gt;</a>
+</div>
+<!-- /container -->
+</body>
 </html>

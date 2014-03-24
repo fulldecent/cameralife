@@ -1,7 +1,7 @@
 {
     "name": "fulldecent/cameralife",
     "description": "Run your own photo website",
-    "keywords": ["photos","images","gallary"],
+    "keywords": ["photos", "images", "gallary"],
     "homepage": "http://fulldecent.github.io/cameralife/",
     "type": "library",
     "license": "GPL",

@@ -13,30 +13,33 @@
  * @copyright Copyright (c) 2001-2009 Will Entriken
  * @access public
  */
-$features=array('security');
+$features = array('security');
 require '../main.inc';
 $cameralife->baseURL = dirname($cameralife->baseURL);
 $cameralife->security->authorize('admin_customize', 1); // Require
 $prefs = array();
 
 foreach ($_POST as $key => $val) {
-  if (strpos($key, 'module') === 0)
-    $prefs[substr($key, 6)]['module'] = $val;
-  elseif (strpos($key, 'param') === 0)
-    $prefs[substr($key, 5)]['param'] = $val;
-  elseif (strpos($key, 'value') === 0)
-    $prefs[substr($key, 5)]['value'] = $val;
+    if (strpos($key, 'module') === 0) {
+        $prefs[substr($key, 6)]['module'] = $val;
+    } elseif (strpos($key, 'param') === 0) {
+        $prefs[substr($key, 5)]['param'] = $val;
+    } elseif (strpos($key, 'value') === 0) {
+        $prefs[substr($key, 5)]['value'] = $val;
+    }
 }
 
 foreach ($prefs as $pref) {
-  if (isset($pref['module']) && isset($pref['param']) && isset($pref['value'])) {
-    $cameralife->userpreferences[$pref['module']][$pref['param']] = $pref['value'];
-    $cameralife->savePreferences();
-  } else
-    die ('passed wrong');
+    if (isset($pref['module']) && isset($pref['param']) && isset($pref['value'])) {
+        $cameralife->userpreferences[$pref['module']][$pref['param']] = $pref['value'];
+        $cameralife->savePreferences();
+    } else {
+        die ('passed wrong');
+    }
 }
 
-if (!isset($_POST['target']))
-  die ('error: no target set!');
+if (!isset($_POST['target'])) {
+    die ('error: no target set!');
+}
 
-header("Location: ".$_POST['target']);
+header("Location: " . $_POST['target']);
