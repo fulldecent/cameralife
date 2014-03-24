@@ -68,7 +68,7 @@ class BootstrapTheme extends ThemeModule
 
     function showPage($name, $object = null)
     {
-        global $_SERVER, $_GET, $_POST;
+        global $cameralife, $_SERVER, $_GET, $_POST;
         $objectname = strtolower($name);
         $$objectname = $object;
         require dirname(__FILE__) . '/' . strtolower($name) . '.inc';
