@@ -44,7 +44,7 @@ if (isset($_GET['register'])) {
                 <label class="sr-only" for="param3">Email</label>
                 <input type="email" class="form-control" id="param3" name="param3" placeholder="Enter Email">
             </div>
-            <button type="submit" class="btn btn-default">Register</button>
+            <button type="submit" class="btn btn-default">register</button>
         <?php } else { ?>
             <button type="submit" class="btn btn-default">Login</button>
             <a href="?register">Or create an account</a>

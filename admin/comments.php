@@ -101,7 +101,7 @@ $latestComment = $cameralife->database->SelectOne('comments', 'max(id)');
             <input type="checkbox" name="showreg" <?php if ($_POST["showreg"]) {
                 echo " checked";
 } ?>>
-            <i class="icon-user"></i> Registered users
+            <i class="icon-user"></i> registered users
         </label>
         <label class="checkbox inline">
             <input type="checkbox" name="showunreg" <?php if ($_POST["showunreg"]) {

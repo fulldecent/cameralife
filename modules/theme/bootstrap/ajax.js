@@ -43,7 +43,7 @@ function makeRequest(url, formid, callme) {
 
     http_request.onreadystatechange = alertContents;
     http_request.open("POST", url, true);
-    http_request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    http_request.setRequestheader("Content-Type", "application/x-www-form-urlencoded");
     http_request.send(posts.join('&'));
 }
 

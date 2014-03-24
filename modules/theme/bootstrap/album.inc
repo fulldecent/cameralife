@@ -21,7 +21,7 @@ $sort = isset($_GET['sort']) ? $_GET['sort'] : 'rand';
 $extrahead = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of ' . $album->get(
         'name'
     ) . '" href="' . $cameralife->baseURL . '/rss.php&#63;q=' . $album->get('term') . '"/>';
-$cameralife->theme->Header($album, null, $extrahead);
+$cameralife->theme->header($album, null, $extrahead);
 
 if (isset($_GET['edit']) && $cameralife->security->authorize('admin_albums')) {
     ?>
@@ -92,7 +92,7 @@ if (isset($_GET['poster_id'])) {
 </div>
 <?php
 $cameralife->theme->grid($results);
-$cameralife->theme->PageSelector(($sort == 'rand()') ? -1 : $start, $counts['photos'], 12, "id=" . $album->get('id'));
+$cameralife->theme->pageSelector(($sort == 'rand()') ? -1 : $start, $counts['photos'], 12, "id=" . $album->get('id'));
 ?>
 
 <form method="POST">
@@ -113,6 +113,6 @@ $cameralife->theme->PageSelector(($sort == 'rand()') ? -1 : $start, $counts['pho
     </p>
 </form>
 <?php
-$cameralife->theme->Footer();
+$cameralife->theme->footer();
 ?>
 

@@ -38,13 +38,13 @@
     }
 
     /**
-     * Registered modules.
+     * registered modules.
      */
 
     require.modules = {};
 
     /**
-     * Registered aliases.
+     * registered aliases.
      */
 
     require.aliases = {};
@@ -110,7 +110,7 @@
     };
 
     /**
-     * Register module at `path` with callback `definition`.
+     * register module at `path` with callback `definition`.
      *
      * @param {String} path
      * @param {Function} definition
@@ -1176,7 +1176,7 @@
                             return;
                         }
                         response = xhr.responseText;
-                        if (xhr.getResponseHeader("content-type") && ~xhr.getResponseHeader("content-type").indexOf("application/json")) {
+                        if (xhr.getResponseheader("content-type") && ~xhr.getResponseheader("content-type").indexOf("application/json")) {
                             try {
                                 response = JSON.parse(response);
                             } catch (_error) {
@@ -1210,7 +1210,7 @@
                     }
                     for (header in headers) {
                         name = headers[header];
-                        xhr.setRequestHeader(header, name);
+                        xhr.setRequestheader(header, name);
                     }
                     formData = new FormData();
                     if (this.options.params) {

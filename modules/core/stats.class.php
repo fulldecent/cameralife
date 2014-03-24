@@ -50,13 +50,13 @@ class Stats
     {
         global $cameralife;
 
-        $popular_albums = array();
+        $popularAlbums = array();
         $query = $cameralife->database->Select('albums', 'id', null, 'ORDER BY hits DESC limit 5');
         while ($album = $query->fetchAssoc()) {
-            $popular_albums[] = new Album($album['id']);
+            $popularAlbums[] = new Album($album['id']);
         }
 
-        return $popular_albums;
+        return $popularAlbums;
     }
 
     public function getFunFacts()

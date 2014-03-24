@@ -1,7 +1,7 @@
 <?php
 /**Enables
  *<ul>
- *<li>Registering to the site </li>
+ *<li>registering to the site </li>
  *<li>Log in</li>
  *</ul>
  *
@@ -45,11 +45,11 @@ or $_GET['page'] = 'login';
     /*$sections[] = array('name'=>'Login',
                           'page_name'=>'login',
                           'image'=>'small-login');
-      $sections[] = array('name'=>'Register',
+      $sections[] = array('name'=>'register',
                           'page_name'=>'register',
                           'image'=>'small-login');
 
-      $cameralife->theme->MultiSection($sections);
+      $cameralife->theme->multiSection($sections);
     */
     ?>
     <table>

@@ -92,7 +92,7 @@ class DefaultSecurity extends SecurityModule
      * @param string $email
      * @return bool|string TRUE if successful or error message
      */
-    function Register($username, $password, $email = '')
+    function register($username, $password, $email = '')
     {
         global $cameralife;
 

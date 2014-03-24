@@ -81,7 +81,7 @@ $headers .= '<script type="text/javascript" src="' . $cameralife->baseURL . '/mo
         'theme'
     ) . '/ajax.js"></script>';
 
-$cameralife->theme->Header($photo, null, $headers);
+$cameralife->theme->header($photo, null, $headers);
 
 if ($photo->get('status') > 0) {
     ?>
@@ -208,11 +208,11 @@ if ($cameralife->security->authorize('photo_modify')) {
             <input type="hidden" name="action" value="rotate"/>
 
             <div class="control-group">
-                <label class="control-label" for="tags">Rotate</label>
+                <label class="control-label" for="tags">rotate</label>
 
                 <div class="controls">
-                    <input class="btn" type="submit" name="param1" value="Rotate Counter-Clockwise">
-                    <input class="btn" type="submit" name="param1" value="Rotate Clockwise">
+                    <input class="btn" type="submit" name="param1" value="rotate Counter-Clockwise">
+                    <input class="btn" type="submit" name="param1" value="rotate Clockwise">
                 </div>
             </div>
         </form>
@@ -437,5 +437,5 @@ if ($photoNext) {
     echo '<img style="display:none" src="' . $photoNext->GetMedia('scaled') . '" alt="hidden photo">';
 }
 
-$cameralife->theme->Footer();
+$cameralife->theme->footer();
 ?>

@@ -167,9 +167,9 @@ class PDOIterator
 {
     public $myResult;
 
-    public function PDOIterator($mysql_result)
+    public function PDOIterator($mysqlResult)
     {
-        $this->myResult = $mysql_result;
+        $this->myResult = $mysqlResult;
     }
 
     public function fetchAssoc()

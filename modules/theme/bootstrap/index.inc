@@ -9,7 +9,7 @@
 
 $cameralife->getFeature('security');
 $cameralife->getFeature('fileStore');
-$cameralife->theme->Header($cameralife);
+$cameralife->theme->header($cameralife);
 
 $_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 'rand';
 list($sort, $type) = explode('-', $_GET['page'] . '-');
@@ -141,5 +141,5 @@ if ($counts['photos'] == 0) {
 </div>
 
 <?php
-$cameralife->theme->Footer();
+$cameralife->theme->footer();
 ?>

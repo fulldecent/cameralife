@@ -31,10 +31,10 @@ class Search extends View
         }
         $this->myExtra = '';
         $special = array('?', '.');
-        $special_escaped = array('[?]', '[.]');
+        $specialEscaped = array('[?]', '[.]');
         foreach (explode(' ', $query) as $term) {
             $term = addslashes($term);
-            $term = str_replace($special, $special_escaped, $term);
+            $term = str_replace($special, $specialEscaped, $term);
             $searchPhotoConditions[] = "concat(description,' ',keywords) REGEXP '(^|[[:blank:]])" . addslashes(
                     preg_quote(stripslashes($term))
                 ) . "'";

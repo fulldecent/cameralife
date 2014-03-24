@@ -351,24 +351,24 @@ class Folder extends Search
          * Maximum effort will be made to not add these new files to the DB
          */
 
-        foreach ($filesInStoreNotYetMatchedToDB as $new_file => $newbase) {
+        foreach ($filesInStoreNotYetMatchedToDB as $newFile => $newbase) {
             if (preg_match("/^picasa.ini|digikam3.db$/i", $newbase)) {
                 continue;
             }
             if (!preg_match("/.jpg$|.jpeg$|.png$|.gif$/i", $newbase)) {
-                $retval[] = "Skipped $new_file because it is not a JPEG or PNG file";
+                $retval[] = "Skipped $newFile because it is not a JPEG or PNG file";
                 continue;
             }
 
-            $newpath = dirname($new_file);
+            $newpath = dirname($newFile);
             $condition = "filename LIKE '" . mysql_real_escape_string($newbase) . "'";
             $result = $cameralife->database->Select('photos', 'id, filename, path', $condition);
 
             // Is anything in the fileStore too similar (given available information) to let this photo in?
             if ($photo = $result->fetchAssoc()) {
                 // With the case-insensitive LIKE above, this will handle files renamed only by case
-                if (strcasecmp($photo['path'] . $photo['filename'], $new_file) == 0) {
-                    $retval[] = $photo['path'] . $photo['filename'] . ' was renamed to ' . $new_file;
+                if (strcasecmp($photo['path'] . $photo['filename'], $newFile) == 0) {
+                    $retval[] = $photo['path'] . $photo['filename'] . ' was renamed to ' . $newFile;
                     $cameralife->database->Update('photos', array('filename' => $newbase), 'id=' . $photo['id']);
                     continue;
                 }
@@ -378,7 +378,7 @@ class Folder extends Search
                 $same = false;
                 if ($cameralife->getPref('fileStore') == 'local') {
                     $a = file_get_contents($cameralife->fileStore->photoDir . $photoFullpath);
-                    $b = file_get_contents($cameralife->fileStore->photoDir . $new_file);
+                    $b = file_get_contents($cameralife->fileStore->photoDir . $newFile);
                     if ($a == $b) {
                         $same = true;
                     }
@@ -389,12 +389,12 @@ class Folder extends Search
                 } else {
                     $error = 'Two photos in your file store are too similar, please delete one: ';
                 }
-                $error .= "$photoFullpath is in the system, $new_file is not";
+                $error .= "$photoFullpath is in the system, $newFile is not";
                 $retval[] = $error;
                 continue;
             }
 
-            $retval[] = "Added $new_file\n";
+            $retval[] = "Added $newFile\n";
 
             $photoObj = new Photo(array('filename' => $newbase, 'path' => $newpath));
             $photoObj->destroy();

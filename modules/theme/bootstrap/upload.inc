@@ -21,7 +21,7 @@ $folderURL = $folder->getOpenGraph()['og:url'];
 $headers = '<script src="' . $cameralife->baseURL . '/modules/theme/' . $cameralife->getPref(
         'theme'
     ) . '/dropzone.js"></script>';
-$cameralife->theme->Header($cameralife, null, $headers); //TODO THIS IS INACCURATE
+$cameralife->theme->header($cameralife, null, $headers); //TODO THIS IS INACCURATE
 ?>
 <BGSOUND src="<?= $cameralife->baseURL ?>/filedone.wav">
     <h1>Uploading Photos</h1>
@@ -73,5 +73,5 @@ $cameralife->theme->Header($cameralife, null, $headers); //TODO THIS IS INACCURA
         Dropzone.options.dropzone = { paramName: "userfile" };
     </script>
     <?php
-    $cameralife->theme->Footer();
+    $cameralife->theme->footer();
     ?>

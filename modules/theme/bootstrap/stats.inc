@@ -12,11 +12,11 @@ $cameralife->getFeature('fileStore');
 $stats = new Stats;
 $counts = $stats->getCounts();
 $popularPhotos = $stats->getPopularPhotos();
-$popular_albums = $stats->getPopularAlbums();
+$popularAlbums = $stats->getPopularAlbums();
 $funfacts = $stats->getFunFacts();
 
 //TODO THIS IS NOT ACCURATE
-$cameralife->theme->Header($cameralife);
+$cameralife->theme->header($cameralife);
 ?>
 <h1>Site stats</h1>
 <div class="row">
@@ -50,7 +50,7 @@ $cameralife->theme->Header($cameralife);
             <div class="panel-body">
                 <table class="table table-condensed">
                     <?php
-                    foreach ($popular_albums as $photo) {
+                    foreach ($popularAlbums as $photo) {
                         $percent = $photo->Get('hits') * 100 / $popularPhotos[0]->Get('hits');
                         echo "<tr><td>";
                         echo "<div style=\"width:50px; clear:left\" class=\"progress\"><div class=\"progress-bar progress-bar-success\" style=\"width: $percent%\"></div></div>";
@@ -89,5 +89,5 @@ $cameralife->theme->Header($cameralife);
 </div>
 
 <?php
-$cameralife->theme->Footer();
+$cameralife->theme->footer();
 ?>

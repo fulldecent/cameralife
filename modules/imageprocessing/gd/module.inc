@@ -19,12 +19,12 @@ class GDImageProcessing extends ImageProcessingModule
  */
 class GDImageProcessingImage extends ImageProcessingImage
 {
-    var $original_image;
+    var $originalImage;
     var $width;
     var $height;
     var $size;
     var $extension;
-    var $scaled_images;
+    var $scaledImages;
 
     function GDImageProcessingImage($filename)
     {
@@ -32,27 +32,27 @@ class GDImageProcessingImage extends ImageProcessingImage
         if (!file_exists($filename)) {
             $cameralife->error('Trying to process non-existant image: ' . $filename);
         }
-        $path_parts = pathinfo($filename);
-        $this->extension = strtolower($path_parts['extension']);
+        $pathParts = pathinfo($filename);
+        $this->extension = strtolower($pathParts['extension']);
 
         if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') # going out on a limb here...
         {
-            $this->original_image = imagecreatefromjpeg($filename);
+            $this->originalImage = imagecreatefromjpeg($filename);
         } elseif ($this->extension == 'png') {
-            $this->original_image = imagecreatefrompng($filename);
+            $this->originalImage = imagecreatefrompng($filename);
         } elseif ($this->extension == 'gif') {
-            $this->original_image = imagecreatefromgif($filename);
+            $this->originalImage = imagecreatefromgif($filename);
         } else {
             $cameralife->error('Trying to process image of unknown file format: ' . $filename);
         }
-        $this->width = imagesx($this->original_image);
-        $this->height = imagesy($this->original_image);
+        $this->width = imagesx($this->originalImage);
+        $this->height = imagesy($this->originalImage);
         $this->size = sqrt($this->width * $this->width + $this->height * $this->height);
     }
 
     function destroy()
     {
-        imagedestroy($this->original_image);
+        imagedestroy($this->originalImage);
         if (isset($this->scaled_image) && count($this->scaled_image) > 0) {
             foreach ($this->scaled_image as $image) {
                 imagedestroy($image);
@@ -62,7 +62,7 @@ class GDImageProcessingImage extends ImageProcessingImage
 
     function check()
     {
-        return ($this->original_image == true);
+        return ($this->originalImage == true);
     }
 
     function GetSize()
@@ -88,11 +88,11 @@ class GDImageProcessingImage extends ImageProcessingImage
         */
         global $cameralife;
 
-        $baseImage = $this->original_image;
+        $baseImage = $this->originalImage;
         $baseSize = $this->size;
 
-        if (count($this->scaled_images)) {
-            foreach ($this->scaled_images as $size => $image) {
+        if (count($this->scaledImages)) {
+            foreach ($this->scaledImages as $size => $image) {
                 if ($size < $baseSize && $size > $newSize) {
                     $baseImage = $image;
                     $baseSize = $size;
@@ -103,8 +103,8 @@ class GDImageProcessingImage extends ImageProcessingImage
         $baseHeight = $this->height * $baseSize / $this->size;
 
         $newWidth = $this->width * $newSize / $this->size;
-        $new_height = $this->height * $newSize / $this->size;
-        $newImage = imagecreatetruecolor($newWidth, $new_height)
+        $newHeight = $this->height * $newSize / $this->size;
+        $newImage = imagecreatetruecolor($newWidth, $newHeight)
         or die("Can't make new image");
 
         imagecopyresampled(
@@ -115,7 +115,7 @@ class GDImageProcessingImage extends ImageProcessingImage
             0,
             0,
             $newWidth,
-            $new_height,
+            $newHeight,
             $baseWidth,
             $baseHeight
         );
@@ -134,19 +134,19 @@ class GDImageProcessingImage extends ImageProcessingImage
 
         $this->scaled_image[$newSize] = $newImage;
 
-        return array($newWidth, $new_height);
+        return array($newWidth, $newHeight);
     }
 
     /**rotate the image a 90, 180 or 270 degrees
      */
-    function Rotate($degrees)
+    function rotate($degrees)
     {
         @ini_set('max_execution_time', 100);
 
         if (function_exists('imagerotate')) {
-            $rotated = imagerotate($this->original_image, -$degrees, 0);
+            $rotated = imagerotate($this->originalImage, -$degrees, 0);
         } else {
-            $rotated = ImageRotateRightAngle($this->original_image, $degrees);
+            $rotated = ImagerotateRightAngle($this->originalImage, $degrees);
         }
         if ($degrees == 90 || $degrees == 270) {
             $oldwidth = $this->width;
@@ -154,7 +154,7 @@ class GDImageProcessingImage extends ImageProcessingImage
             $this->height = $oldwidth;
         }
         $this->destroy();
-        $this->original_image = $rotated;
+        $this->originalImage = $rotated;
     }
 
     /**Saves the image at orginal resolution
@@ -163,10 +163,10 @@ class GDImageProcessingImage extends ImageProcessingImage
     {
         if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') # on a limb...
         {
-            @imagejpeg($this->original_image, $filename, $quality)
+            @imagejpeg($this->originalImage, $filename, $quality)
                 or $cameralife->Error("Could not write the file $filename is the directory writable?");
         } elseif ($this->extension == 'png') {
-            @imagepng($this->original_image, $filename, 9 - $quality / 11)
+            @imagepng($this->originalImage, $filename, 9 - $quality / 11)
                 or $cameralife->Error("Could not write the file $filename is the directory writable?");
         }
     }
@@ -177,7 +177,7 @@ class GDImageProcessingImage extends ImageProcessingImage
  * @var $srcY dimension of source image
  * @return resource GD output image
  */
-function ImageRotateRightAngle($imgSrc, $angle)
+function ImagerotateRightAngle($imgSrc, $angle)
 {
     // dimenstion of source image
     $srcX = imagesx($imgSrc);

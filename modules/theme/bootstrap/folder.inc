@@ -56,7 +56,7 @@ if ($folder->getNext()) {
     $headers = "<link rel=\"next\" href=\"" . $folder->getNext() . "\" />\n";
 }
 
-$cameralife->theme->Header($folder, null, $headers);
+$cameralife->theme->header($folder, null, $headers);
 ?>
 
 <ul class="breadcrumb">
@@ -83,7 +83,7 @@ if ($counts['folders'] > 0) {
 }
 
 if (count($sections) >= 2) {
-    $cameralife->theme->MultiSection($sections, $openGraph['og:url']);
+    $cameralife->theme->multiSection($sections, $openGraph['og:url']);
 } elseif (count($sections == 1)) {
     echo "This folder contains " . strtolower($sections[0]['name']);
 } else {
@@ -93,10 +93,10 @@ if (count($sections) >= 2) {
 $cameralife->theme->grid($results);
 
 if ($_GET['page'] == "photos") {
-    $cameralife->theme->PageSelector($start, $counts['photos'], 25, $openGraph['og:url']);
+    $cameralife->theme->pageSelector($start, $counts['photos'], 25, $openGraph['og:url']);
 } else // ($_GET['page'] == "folders")
 {
-    $cameralife->theme->PageSelector($start, $counts['folders'], 25, $openGraph['og:url']);
+    $cameralife->theme->pageSelector($start, $counts['folders'], 25, $openGraph['og:url']);
 }
 
 ?>
@@ -121,5 +121,5 @@ if ($_GET['page'] == "photos") {
 </form>
 
 <?php
-$cameralife->theme->Footer();
+$cameralife->theme->footer();
 ?>

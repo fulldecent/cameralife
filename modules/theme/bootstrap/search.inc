@@ -50,7 +50,7 @@ $sidebar .= <<<HTML
     </ul>
 HTML;
 
-$cameralife->theme->Header($search, $sidebar, $header);
+$cameralife->theme->header($search, $sidebar, $header);
 
 if (isset($_GET['albumhelp']) && $_GET['albumhelp']) {
 ?>
@@ -105,12 +105,12 @@ if (isset($_GET['albumhelp']) && $_GET['albumhelp']) {
     $openGraph = $search->getOpenGraph();
     $href = AddParam($openGraph['og:url'], "page", $_GET['page']);
     if ($_GET['page'] == "a") {
-        $cameralife->theme->PageSelector($start, $counts['albums'], 12, $href);
+        $cameralife->theme->pageSelector($start, $counts['albums'], 12, $href);
     } else {
         if ($_GET['page'] == "f") {
-            $cameralife->theme->PageSelector($start, $counts['folders'], 12, $href);
+            $cameralife->theme->pageSelector($start, $counts['folders'], 12, $href);
         } else {
-            $cameralife->theme->PageSelector($start, $counts['photos'], 12, $href);
+            $cameralife->theme->pageSelector($start, $counts['photos'], 12, $href);
         }
     }
 
@@ -123,5 +123,5 @@ if (isset($_GET['albumhelp']) && $_GET['albumhelp']) {
     echo "<input class=\"btn\" type=submit value=\"Sort\">\n";
     echo "</form>";
 
-    $cameralife->theme->Footer();
+    $cameralife->theme->footer();
     ?>

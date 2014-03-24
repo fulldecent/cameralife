@@ -95,10 +95,10 @@ class Photo extends View
         $this->EXIF = array();
 
         if (isset($this->record['filename'])) {
-            $path_parts = pathinfo($this->record['filename']);
+            $pathParts = pathinfo($this->record['filename']);
         }
-        if (isset($path_parts['extension'])) {
-            $this->extension = strtolower($path_parts['extension']);
+        if (isset($pathParts['extension'])) {
+            $this->extension = strtolower($pathParts['extension']);
         }
     }
 
@@ -236,7 +236,7 @@ class Photo extends View
         global $cameralife;
 
         $this->loadImage();
-        $this->image->Rotate($angle);
+        $this->image->rotate($angle);
 
         $temp = tempnam($cameralife->getPref('tempdir'), 'cameralife_');
         $this->image->Save($temp);
@@ -435,24 +435,24 @@ class Photo extends View
             if (isset($exif['GPS']) && isset($exif['GPS']['GPSLatitude']) && $exif['GPS']['GPSLongitude']) {
                 $lat = 0;
                 if (count($exif['GPS']['GPSLatitude']) > 0) {
-                    $lat += $this->GPS2num($exif['GPS']['GPSLatitude'][0]);
+                    $lat += $this->gpsToNumber($exif['GPS']['GPSLatitude'][0]);
                 }
                 if (count($exif['GPS']['GPSLatitude']) > 1) {
-                    $lat += $this->GPS2num($exif['GPS']['GPSLatitude'][1]) / 60;
+                    $lat += $this->gpsToNumber($exif['GPS']['GPSLatitude'][1]) / 60;
                 }
                 if (count($exif['GPS']['GPSLatitude']) > 2) {
-                    $lat += $this->GPS2num($exif['GPS']['GPSLatitude'][2]) / 3600;
+                    $lat += $this->gpsToNumber($exif['GPS']['GPSLatitude'][2]) / 3600;
                 }
 
                 $lon = 0;
                 if (count($exif['GPS']['GPSLongitude']) > 0) {
-                    $lon += $this->GPS2num($exif['GPS']['GPSLongitude'][0]);
+                    $lon += $this->gpsToNumber($exif['GPS']['GPSLongitude'][0]);
                 }
                 if (count($exif['GPS']['GPSLongitude']) > 1) {
-                    $lon += $this->GPS2num($exif['GPS']['GPSLongitude'][1]) / 60;
+                    $lon += $this->gpsToNumber($exif['GPS']['GPSLongitude'][1]) / 60;
                 }
                 if (count($exif['GPS']['GPSLongitude']) > 2) {
-                    $lon += $this->GPS2num($exif['GPS']['GPSLongitude'][2]) / 3600;
+                    $lon += $this->gpsToNumber($exif['GPS']['GPSLongitude'][2]) / 3600;
                 }
 
                 if ($exif['GPS']['GPSLatitudeRef'] == 'S') {
@@ -557,7 +557,7 @@ class Photo extends View
      * Convert "2/4" to 0.5 and "4" to 4
      * @access private
      */
-    private function GPS2num($num)
+    private function gpsToNumber($num)
     {
         $parts = explode('/', $num);
         if (count($parts) == 0) {

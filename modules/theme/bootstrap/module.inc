@@ -112,7 +112,7 @@ class BootstrapTheme extends ThemeModule
      * @param string $onload (default: '')
      * @return void
      */
-    function Header($view, $menu = '', $extrahead = '', $onload = '')
+    function header($view, $menu = '', $extrahead = '', $onload = '')
     {
         global $cameralife;
         $this->menu = $menu;
@@ -217,7 +217,7 @@ class BootstrapTheme extends ThemeModule
     }
     }
 
-    function Footer()
+    function footer()
     {
         global $cameralife;
         if ($this->menu) {
@@ -330,7 +330,7 @@ class BootstrapTheme extends ThemeModule
     */
 
     /// Taken an Icon to make base url
-    function MultiSection($sections, $baseURL, $conjunction = 'and', $query = null)
+    function multiSection($sections, $baseURL, $conjunction = 'and', $query = null)
     {
         global $_GET;
 
@@ -358,7 +358,7 @@ class BootstrapTheme extends ThemeModule
         echo "</ul>";
     }
 
-    function PageSelector($start, $total, $perPage, $url)
+    function pageSelector($start, $total, $perPage, $url)
     {
         if ($total > $perPage) // Refuse to only show one page
         {

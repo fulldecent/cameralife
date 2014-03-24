@@ -33,7 +33,7 @@ Upgrading from versions earlier than 2.6.3 requires working knowledge of MySQL:
   * Paste the new source files on top of the old ones
 
   * Now enter the site:
-  * Register an account named "admin"
+  * register an account named "admin"
   * UPDATE users SET auth=5 WHERE username='admin'
   * Point your browser to install/index3.php
   * Update your modules/config.inc and add $db_schema_version = 1;

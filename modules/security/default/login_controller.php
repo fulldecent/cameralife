@@ -30,7 +30,7 @@ if (strtolower($_POST['action']) == 'login') {
         $cameralife->error($result);
     }
 } elseif (strtolower($_POST['action']) == 'register') {
-    $result = $cameralife->security->Register($_POST['param1'], $_POST['param2'], $_POST['param3']);
+    $result = $cameralife->security->register($_POST['param1'], $_POST['param2'], $_POST['param3']);
     if (is_string($result)) {
         $cameralife->error($result);
     }

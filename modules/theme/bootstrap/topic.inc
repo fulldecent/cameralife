@@ -12,7 +12,7 @@ $albums = $topic->getAlbums();
 $counts = $topic->getCounts();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
-$cameralife->theme->Header($topic);
+$cameralife->theme->header($topic);
 ?>
 <form name="form1" method=post action="album_controller.php">
     <?php
@@ -67,7 +67,7 @@ $cameralife->theme->Header($topic);
     }
 
     $cameralife->theme->grid($albums);
-    $cameralife->theme->PageSelector($start, $counts['photos'], 12, "name=" . urlencode($_GET["name"]));
+    $cameralife->theme->pageSelector($start, $counts['photos'], 12, "name=" . urlencode($_GET["name"]));
     ?>
 </form>
 
@@ -89,7 +89,7 @@ $cameralife->theme->Header($topic);
     </p>
 </form>
 <?php
-$cameralife->theme->Footer();
+$cameralife->theme->footer();
 ?>
 
 
