@@ -5,8 +5,8 @@
  *<li>Allows monitoring of user activities</li>
  *<li>Enables editing of security settings</li>
  *</ul>
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 /**
@@ -90,10 +90,6 @@ function html_select_auth($param_name)
             padding-top: 60px;
             padding-bottom: 40px;
         }
-
-        .sidebar-nav {
-            padding: 9px 0;
-        }
     </style>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -101,10 +97,9 @@ function html_select_auth($param_name)
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <script language="javascript">
-        public
         function changeall() {
-            val = document.getElementById('status').value;
-            inputs = document.getElementsByTagName('select');
+            var val = document.getElementById('status').value;
+            var inputs = document.getElementsByTagName('select');
             for (var i = 0; i < inputs.length; i++) {
                 inputs[i].value = val;
             }
@@ -147,7 +142,7 @@ function html_select_auth($param_name)
             <th width="10%">Options
                 <?php
                 $result = $cameralife->database->Select('users', '*', null, 'ORDER BY auth desc');
-                while ($curuser = $result->FetchAssoc()) {
+                while ($curuser = $result->fetchAssoc()) {
                     $count_actions = $cameralife->database->SelectOne(
                         'logs',
                         'COUNT(*)',

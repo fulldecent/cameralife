@@ -2,8 +2,8 @@
 
 /**
  * Displays the folders path file on the page
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 

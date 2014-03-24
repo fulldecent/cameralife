@@ -12,8 +12,8 @@
  *  <li>scale - ('photo', 'thumbnail', or 'scaled')</li>
  *  <li>ver (mtime)</li>
  * </ul>
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2014 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2014 William Entriken
  * @access public
  */
 

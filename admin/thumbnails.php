@@ -1,8 +1,8 @@
 <?php
 /*
  * Regenerates thumbnail caches
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2013 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2013 William Entriken
  * @access public
  */
 $features = array('security', 'fileStore', 'imageProcessing');
@@ -65,7 +65,7 @@ $numdone = isset($_GET['numdone']) ? (int)$_GET['numdone'] : 0;
     $next1000 = $cameralife->database->Select('photos', 'id', "id > $lastdone", 'ORDER BY id LIMIT 1000');
     $fixed = 0;
     flush();
-    while (($next = $next1000->FetchAssoc()) && ($fixed < 10)) {
+    while (($next = $next1000->fetchAssoc()) && ($fixed < 10)) {
         $curphoto = new Photo($next['id']);
         if ($cameralife->fileStore->CheckThumbnails($curphoto)) {
             echo "<div>Updated #" . $next['id'] . "</div>\n";

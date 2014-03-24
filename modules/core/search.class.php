@@ -2,9 +2,9 @@
 
 /**
  *Class Search enables you to get and use the search facility
- * @author Will Entriken <cameralife@phor.net>
+ * @author William Entriken <cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @copyright Copyright (c) 2001-2009 William Entriken
  */
 class Search extends View
 {
@@ -21,7 +21,7 @@ class Search extends View
 
     public function __construct($query = '')
     {
-        global $cameralife, $_POST, $_GET;
+        global $_POST, $_GET;
         parent::__construct();
 
         if (!get_magic_quotes_gpc()) {
@@ -99,7 +99,6 @@ class Search extends View
 
         if (!isset($this->myCounts)) {
             $this->myCounts = array();
-            $selection = "COUNT(DISTINCT id)";
             $this->myCounts['photos'] = $cameralife->database->SelectOne(
                 'photos',
                 'COUNT(*)',
@@ -166,7 +165,7 @@ class Search extends View
             'LEFT JOIN exif ON photos.id=exif.photoid and exif.tag="Date taken"'
         );
         $photos = array();
-        while ($row = $query->FetchAssoc()) {
+        while ($row = $query->fetchAssoc()) {
             $photos[] = new Photo($row['id']);
         }
 
@@ -207,7 +206,7 @@ class Search extends View
         $query = $cameralife->database->Select('albums', 'id', $condition, 'ORDER BY ' . $sort . ' ' . $this->myLimit);
 
         $albums = array();
-        while ($row = $query->FetchAssoc()) {
+        while ($row = $query->fetchAssoc()) {
             $albums[] = new Album($row['id']);
         }
 
@@ -252,7 +251,7 @@ class Search extends View
             'GROUP BY path ORDER BY ' . $sort . ' ' . $this->myLimit
         );
         $folders = array();
-        while ($row = $query->FetchAssoc()) {
+        while ($row = $query->fetchAssoc()) {
             $folders[] = new Folder($row['path'], false, $row['date']);
         }
 

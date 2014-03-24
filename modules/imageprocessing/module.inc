@@ -6,12 +6,12 @@
  *<ul>
  *<li>Opening</li>
  *<li>Deleting</li>
- *<li>Confirming succesful uploading of image</li>
+ *<li>Confirming successful uploading of image</li>
  *<li>Getting size of image</li>
  *<li>Resizing the image</li>
  *</ul>
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 
@@ -72,6 +72,3 @@ class ImageProcessingImage
     {
     }
 }
-
-
-?>

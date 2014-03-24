@@ -1,8 +1,8 @@
 <?php
 /**Displays a page with the theme 'upload'
- * @author Will Entriken <cameralife@phor.net>
+ * @author William Entriken <cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @copyright Copyright (c) 2001-2009 William Entriken
  */
 /**
  */

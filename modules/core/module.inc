@@ -11,4 +11,3 @@ require_once dirname(__FILE__) . '/topic.class.php';
 require_once dirname(__FILE__) . '/stats.class.php';
 require_once dirname(__FILE__) . '/audittrail.class.php';
 require_once dirname(__FILE__) . '/database.php';
-?>

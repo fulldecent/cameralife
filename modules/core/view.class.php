@@ -4,9 +4,9 @@
  * View class.
  * Every user-facing page is represented by a view class
  *
- * @author Will Entriken <cameralife@phor.net>
+ * @author William Entriken <cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @copyright Copyright (c) 2001-2009 William Entriken
  */
 class View
 {
@@ -41,7 +41,7 @@ class View
      * A URL or NULL for the View logically preceeding this one
      *
      * @access public
-     * @return void
+     * @return View
      */
     public function getPrevious()
     {
@@ -52,7 +52,7 @@ class View
      * A URL or NULL for the View logically following this one
      *
      * @access public
-     * @return void
+     * @return View
      */
     public function getNext()
     {

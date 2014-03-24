@@ -4,8 +4,8 @@
  * PDO implementation of the database class.
  * This requires some preferences to be set in $cameralife:
  * db_name db_user db_pass db_host and optionally db_prefix
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2014 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2014 William Entriken
  * @access public
  */
 class Database
@@ -145,7 +145,6 @@ class Database
         $sql = "DELETE FROM " . $this->myPrefix . "$table WHERE $condition $extra";
         try {
             $stmt = $this->myDBH->prepare($sql);
-            $i = 1;
             if (count($bind)) {
                 foreach ($bind as $name => $val) {
                     $stmt->bindValue(':' . $name, $val);

@@ -4,9 +4,9 @@
  * Folder class.
  * Access folders on the file system as objects
  *
- * @author Will Entriken <cameralife@phor.net>
+ * @author William Entriken <cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2001-2014 Will Entriken
+ * @copyright Copyright (c) 2001-2014 William Entriken
  * @extends Search
  */
 class Folder extends Search
@@ -30,7 +30,6 @@ class Folder extends Search
 //TODO REMOVE THE SYNC AND DATE PARAM
     public function __construct($path = '/', $sync = false, $date = null)
     {
-        global $cameralife;
         parent::__construct();
 
         $this->path = $path;
@@ -81,7 +80,8 @@ class Folder extends Search
     }
 
     /**
-     * @return some decentants, or all if count==0
+     * @param int $count number of Folders to return, or all if 0
+     * @return array of Folders
      */
     public function getDescendants($count = 0)
     {
@@ -117,7 +117,7 @@ class Folder extends Search
         $condition = "status=0 AND path LIKE '" . $this->path . "_%'"; //TODO THIS IS ACTUALLY WRONG
         $extra = "ORDER BY $sort LIMIT $count";
         $family = $cameralife->database->Select('photos', $selection, $condition, $extra);
-        while ($youngin = $family->FetchAssoc()) {
+        while ($youngin = $family->fetchAssoc()) {
             $result[] = new Folder($youngin['path'], false);
         }
 
@@ -160,7 +160,7 @@ class Folder extends Search
         $family = $cameralife->database->Select('photos', $selection, $condition, $extra);
 
         $result = array();
-        while ($youngin = $family->FetchAssoc()) {
+        while ($youngin = $family->fetchAssoc()) {
             $result[] = new Folder($this->path . $youngin['basename'], false);
         }
 
@@ -215,7 +215,7 @@ class Folder extends Search
         $result = $cameralife->database->Select('photos', 'id,filename,path,fsize', '', 'ORDER BY path,filename');
 
         // Verify each photo in the DB
-        while ($photo = $result->FetchAssoc()) {
+        while ($photo = $result->fetchAssoc()) {
 //TODO FIX DATABASE TO MAKE photos.path like '/a/dir' or '/'
             $filename = $photo['filename'];
             $photopath = trim($photo['path'], '/') . '/' . $filename;
@@ -365,7 +365,7 @@ class Folder extends Search
             $result = $cameralife->database->Select('photos', 'id, filename, path', $condition);
 
             // Is anything in the fileStore too similar (given available information) to let this photo in?
-            if ($photo = $result->FetchAssoc()) {
+            if ($photo = $result->fetchAssoc()) {
                 // With the case-insensitive LIKE above, this will handle files renamed only by case
                 if (strcasecmp($photo['path'] . $photo['filename'], $new_file) == 0) {
                     $retval[] = $photo['path'] . $photo['filename'] . ' was renamed to ' . $new_file;
@@ -428,7 +428,7 @@ class Folder extends Search
         $selection = "filename";
         $condition = "path = '" . addslashes($this->path) . "'";
         $result = $cameralife->database->Select('photos', $selection, $condition);
-        while ($row = $result->FetchAssoc()) {
+        while ($row = $result->fetchAssoc()) {
             $key = array_search($row['filename'], $fsphotos);
             if ($key === false) {
                 return false;
@@ -440,7 +440,7 @@ class Folder extends Search
         $selection = "DISTINCT SUBSTRING_INDEX(SUBSTR(path," . (strlen($this->path) + 1) . "),'/',1) AS basename";
         $condition = "path LIKE '" . addslashes($this->path) . "%/' AND status=0";
         $result = $cameralife->database->Select('photos', $selection, $condition);
-        while ($row = $result->FetchAssoc()) {
+        while ($row = $result->fetchAssoc()) {
             $key = array_search($row['basename'], $fsdirs);
             if ($key === false) {
                 return false;

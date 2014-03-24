@@ -1,7 +1,7 @@
 <?php
 /**
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 
@@ -10,7 +10,7 @@ require 'main.inc';
 
 if (!Photo::photoExists($_GET['id'])) {
     header("HTTP/1.0 404 Not Found");
-    $cameralife->error("Photo #" . ($original + 1) . " not found.", __FILE__, __LINE__);
+    $cameralife->error("Photo #" . ($original + 1) . " not found.");
 }
 
 $photo = new Photo($_GET['id']);

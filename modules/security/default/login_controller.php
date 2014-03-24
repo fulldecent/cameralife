@@ -10,8 +10,8 @@
  *  <li>param3 = email (optional)</li>
  *  <li>target = where to go afterwards or 'ajax'</li>
  * </ul>
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
 */
 

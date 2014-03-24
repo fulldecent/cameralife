@@ -4,8 +4,8 @@
 
 /**
  * Carries classes CameraLife, CameraLife Module and View
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2013 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2013 William Entriken
  * @access public
  */
 error_reporting(E_ALL);
@@ -97,7 +97,7 @@ class CameraLife extends CameraLifeModule # and View
         if (!isset($this->loadedFeatures[$feature])) {
             $loadedFeatures[$feature] = 'loading';
         } elseif ($this->loadedFeatures[$feature] == 'loaded') {
-            return true;
+            return;
         } elseif ($this->loadedFeatures[$feature] == 'loading') {
             $this->error('Circular reference in features :-(');
         }
@@ -120,7 +120,7 @@ class CameraLife extends CameraLifeModule # and View
     function loadPreferences()
     {
         $query = $this->database->Select('preferences', '*');
-        while ($result = $query->FetchAssoc()) {
+        while ($result = $query->fetchAssoc()) {
             $this->userpreferences[$result['prefmodule']][$result['prefkey']] = $result['prefvalue'];
         }
     }
@@ -135,7 +135,7 @@ class CameraLife extends CameraLifeModule # and View
                     $condition = "prefmodule='$module' AND prefkey='$key'";
 
                     $query = $this->database->Select('preferences', '1', $condition);
-                    if ($query->FetchAssoc()) {
+                    if ($query->fetchAssoc()) {
                         $this->database->Update('preferences', $values, $condition);
                     } else {
                         $this->database->Insert('preferences', $values);
@@ -162,7 +162,7 @@ class CameraLife extends CameraLifeModule # and View
         return $this->baseURL . "/modules/iconset/" . $this->getPref('iconset') . "/$name.png";
     }
 
-    function error($message, $file = '', $line = '')
+    function error($message)
     {
         global $cameralife;
         echo "<link rel=\"stylesheet\" href=\"//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css\">";
@@ -261,5 +261,3 @@ function AddParamRawUrlEncode($param, $value = null, $url = null)
 
     return $url;
 }
-
-?>

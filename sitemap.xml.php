@@ -2,8 +2,8 @@
 /**
  * Creates sitemap for search engines
  * Includes a master index and indexs for each 1000 photos
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 
@@ -72,7 +72,7 @@ if (!isset($page)) {
 } elseif ($page == 'albums') {
     $result = $cameralife->database->Select('albums', 'id, hits');
 
-    while ($record = $result->FetchAssoc()) {
+    while ($record = $result->fetchAssoc()) {
         $nodes[] = array(
             $baseurl . '/album.php?id=' . $record['id'],
             round(log($record['hits'] + 1, $counts['maxalbumhits'] + 1), 4)
@@ -81,7 +81,7 @@ if (!isset($page)) {
 } elseif ($page == 'topics') {
     $result = $cameralife->database->Select('albums', 'DISTINCT(topic)');
 
-    while ($record = $result->FetchAssoc()) {
+    while ($record = $result->fetchAssoc()) {
         $nodes[] = array($baseurl . '/topic.php?name=' . urlencode($record['topic']));
     }
 } elseif ($page == 'photos') {
@@ -92,7 +92,7 @@ if (!isset($page)) {
         'ORDER BY id'
     );
 
-    while ($record = $result->FetchAssoc()) {
+    while ($record = $result->fetchAssoc()) {
         $nodes[] = array(
             $baseurl . '/photo.php?id=' . $record['id'],
             round(log($record['hits'] + 1, $counts['maxphotohits'] + 1), 4)

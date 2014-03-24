@@ -5,8 +5,8 @@
  *<li>Allows monitoring of user activities</li>
  *<li>Enables editing of security settings</li>
  *</ul>
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 /**
@@ -79,10 +79,9 @@ function html_select_auth($param_name)
     <link rel="stylesheet" href="../../../admin/admin.css">
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <script language="javascript">
-        public
         function changeall() {
-            val = document.getElementById('status').value;
-            inputs = document.getElementsByTagName('select');
+            var val = document.getElementById('status').value;
+            var inputs = document.getElementsByTagName('select');
             for (var i = 0; i < inputs.length; i++) {
                 inputs[i].value = val;
             }
@@ -123,7 +122,7 @@ if ($_GET['page'] == 'users') {
         <th width="10%">Options
             <?php
             $result = $cameralife->database->Select('users', '*', null, 'ORDER BY auth desc');
-            while ($curuser = $result->FetchAssoc()) {
+            while ($curuser = $result->fetchAssoc()) {
                 $count_actions = $cameralife->database->SelectOne(
                     'logs',
                     'COUNT(*)',

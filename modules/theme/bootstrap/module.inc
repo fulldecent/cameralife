@@ -2,9 +2,9 @@
 
 /**
  * Theme name - Bootstrap
- * @author Will Entriken<cameralife@phor.net>
+ * @author William Entriken<cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @todo make this HTML valid
  */
 class BootstrapTheme extends ThemeModule
@@ -68,7 +68,7 @@ class BootstrapTheme extends ThemeModule
 
     function showPage($name, $object = null)
     {
-        global $cameralife, $_SERVER, $_GET, $_POST;
+        global $_SERVER, $_GET, $_POST;
         $objectname = strtolower($name);
         $$objectname = $object;
         require dirname(__FILE__) . '/' . strtolower($name) . '.inc';
@@ -106,7 +106,7 @@ class BootstrapTheme extends ThemeModule
 
     /**
      * @access public
-     * @param string the VIEW being displayed
+     * @param view $view VIEW being displayed
      * @param string $menu Block of HTML to show on side of page in a well
      * @param string $extrahead (default: '')
      * @param string $onload (default: '')
@@ -118,7 +118,7 @@ class BootstrapTheme extends ThemeModule
         $this->menu = $menu;
         $openGraph = $view->GetOpenGraph();
 
-        $myfolder = new Folder ('/upload/' . $cameralife->security->GetName());
+        $myfolder = new Folder ('/upload/' . $cameralife->security->getName());
         $myfolderURL = $myfolder->getOpenGraph()['og:url'];
         $body = $onload ? "<body onLoad=\"$onload\">" : '<body>';
         ?>
@@ -158,10 +158,10 @@ class BootstrapTheme extends ThemeModule
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <?php
-                        if ($cameralife->security->GetName()) {
+                        if ($cameralife->security->getName()) {
                             $gravitarHTML = htmlentities(
                                 "http://www.gravatar.com/avatar/" . md5(
-                                    $cameralife->security->GetName()
+                                    $cameralife->security->getName()
                                 ) . "?s=16&d=identicon"
                             );
 
@@ -169,7 +169,7 @@ class BootstrapTheme extends ThemeModule
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img
                                         src="<?= $gravitarHTML ?>" height=16
-                                        width=16> <?= $cameralife->security->GetName() ?> <b class="caret"></b></a>
+                                        width=16> <?= $cameralife->security->getName() ?> <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="<?= $myfolderURL ?>">My Uploads</a></li>
                                     <li><a href="<?= $cameralife->baseURL . '/admin/index.php' ?>">Administer</a></li>
@@ -333,8 +333,6 @@ class BootstrapTheme extends ThemeModule
     function MultiSection($sections, $baseURL, $conjunction = 'and', $query = null)
     {
         global $_GET;
-        $sectionhtml = array();
-        $finalhtml = '';
 
         echo '<ul class="nav nav-tabs">' . PHP_EOL;
         foreach ($sections as $section) {
@@ -362,8 +360,6 @@ class BootstrapTheme extends ThemeModule
 
     function PageSelector($start, $total, $perPage, $url)
     {
-        global $theme;
-
         if ($total > $perPage) // Refuse to only show one page
         {
             echo '<ul class="pagination">';

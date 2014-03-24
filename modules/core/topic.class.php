@@ -3,9 +3,9 @@
 /**
  * Topic class.
  *
- * @author Will Entriken <WillEntriken @gmail.com>
+ * @author William Entriken <WillEntriken @gmail.com>
  * @access public
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @extends Search
  */
 class Topic extends Search
@@ -14,10 +14,8 @@ class Topic extends Search
 
     public function __construct($name)
     {
-        global $cameralife;
         parent::__construct();
         $this->name = $name;
-
         $this->mySearchAlbumCondition = "topic = '" . mysql_real_escape_string($this->name) . "'";
         $this->mySearchPhotoCondition = "FALSE";
         $this->mySearchFolderCondition = "FALSE";
@@ -39,7 +37,7 @@ class Topic extends Search
         global $cameralife;
         $retval = array();
         $result = $cameralife->database->Select('albums', 'DISTINCT topic');
-        while ($topic = $result->FetchAssoc()) {
+        while ($topic = $result->fetchAssoc()) {
             $retval[] = new Topic($topic['topic']);
         }
 

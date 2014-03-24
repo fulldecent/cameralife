@@ -2,10 +2,10 @@
 
 /**
  * Class Photo provides a front end to working with photos
- * @author Will Entriken <cameralife@phor.net>
+ * @author William Entriken <cameralife@phor.net>
  * @access public
  * @version
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @copyright Copyright (c) 2001-2009 William Entriken
  */
 class Photo extends View
 {
@@ -71,8 +71,8 @@ class Photo extends View
             $this->record['id'] = null;
         } elseif (is_numeric($original)) { # This is an ID
             $result = $cameralife->database->Select('photos', '*', "id=$original");
-            $this->record = $result->FetchAssoc()
-            or $cameralife->error("Photo #$original not found", __FILE__, __LINE__);
+            $this->record = $result->fetchAssoc()
+            or $cameralife->error("Photo #$original not found");
         } elseif (is_array($original)) { # A new image, given by an array
             $this->record['description'] = 'unnamed';
 
@@ -107,11 +107,11 @@ class Photo extends View
         global $cameralife;
 
         if (!is_numeric($original)) {
-            $cameralife->error("Input needs to be a number", __FILE__, __LINE__);
+            $cameralife->error("Input needs to be a number");
         }
 
         $result = $cameralife->database->Select('photos', '*', "id=$original");
-        $a = $result->FetchAssoc();
+        $a = $result->fetchAssoc();
 
         return $a != 0;
     }
@@ -162,9 +162,9 @@ class Photo extends View
 
         if (!$onlyWantEXIF) {
             $this->image = $cameralife->ImageProcessing->CreateImage($file)
-            or $cameralife->error("Bad photo load: $file", __FILE__, __LINE__);
+            or $cameralife->error("Bad photo load: $file");
             if (!$this->image->Check()) {
-                $cameralife->error("Bad photo processing: $file", __FILE__, __LINE__);
+                $cameralife->error("Bad photo processing: $file");
             }
         }
         if ($temp) {
@@ -352,7 +352,7 @@ class Photo extends View
         $this->EXIF = array();
         $query = $cameralife->database->Select('exif', '*', "photoid=" . $this->record['id']);
 
-        while ($row = $query->FetchAssoc()) {
+        while ($row = $query->fetchAssoc()) {
             if ($row['tag'] == 'empty') {
                 continue;
             }
@@ -362,14 +362,14 @@ class Photo extends View
         return $this->EXIF;
     }
 
-    public function loadEXIF($file)
+    private function loadEXIF($file)
     {
         global $cameralife;
 
         $exif = @exif_read_data($file, 'IFD0', true);
         $this->EXIF = array();
         if ($exif === false) {
-            return $retval;
+            return;
         } else {
             $focallength = $exposuretime = null;
             if (isset($exif['EXIF']['DateTimeOriginal'])) {
@@ -496,9 +496,7 @@ class Photo extends View
 
         if (isset($_SERVER['HTTP_REFERER']) &&
             preg_match("/start=([0-9]*)/", $_SERVER['HTTP_REFERER'], $regs)
-        ) {
-            $extrasearch = "&amp;start=" . $regs[1];
-        }
+        )
 
         // Find if the referer is an album
         if (isset($_SERVER['HTTP_REFERER']) &&
@@ -519,7 +517,7 @@ class Photo extends View
             'id,name',
             "'" . addslashes($this->get('description')) . "' LIKE CONCAT('%',term,'%')"
         );
-        while ($albumrecord = $result->FetchAssoc()) {
+        while ($albumrecord = $result->fetchAssoc()) {
             if (($this->context instanceof Album) && $this->context->get('id') == $albumrecord['id']) // PHP5
             {
                 continue;

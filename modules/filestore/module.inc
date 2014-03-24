@@ -7,7 +7,7 @@
  * Generally, you will update the photo object and then call the functions.
  * @author William Entriken <cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2014 Will Entriken
+ * @copyright Copyright (c) 2014 William Entriken
  */
 class FileStore extends CameraLifeModule
 {
@@ -25,7 +25,7 @@ class FileStore extends CameraLifeModule
      *
      * @param $bucket - one of ('photo', 'other')
      * @param $path - the location of the stored file, starts with '/'
-     * @return a URL or FALSE
+     * @return mixed URL or FALSE
      */
     function getURL($bucket, $path)
     {
@@ -37,7 +37,7 @@ class FileStore extends CameraLifeModule
      *
      * @param $bucket - one of ('photo', 'other')
      * @param $path - the location of the stored file, starts with '/'
-     * @return an array with these elements:
+     * @return array with these elements:
      *     filename - string - the local file you requested
      *     temporary - boolean
      *     mtime - unix time that this file was modified
@@ -55,23 +55,19 @@ class FileStore extends CameraLifeModule
      * @param $path - the location of the stored file, starts with '/'
      * @param $file - the local file which is to be put in the store
      * @param $secure - if secure, ensure this file will not be publicly accessible
-     * @return none
      */
     function putFile($bucket, $path, $file, $secure = 0)
     {
     }
 
     /**
-     * Sets whether the file must be secure
-     *
-     * @param $bucket - one of ('photo', 'other')
-     * @param $path - the location of the stored file, starts with '/'
-     * @param $file - the local file which is to be put in the store
-     * @param $secure - if secure, ensure this file will not be publicly accessible
-     * @return none
+     * @param $bucket one of ('photo', 'other')
+     * @param $path the location of the stored file, starts with '/'
+     * @param $secure if secure, ensure this file will not be publicly accessible
      */
     function setPrivacy($bucket, $path, $secure)
     {
+        //TODO SET PRIVACY
     }
 
     /**
@@ -79,11 +75,10 @@ class FileStore extends CameraLifeModule
      *
      * @param $bucket - one of ('photo', 'other')
      * @param $path - the location of the stored file, starts with '/'
-     *
-     * @return none
      */
     function eraseFile($bucket, $path)
     {
+        //TODO ERASE
     }
 
     /**
@@ -92,11 +87,9 @@ class FileStore extends CameraLifeModule
      * @param $bucket - one of ('photo', 'other')
      * @param $path - the location of the stored file, starts with '/'
      * @param $recursive - whether to list recursively
-     * @return an array of files, in the form 'path'=>basename(path)
+     * @return arry of files, in the form 'path'=>basename(path)
      */
     function listFiles($bucket, $path = '', $recursive = true)
     {
     }
 }
-
-?>

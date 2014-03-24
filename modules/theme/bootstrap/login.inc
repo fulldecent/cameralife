@@ -8,9 +8,9 @@
  *<b>Note</b>
  *<ul><li>It precedes the index page</li>
  *<li>$cameralife and $album are set by showPage()</li></ul>
- * @author Will Entriken<cameralife@phor.net>
+ * @author William Entriken<cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @copyright Copyright (c) 2001-2009 William Entriken
  */
 /**
  *

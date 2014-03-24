@@ -2,8 +2,8 @@
 
 /**
  * Model class for albums
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 class Album extends Search
@@ -35,13 +35,13 @@ class Album extends Search
             $this->record['id'] = $cameralife->database->Insert('albums', $this->record);
         } elseif (is_numeric($original)) { # This is an ID
             $result = $cameralife->database->Select('albums', '*', "id=$original");
-            $this->record = $result->FetchAssoc();
+            $this->record = $result->fetchAssoc();
             if (!$this->record) {
                 header("HTTP/1.0 404 Not Found");
                 $cameralife->error("Album #" . ($original + 0) . " not found.");
             }
         } else {
-            $cameralife->error("Invalid album", __FILE__, __LINE__);
+            $cameralife->error("Invalid album");
         }
         parent::__construct($this->record['term']);
     }
@@ -82,11 +82,11 @@ class Album extends Search
         global $cameralife;
 
         if (!is_numeric($poster)) {
-            $cameralife->error("Failed to set poster for album", __FILE__, __LINE__);
+            $cameralife->error("Failed to set poster for album");
         }
 
         $cameralife->database->SelectOne('photos', 'COUNT(*)', 'status=1 AND id=' . $_GET['poster_id'])
-        or $cameralife->error('The selected poster photo does not exist', __FILE__, __LINE__);
+        or $cameralife->error('The selected poster photo does not exist');
 
         $this->set('poster_id', $_GET['poster_id']);
     }

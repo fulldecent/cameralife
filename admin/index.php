@@ -2,8 +2,8 @@
 /**
  * Displays the main admin page
  * Provides a menu to choose administrative options
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2013 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2013 William Entriken
  */
 $features = array('security', 'fileStore');
 require '../main.inc';

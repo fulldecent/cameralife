@@ -17,8 +17,8 @@
  *<li>param2 = extra info</li>
  *<li>param3 = extra info</li>
  *<li>target = the exit URL, or 'ajax' for an ajax call</li></ul>
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 /**
@@ -41,13 +41,13 @@ if ($_POST['action'] == "Create") {
     $name = $_POST['param3'];
     $term = $_POST['param4'];
 
-    $name or $camerlife->Error("You must name the album");
-    $term or $camerlife->Error("You must have a search term");
-    $topic or $camerlife->Error("You must choose a topic for the album");
+    $name or $cameralife->Error("You must name the album");
+    $term or $cameralife->Error("You must have a search term");
+    $topic or $cameralife->Error("You must choose a topic for the album");
 
     $condition = "status=0 and lower(description) like lower('%" . $term . "%')";
     $query = $cameralife->database->Select('photos', 'id', $condition);
-    $result = $query->FetchAssoc();
+    $result = $query->fetchAssoc();
 
     if ($result) {
         $poster_id = $result['id'];

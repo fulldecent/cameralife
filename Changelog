@@ -1,4 +1,4 @@
-git  Will Entriken <cameralife AT phor.net>
+git  William Entriken <cameralife AT phor.net>
 * Automatically name files if possible
 * Update PhotoStore API
 * Remove hacks
@@ -7,12 +7,12 @@ git  Will Entriken <cameralife AT phor.net>
 * Supports OpenGraph
 * Drop Gallery Remote support
 
-2.6.6  Will Entriken <cameralife AT phor.net>
+2.6.6  William Entriken <cameralife AT phor.net>
 * Improve install process
 * Clean up rarely-used extensions
 * Fix UI errors
 
-2.6.5  Will Entriken <cameralife AT phor.net>
+2.6.5  William Entriken <cameralife AT phor.net>
 * Support Google Analytics
 * Create PHP code style guidelines and adopt
 * Add Facebook photo sharing
@@ -20,7 +20,7 @@ git  Will Entriken <cameralife AT phor.net>
 * Drop unneded logs.value_old
 * Remove iPhone support
 
-2.6.4  Will Entriken <cameralife AT phor.net>
+2.6.4  William Entriken <cameralife AT phor.net>
 * Added support for OpenID login, this will be default soon
 * Added upgrade tool
 * Supports Gravitar
@@ -28,7 +28,7 @@ git  Will Entriken <cameralife AT phor.net>
 * Use left and right arrow to navigate between photos
 * Bootstrap everywhere and it looks beautiful
 
-2.6.3  Will Entriken <cameralife AT phor.net>
+2.6.3  William Entriken <cameralife AT phor.net>
 * Huge documentation update by Aysha Mohamed Rafiq
 * Added hacks/widget.php - put this on your blog
 * Add options for image sizes, thinks Jack Snodgrass
@@ -50,7 +50,7 @@ git  Will Entriken <cameralife AT phor.net>
 * Automatic htaccess setup
 * Checkpoint and rollback is easier to manage with batch process
 
-2.6.2  Will Entriken <cameralife AT phor.net>
+2.6.2  William Entriken <cameralife AT phor.net>
 * Website update, thanks to Rajesh Sundaram
 * Security updates, thanks to Omer Singer and BackDoor
 * Merge themes
@@ -69,7 +69,7 @@ git  Will Entriken <cameralife AT phor.net>
 * PNG support
 * Uses mod_rewrite if possible, setup checks for mod_rewrite
 
-2.6.0  Will Entriken <cameralife AT phor.net>
+2.6.0  William Entriken <cameralife AT phor.net>
 * Support for Gallery Remote API (upload from iPhoto, DigiKam, ...)
 * Microformats, Sitemaps, OpenSearch
 * RSS feeds, supports iPhoto photocasting
@@ -85,24 +85,24 @@ git  Will Entriken <cameralife AT phor.net>
 * Photo thumbnails are not generated until needed
 * Security fixes to avoid DOS
 
-2.5.5  Will Entriken <cameralife AT phor.net>
+2.5.5  William Entriken <cameralife AT phor.net>
 * Cleaned up administrative tasks
 * Ask constructive users to create an account (photo.php)
 
-2.5.4  Will Entriken <cameralife AT phor.net>
+2.5.4  William Entriken <cameralife AT phor.net>
 * Safer printing of photo descriptions
 * Better documentation of basic functions
 * Simpler explanation of albums
 * Better error messages
 * Viewing a photo finds other photos you may be interested in
 
-2.5.3  Will Entriken <cameralife AT phor.net>
+2.5.3  William Entriken <cameralife AT phor.net>
 * Simpler install instructions, with help for cPanel users
 * Sugar coated album creation and editing
 * Themes no longer require menu-bullet
 * Bugfix: users.php with db_prefix now works (thanks Brian)
 
-2.5.2  Will Entriken <cameralife AT phor.net>
+2.5.2  William Entriken <cameralife AT phor.net>
 * Upload multiple photos in a zip (OMG finally!!?)
   - Requires unzip command line utility
 * Main index allows sort by Newset Folders (thanks Kevin)
@@ -112,7 +112,7 @@ git  Will Entriken <cameralife AT phor.net>
 * Supports a table name prefix (thanks Kevin)
 * Bugfix: photo descriptions with " in them
 
-2004-10-05  Will Entriken <cameralife AT phor.net>
+2004-10-05  William Entriken <cameralife AT phor.net>
 * Fixed that folder problem...
 * Upload to individual folders
 * New default theme: clean

@@ -1,8 +1,8 @@
 <?php
 /**
  * Photo view
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 
@@ -36,11 +36,11 @@ if (isset($_SERVER['HTTP_REFERER'])) {
 $photoPrev = $photo->getPrevious();
 $photoNext = $photo->getNext();
 
-if ($cameralife->security->GetName()) {
+if ($cameralife->security->getName()) {
     $rating = $avg = $cameralife->database->SelectOne(
         'ratings',
         'AVG(rating)',
-        'id=' . $photo->get('id') . " AND username='" . $cameralife->security->GetName() . "'"
+        'id=' . $photo->get('id') . " AND username='" . $cameralife->security->getName() . "'"
     );
 } else {
     $rating = $avg = $cameralife->database->SelectOne(
@@ -371,7 +371,7 @@ echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px sol
         <?php
 
         $result = $cameralife->database->Select('comments', '*', 'photo_id=' . $photo->get('id'));
-        while ($comment = $result->FetchAssoc()) {
+        while ($comment = $result->fetchAssoc()) {
             echo "<strong>" . $comment['username'] . "</strong> <em>" . date(
                     'Y-m-d',
                     strtotime($comment['date'])

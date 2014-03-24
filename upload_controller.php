@@ -7,9 +7,9 @@
  * <li>description = the photo(s) description</li>
  * <li>userfile = encoded file to upload, JPG or ZIP</li>
  * <li>target = the exit URL, or 'ajax' for an ajax call</li></ul>
- * @author Will Entriken <cameralife@phor.net>
+ * @author William Entriken <cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @copyright Copyright (c) 2001-2009 William Entriken
  */
 
 @ini_set('max_execution_time', 9000);
@@ -18,19 +18,22 @@ require 'main.inc';
 
 /**
  * Adds a file to the system
- *
  * Precondition - the images exists at $file
  * Postcondition: image is added to the fileStore at $path$filename
  *
- * @access private
- * @return int 0 | string describing the error
+ * @param $path
+ * @param $filename
+ * @param $file
+ * @param string $description
+ * @param int $status
+ * @return int|string Zero or string describing error
  */
-function add_image($path, $filename, $file, $description = 'unnamed', $status = 0)
+private function add_image($path, $filename, $file, $description = 'unnamed', $status = 0)
 {
     global $cameralife;
 
     if (strpos(mime_content_type($file), 'image/') != 0) {
-        $camerlife->Error("Invalid mimetype for uploaded file");
+        $cameralife->Error("Invalid mimetype for uploaded file");
     }
 
     if (!$description) {
@@ -53,7 +56,7 @@ function add_image($path, $filename, $file, $description = 'unnamed', $status = 
     $upload['filename'] = $filename;
     $upload['path'] = $path;
     $upload['description'] = $description;
-    $upload['username'] = $cameralife->security->GetName();
+    $upload['username'] = $cameralife->security->getName();
     $upload['status'] = $status;
 
     $photo = new Photo($upload);
@@ -63,12 +66,12 @@ function add_image($path, $filename, $file, $description = 'unnamed', $status = 
     return 0;
 }
 
-if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/' . $cameralife->security->GetName() . '/') {
+if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/' . $cameralife->security->getName() . '/') {
     $cameralife->security->Authorize('admin_file', 1);
     $path = $_REQUEST['path'];
 } else {
     $cameralife->security->Authorize('photo_upload', 1);
-    $path = 'upload/' . $cameralife->security->GetName() . '/';
+    $path = 'upload/' . $cameralife->security->getName() . '/';
 }
 
 /* Bonus code:
@@ -79,7 +82,7 @@ if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/' . $cameralife->se
 $status = 0;
 
 if (!$_FILES) {
-    $cameralife->error('No file was uploaded.', __FILE__, __LINE__);
+    $cameralife->error('No file was uploaded.');
 }
 
 $condition = "filename='" . $_FILES['userfile']['name'] . "'";
@@ -89,23 +92,23 @@ and $cameralife->error(
 );
 
 if (preg_match('|/|', $_FILES['userfile']['name'])) {
-    $cameralife->error("It appears you are hacking, that is disallowed.", __FILE__, __LINE__);
+    $cameralife->error("It appears you are hacking, that is disallowed.");
 }
 
 if ($_FILES['userfile']['size'] < 4096) {
-    $cameralife->error("The file is too small, minimum size is 4kb", __FILE__);
+    $cameralife->error("The file is too small, minimum size is 4kb");
 }
 
 if ($_FILES['userfile']['error'] == UPLOAD_ERR_INI_SIZE) {
-    $cameralife->error("The file was too big for the server.", __FILE__);
+    $cameralife->error("The file was too big for the server.");
 }
 
 if ($_FILES['userfile']['error'] == UPLOAD_ERR_PARTIAL) {
-    $cameralife->error("The file was only partially uploaded.", __FILE__);
+    $cameralife->error("The file was only partially uploaded.");
 }
 
 if ($_FILES['userfile']['error'] == UPLOAD_ERR_NO_FILE) {
-    $cameralife->error("No file was selected for upload.", __FILE__);
+    $cameralife->error("No file was selected for upload.");
 }
 
 if (!function_exists('sys_get_temp_dir')) {
@@ -147,7 +150,7 @@ if (preg_match('|\.zip$|i', $_FILES['userfile']['name'])) {
 
     $basename = $_FILES['userfile']['name'];
     move_uploaded_file($_FILES['userfile']['tmp_name'], $temp)
-    or $camerlife->Error("Could not move the zip file, is the destination writable? $temp");
+    or $cameralife->Error("Could not move the zip file, is the destination writable? $temp");
 
     exec("unzip -d $tempdir -nj '$temp' '*jpg' '*JPG' '*jpeg' '*JPEG' '*png' '*PNG'", $output, $return);
     unlink($temp);
@@ -169,7 +172,7 @@ if (preg_match('|\.zip$|i', $_FILES['userfile']['name'])) {
     $temp = tempnam('', 'cameralife_');
 
     move_uploaded_file($_FILES['userfile']['tmp_name'], $temp)
-    or $camerlife->Error("Could not upload the photo, is the destination writable?");
+    or $cameralife->Error("Could not upload the photo, is the destination writable?");
 
     $result = add_image($path, $_FILES['userfile']['name'], $temp, $_POST['description'], $status);
     @unlink($temp);

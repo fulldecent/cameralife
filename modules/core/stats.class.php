@@ -3,8 +3,8 @@
 /**
  * Stats class.
  * get stat information about the whole photo collection
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 class Stats
@@ -39,7 +39,7 @@ class Stats
 
         $popularPhotos = array();
         $query = $cameralife->database->Select('photos', 'id', null, 'ORDER BY hits DESC limit 5');
-        while ($photo = $query->FetchAssoc()) {
+        while ($photo = $query->fetchAssoc()) {
             $popularPhotos[] = new Photo($photo['id']);
         }
 
@@ -52,7 +52,7 @@ class Stats
 
         $popular_albums = array();
         $query = $cameralife->database->Select('albums', 'id', null, 'ORDER BY hits DESC limit 5');
-        while ($album = $query->FetchAssoc()) {
+        while ($album = $query->fetchAssoc()) {
             $popular_albums[] = new Album($album['id']);
         }
 

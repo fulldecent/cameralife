@@ -1,8 +1,8 @@
 <?php
 /**
  * Validates an installed IconSet
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 
@@ -30,7 +30,7 @@ $required_images =
         'icon-folder'
     );
 
-if (!$_GET['theme'] || eregi('[/\\]', $_GET['theme'])) {
+if (!$_GET['theme'] || preg_match('/[/\\]/', $_GET['theme'])) {
     echo "<h1>Select a theme to examine</h1><ul>";
     foreach (glob(dirname(__FILE__) . '/*/') as $file) {
         $file = basename($file);
@@ -45,7 +45,7 @@ if (!$_GET['theme'] || eregi('[/\\]', $_GET['theme'])) {
         if ($image[0] == '.' || strstr($image, '~') || strstr($image, 'json')) {
             continue;
         }
-        eregi('(.*)\.(.*)', $image, $regs);
+        preg_match('/(.*)\.(.*)/', $image, $regs);
         $images[$regs[1]][] = $regs[2];
     }
     $extras = $images;

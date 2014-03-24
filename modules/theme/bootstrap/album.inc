@@ -4,8 +4,8 @@
  *Editing an album
  *
  *<b>Note</b>  $cameralife and $album are set by showPage()
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 /**
@@ -54,11 +54,11 @@ if (isset($_GET['edit']) && $cameralife->security->authorize('admin_albums')) {
                                         if ($album->get('topic') == $topic) {
                                             $preselect = true;
                                         }
-                                        echo "<option $selected onclick=\"javascript:document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
+                                        echo "<option $selected onclick=\"document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
                                     }
                                     ?>
                                     <option value="othertopic" <?= $preselect ? '' : 'selected' ?>
-                                            onclick="javascript:document.form1.topicother.disabled=false">(A new topic)
+                                            onclick="document.form1.topicother.disabled=false">(A new topic)
                                     </option>
                                 </select>
                                 <input <?= $preselect ? 'disabled' : '' ?> type="text" name="param3" name="topicother"

@@ -1,9 +1,10 @@
 <?php
 
-/** Incorporates standard security implementaion.
+/**
+ * Incorporates standard security implementation.
  *
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  *
  *<ul>
@@ -40,15 +41,17 @@ class DefaultSecurity extends SecurityModule
 
         if ($authcookie) {
             $result = $cameralife->database->Select('users', '*', "cookie='$authcookie'");
-            $this->curuser = $result->FetchAssoc()
+            $this->curuser = $result->fetchAssoc()
             or $this->curuser = array('auth' => '0');
         } else {
             $this->curuser = array('auth' => '0');
         }
     }
 
-    /* Return TRUE or a string that is an error message */
-    /**@return TRUE | a string that is an error message
+    /**
+     * @param $username
+     * @param $password
+     * @return bool|string TRUE if successful, or error message
      */
     function Login($username, $password)
     {
@@ -60,7 +63,7 @@ class DefaultSecurity extends SecurityModule
 
         $result = $cameralife->database->Select('users', '*', "username='$username' AND password='$password'");
 
-        if ($user = $result->FetchAssoc()) // Login legal
+        if ($user = $result->fetchAssoc()) // Login legal
         {
             $cookie = rand(0, 999999);
             $values['cookie'] = $cookie;
@@ -83,20 +86,23 @@ class DefaultSecurity extends SecurityModule
         return $cameralife->baseURL . "/modules/security/default/login.php";
     }
 
-    /* Return TRUE + cookie or a string that is an error message */
-    /**@return TRUE,cookie|an error message string
+    /**
+     * @param $username
+     * @param $password
+     * @param string $email
+     * @return bool|string TRUE if successful or error message
      */
     function Register($username, $password, $email = '')
     {
         global $cameralife;
 
         $username = strtolower($username);
-        $username = eregi_replace('[^0-9a-z_]', '', $username);
+        $username = preg_replace('/[^0-9a-z]/i','',$username);
         $result = $cameralife->database->Select('users', '*', "username='$username'");
         $password = crypt($password, $username);
         $cookie = rand(0, 999999);
 
-        if ($user = $result->FetchAssoc()) {
+        if ($user = $result->fetchAssoc()) {
             return 'Username already taken';
         }
 
@@ -123,7 +129,6 @@ class DefaultSecurity extends SecurityModule
 
     function logout()
     {
-        global $cameralife;
         setcookie($this->getPref('auth_cookie'), '', time(), '/');
         return true;
     }
@@ -176,7 +181,7 @@ class DefaultSecurity extends SecurityModule
         }
 
         if (null == ($this->getPref($authName))) {
-            $cameralife->error("The privilege $authName does not exist.", __FILE__, __LINE__);
+            $cameralife->error("The privilege $authName does not exist.");
         }
 
         if ($this->curuser['auth'] < $this->getPref($authName) && $required) {
@@ -199,5 +204,3 @@ class DefaultSecurity extends SecurityModule
         return ($this->curuser['auth'] >= $this->getPref($authName));
     }
 }
-
-?>

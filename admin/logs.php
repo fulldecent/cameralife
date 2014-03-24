@@ -1,8 +1,8 @@
 <?php
 /*
  * Administer comments on the site
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 $features = array('security', 'fileStore');
@@ -102,19 +102,19 @@ if ($checkpointDate) {
         <div class="controls">
             <label class="checkbox inline">
                 <input type="checkbox" name="showme" <?php if ($_POST["showme"]) {
-                    echo " checked"
+                    echo " checked";
 } ?>>
                 <i class="icon-user"></i> Me
             </label>
             <label class="checkbox inline">
                 <input type="checkbox" name="showreg" <?php if ($_POST["showreg"]) {
-                    echo " checked"
+                    echo " checked";
 } ?>>
                 <i class="icon-user"></i> Registered users
             </label>
             <label class="checkbox inline">
                 <input type="checkbox" name="showunreg" <?php if ($_POST["showunreg"]) {
-                    echo " checked"
+                    echo " checked";
 } ?>>
                 <i class="icon-user"></i> Unregistered users
             </label>
@@ -126,26 +126,26 @@ if ($checkpointDate) {
         <div class="controls">
             <label class="checkbox inline">
                 <input type="checkbox" name="showphotos" <?php if ($_POST["showphotos"]) {
-                    echo " checked"
+                    echo " checked";
 } ?>>
                 <img src="<?= $cameralife->iconURL('small-photo') ?>"> Photos
             </label>
             <label class="checkbox inline">
                 <input type="checkbox" name="showalbums" <?php if ($_POST["showalbums"]) {
-                    echo " checked"
+                    echo " checked";
 } ?>>
                 <img src="<?= $cameralife->iconURL('small-album') ?>"> Albums
             </label>
             <label class="checkbox inline">
                 <input type="checkbox" name="showusers" <?php if ($_POST["showusers"]) {
-                    echo " checked"
+                    echo " checked";
 } ?>>
                 <img src="<?= $cameralife->iconURL('small-login') ?>"> Users
             </label>
             <label class="checkbox inline">
                 <input type="checkbox"
                        name="showpreferences" <?php if ($_POST["showpreferences"]) {
-                    echo " checked"
+                    echo " checked";
 } ?>>
                 <img src="<?= $cameralife->iconURL('small-admin') ?>"> Preferences
             </label>
@@ -195,10 +195,10 @@ if ($checkpointDate) {
 
     $condition .= ") AND (0 ";
     if ($_POST['showme']) {
-        $condition .= "OR user_name = '" . $cameralife->security->GetName() . "' ";
+        $condition .= "OR user_name = '" . $cameralife->security->getName() . "' ";
     }
     if ($_POST['showreg']) {
-        $condition .= "OR (user_name LIKE '_%' AND user_name != '" . $cameralife->security->GetName() . "')";
+        $condition .= "OR (user_name LIKE '_%' AND user_name != '" . $cameralife->security->getName() . "')";
     }
     if ($_POST['showunreg']) {
         $condition .= "OR user_name = '' ";
@@ -214,7 +214,7 @@ if ($checkpointDate) {
         $condition,
         $extra
     );
-    while ($record = $result->FetchAssoc()) {
+    while ($record = $result->fetchAssoc()) {
         $receipt = new Receipt($record['maxid']);
         $object = $receipt->getObject();
         $openGraph = $object->GetOpenGraph();

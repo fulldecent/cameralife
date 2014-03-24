@@ -1,8 +1,8 @@
 <?php
 /*
  * Administer comments on the site
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 $features = array('security', 'fileStore');
@@ -93,19 +93,19 @@ $latestComment = $cameralife->database->SelectOne('comments', 'max(id)');
         Show comments from:
         <label class="checkbox inline">
             <input type="checkbox" name="showme" <?php if ($_POST["showme"]) {
-                echo " checked"
+                echo " checked";
 } ?>>
             <i class="icon-user"></i> Me
         </label>
         <label class="checkbox inline">
             <input type="checkbox" name="showreg" <?php if ($_POST["showreg"]) {
-                echo " checked"
+                echo " checked";
 } ?>>
             <i class="icon-user"></i> Registered users
         </label>
         <label class="checkbox inline">
             <input type="checkbox" name="showunreg" <?php if ($_POST["showunreg"]) {
-                echo " checked"
+                echo " checked";
 } ?>>
             <i class="icon-user"></i> Unregistered users
         </label>
@@ -136,10 +136,10 @@ $latestComment = $cameralife->database->SelectOne('comments', 'max(id)');
         <?php
         $condition = "(0 ";
         if ($_POST['showme']) {
-            $condition .= "OR username = '" . $cameralife->security->GetName() . "' ";
+            $condition .= "OR username = '" . $cameralife->security->getName() . "' ";
         }
         if ($_POST['showreg']) {
-            $condition .= "OR (username LIKE '_%' AND username != '" . $cameralife->security->GetName() . "')";
+            $condition .= "OR (username LIKE '_%' AND username != '" . $cameralife->security->getName() . "')";
         }
         if ($_POST['showunreg']) {
             $condition .= "OR username = '' ";
@@ -153,7 +153,7 @@ $latestComment = $cameralife->database->SelectOne('comments', 'max(id)');
         $extra = "GROUP BY photo_id ORDER BY id DESC";
 
         $result = $cameralife->database->Select('comments', '*, MAX(id) as maxid', $condition, $extra);
-        while ($record = $result->FetchAssoc()) {
+        while ($record = $result->fetchAssoc()) {
             //var_dump($record);
 
             $photo = new Photo($record['photo_id']);
@@ -175,7 +175,7 @@ $latestComment = $cameralife->database->SelectOne('comments', 'max(id)');
                     $condition = "photo_id = " . $record['photo_id'];
                     $result2 = $cameralife->database->Select('comments', '*', $condition, 'ORDER BY id DESC');
 
-                    while ($row = $result2->FetchAssoc()) {
+                    while ($row = $result2->fetchAssoc()) {
                         $byLine = ($row['username'] ? $row['username'] : 'Anonymous') . ' (' . $row['user_ip'] . ') ' . $row['date'];
                         ?>
                         <label class="checkbox">

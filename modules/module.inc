@@ -1,8 +1,8 @@
 <?php
 
 /** Base class for all modules -- Retrieving of preferences
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 class CameraLifeModule
@@ -40,7 +40,8 @@ class CameraLifeModule
             }
         }
 
-        $cameralife->error('Unable to retreive preference: ' . get_class($this) . ' ' . $key, __FILE__, __LINE__);
+        $cameralife->error('Unable to retreive preference: ' . get_class($this) . ' ' . $key);
+        return FALSE;
     }
 
     /**
@@ -62,5 +63,3 @@ class CameraLifeModule
         $cameralife->savePreferences();
     }
 }
-
-?>

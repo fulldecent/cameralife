@@ -1,8 +1,8 @@
 <?php
 /**
  * Common features in the admin/ directory
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2013 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2013 William Entriken
  * @access public
  */
 
@@ -53,7 +53,7 @@ function renderPrefsAsHTML($module)
                     echo '<p class="text-error">This directory is not writable</p>';
                 }
             } elseif (is_array($pref['type'])) { // enumeration
-                echo "      <select class=\"form-control\" name=\"value$prefnum\" />\n";
+                echo "      <select class=\"form-control\" name=\"value$prefnum\">\n";
                 foreach ($pref['type'] as $index => $desc) {
                     if ($index == $value) {
                         echo "        <option selected value=\"$index\">$desc</option>\n";
@@ -63,7 +63,7 @@ function renderPrefsAsHTML($module)
                 }
                 echo "      </select />\n";
             } elseif ($pref['type'] == 'yesno') {
-                echo "      <select name=\"value$prefnum\" />\n";
+                echo "      <select name=\"value$prefnum\">\n";
                 foreach (array('1' => 'Yes', '0' => 'No') as $index => $desc) {
                     if ($index == $value) {
                         echo "        <option class=\"form-control\" selected value=\"$index\">$desc</option>\n";

@@ -13,9 +13,9 @@
  *  <li>admin_theme </li>
  *  <li>admin_customize</li>
  *</ul>
- * @author Will Entriken <cameralife@phor.net>
+ * @author William Entriken <cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @copyright Copyright (c) 2001-2009 William Entriken
  */
 class SecurityModule extends CameraLifeModule
 {
@@ -66,5 +66,3 @@ class SecurityModule extends CameraLifeModule
     {
     }
 }
-
-?>

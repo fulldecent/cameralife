@@ -2,8 +2,8 @@
 
 /**
  * The class for logging and reverting changes to the site
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 class AuditTrail
@@ -20,15 +20,15 @@ class AuditTrail
      */
     public static function log($record_type, $record_id, $value_field, $value_old, $value_new)
     {
-        global $user, $_SERVER, $cameralife;
+        global $_SERVER, $cameralife;
         if ($value_old == $value_new) {
-            return;
+            return NULL;
         }
         $log['record_type'] = $record_type;
         $log['record_id'] = $record_id;
         $log['value_field'] = $value_field;
         $log['value_new'] = $value_new;
-        $log['user_name'] = $cameralife->security->GetName();
+        $log['user_name'] = $cameralife->security->getName();
         $log['user_ip'] = $_SERVER['REMOTE_ADDR'];
         $log['user_date'] = date('Y-m-d');
         $id = $cameralife->database->Insert('logs', $log);
@@ -42,7 +42,7 @@ class AuditTrail
      * This also removes said action from the logs.
      * @param int $id is the ID of the receipt representing action to revert
      */
-    public function undo($id)
+    public static function undo($id)
     {
         global $cameralife;
         if (!is_numeric($id)) {
@@ -57,8 +57,7 @@ class AuditTrail
         # Gets the requested AND previous log entry for a record and value field
         $result = $cameralife->database->Select('logs', '*', $condition, 'ORDER BY id DESC LIMIT 2');
 
-        $target = $result->FetchAssoc();
-        $prior = $result->FetchAssoc();
+        $prior = $result->fetchAssoc();
         if (is_array($prior) && isset($prior['value_new'])) {
             $oldvalue = $prior['value_new'];
         } else {
@@ -82,23 +81,15 @@ class AuditTrail
                     $album = new Album($record['record_id']);
                     $condition = "status=0 and lower(description) like lower('%" . $album->Get['term'] . "%')";
                     $query = $cameralife->database->Select('photos', 'id', $condition);
-                    $result = $query->FetchAssoc();
+                    $result = $query->fetchAssoc();
                     if ($result) {
                         $oldvalue = $result['id'];
                     } else {
-                        $cameralife->error(
-                            "Cannot find a poster for the album #" . $record['record_id'],
-                            __FILE__,
-                            __LINE__
-                        );
+                        $cameralife->error("Cannot find a poster for the album #" . $record['record_id']);
                     }
                     break;
                 default:
-                    $cameralife->error(
-                        "I don't know how to undo the parameter " . $receipt['record_type'] . '_' . $receipt['value_field'],
-                        __FILE__,
-                        __LINE__
-                    );
+                    $cameralife->error("I don't know how to undo the parameter " . $receipt['record_type'] . '_' . $receipt['value_field']);
             }
         }
 
@@ -126,12 +117,12 @@ class Receipt
         global $cameralife;
 
         if (!is_numeric($id)) {
-            $cameralife->error("Invalid receipt id", __FILE__, __LINE__);
+            $cameralife->error("Invalid receipt id");
         }
         $result = $cameralife->database->Select('logs', '*', 'id=' . $id);
-        $this->myRecord = $result->FetchAssoc();
+        $this->myRecord = $result->fetchAssoc();
         if (!is_array($this->myRecord)) {
-            $cameralife->error("Invalid receipt id #$id", __FILE__, __LINE__);
+            $cameralife->error("Invalid receipt id #$id");
         }
     }
 
@@ -145,7 +136,7 @@ class Receipt
         $condition .= " AND value_field='" . $this->myRecord['value_field'] . "'";
         $result = $cameralife->database->Select('logs', '*', $condition, 'ORDER BY id DESC LIMIT 1');
 
-        $new = $result->FetchAssoc();
+        $new = $result->fetchAssoc();
 
         return ($new['id'] == $this->myRecord['id']);
     }
@@ -181,6 +172,7 @@ class Receipt
             return die("user receipt type");
         } // wtf do I do here?
         $cameralife->Error("Invalid receipt type.");
+        return false;
     }
 
     // Returns all receipts from this back to the beginning
@@ -193,7 +185,7 @@ class Receipt
         $condition .= " AND record_id='" . $this->myRecord['record_id'] . "'";
         $condition .= " AND id>$checkpoint";
         $query = $cameralife->database->Select('logs', 'id', $condition, 'ORDER BY id');
-        while ($row = $query->FetchAssoc()) {
+        while ($row = $query->fetchAssoc()) {
             $retval[] = new Receipt($row['id']);
         }
 
@@ -213,8 +205,7 @@ class Receipt
         # Gets the requested AND previous log entry for a record and value field
         $result = $cameralife->database->Select('logs', '*', $condition, 'ORDER BY id DESC LIMIT 2');
 
-        $target = $result->FetchAssoc();
-        $prior = $result->FetchAssoc();
+        $prior = $result->fetchAssoc();
         if (is_array($prior) && isset($prior['value_new'])) {
             return array('value' => $prior['value_new'], 'fromReceipt' => true);
         } else {
@@ -233,23 +224,15 @@ class Receipt
                     $album = new Album($this->myRecord['record_id']);
                     $condition = "status=0 and lower(description) like lower('%" . $album->Get['term'] . "%')";
                     $query = $cameralife->database->Select('photos', 'id', $condition);
-                    $result = $query->FetchAssoc();
-                    if ($result) {
+                    $result = $query->fetchAssoc();
+                    if ($result)
                         return array('value' => $result['id'], 'fromReceipt' => false);
-                    } else {
-                        $cameralife->error(
-                            "Cannot find a poster for the album #" . $this->myRecord['record_id'],
-                            __FILE__,
-                            __LINE__
-                        );
-                    }
+                    $cameralife->error("Cannot find a poster for the album #" . $this->myRecord['record_id']);
+                    return false;
                     break;
                 default:
-                    $cameralife->error(
-                        "I don't know how to undo the parameter " . $this->myRecord['record_type'] . '_' . $this->myRecord['value_field'],
-                        __FILE__,
-                        __LINE__
-                    );
+                    $cameralife->error("I don't know how to undo the parameter " . $this->myRecord['record_type'] . '_' . $this->myRecord['value_field']    );
+                    return false;
             }
         }
     }

@@ -8,9 +8,9 @@
  * <li>param1 = extra info</li>
  * <li> param2 = extra info</li>
  * <li>target = the exit URL, or 'ajax' for an ajax call</li></ul>
- * @author Will Entriken <cameralife@phor.net>
+ * @author William Entriken <cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @copyright Copyright (c) 2001-2009 William Entriken
  */
 
 $features = array('imageProcessing', 'security', 'fileStore');
@@ -58,18 +58,18 @@ if ($_POST['action'] == 'flag') {
         'comments',
         array(
             'photo_id' => $photo->get('id'),
-            'username' => $cameralife->security->GetName(),
+            'username' => $cameralife->security->getName(),
             'user_ip' => $_SERVER['REMOTE_ADDR'],
             'comment' => stripslashes($_POST['param1']),
             'date' => date('Y-m-d')
         )
     );
 } elseif ($_POST['action'] == 'rate') {
-    if ($cameralife->security->GetName()) {
+    if ($cameralife->security->getName()) {
         $rating = $cameralife->database->SelectOne(
             'ratings',
             'AVG(rating)',
-            'id=' . $_POST['id'] . " AND username='" . $cameralife->security->GetName() . "'"
+            'id=' . $_POST['id'] . " AND username='" . $cameralife->security->getName() . "'"
         );
     } else {
         $rating = $cameralife->database->SelectOne(
@@ -80,11 +80,11 @@ if ($_POST['action'] == 'flag') {
     }
 
     if ($rating) {
-        if ($cameralife->security->GetName()) {
+        if ($cameralife->security->getName()) {
             $cameralife->database->Update(
                 'ratings',
                 array('rating' => $_POST['param1'], 'date' => date('Y-m-d')),
-                'id=' . $_POST['id'] . " AND username='" . $cameralife->security->GetName() . "'"
+                'id=' . $_POST['id'] . " AND username='" . $cameralife->security->getName() . "'"
             );
         } else {
             $cameralife->database->Update(
@@ -98,7 +98,7 @@ if ($_POST['action'] == 'flag') {
             'ratings',
             array(
                 'id' => $_POST['id'],
-                'username' => $cameralife->security->GetName(),
+                'username' => $cameralife->security->getName(),
                 'user_ip' => $_SERVER['REMOTE_ADDR'],
                 'rating' => $_POST['param1'],
                 'date' => date('Y-m-d')
@@ -107,7 +107,7 @@ if ($_POST['action'] == 'flag') {
     }
     $rating = $regs[1];
 } else {
-    $cameralife->error("Invalid action parameter", __FILE__, __LINE__);
+    $cameralife->error("Invalid action parameter");
 }
 
 if ($receipt && $_POST['target'] != 'ajax') {

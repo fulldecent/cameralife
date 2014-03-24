@@ -1,8 +1,8 @@
 <?php
 /**
  * Displays post installation notifcation messages
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 
@@ -85,15 +85,15 @@ if (!$_POST['sitepass']) {
 }
 $prefix = $_POST['prefix'];
 
-$setup_link = @mysql_connect($_POST['host'], $_POST['user'], $_POST['pass'])
+$setupLink = @mysql_connect($_POST['host'], $_POST['user'], $_POST['pass'])
     or die ("I couldn't connect using those credentials, <a href=\"index.php\">go back</a> and try again");
 
-@mysql_select_db($_POST['name'], $setup_link)
+@mysql_select_db($_POST['name'], $setupLink)
     or die ("I couldn't select that database, <a href=\"index.php\">go back</a> and try again");
 
 $result = mysql_query(
     'SHOW TABLES FROM ' . $_POST['name'] . ' WHERE tables_in_' . $_POST['name'] . ' LIKE "' . $_POST['prefix'] . '%"',
-    $setup_link
+    $setupLink
 );
 if (mysql_fetch_array($result)) {
     die ("The database " . $_POST['name'] . " has tables in it. The installer will not change

@@ -1,8 +1,8 @@
 <?php
 /*
  * Modify user security
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2013 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2013 William Entriken
  * @access public
  */
 $features = array('security');
@@ -70,7 +70,7 @@ require 'admin.inc';
         }
         ?>
     </form>
-    <h2>Your access (for user <?= $cameralife->security->GetName() ?>)</h2>
+    <h2>Your access (for user <?= $cameralife->security->getName() ?>)</h2>
     <table class="table table-striped">
         <?php
         $perms = array(

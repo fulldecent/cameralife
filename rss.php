@@ -3,8 +3,8 @@
  * Creates RSS feed of photos
  *
  * @see http://validator.w3.org/feed/check.cgi?url=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Frss.php%3Fq%3D
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2014 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2014 William Entriken
  * @access public
  */
 
@@ -21,8 +21,7 @@ header('Content-type: text/xml');
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 ?>
 <feed xmlns="http://www.w3.org/2005/Atom"
-      xmlns:dc="http://purl.org/dc/elements/1.1/"
-      xmlns:media="http://search.yahoo.com/mrss/">
+    >
     <title><?= htmlentities($cameralife->getPref('sitename')) ?> - <?= htmlspecialchars(
             $openGraph['og:title']
         ) ?></title>

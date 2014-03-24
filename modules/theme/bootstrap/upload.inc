@@ -1,19 +1,19 @@
 <?php
 /**
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 
 $cameralife->getFeature('security');
 $cameralife->getFeature('fileStore');
 
-if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/' . $cameralife->security->GetName() . '/') {
+if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/' . $cameralife->security->getName() . '/') {
     $cameralife->security->Authorize('admin_file', 1);
     $path = $_REQUEST['path'];
 } else {
     $cameralife->security->Authorize('photo_upload', 1);
-    $path = 'upload/' . $cameralife->security->GetName() . '/';
+    $path = 'upload/' . $cameralife->security->getName() . '/';
 }
 $folder = new Folder($path);
 $folderURL = $folder->getOpenGraph()['og:url'];

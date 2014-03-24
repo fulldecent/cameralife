@@ -5,8 +5,8 @@
  * An example path is: '/folder/file.png', all paths start with '/'
  * @see FileStore
  *
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2014 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2014 William Entriken
  * @access public
  */
 class LocalFileStore extends FileStore
@@ -48,7 +48,7 @@ class LocalFileStore extends FileStore
      *
      * @param $bucket - one of ('photo', 'other')
      * @param $path - the location of the stored file
-     * @return an array with these elements:
+     * @return array with these elements:
      *     filename - string - the local file you requested
      *     temporary - boolean
      *     mtime - unix time that this file was modified
@@ -83,7 +83,6 @@ class LocalFileStore extends FileStore
      * @param $path - the location of the stored file
      * @param $file - the local file which is to be put in the store
      * @param $secure - if secure, ensure this file will not be publicly accessible
-     * @return none
      */
     function putFile($bucket, $path, $file, $secure = 0)
     {
@@ -104,18 +103,14 @@ class LocalFileStore extends FileStore
     }
 
     /**
-     * Sets whether the file must be secure
-     *
-     * @param $bucket - one of ('photo', 'other')
-     * @param $path - the location of the stored file
-     * @param $file - the local file which is to be put in the store
-     * @param $secure - if secure, ensure this file will not be publicly accessible
-     * @return none
+     * @param string $bucket one of ('photo', 'other')
+     * @param string $path the location of the stored file
+     * @param string $secure if secure, ensure this file will not be publicly accessible
      */
     function setPrivacy($bucket, $path, $secure)
     {
-        die('NOT YET');
-        return;
+        global $cameralife;
+        $cameralife->error('FEATURE MISSING: PRIVACY');
     }
 
     /**
@@ -195,5 +190,3 @@ class LocalFileStore extends FileStore
         return $retval;
     }
 }
-
-?>

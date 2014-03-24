@@ -2,8 +2,8 @@
 
 /**
  * Processing GD images
- * @author Will Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 Will Entriken
+ * @author William Entriken <cameralife@phor.net>
+ * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 class GDImageProcessing extends ImageProcessingModule
@@ -30,7 +30,7 @@ class GDImageProcessingImage extends ImageProcessingImage
     {
         global $cameralife;
         if (!file_exists($filename)) {
-            $cameralife->error('Trying to process non-existant image: ' . $filename, __FILE__, __LINE__);
+            $cameralife->error('Trying to process non-existant image: ' . $filename);
         }
         $path_parts = pathinfo($filename);
         $this->extension = strtolower($path_parts['extension']);
@@ -43,7 +43,7 @@ class GDImageProcessingImage extends ImageProcessingImage
         } elseif ($this->extension == 'gif') {
             $this->original_image = imagecreatefromgif($filename);
         } else {
-            $cameralife->error('Trying to process image of unknown file format: ' . $filename, __FILE__, __LINE__);
+            $cameralife->error('Trying to process image of unknown file format: ' . $filename);
         }
         $this->width = imagesx($this->original_image);
         $this->height = imagesy($this->original_image);
@@ -70,12 +70,15 @@ class GDImageProcessingImage extends ImageProcessingImage
         return array($this->width, $this->height);
     }
 
-    /**Resizes this image and saves to this new file
-     * SIZE is the diagonal of the new image size
-     *
+    /**
+     * Resizes this image and saves to this new file
      * If you have already resized the image to something larger than you want
      * you can rescale it. This is much faster than scaling the original, larger, image again.
-     * @return float array - dimensions new width and height
+     *
+     * @param string $filename
+     * @param int $newSize diagonal size
+     * @param int $quality
+     * @return array|void dimensions new width and height
      */
     function Resize($filename, $newSize, $quality = 91)
     {
@@ -120,25 +123,13 @@ class GDImageProcessingImage extends ImageProcessingImage
         if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') # wild guess
         {
             @imagejpeg($newImage, $filename, $quality)
-                or $cameralife->error(
-                    "Could not write the file $filename is the directory writable?",
-                    __FILE__,
-                    __LINE__
-                );
+                or $cameralife->error("Could not write the file $filename is the directory writable?");
         } elseif ($this->extension == 'png') {
             @imagepng($newImage, $filename, 9 - $quality / 11)
-                or $cameralife->error(
-                    "Could not write the file $filename is the directory writable?",
-                    __FILE__,
-                    __LINE__
-                );
+                or $cameralife->error("Could not write the file $filename is the directory writable?");
         } elseif ($this->extension == 'gif') {
             @imagegif($newImage, $filename, 9 - $quality / 11)
-                or $cameralife->error(
-                    "Could not write the file $filename is the directory writable?",
-                    __FILE__,
-                    __LINE__
-                );
+                or $cameralife->error("Could not write the file $filename is the directory writable?");
         }
 
         $this->scaled_image[$newSize] = $newImage;
@@ -173,18 +164,10 @@ class GDImageProcessingImage extends ImageProcessingImage
         if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') # on a limb...
         {
             @imagejpeg($this->original_image, $filename, $quality)
-                or $cameralife->Error(
-                    "Could not write the file $filename is the directory writable?",
-                    __FILE__,
-                    __LINE__
-                );
+                or $cameralife->Error("Could not write the file $filename is the directory writable?");
         } elseif ($this->extension == 'png') {
             @imagepng($this->original_image, $filename, 9 - $quality / 11)
-                or $cameralife->Error(
-                    "Could not write the file $filename is the directory writable?",
-                    __FILE__,
-                    __LINE__
-                );
+                or $cameralife->Error("Could not write the file $filename is the directory writable?");
         }
     }
 }
@@ -192,6 +175,7 @@ class GDImageProcessingImage extends ImageProcessingImage
 /**
  * @var $srcX dimension of source image
  * @var $srcY dimension of source image
+ * @return resource GD output image
  */
 function ImageRotateRightAngle($imgSrc, $angle)
 {
