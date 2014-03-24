@@ -38,9 +38,9 @@ if (function_exists('gd_info')) {
         $checkPrerequesites[] = array('desc' => 'GD needs to support JPEG, but it does not', 'type' => 'danger');
         $fixes[] = array(
             'Ubuntu' => "See http://us4.php.net/manual/en/ref.image.php for more information. Following is configuration about your GD: " . print_r(
-                    $info,
-                    true
-                ),
+                $info,
+                true
+            ),
             'CPanel' => 'Contact your host to configure PHP-GD for JPEG'
         );
     }
@@ -63,10 +63,10 @@ if (get_magic_quotes_gpc()) {
 }
 
 $url = 'http://' . $_SERVER['HTTP_HOST'] . ($_SERVER['SERVER_PORT'] == 80 ? '' : ':' . $_SERVER['SERVER_PORT']) . str_replace(
-        'index.php',
-        '',
-        $_SERVER['PHP_SELF']
-    ) . 'images/blank.gif';
+    'index.php',
+    '',
+    $_SERVER['PHP_SELF']
+) . 'images/blank.gif';
 $fh = fopen($url, 'r');
 while ($fh && !feof($fh)) {
     $data .= fread($fh, 8192);
@@ -86,10 +86,10 @@ if (md5($data) == 'accba0b69f352b4c9440f05891b015c5') {
 }
 
 $url = 'http://' . $_SERVER['HTTP_HOST'] . ($_SERVER['SERVER_PORT'] == 80 ? '' : ':' . $_SERVER['SERVER_PORT']) . str_replace(
-        'index.php',
-        '',
-        $_SERVER['PHP_SELF']
-    ) . 'images/clear.gif';
+    'index.php',
+    '',
+    $_SERVER['PHP_SELF']
+) . 'images/clear.gif';
 if (@fopen($url, 'r')) {
     $checkPrerequesites[] = array(
         'desc' => 'Mod rewrite is set up correctly, you can use pretty URLs',
@@ -141,8 +141,8 @@ if (file_exists('../.htaccess') && !is_writable('../.htaccess')) {
     $fullDir = dirname(dirname(__FILE__)) . '/.htaccess';
     $fixes[] = array(
         'Ubuntu' => "<pre>sudo cp " . dirname(__FILE__) . "/example.htaccess " . dirname(
-                dirname(__FILE__)
-            ) . "/.htaccess\nsudo chmod 777  " . dirname(dirname(__FILE__)) . "/.htaccess</pre>"
+            dirname(__FILE__)
+        ) . "/.htaccess\nsudo chmod 777  " . dirname(dirname(__FILE__)) . "/.htaccess</pre>"
     );
 } else {
     $checkPrerequesites[] = array('desc' => 'Your <code>.htaccess</code> is set up properly', 'type' => 'success');

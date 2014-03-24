@@ -36,8 +36,8 @@ class Search extends View
             $term = addslashes($term);
             $term = str_replace($special, $specialEscaped, $term);
             $searchPhotoConditions[] = "concat(description,' ',keywords) REGEXP '(^|[[:blank:]])" . addslashes(
-                    preg_quote(stripslashes($term))
-                ) . "'";
+                preg_quote(stripslashes($term))
+            ) . "'";
             $searchAlbumConditions[] = "name LIKE '%$term%'";
             $searchFolderConditions[] = "path LIKE '%$term%'";
         }

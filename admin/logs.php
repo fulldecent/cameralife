@@ -242,12 +242,12 @@ if ($checkpointDate) {
                 echo '<input type="radio" name="' . $record['maxid'] . '" value="' . $chain[0]->Get('id') . '"> ';
                 if ($fromReceipt) {
                     echo htmlentities($oldValue) . ' <span class="label label-info"> ' . $receipt->get(
-                            'value_field'
-                        ) . ' from before checkpoint</span>';
+                        'value_field'
+                    ) . ' from before checkpoint</span>';
                 } else {
                     echo htmlentities($oldValue) . ' <span class="label"> default ' . $receipt->get(
-                            'value_field'
-                        ) . '</span>';
+                        'value_field'
+                    ) . '</span>';
                 }
                 echo '</label>';
                 for ($i = 0; $i < count($chain) - 1; $i++) {
@@ -262,8 +262,8 @@ if ($checkpointDate) {
                 echo '<label class="checkbox">';
                 echo '<input type="radio" name="' . $record['maxid'] . '" checked> ';
                 echo $chain[$i]->Get('value_new') . ' <span class="label label-success">current ' . $chain[$i]->Get(
-                        'value_field'
-                    ) . '</span>';
+                    'value_field'
+                ) . '</span>';
                 echo '</label>';
                 ?>
             </div>

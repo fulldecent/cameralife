@@ -44,10 +44,10 @@ if (!isset($page)) {
     flush();
     for ($id = 0; $id < $lastphoto; $id += 1000) {
         if ($cameralife->database->SelectOne(
-                'photos',
-                'COUNT(*)',
-                'status = 0 AND id>=' . $id . ' AND id<' . ($id + 1000)
-            ) == 0
+            'photos',
+            'COUNT(*)',
+            'status = 0 AND id>=' . $id . ' AND id<' . ($id + 1000)
+        ) == 0
         ) {
             continue;
         }

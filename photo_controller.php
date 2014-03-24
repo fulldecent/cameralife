@@ -112,9 +112,9 @@ if ($_POST['action'] == 'flag') {
 
 if ($receipt && $_POST['target'] != 'ajax') {
     $_POST['target'] = $_POST['target'] . ((strpos(
-                $_POST['target'],
-                '?'
-            ) === false) ? '?' : '&') . 'receipt=' . $receipt->get('id');
+        $_POST['target'],
+        '?'
+    ) === false) ? '?' : '&') . 'receipt=' . $receipt->get('id');
 }
 
 if ($_POST['target'] == 'ajax') {

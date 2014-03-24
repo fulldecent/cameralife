@@ -232,8 +232,8 @@ function html_select_auth($param_name)
                                                                             <td>Administer theme manager (effects entire
                                                                                 site)
                                                                             <td><?php html_select_auth(
-                                                                                    "auth_admin_theme"
-                                                                                ) ?>
+    "auth_admin_theme"
+) ?>
                 <tr>
                     <td>Upper administation (users, customize, register...)
                     <td><?php html_select_auth("auth_admin_customize") ?>

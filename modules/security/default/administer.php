@@ -95,8 +95,8 @@ function html_select_auth($param_name)
     <?php
     $homeOpenGraph = $cameralife->getOpenGraph();
     echo '<a href="' . htmlspecialchars($homeOpenGraph['og:url']) . "\"><img src=\"" . htmlspecialchars(
-            $homeOpenGraph['og:image']
-        ) . htmlentities($homeOpenGraph['title']) . "</a>\n";
+        $homeOpenGraph['og:image']
+    ) . htmlentities($homeOpenGraph['title']) . "</a>\n";
     ?> |
     <a href="../../../admin/index.php"><img src="<?= $cameralife->iconURL('small-admin') ?>">Site Administration</a>
 </div>
@@ -212,8 +212,8 @@ if ($_GET['page'] == 'users') {
                                                                         <td>Administer theme manager (effects entire
                                                                             site)
                                                                         <td><?php html_select_auth(
-                                                                                "auth_admin_theme"
-                                                                            ) ?>
+    "auth_admin_theme"
+) ?>
             <tr>
                 <td>Upper administation (users, customize, register...)
                 <td><?php html_select_auth("auth_admin_customize") ?>

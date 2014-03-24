@@ -180,8 +180,8 @@ class Photo extends View
 
         $this->loadImage(); // sets $this->EXIF and $this-record
         if (($cameralife->getPref(
-                    'autorotate'
-                ) == 'yes') && ($this->record['modified'] == null || $this->record['modified'] == 0)
+            'autorotate'
+        ) == 'yes') && ($this->record['modified'] == null || $this->record['modified'] == 0)
         ) {
             if ($this->EXIF['Orientation'] == 3) {
                 $this->rotate(180);
@@ -501,10 +501,10 @@ class Photo extends View
         // Find if the referer is an album
         if (isset($_SERVER['HTTP_REFERER']) &&
             (preg_match("#album.php\?id=([0-9]*)#", $_SERVER['HTTP_REFERER'], $regs) || preg_match(
-                    "#albums/([0-9]+)#",
-                    $_SERVER['HTTP_REFERER'],
-                    $regs
-                ))
+                "#albums/([0-9]+)#",
+                $_SERVER['HTTP_REFERER'],
+                $regs
+            ))
         ) {
             $album = new Album($regs[1]);
             $retval[] = $album;

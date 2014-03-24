@@ -23,8 +23,8 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 <feed xmlns="http://www.w3.org/2005/Atom"
     >
     <title><?= htmlentities($cameralife->getPref('sitename')) ?> - <?= htmlspecialchars(
-            $openGraph['og:title']
-        ) ?></title>
+    $openGraph['og:title']
+) ?></title>
     <link rel="self" href="<?= $cameralife->baseURL . '/rss.php?q=' . htmlentities($query) ?>"/>
     <link rel="alternate" type="text/html" href="<?= htmlspecialchars($openGraph['og:url']) ?>"/>
     <id>urn:CLsearch:thiscouldbebetter</id>
@@ -43,20 +43,20 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         echo "    <entry>\n";
         echo "      <title>" . htmlentities($viewOpenGraph['og:title']) . "</title>\n";
         echo "      <link rel=\"alternate\" type=\"text/html\" href=\"" . htmlspecialchars(
-                $viewOpenGraph['og:url']
-            ) . "\" />\n";
+            $viewOpenGraph['og:url']
+        ) . "\" />\n";
         echo "      <id>urn:folder:" . rawurlencode($view->path) . "</id>\n";
         echo "      <published>" . date('c', $date) . "</published>\n";
         echo "      <updated>" . date('c', $date) . "</updated>\n";
         echo "        <content type=\"html\">&lt;p&gt;&lt;a href=&quot;" . htmlspecialchars(
-                $viewOpenGraph['og:url']
-            ) . "&quot;&gt;" . htmlspecialchars($viewOpenGraph['og:title']) . " &lt;img src=&quot;" . htmlspecialchars(
-                $viewOpenGraph['og:image']
-            ) . "&quot;
+            $viewOpenGraph['og:url']
+        ) . "&quot;&gt;" . htmlspecialchars($viewOpenGraph['og:title']) . " &lt;img src=&quot;" . htmlspecialchars(
+            $viewOpenGraph['og:image']
+        ) . "&quot;
     alt=&quot;" . htmlentities($viewOpenGraph['og:title']) . "&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</content>\n";
         echo "      <link rel=\"enclosure\" type=\"image/jpeg\" href=\"" . htmlspecialchars(
-                $viewOpenGraph['og:image']
-            ) . "\" />\n";
+            $viewOpenGraph['og:image']
+        ) . "\" />\n";
         echo "    </entry>\n\n";
     }
     ?>
