@@ -55,9 +55,6 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         echo "      <id>urn:photo:" . $photo->record['id'] . "</id>\n";
         echo "      <published>" . date('c', $date) . "</published>\n";
         echo "      <updated>" . date('c', $date) . "</updated>\n";
-        if ($datetaken) {
-            echo "      <dc:date.Taken>$datetaken</dc:date.Taken>\n";
-        }
         echo "        <content type=\"html\">&lt;p&gt;&lt;a href=&quot;" . htmlspecialchars(
             $photoOpenGraph['og:url']
         ) . "&quot;&gt;" . htmlspecialchars($photoOpenGraph['og:title']) . " &lt;img src=&quot;" . htmlspecialchars(

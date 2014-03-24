@@ -28,7 +28,7 @@ require 'main.inc';
  * @param int $status
  * @return int|string Zero or string describing error
  */
-private function add_image($path, $filename, $file, $description = 'unnamed', $status = 0)
+function add_image($path, $filename, $file, $description = 'unnamed', $status = 0)
 {
     global $cameralife;
 

@@ -52,7 +52,7 @@ class CameraLife extends CameraLifeModule # and View
         ini_set('magic_quotes_sybase', 0);
         $this->baseDir = dirname(__FILE__);
         $this->baseURL = 'http://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/');
-        $this->version = '2.6.7';
+        $this->version = '2.7.0a1';
 
         $this->preferences[] = array('name' => 'theme', 'type' => 'string', 'default' => 'bootstrap');
         $this->preferences[] = array('name' => 'iconset', 'type' => 'string', 'default' => 'cartoonic');

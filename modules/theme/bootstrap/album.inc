@@ -80,7 +80,7 @@ if (isset($_GET['poster_id'])) {
     ?>
     <div class="administrative" align=center>
         The album <b><?= $album->get('name') ?></b> will be represented by this photo
-        <img src="<?= $album->getPoster()->getMedia() ?>" alt="Poster photo">
+        <img src="<?= htmlspecialchars($album->getPoster()->getMediaURL('thumbnail')) ?>" alt="Poster photo">
     </div>
 <?php
 }

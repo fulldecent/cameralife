@@ -258,15 +258,15 @@ if ($cameralife->security->authorize('photo_modify')) {
 <?php
 }
 if ($photo->get('status') == 0) {
-    $json = '{"request":{"merchant":{"merchant-api-key":"","merchant-button-key":"13658928432161657"},"order":{"product":{"thumbnail":{"src":"' . $photo->getMedia(
+    $json = '{"request":{"merchant":{"merchant-api-key":"","merchant-button-key":"13658928432161657"},"order":{"product":{"thumbnail":{"src":"' . htmlspecialchars($photo->getMediaURL(
             'thumbnail'
-        ) . '","width":"0","height":"0"},"source":{"file":{"dimensions":{"width":"' . $photo->get(
+        )) . '","width":"0","height":"0"},"source":{"file":{"dimensions":{"width":"' . $photo->get(
             'width'
         ) . '","height":"' . $photo->get(
             'height'
-        ) . '","bleed":"0.3"},"usage":"full-product","filetype":"image","src":"' . $photo->getMedia(
+        ) . '","bleed":"0.3"},"usage":"full-product","filetype":"image","src":"' . htmlspecialchars($photo->getMediaURL(
             'photo'
-        ) . '","publicationId":"","pages":"1"}},"target":{"offering":{"id":"0"}},"title":""},"reference":""},"redirect":{"cancellation":{"href":""},"error":{"href":""},"thankyou":{"href":"' . $cameralife->baseURL . '"}},"quantity":"1","currency":"USD","locale":"en_EN","filterCategory":"","filterSize":"","filterColour":"","filterOfferingId":"0"}}';
+        )) . '","publicationId":"","pages":"1"}},"target":{"offering":{"id":"0"}},"title":""},"reference":""},"redirect":{"cancellation":{"href":""},"error":{"href":""},"thankyou":{"href":"' . $cameralife->baseURL . '"}},"quantity":"1","currency":"USD","locale":"en_EN","filterCategory":"","filterSize":"","filterColour":"","filterOfferingId":"0"}}';
     ?>
     <div id="print" class="well"
          style="<?= (isset($_GET['action']) && $_GET['action'] == 'print') ? '' : 'display:none' ?>">
@@ -296,9 +296,9 @@ if (isset($cameralife->receipt)) {
 
 // echo "<div class='thumbnail' style=\"text-align: center; margin: 0 auto\">\n";
 $alt = htmlentities($photo->get('description'));
-echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px solid #DDD; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; margin: 0 auto\" src=\"" . $photo->getMedia(
+echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px solid #DDD; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; margin: 0 auto\" src=\"" . htmlspecialchars($photo->getMediaURL(
         'scaled'
-    ) . "\" alt=\"$alt\">\n\n";
+    )) . "\" alt=\"$alt\">\n\n";
 //  echo "</div>\n";
 ?>
 

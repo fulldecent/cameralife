@@ -334,12 +334,6 @@ class Photo extends View
         }
     }
 
-    /// DEPRECATED
-    public function getMedia($size = 'thumbnail')
-    {
-        return htmlentities($this->getMediaURL($size));
-    }
-
     public function getFolder()
     {
         return new Folder($this->record['path'], false);
