@@ -19,9 +19,9 @@ $openGraph = $album->getOpenGraph();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 $sort = isset($_GET['sort']) ? $_GET['sort'] : 'rand';
 $extrahead = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of '.$album->get('name').'" href="'.$cameralife->baseURL.'/rss.php&#63;q='.$album->get('term').'"/>';
-$cameralife->Theme->Header($album, NULL, $extrahead);
+$cameralife->theme->Header($album, NULL, $extrahead);
 
-  if (isset($_GET['edit']) && $cameralife->Security->authorize('admin_albums'))
+  if (isset($_GET['edit']) && $cameralife->security->authorize('admin_albums'))
   {
 ?>
     <div class="administrative" align=center>
@@ -66,7 +66,7 @@ $cameralife->Theme->Header($album, NULL, $extrahead);
   }
   if (isset($_GET['poster_id']))
   {
-    $cameralife->Security->authorize('admin_albums',1);
+    $cameralife->security->authorize('admin_albums',1);
     $album->setPoster($_GET['poster_id']);
 ?>
     <div class="administrative" align=center>
@@ -80,8 +80,8 @@ $cameralife->Theme->Header($album, NULL, $extrahead);
     To add photos to this album, edit any photo on the site and add "<b><?= $album->get('term') ?></b>" to its description.
   </div>
 <?php 
-  $cameralife->Theme->grid($results); 
-  $cameralife->Theme->PageSelector(($sort == 'rand()')?-1:$start,$counts['photos'],12,"id=".$album->get('id'));
+  $cameralife->theme->grid($results); 
+  $cameralife->theme->PageSelector(($sort == 'rand()')?-1:$start,$counts['photos'],12,"id=".$album->get('id'));
 ?>
 
 <form method="POST">
@@ -101,6 +101,6 @@ $cameralife->Theme->Header($album, NULL, $extrahead);
 </p>
 </form>
 <?php
-  $cameralife->Theme->Footer();
+  $cameralife->theme->Footer();
 ?>
 

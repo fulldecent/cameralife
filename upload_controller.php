@@ -35,7 +35,7 @@
     if (!$description) $description = 'unnamed';
     $filesize = filesize($file);
 
-    $exists = $cameralife->Database->SelectOne('photos','COUNT(*)',"filename='$filename' AND fsize=$filesize");
+    $exists = $cameralife->database->SelectOne('photos','COUNT(*)',"filename='$filename' AND fsize=$filesize");
     if ($exists)
       return "The photo <b>$filename</b> is already in the system. This photo was skipped from uploading.";
 
@@ -48,36 +48,36 @@
     $upload['filename'] = $filename;
     $upload['path'] = $path;
     $upload['description'] = $description;
-    $upload['username'] = $cameralife->Security->GetName();
+    $upload['username'] = $cameralife->security->GetName();
     $upload['status'] = $status;
 
     $photo = new Photo($upload);
-    $cameralife->FileStore->PutFile('photo', '/'.$upload['path'].$upload['filename'], $file);
+    $cameralife->fileStore->PutFile('photo', '/'.$upload['path'].$upload['filename'], $file);
     unlink($file);
 
     return 0;
   }
 
-  if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$cameralife->Security->GetName().'/') {
-    $cameralife->Security->Authorize('admin_file', 1);
+  if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$cameralife->security->GetName().'/') {
+    $cameralife->security->Authorize('admin_file', 1);
     $path = $_REQUEST['path'];
   } else {
-    $cameralife->Security->Authorize('photo_upload', 1);
-    $path = 'upload/'.$cameralife->Security->GetName().'/';
+    $cameralife->security->Authorize('photo_upload', 1);
+    $path = 'upload/'.$cameralife->security->GetName().'/';
   }
 
   /* Bonus code:
      use this line to make user uploads be reviewed by an admin
      before they go live. To see them, Administration->Files->Uploads
   */
-  //$status = $cameralife->Security->authorize('admin_file') ? 0 : 3;
+  //$status = $cameralife->security->authorize('admin_file') ? 0 : 3;
   $status = 0;
 
   if (!$_FILES)
     $cameralife->error('No file was uploaded.', __FILE__, __LINE__);
 
   $condition = "filename='".$_FILES['userfile']['name']."'";
-  $cameralife->Database->SelectOne('photos','COUNT(*)',$condition)
+  $cameralife->database->SelectOne('photos','COUNT(*)',$condition)
     and $cameralife->error("The filename \"".$_FILES['userfile']['name']."\" is already used in system. Please rename the image and try uploading again.");
 
   if (preg_match('|/|',$_FILES['userfile']['name']))

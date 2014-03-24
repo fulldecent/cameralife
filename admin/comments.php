@@ -8,7 +8,7 @@
 $features=array('security', 'filestore');
 require '../main.inc';
 $cameralife->baseURL = dirname($cameralife->baseURL);
-$cameralife->Security->authorize('admin_customize', 1); // Require
+$cameralife->security->authorize('admin_customize', 1); // Require
 
 if (!isset($_POST['showme']) && !isset($_POST['showreg']) && !isset($_POST['showunreg'])) {
   $_POST['showme'] = TRUE;
@@ -19,12 +19,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'Delete checked') {
   foreach ($_POST as $var => $val) {
     if (!is_numeric($var) || !is_numeric($val))
       continue;
-    $cameralife->Database->Delete('comments',"id=$var");
+    $cameralife->database->Delete('comments',"id=$var");
   }
 }
-$numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->getPref('checkpointcomments')+0));
-$checkpointDate = strtotime($cameralife->Database->SelectOne('comments','max(date)','id='.($cameralife->getPref('checkpointcomments')+0)));
-$latestComment = $cameralife->Database->SelectOne('comments','max(id)');
+$numcomments = $cameralife->database->SelectOne('comments','COUNT(*)','id>'.($cameralife->getPref('checkpointcomments')+0));
+$checkpointDate = strtotime($cameralife->database->SelectOne('comments','max(date)','id='.($cameralife->getPref('checkpointcomments')+0)));
+$latestComment = $cameralife->database->SelectOne('comments','max(id)');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -108,20 +108,20 @@ if ($checkpointDate) {
   <?php
     $condition = "(0 ";
     if ($_POST['showme'])
-      $condition .= "OR username = '".$cameralife->Security->GetName()."' ";
+      $condition .= "OR username = '".$cameralife->security->GetName()."' ";
     if ($_POST['showreg'])
-      $condition .= "OR (username LIKE '_%' AND username != '".$cameralife->Security->GetName()."')";
+      $condition .= "OR (username LIKE '_%' AND username != '".$cameralife->security->GetName()."')";
     if ($_POST['showunreg'])
       $condition .= "OR username = '' ";
     $condition .= ") ";
 
-    $checkpoint = $cameralife->Database->SelectOne('comments','MAX(id)');
+    $checkpoint = $cameralife->database->SelectOne('comments','MAX(id)');
     echo "<input type='hidden' name='checkpoint' value='$checkpoint'>\n";
 
     $condition .= " AND id > ".($cameralife->getPref('checkpointcomments')+0);
     $extra = "GROUP BY photo_id ORDER BY id DESC";
 
-    $result = $cameralife->Database->Select('comments','*, MAX(id) as maxid',$condition,$extra);
+    $result = $cameralife->database->Select('comments','*, MAX(id) as maxid',$condition,$extra);
     while ($record = $result->FetchAssoc()) {
     //var_dump($record);
 
@@ -139,7 +139,7 @@ if ($checkpointDate) {
             <h4 class="media-heading"><?= htmlentities($photoOpenGraph['og:title']) ?></h4>
 <?php
       $condition = "photo_id = ".$record['photo_id'];
-      $result2 = $cameralife->Database->Select('comments','*',$condition, 'ORDER BY id DESC');
+      $result2 = $cameralife->database->Select('comments','*',$condition, 'ORDER BY id DESC');
 
       while ($row = $result2->FetchAssoc()) {
         $byLine = ($row['username']?$row['username']:'Anonymous').' ('.$row['user_ip'].') '.$row['date'];

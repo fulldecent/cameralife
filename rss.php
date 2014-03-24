@@ -1,5 +1,5 @@
 <?php
-/** 
+/**
  * Creates RSS feed of photos
  *
  * @see http://validator.w3.org/feed/check.cgi?url=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Frss.php%3Fq%3D

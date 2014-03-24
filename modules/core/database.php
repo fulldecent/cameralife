@@ -9,17 +9,16 @@
  */
 class Database
 {
-  var $myConnection;
-  var $myPrefix;
-  var $myDBH;
+  public $myConnection;
+  public $myPrefix;
+  public $myDBH;
 
   function __construct()
   {
 //TODO don't use global here
     global $cameralife, $db_host, $db_user, $db_pass, $db_name, $db_prefix;
 
-    try 
-    {
+    try {
       $this->myDBH = new PDO("mysql:host={$db_host};dbname={$db_name}", $db_user, $db_pass);
       $this->myDBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
@@ -29,7 +28,7 @@ class Database
     }
   }
 
-  /** 
+  /**
    * SELECT $selection FROM $table [WHERE $condition] [$extra]
    */
   function select ($table, $selection='*', $condition='1', $extra='', $joins='', $bind=array())
@@ -42,8 +41,7 @@ class Database
     $table = implode(',', $tables);
     $sql = "SELECT $selection FROM $table $joins WHERE $condition $extra";
     $stmt = NULL;
-    try 
-    {
+    try {
       $stmt = $this->myDBH->prepare($sql);
       if (count($bind)) {
         foreach ($bind as $name=>$val)
@@ -55,9 +53,10 @@ class Database
     {
       $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
+
     return new PDOIterator($stmt);
   }
-  
+
   /**
   * SELECT $selection FROM $table [WHERE $condition] [$extra]
   */
@@ -72,8 +71,7 @@ class Database
     $sql = "SELECT $selection FROM $table $joins WHERE $condition $extra";
     $stmt = NULL;
     $result = NULL;
-    try 
-    {
+    try {
       $stmt = $this->myDBH->prepare($sql);
       if (count($bind)) {
         foreach ($bind as $name=>$val)
@@ -86,6 +84,7 @@ class Database
     {
       $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
+
     return $result[0];
   }
   
@@ -97,8 +96,7 @@ class Database
       $setstring .= "`$key` = ?, ";
     $setstring = substr($setstring, 0, -2); // chop off last ', '
     $sql = "UPDATE ".$this->myPrefix."$table SET $setstring WHERE $condition $extra";
-    try 
-    {
+    try {
       $stmt = $this->myDBH->prepare($sql);
       $i = 1;
       foreach ($values as $val)
@@ -109,6 +107,7 @@ class Database
     {
       $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
+
     return $stmt->rowCount();
   }
 
@@ -120,8 +119,7 @@ class Database
       $setstring .= "`$key` = ?, ";
     $setstring = substr($setstring, 0, -2); // chop off last ', '
     $sql = "INSERT INTO ".$this->myPrefix."$table SET $setstring $extra";
-    try 
-    {
+    try {
       $stmt = $this->myDBH->prepare($sql);
       $i = 1;
       foreach ($values as $val)
@@ -132,6 +130,7 @@ class Database
     {
       $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
+
     return $this->myDBH->lastInsertId();
   }
 
@@ -139,8 +138,7 @@ class Database
   {
     global $cameralife;
     $sql = "DELETE FROM ".$this->myPrefix."$table WHERE $condition $extra";
-    try 
-    {
+    try {
       $stmt = $this->myDBH->prepare($sql);
       $i = 1;
       if (count($bind))
@@ -152,18 +150,19 @@ class Database
     {
       $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
+
     return $stmt->rowCount();
   }
 }
 
 /*
- * PDO implementation of the iterator class 
+ * PDO implementation of the iterator class
  */
 class PDOIterator
 {
-  var $myResult;
+  public $myResult;
 
-  function PDOIterator($mysql_result)
+  public function PDOIterator($mysql_result)
   {
     $this->myResult = $mysql_result;
   }
@@ -173,6 +172,3 @@ class PDOIterator
     return $this->myResult->fetch(PDO::FETCH_ASSOC);
   }
 }
-
-
-?>

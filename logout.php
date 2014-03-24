@@ -10,7 +10,7 @@
   $features=array('security');
   require 'main.inc';
 
-  $url = $cameralife->Security->Logout();
+  $url = $cameralife->security->Logout();
 
   if (is_string($url))
     header('Location: '.$url);

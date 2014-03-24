@@ -7,5 +7,4 @@
  */
 $features=array('theme','filestore');
 require 'main.inc';
-$cameralife->Theme->ShowPage('index');
-?>
+$cameralife->theme->ShowPage('index');

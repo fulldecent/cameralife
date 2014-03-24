@@ -19,14 +19,14 @@ class Stats
   {
     global $cameralife;
 
-    $this->counts['albums'] = $cameralife->Database->SelectOne('albums','COUNT(*)');
-    $this->counts['topics'] = $cameralife->Database->SelectOne('albums','COUNT(DISTINCT topic)');
-    $this->counts['photos'] = $cameralife->Database->SelectOne('photos','COUNT(*)');
-    $this->counts['pixels'] = $cameralife->Database->SelectOne('photos','SUM(width*height)');
-    $this->counts['albumhits'] = $cameralife->Database->SelectOne('albums','SUM(hits)');
-    $this->counts['photohits'] = $cameralife->Database->SelectOne('photos','SUM(hits)');
-    $this->counts['maxphotohits'] = $cameralife->Database->SelectOne('photos','MAX(hits)');
-    $this->counts['maxalbumhits'] = $cameralife->Database->SelectOne('albums','MAX(hits)');
+    $this->counts['albums'] = $cameralife->database->SelectOne('albums','COUNT(*)');
+    $this->counts['topics'] = $cameralife->database->SelectOne('albums','COUNT(DISTINCT topic)');
+    $this->counts['photos'] = $cameralife->database->SelectOne('photos','COUNT(*)');
+    $this->counts['pixels'] = $cameralife->database->SelectOne('photos','SUM(width*height)');
+    $this->counts['albumhits'] = $cameralife->database->SelectOne('albums','SUM(hits)');
+    $this->counts['photohits'] = $cameralife->database->SelectOne('photos','SUM(hits)');
+    $this->counts['maxphotohits'] = $cameralife->database->SelectOne('photos','MAX(hits)');
+    $this->counts['maxalbumhits'] = $cameralife->database->SelectOne('albums','MAX(hits)');
     $this->counts['daysonline'] = floor((time()-strtotime($cameralife->getPref('sitedate'))) / 86400 );
 
     return $this->counts;
@@ -37,7 +37,7 @@ class Stats
     global $cameralife;
 
     $popular_photos = array();
-    $query = $cameralife->Database->Select('photos','id',NULL,'ORDER BY hits DESC limit 5');
+    $query = $cameralife->database->Select('photos','id',NULL,'ORDER BY hits DESC limit 5');
     while ($photo = $query->FetchAssoc())
       $popular_photos[] = new Photo($photo['id']);
 
@@ -49,7 +49,7 @@ class Stats
     global $cameralife;
 
     $popular_albums = array();
-    $query = $cameralife->Database->Select('albums','id',NULL,'ORDER BY hits DESC limit 5');
+    $query = $cameralife->database->Select('albums','id',NULL,'ORDER BY hits DESC limit 5');
     while ($album = $query->FetchAssoc())
       $popular_albums[] = new Album($album['id']);
 

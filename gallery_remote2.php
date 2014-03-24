@@ -101,8 +101,8 @@ session_start();
   function gr_login()
   {
     global $cameralife;
-    $result = $cameralife->Security->Login($_POST['uname'], $_POST['password']);
-    setcookie('GALLERYSID', $_COOKIE[$cameralife->Security->getPref('auth_cookie')], time()+60*60*24*30);
+    $result = $cameralife->security->Login($_POST['uname'], $_POST['password']);
+    setcookie('GALLERYSID', $_COOKIE[$cameralife->security->getPref('auth_cookie')], time()+60*60*24*30);
 
     if ($result === true) {
       echo "#__GR2PROTO__\n";
@@ -121,7 +121,7 @@ session_start();
   {
     global $cameralife;
 
-    if (!$cameralife->Security->Authorize('admin_file')) {
+    if (!$cameralife->security->Authorize('admin_file')) {
       echo "status=401\n"; #close
       echo "status_text=You do not have permission to do that.\n";
       exit(1);
@@ -233,7 +233,7 @@ session_start();
 
     if ($_FILES) {
       $condition = "filename='".$filename."' and fsize=".$_FILES['userfile']['size'];
-      $cameralife->Database->SelectOne('photos','COUNT(*)',$condition)
+      $cameralife->database->SelectOne('photos','COUNT(*)',$condition)
         and $error = "A photo with the same name and size already exists. Please rename and try again, or stop uploading duplicate photos.";
 
       if (eregi('/',$_FILES['userfile']['name']))
@@ -259,11 +259,11 @@ session_start();
         $upload['filename'] = $filename;
         $upload['path'] = $path;
         $upload['description'] = $description;
-        $upload['username'] = $cameralife->Security->GetName();
+        $upload['username'] = $cameralife->security->GetName();
         $upload['status'] = 0;
 
         $photo = new Photo($upload);
-        $cameralife->FileStore->PutFile('photo', '/'.$upload['path'].$upload['filename'], $temp);
+        $cameralife->fileStore->PutFile('photo', '/'.$upload['path'].$upload['filename'], $temp);
         @unlink($temp);
       }
     } else {

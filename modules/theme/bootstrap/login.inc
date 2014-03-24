@@ -47,7 +47,7 @@
                       'page_name'=>'register',
                       'image'=>'small-login');
 
-  $cameralife->Theme->MultiSection($sections);
+  $cameralife->theme->MultiSection($sections);
 */
 ?>
 <table>

@@ -39,7 +39,7 @@
 
       if ($authcookie)
       {
-        $result = $cameralife->Database->Select('users','*',"cookie='$authcookie'");
+        $result = $cameralife->database->Select('users','*',"cookie='$authcookie'");
         $this->curuser = $result->FetchAssoc()
           or $this->curuser = array('auth'=>'0');
       }
@@ -60,7 +60,7 @@
       $username = preg_replace('/[^0-9a-z_]/','',$username);
       $password = crypt($password,$username);
 
-      $result = $cameralife->Database->Select('users','*',"username='$username' AND password='$password'");
+      $result = $cameralife->database->Select('users','*',"username='$username' AND password='$password'");
 
       if ($user = $result->FetchAssoc()) // Login legal
       {
@@ -68,7 +68,7 @@
         $values['cookie'] = $cookie;
         $values['last_online'] = date('Y-m-d');
         $values['last_ip'] =  $_SERVER["REMOTE_ADDR"];
-        $cameralife->Database->Update('users',$values,"username='$username'");
+        $cameralife->database->Update('users',$values,"username='$username'");
         setcookie($this->getPref('auth_cookie'),$cookie,time()+30000000,'/');
         $_COOKIE[$this->getPref('auth_cookie')] = $cookie;
         return true;
@@ -93,7 +93,7 @@
 
       $username = strtolower($username);
       $username = eregi_replace('[^0-9a-z_]','',$username);
-      $result = $cameralife->Database->Select('users','*',"username='$username'");
+      $result = $cameralife->database->Select('users','*',"username='$username'");
       $password = crypt($password,$username);
       $cookie = rand(0,999999);
 
@@ -110,7 +110,7 @@
       $values['last_online'] = date('Y-m-d');
       $values['last_ip'] = $HTTP_SERVER_VARS["REMOTE_ADDR"];
       $values['email'] = $email;
-      $cameralife->Database->Insert('users',$values);
+      $cameralife->database->Insert('users',$values);
       setcookie($this->getPref('auth_cookie'),$cookie,time()+30000000,'/');
       return true;
     }

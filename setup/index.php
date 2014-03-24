@@ -125,7 +125,7 @@ else {
   _gaq.push(['_setAccount', 'UA-52764-13']);
   _gaq.push(['_trackPageview']);
 
-  (function() {
+  (function () {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
@@ -159,7 +159,7 @@ else {
       <h2>You are installing Camera Life <?php readfile('../VERSION') ?></h2>
       <p>Thank you for choosing to install Camera Life. We hope you will find this software is easy to use and fun. This project is licensed under the GNU General Public License, version 2. If you are upgrading from a previous version of Camera Life, stop and read the file <a href="../UPGRADE">UPGADE</a>.</p>
       </div>
-    <p style="text-align:center"><img src="images/intro1.png"><p> 
+    <p style="text-align:center"><img src="images/intro1.png"><p>
     </div>
 
     <div class="container">
@@ -182,7 +182,8 @@ foreach (array('Ubuntu', 'CPanel', 'MAMP') as $aSystem) {
         <div class="panel-body row">
           <div class="col-sm-6">
 <?php
-function cmp($a, $b) {
+function cmp($a, $b)
+{
   if ($a['type']=='success' || $b['type']=='danger')
     return -1;
   return 1;
@@ -202,8 +203,8 @@ foreach ($checkPrerequesites as $prequesiteResult) {
             <h4>Fixes for <?= $system ?></h4>
 <?php
 foreach ($fixes as $fix) echo "<p>{$fix[$system]}</p>\n";
-?>              
-          
+?>
+
           </div>
         </div>
         <div class="panel-footer">
@@ -229,7 +230,6 @@ if ($continue) {
 ?>
         </div>
       </div>
-      
 
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -242,14 +242,14 @@ if ($continue) {
               <table>
                 <tr>
                   <td><pre>$
-mysql&gt; 
 mysql&gt;
-    -&gt; 
+mysql&gt;
+    -&gt;
     -&gt; </pre>
                   <td><pre>sudo mysql
 CREATE DATABASE <b><span class="var-host">cameralife</span></b>;
-GRANT ALL ON <b>cameralife</b>.* 
-TO <b>user</b>@<b>localhost</b> 
+GRANT ALL ON <b>cameralife</b>.*
+TO <b>user</b>@<b>localhost</b>
 IDENTIFIED BY '<b>pass</b>';</pre>
               </table>
 <?php } elseif ($system == 'CPanel') { ?>
@@ -313,9 +313,9 @@ IDENTIFIED BY '<b>pass</b>';</pre>
               <div class="col-lg-8">
                 <button type="submit" class="btn btn-primary btn-large">Continue</button>
               </div>
-            </div>  
+            </div>
           </form>
-        
+
         </div>
         <div class="panel-footer">
           Please follow instructions on the left and then the right
@@ -324,7 +324,7 @@ IDENTIFIED BY '<b>pass</b>';</pre>
     </div> <!-- /container -->
 <!--
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">  
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 -->
   </body>
 </html>

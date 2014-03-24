@@ -47,6 +47,7 @@ edit the first line, save this file, then paste into a terminal...
 -------------------
 
 edit Changelog
+edit Composer.json
 
 VERSION='2.6.7' # <-- EDIT THIS
 echo $VERSION > VERSION

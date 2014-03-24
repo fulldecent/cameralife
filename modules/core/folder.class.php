@@ -54,8 +54,10 @@ class Folder extends Search
       else
         $href = $cameralife->baseURL.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
       $href = AddParam($href, 'start', $this->myStart - $this->myLimitCount);
+
       return $href;
     }
+
     return NULL;
   }
 
@@ -67,6 +69,7 @@ class Folder extends Search
       $path = dirname($path);
       $retval[] = new Folder($path);
     }
+
     return array_reverse($retval);
   }
 
@@ -91,7 +94,7 @@ class Folder extends Search
     $selection = 'DISTINCT path';
     $condition = "status=0 AND path LIKE '".$this->path."_%'"; //TODO THIS IS ACTUALLY WRONG
     $extra =     "ORDER BY $sort LIMIT $count";
-    $family = $cameralife->Database->Select('photos', $selection, $condition, $extra);
+    $family = $cameralife->database->Select('photos', $selection, $condition, $extra);
     while ($youngin = $family->FetchAssoc())
       $result[] = new Folder($youngin['path'], FALSE);
 
@@ -116,11 +119,12 @@ class Folder extends Search
     $selection = "DISTINCT SUBSTR(path,".(strlen($this->path)+1).") AS basename";
     $condition = "path LIKE '".addslashes($this->path)."/%' AND status=0";
     $extra =     "ORDER BY $sort ".$this->myLimit;
-    $family = $cameralife->Database->Select('photos', $selection, $condition, $extra);
+    $family = $cameralife->database->Select('photos', $selection, $condition, $extra);
 
     $result = array();
     while ($youngin = $family->FetchAssoc())
       $result[] = new Folder($this->path . $youngin['basename'], FALSE);
+
     return $result;
   }
 
@@ -154,7 +158,7 @@ class Folder extends Search
   /**
    * Updates the DB to match actual contents of photo bucket from filestore.
    * Returns an array of errors or warning.
-   * Tries very hard to avoid creating a new record and deleting an old if in fact the 
+   * Tries very hard to avoid creating a new record and deleting an old if in fact the
    * photo was simply moved.
    */
   public static function update()
@@ -162,12 +166,12 @@ class Folder extends Search
     global $cameralife;
 
     $retval = array();
-    $filesInStoreNotYetMatchedToDB = $cameralife->FileStore->ListFiles('photo');
+    $filesInStoreNotYetMatchedToDB = $cameralife->fileStore->ListFiles('photo');
     if (!count($filesInStoreNotYetMatchedToDB)) return array('Nothing was found in the filestore.');
-    $result = $cameralife->Database->Select('photos','id,filename,path,fsize','','ORDER BY path,filename');
+    $result = $cameralife->database->Select('photos','id,filename,path,fsize','','ORDER BY path,filename');
 
     // Verify each photo in the DB
-    while ($photo = $result->FetchAssoc()) {    
+    while ($photo = $result->FetchAssoc()) {
 //TODO FIX DATABASE TO MAKE photos.path like '/a/dir' or '/'
       $filename = $photo['filename'];
       $photopath = trim($photo['path'], '/') . '/' . $filename;
@@ -177,7 +181,7 @@ class Folder extends Search
       if (isset($filesInStoreNotYetMatchedToDB[$photopath])) {
         # Bonus code, if this is local, we can do more verification
         if ($cameralife->getPref('filestore')=='local' && $photo['fsize']) {
-          $photofile = $cameralife->FileStore->PhotoDir."/$photopath";
+          $photofile = $cameralife->fileStore->PhotoDir."/$photopath";
           $actualsize = filesize($photofile);
           // Found, but changed
           if ($actualsize != $photo['fsize']) {
@@ -215,7 +219,7 @@ class Folder extends Search
           if ($candidatedirname == './') $candidatedirname = '';
           if ($photo['path'] == $candidatedirname) {
             unset ($filesInStoreNotYetMatchedToDB[$candidatephotopath]);
-            $cameralife->Database->Update('photos',array('filename'=>$candidatefilename),'id='.$photo['id']);
+            $cameralife->database->Update('photos',array('filename'=>$candidatefilename),'id='.$photo['id']);
             continue 2;
           }
         }
@@ -231,7 +235,7 @@ class Folder extends Search
           if ($candidatedirname == './') $candidatedirname = '';
           if ($photo['path'] == $candidatedirname) {
             unset ($filesInStoreNotYetMatchedToDB[$candidatephotopath]);
-            $cameralife->Database->Update('photos',array('filename'=>$candidatefilename),'id='.$photo['id']);
+            $cameralife->database->Update('photos',array('filename'=>$candidatefilename),'id='.$photo['id']);
             continue 2;
           }
         }
@@ -247,7 +251,7 @@ class Folder extends Search
         if ($candidatedirname) $candidatedirname .= '/';
         if ($candidatedirname == './') $candidatedirname = '';
 
-        $cameralife->Database->Update('photos',array('path'=>$candidatedirname),'id='.$photo['id']);
+        $cameralife->database->Update('photos',array('path'=>$candidatedirname),'id='.$photo['id']);
         $retval[] = "$filename moved to $candidatedirname";
         unset ($filesInStoreNotYetMatchedToDB[$candidatephotopath]);
 
@@ -274,7 +278,7 @@ class Folder extends Search
           if ($candidatedirname) $candidatedirname .= '/';
           if ($candidatedirname=='./') $candidatedirname = '';
 
-          $cameralife->Database->Update('photos',array('path'=>$candidatedirname),'id='.$photo['id']);
+          $cameralife->database->Update('photos',array('path'=>$candidatedirname),'id='.$photo['id']);
           $retval[] = "$photopath probably moved to $candidatedirname";
           unset ($filesInStoreNotYetMatchedToDB[$candidatephotopath]);
           $lastmoved = array($number, $candidatedirname);
@@ -295,7 +299,6 @@ class Folder extends Search
       // Photo not found anywhere
       $retval[] = "$photopath was deleted from filesystem";
       $photoObj = new Photo($photo['id']);
-var_dump($filesInStoreNotYetMatchedToDB, $photopath);      
       $photoObj->erase();
     }
 
@@ -314,14 +317,14 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
 
       $newpath=dirname($new_file);
       $condition = "filename LIKE '".mysql_real_escape_string($newbase)."'";
-      $result = $cameralife->Database->Select('photos','id, filename, path',$condition);
+      $result = $cameralife->database->Select('photos','id, filename, path',$condition);
 
       // Is anything in the filestore too similar (given available information) to let this photo in?
       if ($photo = $result->FetchAssoc()) {
         // With the case-insensitive LIKE above, this will handle files renamed only by case
         if (strcasecmp($photo['path'].$photo['filename'], $new_file) == 0) {
           $retval[] = $photo['path'].$photo['filename'].' was renamed to '.$new_file;
-          $cameralife->Database->Update('photos',array('filename'=>$newbase),'id='.$photo['id']);
+          $cameralife->database->Update('photos',array('filename'=>$newbase),'id='.$photo['id']);
           continue;
         }
         $photoFullpath = rtrim('/'.ltrim($photo['path'],'/'),'/').'/'.$photo['filename'];
@@ -329,8 +332,8 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
         # Bonus code
         $same = FALSE;
         if ($cameralife->getPref('filestore')=='local') {
-          $a = file_get_contents($cameralife->FileStore->PhotoDir . $photoFullpath);
-          $b = file_get_contents($cameralife->FileStore->PhotoDir . $new_file);
+          $a = file_get_contents($cameralife->fileStore->PhotoDir . $photoFullpath);
+          $b = file_get_contents($cameralife->fileStore->PhotoDir . $new_file);
           if ($a == $b)
             $same = TRUE;
         }
@@ -361,7 +364,7 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
   public function fsck()
   {
     global $cameralife;
-    $files = $cameralife->FileStore->ListFiles('photo', $this->path, FALSE);
+    $files = $cameralife->fileStore->ListFiles('photo', $this->path, FALSE);
     if(!is_array($files)) return FALSE;
 
     $fsphotos = $fsdirs = array();
@@ -375,7 +378,7 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
 
     $selection = "filename";
     $condition = "path = '".addslashes($this->path)."'";
-    $result = $cameralife->Database->Select('photos', $selection, $condition);
+    $result = $cameralife->database->Select('photos', $selection, $condition);
     while ($row = $result->FetchAssoc()) {
       $key = array_search($row['filename'], $fsphotos);
       if($key === FALSE)
@@ -387,7 +390,7 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
 
     $selection = "DISTINCT SUBSTRING_INDEX(SUBSTR(path,".(strlen($this->path)+1)."),'/',1) AS basename";
     $condition = "path LIKE '".addslashes($this->path)."%/' AND status=0";
-    $result = $cameralife->Database->Select('photos', $selection, $condition);
+    $result = $cameralife->database->Select('photos', $selection, $condition);
     while ($row = $result->FetchAssoc()) {
       $key = array_search($row['basename'], $fsdirs);
       if($key === FALSE)
@@ -414,10 +417,9 @@ var_dump($filesInStoreNotYetMatchedToDB, $photopath);
       $retval['og:url'] = $cameralife->baseURL.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
     $retval['og:image'] = $cameralife->iconURL('folder');
     $retval['og:image:type'] = 'image/png';
-    //$retval['og:image:width'] = 
-    //$retval['og:image:height'] = 
-    return $retval;    
+    //$retval['og:image:width'] =
+    //$retval['og:image:height'] =
+    return $retval;
   }
-
 
 }

@@ -30,7 +30,7 @@ try {
             $attr = $openid->getAttributes();
             $email = $attr['contact/email'];
             if (strlen($email)) {
-                $cameralife->Security->Login($id, $email);
+                $cameralife->security->Login($id, $email);
                 header ('Location: '.$cameralife->baseURL.'/index.php');
             } else {
                 die ('Enough detail (email address) was not provided to process your login.');

@@ -33,10 +33,10 @@ if (isset($_SERVER['HTTP_REFERER'])) {
 $photoPrev = $photo->getPrevious();
 $photoNext = $photo->getNext();
 
-if ($cameralife->Security->GetName())
-  $rating = $avg = $cameralife->Database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->get('id')." AND username='".$cameralife->Security->GetName()."'");
+if ($cameralife->security->GetName())
+  $rating = $avg = $cameralife->database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->get('id')." AND username='".$cameralife->security->GetName()."'");
 else
-  $rating = $avg = $cameralife->Database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->get('id')." AND user_ip='".$_SERVER['REMOTE_ADDR']."'");
+  $rating = $avg = $cameralife->database->SelectOne('ratings', 'AVG(rating)', 'id='.$photo->get('id')." AND user_ip='".$_SERVER['REMOTE_ADDR']."'");
 
 ## Extra header...
 $headers = '<link rel="stylesheet" type="text/css" href="'.$cameralife->baseURL.'/modules/theme/'.$cameralife->getPref('theme').'/delicious.css" />'.PHP_EOL;
@@ -61,7 +61,7 @@ if($photoNext) {
 $headers .= '<script type="text/javascript" src="'.$cameralife->baseURL.'/modules/theme/'.$cameralife->getPref('theme').'/photo.js"></script>';
 $headers .= '<script type="text/javascript" src="'.$cameralife->baseURL.'/modules/theme/'.$cameralife->getPref('theme').'/ajax.js"></script>';
 
-$cameralife->Theme->Header($photo, NULL, $headers);
+$cameralife->theme->Header($photo, NULL, $headers);
 
 if ($photo->get('status') > 0)
 {
@@ -73,7 +73,7 @@ if ($photo->get('status') > 0)
   <h1>
     <?= htmlentities($photo->get('description'), NULL, "UTF-8") ?>
 <?php
-if ($cameralife->Security->authorize('photo_rename'))
+if ($cameralife->security->authorize('photo_rename'))
 {
 ?>
     <a href="<?= AddParamRawUrlEncode('action','rename') ?>" 
@@ -87,7 +87,7 @@ if ($cameralife->Security->authorize('photo_rename'))
   </h1>
 <?php
 
-  if ($cameralife->Security->authorize('photo_rename'))
+  if ($cameralife->security->authorize('photo_rename'))
   {
 ?>
     <form action="<?= $cameralife->baseURL ?>/photo_controller.php" method="POST" name="form" id="renameform" class="well form-horizontal" style="<?=(isset($_GET['action']) && $_GET['action'] == 'rename')?'':'display:none'?>">
@@ -119,7 +119,7 @@ if ($cameralife->Security->authorize('photo_rename'))
     </form>
 <?php
   }
-  if ($cameralife->Security->authorize('photo_delete'))
+  if ($cameralife->security->authorize('photo_delete'))
   {
     if ($photoNext)
     {
@@ -162,7 +162,7 @@ if ($cameralife->Security->authorize('photo_rename'))
     </form>
 <?php
   }
-  if ($cameralife->Security->authorize('photo_modify'))
+  if ($cameralife->security->authorize('photo_modify'))
   {
 ?>
     <div id="modify" class="well" style="<?=(isset($_GET['action']) && $_GET['action'] == 'modify')?'':'display:none'?>">
@@ -316,7 +316,7 @@ for ($i=1; $i<=5; $i++) {
     <h2>Comments</h2>
       <?php 
 
-$result = $cameralife->Database->Select('comments', '*', 'photo_id='.$photo->get('id'));
+$result = $cameralife->database->Select('comments', '*', 'photo_id='.$photo->get('id'));
 while ($comment = $result->FetchAssoc())
 echo "<strong>".$comment['username']."</strong> <em>" . date('Y-m-d', strtotime($comment['date']))."</em><br>" .htmlentities($comment['comment']) . "<hr>";
       ?>
@@ -336,13 +336,13 @@ echo "<strong>".$comment['username']."</strong> <em>" . date('Y-m-d', strtotime(
 echo "<ul class=\"list-unstyled\">";
 echo "<li><a href=\"".$photo->getMediaURL('photo')."\"><i class=\"icon-fullscreen\"></i> View full-sized ({$photo->get('width')} x {$photo->get('height')}px)</a></li>";
 
-if ($cameralife->Security->authorize('photo_rename'))
+if ($cameralife->security->authorize('photo_rename'))
   echo "<li><a onClick=\"$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false\" href=\"".html_entity_decode(AddParamRawUrlEncode('action','rename'))."\"><i class=\"icon-font\"></i> Rename photo</a></li>";
 
-if ($cameralife->Security->authorize('photo_delete'))
+if ($cameralife->security->authorize('photo_delete'))
   echo "<li><a onClick=\"$('#deleteform').show();return false\" href=\"".html_entity_decode(AddParamRawUrlEncode('action','flag'))."\"><i class=\"icon-flag\"></i> Flag photo</a></li>";
 
-if ($cameralife->Security->authorize('photo_modify'))
+if ($cameralife->security->authorize('photo_modify'))
   echo "<li><a onClick=\"$('#modify').show();return false\" href=\"".html_entity_decode(AddParamRawUrlEncode('action','modify'))."\"><i class=\"icon-wrench\"></i> Modify photo (rotate, revert, ...)</a></li>";
 
 if ($photo->get('status') == 0)
@@ -361,5 +361,5 @@ echo "</ul>";
       echo '<img style="display:none" src="'.$photoNext->GetMedia('scaled').'" alt="hidden photo">';
   }
   
-  $cameralife->Theme->Footer();
+  $cameralife->theme->Footer();
 ?>

@@ -19,7 +19,7 @@
   _gaq.push(['_setAccount', 'UA-52764-13']);
   _gaq.push(['_trackPageview']);
 
-  (function() {
+  (function () {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
@@ -54,7 +54,7 @@
         <h2 class="text-success"><i class="glyphicon glyphicon-ok"></i> You are running Camera Life <?php readfile('../VERSION') ?></h2>
         <p><a class="btn btn-default btn-large" target="_blank" href="https://github.com/fulldecent/cameralife"><i class="glyphicon glyphicon-star"></i> Star us on GitHub</a> to get important security updates</p>
       </div>
-    </div>    
+    </div>
 
     <div class="container">
       <div class="row">

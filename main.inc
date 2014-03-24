@@ -30,7 +30,7 @@ require dirname(__FILE__).'/modules/module.inc';
 
 class CameraLife extends CameraLifeModule # and View
 {
-  var $loaded_features;
+  var $loadedFeatures;
   var $userpreferences;
   var $version;
   var $baseDir;
@@ -87,41 +87,30 @@ class CameraLife extends CameraLifeModule # and View
 
   function getFeature($feature)
   {
-    if (!isset($this->loaded_features[$feature]))
-      $loaded_features[$feature]='loading';
-    elseif ($this->loaded_features[$feature]=='loaded')
-        return true;
-    elseif ($this->loaded_features[$feature]=='loading')
-        $this->error('Circular reference in features :-(');
+    if (!isset($this->loadedFeatures[$feature]))
+      $loadedFeatures[$feature]='loading';
+    elseif ($this->loadedFeatures[$feature]=='loaded')
+      return true;
+    elseif ($this->loadedFeatures[$feature]=='loading')
+      $this->error('Circular reference in features :-(');
 
-    $this->relativeInclude("modules/$feature/module.inc");
-    $allfeatures = array('core'=>NULL, 'imageprocessing'=>'ImageProcessing', 'security'=>'Security', 'theme'=>'Theme', 'filestore'=>'FileStore');
+    $allfeatures = array('core'=>'core', 'imageprocessing'=>'imageProcessing', 'security'=>'security', 'theme'=>'theme', 'filestore'=>'fileStore');
+    if (!isset($allfeatures[$feature]))
+      $this->error("Non-existant feature requested: $feature");
     $cutename = $allfeatures[$feature];
-    
-    switch ($feature)
-    {
-      case 'core': 
-        $this->Database = new Database();
-        break;
-      case 'theme': 
-      case 'security': 
-      case 'imageprocessing': 
-      case 'filestore':
-      case 'filestore':
-        $implementation = $this->getPref($feature);
-        $this->relativeInclude("modules/$feature/$implementation/module.inc");
-        $modulename = $implementation.$feature;
-        $this->$cutename = new $modulename;
-        break;
-      default:
-        $this->error("Non-existant feature requested: $feature");
+    $this->relativeInclude("modules/$feature/module.inc");
+    if ($feature != 'core') { // Need to load implementation
+      $implementation = $this->getPref($feature);
+      $this->relativeInclude("modules/$feature/$implementation/module.inc");
+      $modulename = $implementation.$feature;
+      $this->$cutename = new $modulename;
     }
-    $this->loaded_features[$feature]='loaded';
+    $this->loadedFeatures[$feature]='loaded';
   }
 
   function loadPreferences()
   {
-    $query = $this->Database->Select('preferences','*');
+    $query = $this->database->Select('preferences','*');
     while ($result = $query->FetchAssoc())
     {
       $this->userpreferences[$result['prefmodule']][$result['prefkey']] = $result['prefvalue'];
@@ -140,11 +129,11 @@ class CameraLife extends CameraLifeModule # and View
 # use cooler SQL here
           $condition = "prefmodule='$module' AND prefkey='$key'";
 
-          $query = $this->Database->Select('preferences', '1', $condition);
+          $query = $this->database->Select('preferences', '1', $condition);
           if ($query->FetchAssoc())
-            $this->Database->Update('preferences', $values, $condition);
+            $this->database->Update('preferences', $values, $condition);
           else
-            $this->Database->Insert('preferences', $values);
+            $this->database->Insert('preferences', $values);
         }
       }
     }
@@ -175,24 +164,21 @@ class CameraLife extends CameraLifeModule # and View
     echo "  <h2>Camera Life has encountered an error!</h2>\n";
     echo "  <blockquote class=\"lead\">".htmlentities($message)."</blockquote>\n";
 
-    if (isset($cameralife->Security) && $cameralife->Security->authorize('admin_customize')) {
+    if (isset($cameralife->security) && $cameralife->security->authorize('admin_customize')) {
       echo "  You can have the backtrace, since you are an admin:\n";
       $calls = debug_backtrace();
       echo "  <dl>\n";
       foreach ($calls as $call) {
-        echo "    <dt>{$call['file']}:{$call['line']} ";
+        $callText = $call['function'];
         if (isset($call['class'])) {
           $url = "http://camera.phor.net/docs/cameralife/{$call['class']}.html#{$call['function']}";
-          echo "<a target=\"_new\" href=\"$url\">".$call['class'].'::'.$call['function']."</a>()</dt>\n";
-        } else {
-          echo $call['function'];
+          $callText = "<a target=\"_new\" href=\"$url\">".$call['class'].'::'.$call['function']."</a>()";
         }
+        echo "    <dt>{$call['file']}:{$call['line']} $callText</dt>";
         echo '    <dd><ul>';
         if (count($call['args']))
           foreach ($call['args'] as $callarg) {
             echo "<li>".print_r($callarg, true)."</li>";
-//            var_dump($callarg);
-  //          echo "</li>";
           }
         echo "</ul></dd>\n";
 #       echo '<dd><p>For object details view source...</p><!--<pre>';
@@ -209,6 +195,7 @@ class CameraLife extends CameraLifeModule # and View
 
 $cameralife = new CameraLife();
 $cameralife->getFeature('core');
+$cameralife->database = new Database();
 $cameralife->loadPreferences();
 
 if (isset($GLOBALS['features']) && count($GLOBALS['features']))

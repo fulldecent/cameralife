@@ -8,7 +8,7 @@
 $features=array('security', 'filestore');
 require '../main.inc';
 $cameralife->baseURL = dirname($cameralife->baseURL);
-$cameralife->Security->authorize('admin_customize', 1); // Require
+$cameralife->security->authorize('admin_customize', 1); // Require
 
 if (!isset($_POST['showme']) && !isset($_POST['showreg']) && !isset($_POST['showunreg'])) {
   $_POST['showme'] = TRUE;
@@ -23,14 +23,14 @@ if (!isset($_POST['showphotos']) && !isset($_POST['showalbums']) && !isset($_POS
 }
 if (isset($_POST['action']) && $_POST['action'] == 'Commit changes') {
   foreach ($_POST as $var => $val) {
-    if (!is_numeric($var) || !is_numeric($val))
+    if (!isset($var) || !is_numeric($val))
       continue;
     AuditTrail::undo($val);
   }
 }
-$numcomments = $cameralife->Database->SelectOne('comments','COUNT(*)','id>'.($cameralife->getPref('checkpointcomments')+0));
-$checkpointDate = strtotime($cameralife->Database->SelectOne('logs','max(user_date)','id='.($cameralife->getPref('checkpointcomments')+0)));
-$latestLog = $cameralife->Database->SelectOne('logs','max(id)');
+$numcomments = $cameralife->database->SelectOne('comments','COUNT(*)','id>'.($cameralife->getPref('checkpointcomments')+0));
+$checkpointDate = strtotime($cameralife->database->SelectOne('logs','max(user_date)','id='.($cameralife->getPref('checkpointcomments')+0)));
+$latestLog = $cameralife->database->SelectOne('logs','max(id)');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -135,7 +135,7 @@ if ($checkpointDate) {
         <h2>Quick tools</h2>
         <button class="btn btn-default" onClick='inps = document.getElementsByTagName("input"); for (a in inps) { b=inps[a]; if(b.type!="radio")continue; if(b.value=="") b.checked=true }; return false'>Set each item to the current value</button><br/>
         <button class="btn btn-default" onClick='inps = document.getElementsByTagName("input"); c=0; for (a in inps) { b=inps[a]; if(b.type!="radio")continue; if(c)b.checked=true; c=(b.value=="")}; return false'>Set each item to the previous value</button><br/>
-        <button class="btn btn-default" onClick='inps = document.getElementsByTagName("input"); for(i=inps.length-1;i>=0;i--) { b=inps[i]; if(b.type!="radio")continue; b.checked=true }; return false'>Set each item to the oldest value</button><br/>
+        <button class="btn btn-default" onClick='inps = document.getElementsByTagName("input"); for (i=inps.length-1;i>=0;i--) { b=inps[i]; if(b.type!="radio")continue; b.checked=true }; return false'>Set each item to the oldest value</button><br/>
       </div>
       <h2>Logged changes</h2>
       <form method="post" class="form" id="comments">
@@ -152,9 +152,9 @@ if ($checkpointDate) {
 
     $condition .= ") AND (0 ";
     if ($_POST['showme'])
-      $condition .= "OR user_name = '".$cameralife->Security->GetName()."' ";
+      $condition .= "OR user_name = '".$cameralife->security->GetName()."' ";
     if ($_POST['showreg'])
-      $condition .= "OR (user_name LIKE '_%' AND user_name != '".$cameralife->Security->GetName()."')";
+      $condition .= "OR (user_name LIKE '_%' AND user_name != '".$cameralife->security->GetName()."')";
     if ($_POST['showunreg'])
       $condition .= "OR user_name = '' ";
     $condition .= ") ";
@@ -162,7 +162,7 @@ if ($checkpointDate) {
     $condition .= " AND logs.id > ".($cameralife->getPref('checkpointlogs')+0);
     $extra = "GROUP BY record_id, record_type, value_field ORDER BY logs.id DESC";
 
-    $result = $cameralife->Database->Select('logs','record_type, record_id, value_field, MAX(logs.id) as maxid',$condition,$extra);
+    $result = $cameralife->database->Select('logs','record_type, record_id, value_field, MAX(logs.id) as maxid',$condition,$extra);
     while ($record = $result->FetchAssoc()) {
       $receipt = new Receipt($record['maxid']);
       $object = $receipt->getObject();

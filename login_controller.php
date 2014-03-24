@@ -19,7 +19,7 @@
   *@todo The following code requires rework
   *<code>elseif(strtolower($_POST['action']) == 'register')
   *{
-   * $result = $cameralife->Security->Register($_POST['param1'], $_POST['param2'], $_POST['param3']);
+   * $result = $cameralife->security->Register($_POST['param1'], $_POST['param2'], $_POST['param3']);
    * if (is_string($result))
    *   $cameralife->error($result);
   *}
@@ -40,13 +40,13 @@
   require 'main.inc';
 
   if (strtolower($_POST['action']) == 'login') {
-    $result = $cameralife->Security->Login($_POST['param1'], $_POST['param2']);
+    $result = $cameralife->security->Login($_POST['param1'], $_POST['param2']);
     if (is_string($result))
       $cameralife->error($result);
   }
 //@todo rework required
   elseif (strtolower($_POST['action']) == 'register') {
-    $result = $cameralife->Security->Register($_POST['param1'], $_POST['param2'], $_POST['param3']);
+    $result = $cameralife->security->Register($_POST['param1'], $_POST['param2'], $_POST['param3']);
     if (is_string($result))
       $cameralife->error($result);
   }

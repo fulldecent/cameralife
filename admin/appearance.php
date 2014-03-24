@@ -8,7 +8,7 @@
 $features=array('security', 'theme');
 require '../main.inc';
 $cameralife->baseURL = dirname($cameralife->baseURL);
-$cameralife->Security->authorize('admin_customize', 1); // Require
+$cameralife->security->authorize('admin_customize', 1); // Require
 if(!isset($_GET['page'])) $_GET['page'] = 'setup';
 require 'admin.inc';
 ?>
@@ -169,6 +169,6 @@ foreach ($cameralife->getModules($feature) as $module) {
         </div>
       </form>
 
-<?php renderPrefsAsHTML($cameralife->Theme) ?>
+<?php renderPrefsAsHTML($cameralife->theme) ?>
   </body>
 </html>

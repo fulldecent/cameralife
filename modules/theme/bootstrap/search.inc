@@ -38,7 +38,7 @@ $sidebar = <<<HTML
         <li class="nav-header">Tools</li>
         <li><a href="?q=unnamed">Search for unnamed photos</a></li>
 HTML;
-if($_GET['page'] == "p" && $cameralife->Security->Authorize('admin_albums')) {
+if($_GET['page'] == "p" && $cameralife->security->Authorize('admin_albums')) {
     $queryHTML = urlencode($search->getQuery());
     $sidebar .= <<<HTMLx
         <li><a href="topic.php&#63;edit=true&amp;term=$queryHTML">Create an Album of these photos</a></li>
@@ -48,18 +48,18 @@ $sidebar .= <<<HTML
     </ul>
 HTML;
 
-$cameralife->Theme->Header($search, $sidebar, $header);
+$cameralife->theme->Header($search, $sidebar, $header);
 
 if (isset($_GET['albumhelp']) && $_GET['albumhelp']) {
 ?>
 <div class="alert alert-info alert-block">
   <button type="button" class="close" data-dismiss="alert">×</button>
   <h4>How to use Albums</h4>
-    <?php $cameralife->Theme->Image('small-album', array('align'=>'middle')) ?> 
+    <?php $cameralife->theme->Image('small-album', array('align'=>'middle')) ?> 
     An Album is a collection of photos with a common term in their description. <br>
-    <?php $cameralife->Theme->Image('small-topic', array('align'=>'middle')) ?> 
+    <?php $cameralife->theme->Image('small-topic', array('align'=>'middle')) ?> 
     A Topic is a logical collection of Albums. Ex: People, Places, Events<br>
-    <?php $cameralife->Theme->Image('small-search', array('align'=>'middle')) ?> 
+    <?php $cameralife->theme->Image('small-search', array('align'=>'middle')) ?> 
     To create an album, perform a search, then choose "Create an album from these photos" on the toolbar.<br>
     <p>Note: In the future, you can simply perform a search, without pulling up these instructions.
     <a href="https://github.com/fulldecent/cameralife/wiki/Albums">Click here for more information</a></p>
@@ -68,7 +68,7 @@ if (isset($_GET['albumhelp']) && $_GET['albumhelp']) {
 }
 
 echo "<h1>";
-$cameralife->Theme->Image('search');
+$cameralife->theme->Image('search');
 echo "Search for ".htmlentities($search->getQuery())."</h1>";
 echo '<ul class="nav nav-pills">'.PHP_EOL;
 foreach ($counts as $type=>$num) {
@@ -89,7 +89,7 @@ foreach ($counts as $type=>$num) {
 }
 echo "</ul>".PHP_EOL;
 
-  $cameralife->Theme->grid($results);
+  $cameralife->theme->grid($results);
 
   echo "<form>";
   echo "<input type=hidden name=q value=\"".htmlentities($search->getQuery())."\" />";
@@ -97,11 +97,11 @@ echo "</ul>".PHP_EOL;
   $openGraph = $search->getOpenGraph();
   $href = AddParam($openGraph['og:url'], "page", $_GET['page']);
   if ($_GET['page'] == "a")
-    $cameralife->Theme->PageSelector($start,$counts['albums'],12,$href);
+    $cameralife->theme->PageSelector($start,$counts['albums'],12,$href);
   else if ($_GET['page'] == "f")
-    $cameralife->Theme->PageSelector($start,$counts['folders'],12,$href);
+    $cameralife->theme->PageSelector($start,$counts['folders'],12,$href);
   else
-    $cameralife->Theme->PageSelector($start,$counts['photos'],12,$href);
+    $cameralife->theme->PageSelector($start,$counts['photos'],12,$href);
     
   echo "<select name=\"sort\">\n";
   foreach ($search->sortOptions() as $sortOption) {
@@ -112,5 +112,5 @@ echo "</ul>".PHP_EOL;
   echo "<input class=\"btn\" type=submit value=\"Sort\">\n";
   echo "</form>";    
 
-  $cameralife->Theme->Footer();
+  $cameralife->theme->Footer();
 ?>

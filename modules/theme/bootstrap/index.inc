@@ -9,7 +9,7 @@
 
 $cameralife->getFeature('security');
 $cameralife->getFeature('filestore');
-$cameralife->Theme->Header($cameralife);
+$cameralife->theme->Header($cameralife);
 
 $_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 'rand';
 list($sort,$type) = explode('-', $_GET['page'].'-');
@@ -61,7 +61,7 @@ foreach ($results as $result) {
         $root = new Folder();
         $rootOpenGraph = $root->getOpenGraph();
         $root->setSort('newest');
-        $folders = $root->getDescendants($cameralife->Theme->getPref('main_folders_n'));
+        $folders = $root->getDescendants($cameralife->theme->getPref('main_folders_n'));
 
         foreach ($folders as $folder)
         {
@@ -97,10 +97,10 @@ foreach ($results as $result) {
         {
           $openGraph = $topic->GetOpenGraph();
           echo "<tr><td><h3><a href=\"".htmlentities($openGraph['og:url'])."\">";
-          echo $cameralife->Theme->Image('small-topic');
+          echo $cameralife->theme->Image('small-topic');
           echo htmlentities($openGraph['og:title'])."</a></h3>\n";
 
-          if ($cameralife->Theme->getPref('main_topics')==2) // Link a couple albums
+          if ($cameralife->theme->getPref('main_topics')==2) // Link a couple albums
           {
             $topic->SetSort('rand');
             $topic->SetPage(0, 4);
@@ -125,5 +125,5 @@ foreach ($results as $result) {
 </div>
 
 <?php
-  $cameralife->Theme->Footer();
+  $cameralife->theme->Footer();
 ?>

@@ -8,21 +8,21 @@
 $cameralife->getFeature('security');
 $cameralife->getFeature('filestore');
 
-if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$cameralife->Security->GetName().'/')
+if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/'.$cameralife->security->GetName().'/')
 {
-  $cameralife->Security->Authorize('admin_file', 1);
+  $cameralife->security->Authorize('admin_file', 1);
   $path = $_REQUEST['path'];
 }
 else
 {
-  $cameralife->Security->Authorize('photo_upload', 1);
-  $path = 'upload/'.$cameralife->Security->GetName().'/';
+  $cameralife->security->Authorize('photo_upload', 1);
+  $path = 'upload/'.$cameralife->security->GetName().'/';
 }
 $folder = new Folder($path);
 $folderURL = $folder->getOpenGraph()['og:url'];
 
 $headers = '<script src="'.$cameralife->baseURL.'/modules/theme/'.$cameralife->getPref('theme').'/dropzone.js"></script>';
-$cameralife->Theme->Header($cameralife, NULL, $headers); //TODO THIS IS INACCURATE
+$cameralife->theme->Header($cameralife, NULL, $headers); //TODO THIS IS INACCURATE
 ?>
 <BGSOUND src="<?= $cameralife->baseURL ?>/filedone.wav">
 <h1>Uploading Photos</h1>
@@ -30,7 +30,7 @@ $cameralife->Theme->Header($cameralife, NULL, $headers); //TODO THIS IS INACCURA
   <li>You can upload a photo in JPEG format or a ZIP of JPEG photos
   <li>The maximum file size is 20MB
 <?php
-  if ($cameralife->Security->Authorize('admin_file') && !isset($_REQUEST['path']))
+  if ($cameralife->security->Authorize('admin_file') && !isset($_REQUEST['path']))
     echo '    <li>To upload somewhere else, go to that folder and click "upload here"';
 ?>
 </ul>
@@ -68,5 +68,5 @@ $cameralife->Theme->Header($cameralife, NULL, $headers); //TODO THIS IS INACCURA
 Dropzone.options.dropzone = { paramName: "userfile" };
 </script>
 <?php
-  $cameralife->Theme->Footer();
+  $cameralife->theme->Footer();
 ?>

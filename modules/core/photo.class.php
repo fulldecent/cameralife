@@ -12,7 +12,7 @@ class Photo extends View
 
   /**
    * The file extension, e.g. png
-   * 
+   *
    * @var String
    * @access public
    */
@@ -21,16 +21,16 @@ class Photo extends View
   /**
    * context
    * an Album, Search or Folder of where the user came from to get to this photo
-   * 
+   *
    * @var mixed
    * @access private
    */
   private $context;
-  
+
   /**
    * contextPhotos
    * An ordered set of photos in the same context as this one
-   * 
+   *
    * @var mixed
    * @access private
    */
@@ -39,16 +39,16 @@ class Photo extends View
   /**
    * contextPrev
    * the previous photo in context
-   * 
+   *
    * @var mixed
    * @access private
    */
   private $contextPrev;
-  
+
   /**
    * contextNext
    * the next photo in contex
-   * 
+   *
    * @var mixed
    * @access private
    */
@@ -69,13 +69,13 @@ class Photo extends View
     if (is_null($original)) {
       $this->record['id'] = NULL;
     } elseif (is_numeric($original)) { # This is an ID
-      $result = $cameralife->Database->Select('photos','*', "id=$original");
+      $result = $cameralife->database->Select('photos','*', "id=$original");
       $this->record = $result->FetchAssoc()
         or $cameralife->error("Photo #$original not found", __FILE__, __LINE__);
     } elseif (is_array($original)) { # A new image, given by an array
       $this->record['description'] = 'unnamed';
 
-//      if (!preg_match('/^dscn/i', $this->record['filename']) && 
+//      if (!preg_match('/^dscn/i', $this->record['filename']) &&
 //        !preg_match('/^im/i', $this->record['filename'])) // useless filename
 //        $this->record['description'] = preg_replace('/.[^.]+$/', '', ucwords($photo->get('filename')));
 
@@ -85,7 +85,7 @@ class Photo extends View
       $this->record['mtime'] = '0';
       $this->record = array_merge($this->record, $original);
 
-      $this->record['id'] = $cameralife->Database->Insert('photos', $this->record);
+      $this->record['id'] = $cameralife->database->Insert('photos', $this->record);
     }
     $this->context = false;
     $this->contextPrev = false;
@@ -106,7 +106,7 @@ class Photo extends View
     if(!is_numeric($original))
       $cameralife->error("Input needs to be a number", __FILE__, __LINE__);
 
-    $result = $cameralife->Database->Select('photos','*', "id=$original");
+    $result = $cameralife->database->Select('photos','*', "id=$original");
     $a = $result->FetchAssoc();
 
     return $a != 0;
@@ -121,11 +121,11 @@ class Photo extends View
       $receipt = AuditTrail::log('photo',$this->record['id'],$key,$this->record[$key],$value);
     if ($key == 'status') {
       $fullpath = rtrim('/'.ltrim($this->record['path'],'/'),'/').'/'.$this->record['filename'];
-      $cameralife->FileStore->SetPermissions('photo', $fullpath, $value!=0);
-//TODO: also set for _mod and _ thumbnails      
+//      $cameralife->fileStore->setPermissions('photo', $fullpath, $value!=0);
+//TODO: also set for _mod and _ thumbnails
     }
     $this->record[$key] = $value;
-    $cameralife->Database->Update('photos', array($key=>$value), 'id='.$this->record['id']);
+    $cameralife->database->Update('photos', array($key=>$value), 'id='.$this->record['id']);
 
     return $receipt;
   }
@@ -145,7 +145,7 @@ class Photo extends View
 
     if (isset($this->image)) return;
     $fullpath = rtrim('/'.ltrim($this->record['path'],'/'),'/').'/'.$this->record['filename'];
-    list ($file, $temp, $this->record['mtime']) = $cameralife->FileStore->GetFile('photo',$fullpath);
+    list ($file, $temp, $this->record['mtime']) = $cameralife->fileStore->GetFile('photo',$fullpath);
     if (is_null($this->record['modified']) || $this->record['modified'] == 0 || $this->record['modified'] == '') {
       $this->record['fsize'] = filesize($file);
       $this->record['created'] = date('Y-m-d', $this->record['mtime']);
@@ -196,7 +196,7 @@ class Photo extends View
 
     $fullpath = rtrim('/'.ltrim($this->record['path'],'/'),'/').'/'.$this->record['filename'];
     foreach ($files as $size=>$file) {
-      $cameralife->FileStore->PutFile('other', '/'.$this->record['id'].'_'.$size.'.'.$this->extension, $file, $this->record['status']!=0);
+      $cameralife->fileStore->PutFile('other', '/'.$this->record['id'].'_'.$size.'.'.$this->extension, $file, $this->record['status']!=0);
       @unlink($file);
     }
 
@@ -205,7 +205,7 @@ class Photo extends View
     $this->record['tn_width'] = $thumbsize[0];
     $this->record['tn_height'] = $thumbsize[1];
 
-    $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
+    $cameralife->database->Update('photos',$this->record,'id='.$this->record['id']);
   }
 
   public function rotate($angle)
@@ -221,7 +221,7 @@ class Photo extends View
     $this->record['mtime'] = time();
 
     $this->record['modified'] = 1;
-    $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
+    $cameralife->database->Update('photos',$this->record,'id='.$this->record['id']);
   }
 
   public function revert()
@@ -230,12 +230,12 @@ class Photo extends View
 
     if ($this->record['modified']) {
       $this->record['modified'] = 0;
-      $cameralife->FileStore->EraseFile('other','/'.$this->record['id'].'_mod.'.$this->extension);
-      $cameralife->FileStore->EraseFile('other','/'.$this->record['id'].'_'.$cameralife->getPref('scaledsize').'.'.$this->extension);
-      $cameralife->FileStore->EraseFile('other','/'.$this->record['id'].'_'.$cameralife->getPref('scaledsize').'.'.$this->extension);
+      $cameralife->fileStore->EraseFile('other','/'.$this->record['id'].'_mod.'.$this->extension);
+      $cameralife->fileStore->EraseFile('other','/'.$this->record['id'].'_'.$cameralife->getPref('scaledsize').'.'.$this->extension);
+      $cameralife->fileStore->EraseFile('other','/'.$this->record['id'].'_'.$cameralife->getPref('scaledsize').'.'.$this->extension);
       $this->record['mtime'] = 0;
     }
-    $cameralife->Database->Update('photos',$this->record,'id='.$this->record['id']);
+    $cameralife->database->Update('photos',$this->record,'id='.$this->record['id']);
   }
 
   public function erase()
@@ -243,11 +243,11 @@ class Photo extends View
     global $cameralife;
     $this->set('status', 9);
     /*
-    $cameralife->Database->Delete('photos','id='.$this->record['id']);
-    $cameralife->Database->Delete('logs',"record_type='photo' AND record_id=".$this->record['id']);
-    $cameralife->Database->Delete('ratings',"id=".$this->record['id']);
-    $cameralife->Database->Delete('comments',"photo_id=".$this->record['id']);
-    $cameralife->Database->Delete('exif',"photoid=".$this->record['id']);
+    $cameralife->database->Delete('photos','id='.$this->record['id']);
+    $cameralife->database->Delete('logs',"record_type='photo' AND record_id=".$this->record['id']);
+    $cameralife->database->Delete('ratings',"id=".$this->record['id']);
+    $cameralife->database->Delete('comments',"photo_id=".$this->record['id']);
+    $cameralife->database->Delete('exif',"photoid=".$this->record['id']);
     */
     $this->destroy();
   }
@@ -261,22 +261,22 @@ class Photo extends View
   public function getMediaURL($format='thumbnail')
   {
     global $cameralife;
-    
+
     $url = NULL;
     if ($format == 'photo' || $format == '') {
       if ($this->get('modified'))
-        $url = $cameralife->FileStore->GetURL('other', '/'.$this->get('id').'_mod.'.$this->extension);
+        $url = $cameralife->fileStore->GetURL('other', '/'.$this->get('id').'_mod.'.$this->extension);
       else
-        $url = $cameralife->FileStore->GetURL('photos', '/'.$this->get('path').$this->get('filename'));
+        $url = $cameralife->fileStore->getURL('photos', '/'.$this->get('path').$this->get('filename'));
     }
     elseif ($format == 'scaled')
-      $url = $cameralife->FileStore->GetURL('other', '/'.$this->get('id').'_'.$cameralife->getPref('scaledsize').'.'.$this->extension);
+      $url = $cameralife->fileStore->getURL('other', '/'.$this->get('id').'_'.$cameralife->getPref('scaledsize').'.'.$this->extension);
     elseif ($format == 'thumbnail')
-      $url = $cameralife->FileStore->GetURL('other', '/'.$this->get('id').'_'.$cameralife->getPref('thumbsize').'.'.$this->extension);
+      $url = $cameralife->fileStore->GetURL('other', '/'.$this->get('id').'_'.$cameralife->getPref('thumbsize').'.'.$this->extension);
     elseif (is_numeric($format)) {
       $valid = preg_split('/[, ]+/',$cameralife->getPref('optionsizes'));
       if (in_array($format, $valid))
-        $url = $cameralife->FileStore->GetURL('other', '/'.$this->get('id').'_'.$format.'.'.$this->extension);
+        $url = $cameralife->fileStore->GetURL('other', '/'.$this->get('id').'_'.$format.'.'.$this->extension);
       else
         $cameralife->error('This image size has not been allowed');
     } 
@@ -307,7 +307,7 @@ class Photo extends View
     global $cameralife;
 
     $this->EXIF = array();
-    $query = $cameralife->Database->Select('exif', '*', "photoid=".$this->record['id']);
+    $query = $cameralife->database->Select('exif', '*', "photoid=".$this->record['id']);
 
     while ($row = $query->FetchAssoc()) {
       if ($row['tag'] == 'empty') continue;
@@ -406,9 +406,9 @@ class Photo extends View
 
     if (!count($this->EXIF)) $this->EXIF=array('empty'=>'true');
 
-    $cameralife->Database->Delete('exif', 'photoid='.$this->record['id']);
+    $cameralife->database->Delete('exif', 'photoid='.$this->record['id']);
     foreach ($this->EXIF as $tag=>$value)
-      $cameralife->Database->Insert('exif', array('photoid'=>$this->record['id'], 'tag'=>$tag, 'value'=>$value));
+      $cameralife->database->Insert('exif', array('photoid'=>$this->record['id'], 'tag'=>$tag, 'value'=>$value));
   }
 
   /**
@@ -438,7 +438,7 @@ class Photo extends View
     }
 
     // Find all albums that contain this photo, this is not 100%
-    $result = $cameralife->Database->Select('albums','id,name',"'".addslashes($this->get('description'))."' LIKE CONCAT('%',term,'%')");
+    $result = $cameralife->database->Select('albums','id,name',"'".addslashes($this->get('description'))."' LIKE CONCAT('%',term,'%')");
     while ($albumrecord = $result->FetchAssoc()) {
       if (($this->context instanceof Album) && $this->context->get('id') == $albumrecord['id']) // PHP5
         continue;
@@ -469,6 +469,7 @@ class Photo extends View
         $this->context = $folder;
       }
     }
+
     return $retval;
   }
 
@@ -539,6 +540,7 @@ class Photo extends View
     $retval['og:image:type'] = 'image/jpeg';
     $retval['og:image:width'] = $this->record['tn_width'];
     $retval['og:image:height'] = $this->record['tn_height'];
-    return $retval;    
+
+    return $retval;
   }
 }

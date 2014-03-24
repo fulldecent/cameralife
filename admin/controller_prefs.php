@@ -16,7 +16,7 @@
 $features=array('security');
 require '../main.inc';
 $cameralife->baseURL = dirname($cameralife->baseURL);
-$cameralife->Security->authorize('admin_customize', 1); // Require
+$cameralife->security->authorize('admin_customize', 1); // Require
 $prefs = array();
 
 foreach ($_POST as $key => $val) {

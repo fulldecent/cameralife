@@ -27,7 +27,7 @@ if (!is_numeric($_GET['ver']))
 
 $extension = $photo->extension;
 
-if (!$cameralife->Security->authorize('admin_file')) {
+if (!$cameralife->security->authorize('admin_file')) {
   $reason = null;
   if ($photo->get('status')==1) $reason = "deleted";
   elseif ($photo->get('status')==2) $reason = "marked as private";
@@ -38,20 +38,20 @@ if (!$cameralife->Security->authorize('admin_file')) {
 
 if ($format == 'photo' || $format == '') {
   if ($photo->get('modified'))
-    list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->get('id').'_mod.'.$extension);
+    list($file, $temp, $mtime) = $cameralife->fileStore->GetFile('other', '/'.$photo->get('id').'_mod.'.$extension);
   else {
     $fullpath = rtrim('/'.ltrim($photo->get('path'),'/'),'/').'/'.$photo->get('filename');
-    list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('photo', $fullpath);
+    list($file, $temp, $mtime) = $cameralife->fileStore->GetFile('photo', $fullpath);
   }
 }
 elseif ($format == 'scaled')
-  list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->get('id').'_'.$cameralife->getPref('scaledsize').'.'.$extension);
+  list($file, $temp, $mtime) = $cameralife->fileStore->getFile('other', '/'.$photo->get('id').'_'.$cameralife->getPref('scaledsize').'.'.$extension);
 elseif ($format == 'thumbnail')
-  list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->get('id').'_'.$cameralife->getPref('thumbsize').'.'.$extension);
+  list($file, $temp, $mtime) = $cameralife->fileStore->GetFile('other', '/'.$photo->get('id').'_'.$cameralife->getPref('thumbsize').'.'.$extension);
 elseif (is_numeric($format)) {
   $valid = preg_split('/[, ]+/',$cameralife->getPref('optionsizes'));
   if (in_array($format, $valid))
-    list($file, $temp, $mtime) = $cameralife->FileStore->GetFile('other', '/'.$photo->get('id').'_'.$format.'.'.$extension);
+    list($file, $temp, $mtime) = $cameralife->fileStore->GetFile('other', '/'.$photo->get('id').'_'.$format.'.'.$extension);
   else
     $cameralife->error('This image size has not been allowed');
 } else

@@ -16,15 +16,15 @@
   require '../../../main.inc';
   $cameralife->baseURL = dirname(dirname(dirname($cameralife->baseURL)));
 
-  $cameralife->Security->authorize('admin_customize', 1); //require
+  $cameralife->security->authorize('admin_customize', 1); //require
 
   $_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 'users';
 
   foreach ($_POST as $key => $val) {
     if ($val == "delete")
-      $cameralife->Database->Delete('users',"id='$key'");
+      $cameralife->database->Delete('users',"id='$key'");
     else
-      $cameralife->Database->Update('users',array('auth'=>$val),"id='$key'");
+      $cameralife->database->Update('users',array('auth'=>$val),"id='$key'");
   }
   $cameralife->savePreferences();
 
@@ -34,30 +34,30 @@
     global $prefnum;
     $prefnum++;
 
-    echo "      <input type=\"hidden\" name=\"module$prefnum\" value=\"".get_class($cameralife->Security)."\" />\n";
+    echo "      <input type=\"hidden\" name=\"module$prefnum\" value=\"".get_class($cameralife->security)."\" />\n";
     echo "      <input type=\"hidden\" name=\"param$prefnum\" value=\"".$param_name."\" />\n";
     echo "      <select name=\"value$prefnum\">\n";
-    if ($cameralife->Security->getPref($param_name) == 0)
+    if ($cameralife->security->getPref($param_name) == 0)
       echo "  <option selected value=\"0\">Anyone</option>\n";
     else
       echo "  <option value=\"0\">Anyone</option>\n";
-    if ($cameralife->Security->getPref($param_name) == 1)
+    if ($cameralife->security->getPref($param_name) == 1)
       echo "  <option selected value=\"1\">Unconfirmed registration</option>\n";
     else
       echo "  <option value=\"1\">Unconfirmed registration</option>\n";
-    if ($cameralife->Security->getPref($param_name) == 2)
+    if ($cameralife->security->getPref($param_name) == 2)
       echo "  <option selected value=\"2\">Confirmed registration</option>\n";
     else
       echo "  <option value=\"2\">Confirmed registration</option>\n";
-    if ($cameralife->Security->getPref($param_name) == 3)
+    if ($cameralife->security->getPref($param_name) == 3)
       echo "  <option selected value=\"3\">Privileged account</option>\n";
     else
       echo "  <option value=\"3\">Priviliged account</option>\n";
-    if ($cameralife->Security->getPref($param_name) == 4)
+    if ($cameralife->security->getPref($param_name) == 4)
       echo "  <option selected value=\"4\">Administrator</option>\n";
     else
       echo "  <option value=\"4\">Administrator</option>\n";
-    if ($cameralife->Security->getPref($param_name) == 5)
+    if ($cameralife->security->getPref($param_name) == 5)
       echo "  <option selected value=\"5\">Owner</option>\n";
     else
       echo "  <option value=\"5\">Owner</option>\n";
@@ -91,7 +91,8 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <script language="javascript">
-      public function changeall() {
+      public function changeall()
+      {
         val = document.getElementById('status').value;
         inputs = document.getElementsByTagName('select');
         for (var i = 0; i < inputs.length; i++) {
@@ -135,10 +136,10 @@ foreach (array('users'=>'Users', 'policies'=>'Policies') as $id=>$name) {
         <th width="10%">Uploads
         <th width="10%">Options
     <?php
-      $result = $cameralife->Database->Select('users','*',NULL, 'ORDER BY auth desc');
+      $result = $cameralife->database->Select('users','*',NULL, 'ORDER BY auth desc');
       while ($curuser = $result->FetchAssoc()) {
-        $count_actions = $cameralife->Database->SelectOne('logs','COUNT(*)',"user_name='".$curuser["username"]."'");
-        $count_photos = $cameralife->Database->SelectOne('photos','COUNT(*)',"username='".$curuser["username"]."'");
+        $count_actions = $cameralife->database->SelectOne('logs','COUNT(*)',"user_name='".$curuser["username"]."'");
+        $count_photos = $cameralife->database->SelectOne('photos','COUNT(*)',"username='".$curuser["username"]."'");
 
         echo "<tr><td>\n";
         echo '<img src="'.$cameralife->iconURL('small-login').'">';

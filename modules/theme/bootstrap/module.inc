@@ -76,7 +76,7 @@
       $this->menu = $menu;
       $openGraph = $view->GetOpenGraph();
 
-      $myfolder = new Folder ('/upload/'.$cameralife->Security->GetName());
+      $myfolder = new Folder ('/upload/'.$cameralife->security->GetName());
       $myfolderURL = $myfolder->getOpenGraph()['og:url'];
       $body = $onload ? "<body onLoad=\"$onload\">" : '<body>';
 ?>
@@ -93,7 +93,6 @@
     <meta name="generator" content="Camera Life version <?= $cameralife->version ?>">
     <meta name="author" content="<?= $cameralife->getPref('owner_email') ?>">
     <?= $extrahead ?>
-
     <!-- Le styles -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
@@ -104,7 +103,6 @@
     <![endif]-->
   </head>
   <?= $body ?>
-  
     <nav class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container">
       <a class="navbar-brand" href="<?= $cameralife->baseURL ?>"><?= $cameralife->getPref('sitename') ?></a>
@@ -114,14 +112,13 @@
           <input type="text" class="form-control" placeholder="Search" name="q" />
         </form>
         <ul class="nav navbar-nav navbar-right">
-        
 <?php
-if ($cameralife->Security->GetName()) {
- $gravitarHTML = htmlentities("http://www.gravatar.com/avatar/".md5($cameralife->Security->GetName())."?s=16&d=identicon");
+if ($cameralife->security->GetName()) {
+ $gravitarHTML = htmlentities("http://www.gravatar.com/avatar/".md5($cameralife->security->GetName())."?s=16&d=identicon");
 
 ?>  
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?= $gravitarHTML ?>" height=16 width=16> <?= $cameralife->Security->GetName() ?> <b class="caret"></b></a>  
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?= $gravitarHTML ?>" height=16 width=16> <?= $cameralife->security->GetName() ?> <b class="caret"></b></a>  
             <ul class="dropdown-menu">
               <li><a href="<?= $myfolderURL ?>">My Uploads</a></li>
               <li><a href="<?= $cameralife->baseURL.'/admin/index.php' ?>">Administer</a></li>
@@ -130,31 +127,21 @@ if ($cameralife->Security->GetName()) {
               <li><a href="<?= $cameralife->baseURL.'/logout.php' ?>">Sign Out</a></li>
             </ul>
           </li>
-<?php
-} else {
-?>
-          <a class="btn btn-default navbar-btn narbar-right" href="<?= $cameralife->Security->LoginURL() ?>">
+<?php } else { ?>
+          <a class="btn btn-default navbar-btn narbar-right" href="<?= $cameralife->security->LoginURL() ?>">
             <i class="icon-user"></i>
             <img alt="facebook" src="http://facebook.com/favicon.ico" height=16 width=16>
             <img alt="google" src="http://google.com/favicon.ico" height=16 width=16>
             <img alt="yahoo" src="http://yahoo.com/favicon.ico" height=16 width=16>
             Login / Free account
           </a>
-<?php
-}
-?>
+<?php } ?>
         </ul>
-<?php
-if (isset($_GET['path'])) {
-?>
+<?php if (isset($_GET['path'])) { ?>
         <a class="btn btn-default navbar-btn navbar-right" href="<?= $cameralife->baseURL ?>/upload.php?path=<?= htmlentities($_GET['path'])?>">
-<?php
-} else {
-?>
+<?php } else { ?>
         <a class="btn btn-default navbar-btn navbar-right" href="<?= $cameralife->baseURL ?>/upload.php">
-<?php
-}
-?>
+<?php } ?>
           <i class="icon-plus"></i>
             Upload
         </a>
@@ -167,9 +154,7 @@ if (isset($_GET['path'])) {
     </nav>  
     
     <div class="container">
-<?php
-      if ($this->menu) {
-?>
+<?php if ($this->menu) { ?>
       <div class="row">
         <div class="col-md-9">
 <?php
@@ -213,12 +198,12 @@ if (isset($_GET['path'])) {
 <!--    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.0/jquery.mobile.min.js"></script> -->
     <script type="text/javascript" src="<?= $cameralife->baseURL.'/modules/theme/'.$cameralife->getPref('theme') ?>/theme.js"></script>
 <?php
-      if ($cameralife->Theme->getPref('analytics')) {
+      if ($cameralife->theme->getPref('analytics')) {
 ?>
 <!--TRACKING CODE-->
 <script type="text/javascript">
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', '<?= $cameralife->Theme->getPref('analytics') ?>']);
+  _gaq.push(['_setAccount', '<?= $cameralife->theme->getPref('analytics') ?>']);
   _gaq.push(['_trackPageview']);
 
   (function() {

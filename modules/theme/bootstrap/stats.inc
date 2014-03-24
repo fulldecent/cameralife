@@ -16,7 +16,7 @@ $popular_albums = $stats->getPopularAlbums();
 $funfacts = $stats->getFunFacts();
 
 //TODO THIS IS NOT ACCURATE
-$cameralife->Theme->Header($cameralife);
+$cameralife->theme->Header($cameralife);
 ?>
       <h1>Site stats</h1>
       <div class="row">
@@ -81,5 +81,5 @@ foreach ($popular_albums as $photo) {
       </div>
 
 <?php
-  $cameralife->Theme->Footer();
+  $cameralife->theme->Footer();
 ?>

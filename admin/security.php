@@ -8,7 +8,7 @@
 $features=array('security');
 require '../main.inc';
 $cameralife->baseURL = dirname($cameralife->baseURL);
-$cameralife->Security->authorize('admin_customize', 1); // Require
+$cameralife->security->authorize('admin_customize', 1); // Require
 require 'admin.inc';
 ?>
 <!DOCTYPE html>
@@ -62,17 +62,17 @@ foreach ($cameralife->getModules($feature) as $module) {
           </div>
         </div>
 <?php
-if ($url = $cameralife->Security->AdministerURL()) {
+if ($url = $cameralife->security->AdministerURL()) {
   echo "<p>You can <a href=\"$url\">access administration settings</a> for this module.</p>";
 }
 ?>
       </form>
-      <h2>Your access (for user <?= $cameralife->Security->GetName() ?>)</h2>
+      <h2>Your access (for user <?= $cameralife->security->GetName() ?>)</h2>
       <table class="table table-striped">
 <?php
   $perms = array("photo_rename", "photo_delete", "photo_modify", "admin_albums", "photo_upload", "admin_file", "admin_theme", "admin_customize");
   foreach ($perms as $perm) {
-    $access = $cameralife->Security->Authorize($perm) ? "Yes" : "No";
+    $access = $cameralife->security->Authorize($perm) ? "Yes" : "No";
     echo "<tr><td>$perm<td>$access\n";
   }
 ?>

@@ -17,7 +17,7 @@ class AuditTrail
    * @param string $value_new new field value
    * @return Receipt of the action performed
    */
-  public function log($record_type, $record_id, $value_field, $value_old, $value_new)
+  public static function log($record_type, $record_id, $value_field, $value_old, $value_new)
   {
     global $user, $_SERVER, $cameralife;
     if ($value_old==$value_new) return;
@@ -25,16 +25,16 @@ class AuditTrail
     $log['record_id'] = $record_id;
     $log['value_field'] = $value_field;
     $log['value_new'] = $value_new;
-    $log['user_name'] = $cameralife->Security->GetName();
+    $log['user_name'] = $cameralife->security->GetName();
     $log['user_ip'] = $_SERVER['REMOTE_ADDR'];
     $log['user_date'] = date('Y-m-d');
-    $id = $cameralife->Database->Insert('logs',$log);
+    $id = $cameralife->database->Insert('logs',$log);
 
     return new Receipt($id);
   }
 
   /**
-   * revert Camera Life to the state before the specified action took effect
+   * Revert Camera Life to the state before the specified action took effect
    *
    * This also removes said action from the logs.
    * @param int $id is the ID of the receipt representing action to revert
@@ -42,20 +42,16 @@ class AuditTrail
   public function undo($id)
   {
     global $cameralife;
-
-    if (is_numeric($id)) {
-      $result = $cameralife->Database->Select('logs', '*', 'id='.$id);
-      $receipt = $result->FetchAssoc();
-    }
-    if (!is_array($receipt))
+    if (!is_numeric($id))
       $cameralife->error('Invalid receipt.');
-
+    $result = $cameralife->database->select('logs', '*', 'id='.$id);
+    $receipt = $result->fetchAssoc();
     $condition = 'record_id='.$receipt['record_id'];
     $condition .= " AND record_type='".$receipt['record_type']."'";
     $condition .= " AND value_field='".$receipt['value_field']."'";
     $condition .= " AND id <= ".$id;
     # Gets the requested AND previous log entry for a record and value field
-    $result = $cameralife->Database->Select('logs', '*', $condition, 'ORDER BY id DESC LIMIT 2');
+    $result = $cameralife->database->Select('logs', '*', $condition, 'ORDER BY id DESC LIMIT 2');
 
     $target = $result->FetchAssoc();
     $prior = $result->FetchAssoc();
@@ -81,7 +77,7 @@ class AuditTrail
         case 'photo_poster_id':
           $album = new Album($record['record_id']);
           $condition = "status=0 and lower(description) like lower('%".$album->Get['term']."%')";
-          $query = $cameralife->Database->Select('photos','id',$condition);
+          $query = $cameralife->database->Select('photos','id',$condition);
           $result = $query->FetchAssoc();
           if ($result)
             $oldvalue = $result['id'];
@@ -94,13 +90,13 @@ class AuditTrail
     }
 
     $mod = array($receipt['value_field']=>$oldvalue);
-    $cameralife->Database->Update($receipt['record_type'].'s', $mod, 'id='.$receipt['record_id']);
+    $cameralife->database->Update($receipt['record_type'].'s', $mod, 'id='.$receipt['record_id']);
 
     $condition = 'record_id='.$receipt['record_id'];
     $condition .= " AND record_type='".$receipt['record_type']."'";
     $condition .= " AND value_field='".$receipt['value_field']."'";
     $condition .= " AND id >= ".$id;
-    $cameralife->Database->Delete('logs', $condition);
+    $cameralife->database->Delete('logs', $condition);
   }
 }
 
@@ -118,7 +114,7 @@ class Receipt
 
     if (!is_numeric($id))
       $cameralife->error("Invalid receipt id", __FILE__, __LINE__);
-    $result = $cameralife->Database->Select('logs', '*', 'id='.$id);
+    $result = $cameralife->database->Select('logs', '*', 'id='.$id);
     $this->myRecord = $result->FetchAssoc();
     if (!is_array($this->myRecord))
       $cameralife->error("Invalid receipt id #$id", __FILE__, __LINE__);
@@ -132,7 +128,7 @@ class Receipt
     $condition = 'record_id='.$this->myRecord['record_id'];
     $condition .= " AND record_type='".$this->myRecord['record_type']."'";
     $condition .= " AND value_field='".$this->myRecord['value_field']."'";
-    $result = $cameralife->Database->Select('logs', '*', $condition, 'ORDER BY id DESC LIMIT 1');
+    $result = $cameralife->database->Select('logs', '*', $condition, 'ORDER BY id DESC LIMIT 1');
 
     $new = $result->FetchAssoc();
 
@@ -175,7 +171,7 @@ class Receipt
     $condition .= " AND record_type='".$this->myRecord['record_type']."'";
     $condition .= " AND record_id='".$this->myRecord['record_id']."'";
     $condition .= " AND id>$checkpoint";
-    $query = $cameralife->Database->Select('logs', 'id', $condition, 'ORDER BY id');
+    $query = $cameralife->database->Select('logs', 'id', $condition, 'ORDER BY id');
     while ($row = $query->FetchAssoc()) {
       $retval[] = new Receipt($row['id']);
     }
@@ -194,7 +190,7 @@ class Receipt
     $condition .= " AND value_field='".$this->myRecord['value_field']."'";
     $condition .= " AND id <= ".$this->myRecord['id'];
     # Gets the requested AND previous log entry for a record and value field
-    $result = $cameralife->Database->Select('logs', '*', $condition, 'ORDER BY id DESC LIMIT 2');
+    $result = $cameralife->database->Select('logs', '*', $condition, 'ORDER BY id DESC LIMIT 2');
 
     $target = $result->FetchAssoc();
     $prior = $result->FetchAssoc();
@@ -215,7 +211,7 @@ class Receipt
         case 'album_poster_id':
           $album = new Album($this->myRecord['record_id']);
           $condition = "status=0 and lower(description) like lower('%".$album->Get['term']."%')";
-          $query = $cameralife->Database->Select('photos','id',$condition);
+          $query = $cameralife->database->Select('photos','id',$condition);
           $result = $query->FetchAssoc();
           if ($result)
             return array('value'=>$result['id'], 'fromReceipt'=>FALSE);

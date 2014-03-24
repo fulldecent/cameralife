@@ -29,9 +29,9 @@ if (isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == '404') 
 
 ## Sometimes we're sure an album page is relevant - redirect there
 if (!$counts['folders'] && $counts['albums'] == 1) {
-  $count_term = $cameralife->Database->SelectOne('albums','COUNT(*)',"term LIKE '".$_GET['q']."'");
+  $count_term = $cameralife->database->SelectOne('albums','COUNT(*)',"term LIKE '".$_GET['q']."'");
   if ($count_term == 1) {
-    $albumid = $cameralife->Database->SelectOne('albums','id',"term LIKE '".$_GET['q']."'");
+    $albumid = $cameralife->database->SelectOne('albums','id',"term LIKE '".$_GET['q']."'");
     header('Location: '.$cameralife->baseURL.'/album.php?id='.$albumid);
     echo 'redirecting... '.$cameralife->baseURL.'/album.php?id='.$albumid;
     exit(0);

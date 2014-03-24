@@ -19,7 +19,7 @@
   _gaq.push(['_setAccount', 'UA-52764-13']);
   _gaq.push(['_trackPageview']);
 
-  (function() {
+  (function () {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
@@ -64,12 +64,12 @@ if (!isset($_POST['sitepasswd'])) {
           </div>
           <button type="submit" class="btn btn-default">Promote account</button>
         </form>
-<?php 
+<?php
 } else {
   $features=array('security', 'filestore', 'theme');
   require '../main.inc';
-  $count = $cameralife->Database->SelectOne('users','count(*)');
-  $pass = $cameralife->Database->SelectOne('users','password','username="admin"');
+  $count = $cameralife->database->SelectOne('users','count(*)');
+  $pass = $cameralife->database->SelectOne('users','password','username="admin"');
   $error = '';
   if ($count == 1) $error = 'You have not set up a user account to promote';
   if ($count > 2) $error = 'This tool only works for the first user on the system';
@@ -81,7 +81,7 @@ if (!isset($_POST['sitepasswd'])) {
 <?php
   } else {
     echo "<p>Granding admin...</p>";
-    $cameralife->Database->Update('users', array('auth'=>5));
+    $cameralife->database->Update('users', array('auth'=>5));
     echo "<p class='text-success'>done</p>";
 ?>
 <?php
@@ -90,6 +90,6 @@ if (!isset($_POST['sitepasswd'])) {
 ?>
 
       </div>
-    </div>    
+    </div>
   </body>
 </html>

@@ -12,14 +12,14 @@ $albums = $topic->getAlbums();
 $counts = $topic->getCounts();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
-$cameralife->Theme->Header($topic);
+$cameralife->theme->Header($topic);
 ?>
 <form name="form1" method=post action="album_controller.php">
 <?php
 
   if (isset($_GET['edit']))
   {
-    $cameralife->Security->authorize('admin_albums',1);
+    $cameralife->security->authorize('admin_albums',1);
 ?>
   <div class="administrative" align=center>
     <input type="hidden" name="param4" value="<?= htmlentities($_GET['term']) ?>">
@@ -59,8 +59,8 @@ $cameralife->Theme->Header($topic);
     exit();
   }
 
-  $cameralife->Theme->grid($albums);
-  $cameralife->Theme->PageSelector($start,$counts['photos'],12,"name=".urlencode($_GET["name"]));
+  $cameralife->theme->grid($albums);
+  $cameralife->theme->PageSelector($start,$counts['photos'],12,"name=".urlencode($_GET["name"]));
 ?>
 </form>
 
@@ -81,7 +81,7 @@ $cameralife->Theme->Header($topic);
 </p>
 </form>
 <?php
-  $cameralife->Theme->Footer();
+  $cameralife->theme->Footer();
 ?>
 
 

@@ -29,9 +29,9 @@ class Album extends Search
       $this->record['name'] = $original['name'];
       $this->record['term'] = $original['term'];
       $this->record['poster_id'] = $result[0]->Get('id');
-      $this->record['id'] = $cameralife->Database->Insert('albums', $this->record);
+      $this->record['id'] = $cameralife->database->Insert('albums', $this->record);
     } elseif (is_numeric($original)) {  # This is an ID
-      $result = $cameralife->Database->Select('albums', '*', "id=$original");
+      $result = $cameralife->database->Select('albums', '*', "id=$original");
       $this->record = $result->FetchAssoc();
       if (!$this->record) {
         header("HTTP/1.0 404 Not Found");
@@ -51,7 +51,7 @@ class Album extends Search
     if ($key != 'hits')
       $receipt = AuditTrail::log('album',$this->record['id'],$key,$this->record[$key],$value);
     $this->record[$key] = $value;
-    $cameralife->Database->Update('albums', array($key=>$value), 'id='.$this->record['id']);
+    $cameralife->database->Update('albums', array($key=>$value), 'id='.$this->record['id']);
 
     return $receipt;
   }
@@ -80,7 +80,7 @@ class Album extends Search
     if (!is_numeric($poster))
       $cameralife->error("Failed to set poster for album", __FILE__, __LINE__);
 
-    $cameralife->Database->SelectOne('photos','COUNT(*)','status=1 AND id='.$_GET['poster_id'])
+    $cameralife->database->SelectOne('photos','COUNT(*)','status=1 AND id='.$_GET['poster_id'])
       or $cameralife->error('The selected poster photo does not exist', __FILE__, __LINE__);
 
     $this->set('poster_id', $_GET['poster_id']);
@@ -95,8 +95,8 @@ class Album extends Search
   {
     global $cameralife;
 
-    $cameralife->Database->Delete('albums','id='.$this->record['id']);
-    $cameralife->Database->Delete('logs',"record_type='album' AND record_id=".$this->record['id']);
+    $cameralife->database->Delete('albums','id='.$this->record['id']);
+    $cameralife->database->Delete('logs',"record_type='album' AND record_id=".$this->record['id']);
   }
   
   public function getOpenGraph()
@@ -111,8 +111,8 @@ class Album extends Search
     $photo = $this->getPoster();
     $retval['og:image'] = $photo->getMedia('thumbnail');
     $retval['og:image:type'] = 'image/jpeg';
-    //$retval['og:image:width'] = 
-    //$retval['og:image:height'] = 
-    return $retval;    
+    //$retval['og:image:width'] =
+    //$retval['og:image:height'] =
+    return $retval;
   }
 }

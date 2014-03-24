@@ -9,4 +9,4 @@
   $features=array('theme');
   require 'main.inc';
 
-  $cameralife->Theme->ShowPage('login');
+  $cameralife->theme->ShowPage('login');

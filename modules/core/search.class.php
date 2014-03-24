@@ -93,9 +93,9 @@ class Search extends View
     if (!isset($this->myCounts)) {
       $this->myCounts = array();
       $selection = "COUNT(DISTINCT id)";
-      $this->myCounts['photos'] = $cameralife->Database->SelectOne('photos', 'COUNT(*)', $this->mySearchPhotoCondition.' AND status=0');
-      $this->myCounts['albums'] = $cameralife->Database->SelectOne('albums', 'COUNT(*)', $this->mySearchAlbumCondition);
-      $this->myCounts['folders'] = $cameralife->Database->SelectOne('photos', 'COUNT(DISTINCT path)', $this->mySearchFolderCondition.' AND status=0');
+      $this->myCounts['photos'] = $cameralife->database->SelectOne('photos', 'COUNT(*)', $this->mySearchPhotoCondition.' AND status=0');
+      $this->myCounts['albums'] = $cameralife->database->SelectOne('albums', 'COUNT(*)', $this->mySearchAlbumCondition);
+      $this->myCounts['folders'] = $cameralife->database->SelectOne('photos', 'COUNT(DISTINCT path)', $this->mySearchFolderCondition.' AND status=0');
     }
 
     return $this->myCounts;
@@ -124,10 +124,11 @@ class Search extends View
     }
 
     $condition = $this->mySearchPhotoCondition.' AND status=0';
-    $query = $cameralife->Database->Select('photos' , 'id', $condition, 'ORDER BY '.$sort.' '.$this->myLimit, 'LEFT JOIN exif ON photos.id=exif.photoid and exif.tag="Date taken"');
+    $query = $cameralife->database->Select('photos' , 'id', $condition, 'ORDER BY '.$sort.' '.$this->myLimit, 'LEFT JOIN exif ON photos.id=exif.photoid and exif.tag="Date taken"');
     $photos = array();
     while ($row = $query->FetchAssoc())
       $photos[] = new Photo($row['id']);
+
     return $photos;
   }
 
@@ -147,7 +148,7 @@ class Search extends View
     }
 
     $condition = $this->mySearchAlbumCondition;
-    $query = $cameralife->Database->Select('albums', 'id', $condition, 'ORDER BY '.$sort.' '.$this->myLimit);
+    $query = $cameralife->database->Select('albums', 'id', $condition, 'ORDER BY '.$sort.' '.$this->myLimit);
 
     $albums = array();
     while ($row = $query->FetchAssoc())
@@ -172,7 +173,7 @@ class Search extends View
 
     // Another way to do it "DISTINCT SUBSTRING_INDEX(SUBSTR(path,".(strlen($this->path)+1)."),'/',1) AS basename";
     $condition = $this->mySearchFolderCondition.' AND status=0';
-    $query = $cameralife->Database->Select('photos', 'path, MAX(mtime) as date', $condition, 'GROUP BY path ORDER BY '.$sort.' '.$this->myLimit);
+    $query = $cameralife->database->Select('photos', 'path, MAX(mtime) as date', $condition, 'GROUP BY path ORDER BY '.$sort.' '.$this->myLimit);
     $folders = array();
     while ($row = $query->FetchAssoc())
       $folders[] = new Folder($row['path'], FALSE, $row['date']);

@@ -100,7 +100,7 @@ class LocalFileStore extends FileStore
    * @param $secure - if secure, ensure this file will not be publicly accessible
    * @return none
    */
-  function setPrivate($bucket, $path, $secure)
+  function setPrivacy($bucket, $path, $secure)
   {
 die('NOT YET');
     return;

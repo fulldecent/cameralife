@@ -8,7 +8,7 @@
 $features=array('security', 'filestore', 'theme');
 require '../main.inc';
 $cameralife->baseURL = dirname($cameralife->baseURL);
-$cameralife->Security->authorize('admin_customize', 1); // Require
+$cameralife->security->authorize('admin_customize', 1); // Require
 require 'admin.inc';
 ?>
 <!DOCTYPE html>
@@ -72,7 +72,7 @@ foreach ($cameralife->getModules($feature) as $module) {
         </div>
       </form>
 
-      <?php renderPrefsAsHTML($cameralife->FileStore); ?>
+      <?php renderPrefsAsHTML($cameralife->fileStore); ?>
     </div>
   </body>
 </html>

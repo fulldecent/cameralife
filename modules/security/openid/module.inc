@@ -30,7 +30,7 @@
 
       if (isset($_COOKIE[$cookiename])) {
         $authcookie = $_COOKIE[$cookiename];
-        $result = $cameralife->Database->Select('users','*',"cookie='$authcookie'");
+        $result = $cameralife->database->Select('users','*',"cookie='$authcookie'");
         $this->curuser = $result->FetchAssoc()
           or $this->curuser = array('auth'=>'0','username'=>'');
       } else {
@@ -50,17 +50,17 @@
       setcookie($this->getPref('auth_cookie'),$cookie,time()+30000000,'/');
       $_COOKIE[$this->getPref('auth_cookie')] = $cookie;
 
-      $result = $cameralife->Database->Select('users','*',"password='$id'");
+      $result = $cameralife->database->Select('users','*',"password='$id'");
       if ($user = $result->FetchAssoc()) // User exists already
       {
         $values['last_online'] = date('Y-m-d');
         $values['last_ip'] =  $_SERVER["REMOTE_ADDR"];
         $values['cookie'] = $cookie;
-        $cameralife->Database->Update('users',$values,"password='$id'");
+        $cameralife->database->Update('users',$values,"password='$id'");
         return true;
       } else {
 
-        $result = $cameralife->Database->Select('users','*',"username='$email'");
+        $result = $cameralife->database->Select('users','*',"username='$email'");
 
         if ($user = $result->FetchAssoc())
           die ('Email address already in use');
@@ -75,7 +75,7 @@
         $values['last_online'] = date('Y-m-d');
         $values['last_ip'] = $HTTP_SERVER_VARS["REMOTE_ADDR"];
         $values['email'] = $email;
-        $cameralife->Database->Insert('users',$values);
+        $cameralife->database->Insert('users',$values);
         setcookie($this->getPref('auth_cookie'),$cookie,time()+30000000,'/');
         return true;
       }
@@ -97,7 +97,7 @@
 
       $username = strtolower($username);
       $username = eregi_replace('[^0-9a-z_]','',$username);
-      $result = $cameralife->Database->Select('users','*',"username='$username'");
+      $result = $cameralife->database->Select('users','*',"username='$username'");
       $password = crypt($password,$username);
       $cookie = rand(0,999999);
 
@@ -114,7 +114,7 @@
       $values['last_online'] = date('Y-m-d');
       $values['last_ip'] = $HTTP_SERVER_VARS["REMOTE_ADDR"];
       $values['email'] = $email;
-      $cameralife->Database->Insert('users',$values);
+      $cameralife->database->Insert('users',$values);
       setcookie($this->getPref('auth_cookie'),$cookie,time()+30000000,'/');
       return true;
     }

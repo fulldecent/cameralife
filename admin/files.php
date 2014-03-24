@@ -10,7 +10,7 @@ $features=array('security', 'filestore');
 require '../main.inc';
 chdir ($cameralife->baseDir);
 $cameralife->baseURL = dirname($cameralife->baseURL);
-$cameralife->Security->authorize('admin_customize', 1); // Require
+$cameralife->security->authorize('admin_customize', 1); // Require
 $_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 'flagged';
 @ini_set('max_execution_time',9000); // for rescan
 
@@ -104,7 +104,7 @@ if ($_GET['page'] !== 'update') { // Show stuff
     echo '</div></div>';
     if (++$i%6==0) echo '</div><div class="thumbnails">';
   }
-  //$total = $cameralife->Database->SelectOne('photos','COUNT(*)',"status=$target_status");
+  //$total = $cameralife->database->SelectOne('photos','COUNT(*)',"status=$target_status");
   echo '</div>';
 ?>
 <p>

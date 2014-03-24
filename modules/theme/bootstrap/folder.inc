@@ -33,7 +33,7 @@ if ($folder->path())
                   'href'=>'search.php&#63;q='.$folder->basename(),
                   'image'=>'small-search');
 
-if ($cameralife->Security->Authorize('admin_file'))
+if ($cameralife->security->Authorize('admin_file'))
   $menu[] = array('name'=>'Upload photo here',
                   'href'=>$cameralife->baseURL.'/upload.php&#63;path='.$folder->path(),
                   'image'=>'small-main');
@@ -49,7 +49,7 @@ if ($folder->getNext()) {
   $headers = "<link rel=\"next\" href=\"".$folder->getNext()."\" />\n";
 }
 
-$cameralife->Theme->Header($folder, NULL, $headers);
+$cameralife->theme->Header($folder, NULL, $headers);
 ?>
 
 <ul class="breadcrumb">
@@ -70,19 +70,19 @@ $cameralife->Theme->Header($folder, NULL, $headers);
     $sections[] = array('name'=>$counts['folders']." folders", 'page_name'=>'folders');
 
   if (count($sections) >= 2) {
-    $cameralife->Theme->MultiSection($sections, $openGraph['og:url']);
+    $cameralife->theme->MultiSection($sections, $openGraph['og:url']);
   }
   elseif (count($sections == 1))
     echo "This folder contains ".strtolower($sections[0]['name']);
   else
     $cameralife->error('This folder does not exist.');
 
-  $cameralife->Theme->grid($results);
+  $cameralife->theme->grid($results);
 
   if ($_GET['page'] == "photos")
-    $cameralife->Theme->PageSelector($start,$counts['photos'],25,$openGraph['og:url']);
+    $cameralife->theme->PageSelector($start,$counts['photos'],25,$openGraph['og:url']);
   else // ($_GET['page'] == "folders")
-    $cameralife->Theme->PageSelector($start,$counts['folders'],25,$openGraph['og:url']);
+    $cameralife->theme->PageSelector($start,$counts['folders'],25,$openGraph['og:url']);
 
 ?>
 
@@ -105,5 +105,5 @@ $cameralife->Theme->Header($folder, NULL, $headers);
 </form>
 
 <?php
-  $cameralife->Theme->Footer();
+  $cameralife->theme->Footer();
 ?>
