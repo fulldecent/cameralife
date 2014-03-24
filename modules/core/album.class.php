@@ -98,7 +98,7 @@ class Album extends Search
     $cameralife->database->Delete('albums','id='.$this->record['id']);
     $cameralife->database->Delete('logs',"record_type='album' AND record_id=".$this->record['id']);
   }
-  
+
   public function getOpenGraph()
   {
     global $cameralife;

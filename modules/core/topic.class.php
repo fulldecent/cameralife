@@ -14,7 +14,7 @@ class Topic extends Search
   public function __construct($name)
   {
     global $cameralife;
-    parent::__construct();  
+    parent::__construct();
     $this->name = $name;
 
     $this->mySearchAlbumCondition = "topic = '".mysql_real_escape_string($this->name)."'";

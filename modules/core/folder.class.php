@@ -31,7 +31,7 @@ class Folder extends Search
   {
     global $cameralife;
     parent::__construct();
-    
+
     $this->path = $path;
     if (!strlen($path)) $this->path='/';
     $this->date = $date;
@@ -50,7 +50,7 @@ class Folder extends Search
     global $cameralife;
     if ($this->myStart > 0) {
       if ($cameralife->getPref('rewrite') == 'yes')
-        $href = $cameralife->baseURL.'/folders'.str_replace(" ","%20",$this->path); 
+        $href = $cameralife->baseURL.'/folders'.str_replace(" ","%20",$this->path);
       else
         $href = $cameralife->baseURL.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
       $href = AddParam($href, 'start', $this->myStart - $this->myLimitCount);
@@ -412,7 +412,7 @@ class Folder extends Search
       $retval['og:title'] = '(All photos)';
     $retval['og:type'] = 'website';
     //TODO see https://stackoverflow.com/questions/22571355/the-correct-way-to-encode-url-path-parts
-    $retval['og:url'] = $cameralife->baseURL.'/folders'.str_replace(" ","%20",$this->path); 
+    $retval['og:url'] = $cameralife->baseURL.'/folders'.str_replace(" ","%20",$this->path);
     if ($cameralife->getPref('rewrite') == 'no')
       $retval['og:url'] = $cameralife->baseURL.'/folder.php&#63;path='.str_replace(" ","%20",$this->path);
     $retval['og:image'] = $cameralife->iconURL('folder');

@@ -13,7 +13,7 @@ class Database
   public $myPrefix;
   public $myDBH;
 
-  function __construct()
+  public function __construct()
   {
 //TODO don't use global here
     global $cameralife, $db_host, $db_user, $db_pass, $db_name, $db_prefix;
@@ -21,9 +21,7 @@ class Database
     try {
       $this->myDBH = new PDO("mysql:host={$db_host};dbname={$db_name}", $db_user, $db_pass);
       $this->myDBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }
-    catch(Exception $e)
-    {
+    } catch (Exception $e) {
       $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
   }
@@ -31,7 +29,7 @@ class Database
   /**
    * SELECT $selection FROM $table [WHERE $condition] [$extra]
    */
-  function select ($table, $selection='*', $condition='1', $extra='', $joins='', $bind=array())
+  public function select ($table, $selection='*', $condition='1', $extra='', $joins='', $bind=array())
   {
     global $cameralife;
     if (!$condition) $condition = '1';
@@ -48,9 +46,7 @@ class Database
           $stmt->bindValue(':'.$name, $val);
       }
       $stmt->execute();
-    }
-    catch(Exception $e)
-    {
+    } catch (Exception $e) {
       $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
 
@@ -60,7 +56,7 @@ class Database
   /**
   * SELECT $selection FROM $table [WHERE $condition] [$extra]
   */
-  function selectOne ($table, $selection, $condition='1', $extra='', $joins='', $bind=array())
+  public function selectOne ($table, $selection, $condition='1', $extra='', $joins='', $bind=array())
   {
     global $cameralife;
     if (!$condition) $condition = '1';
@@ -79,16 +75,14 @@ class Database
       }
       $stmt->execute();
       $result = $stmt->fetch(PDO::FETCH_NUM);
-    }
-    catch(Exception $e)
-    {
+    } catch (Exception $e) {
       $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
 
     return $result[0];
   }
-  
-  function update ($table, $values, $condition='1', $extra='')
+
+  public function update($table, $values, $condition='1', $extra='')
   {
     global $cameralife;
     $setstring = '';
@@ -102,16 +96,14 @@ class Database
       foreach ($values as $val)
         $stmt->bindValue($i++, $val);
       $stmt->execute();
-    }
-    catch(Exception $e)
-    {
+    } catch (Exception $e) {
       $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
 
     return $stmt->rowCount();
   }
 
-  function insert ($table, $values, $extra='')
+  public function insert($table, $values, $extra='')
   {
     global $cameralife;
     $setstring = '';
@@ -125,16 +117,14 @@ class Database
       foreach ($values as $val)
         $stmt->bindValue($i++, $val);
       $stmt->execute();
-    }
-    catch(Exception $e)
-    {
+    } catch (Exception $e) {
       $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
 
     return $this->myDBH->lastInsertId();
   }
 
-  function delete ($table, $condition='1', $extra='', $bind=array())
+  public function delete ($table, $condition='1', $extra='', $bind=array())
   {
     global $cameralife;
     $sql = "DELETE FROM ".$this->myPrefix."$table WHERE $condition $extra";
@@ -145,9 +135,7 @@ class Database
         foreach ($bind as $name=>$val)
           $stmt->bindValue(':'.$name, $val);
       $stmt->execute();
-    }
-    catch(Exception $e)
-    {
+    } catch (Exception $e) {
       $cameralife->error('Database error: '.htmlentities($e->getMessage()));
     }
 
@@ -167,7 +155,7 @@ class PDOIterator
     $this->myResult = $mysql_result;
   }
 
-  function fetchAssoc ()
+  public function fetchAssoc()
   {
     return $this->myResult->fetch(PDO::FETCH_ASSOC);
   }

@@ -13,7 +13,7 @@ class View
 
   /**
    * getOpenGraph function.
-   * 
+   *
    * @access public
    * @return array
    *   og:title REQUIRED
@@ -50,7 +50,7 @@ class View
    * @return void
    */
   public function getNext() {}
-       
+
   /**
    * showPage function.
    * Render this View using the currently installed theme

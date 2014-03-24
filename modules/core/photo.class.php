@@ -268,8 +268,7 @@ class Photo extends View
         $url = $cameralife->fileStore->GetURL('other', '/'.$this->get('id').'_mod.'.$this->extension);
       else
         $url = $cameralife->fileStore->getURL('photos', '/'.$this->get('path').$this->get('filename'));
-    }
-    elseif ($format == 'scaled')
+    } elseif ($format == 'scaled')
       $url = $cameralife->fileStore->getURL('other', '/'.$this->get('id').'_'.$cameralife->getPref('scaledsize').'.'.$this->extension);
     elseif ($format == 'thumbnail')
       $url = $cameralife->fileStore->GetURL('other', '/'.$this->get('id').'_'.$cameralife->getPref('thumbsize').'.'.$this->extension);
@@ -279,10 +278,9 @@ class Photo extends View
         $url = $cameralife->fileStore->GetURL('other', '/'.$this->get('id').'_'.$format.'.'.$this->extension);
       else
         $cameralife->error('This image size has not been allowed');
-    } 
-    else
+    } else
       $cameralife->error('Bad format parameter');
-    
+
     if ($url)
       return $url;
 
@@ -413,7 +411,7 @@ class Photo extends View
 
   /**
    * getRelated function
-   * 
+   *
    * @access public
    * @return array - set of views that contain this photo
    */
@@ -516,6 +514,7 @@ class Photo extends View
   {
     if (!count($this->contextPhotos))
       $this->getContext();
+
     return $this->contextPrev;
   }
 
@@ -524,6 +523,7 @@ class Photo extends View
   {
     if (!count($this->contextPhotos))
       $this->getContext();
+
     return $this->contextNext;
   }
 
