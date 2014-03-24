@@ -162,22 +162,22 @@
     * This function must at least support the actions named in the README file, of the directory of the file you are currently reading at this
     * time.
     */
-    function authorize ($auth_name, $required=false)
+    function authorize ($authName, $required=false)
     {
       global $cameralife;
 
-      $auth_name = "auth_$auth_name";
+      $authName = "auth_$authName";
       if (!isset ($this->curuser))
         $this->GetCurUser();
 
-      if (NULL == ($this->getPref($auth_name)))
-        $cameralife->error("The privilege $auth_name does not exist.", __FILE__, __LINE__);
+      if (NULL == ($this->getPref($authName)))
+        $cameralife->error("The privilege $authName does not exist.", __FILE__, __LINE__);
 
-      if ($this->curuser['auth'] < $this->getPref($auth_name) && $required)
+      if ($this->curuser['auth'] < $this->getPref($authName) && $required)
       {
         $error = "<span style='font-size:x-large'>You are not authorized to view this page</span>\n";
-        $error.= "<p>To view this page, you must have the <strong>$auth_name</strong> privilege.<br>\n";
-        $error.="This is given to all users of authorization level at least <strong>".$this->getPref($auth_name)."</strong>.</p>\n";
+        $error.= "<p>To view this page, you must have the <strong>$authName</strong> privilege.<br>\n";
+        $error.="This is given to all users of authorization level at least <strong>".$this->getPref($authName)."</strong>.</p>\n";
         if ($this->curuser['username'])
         {
           $error.= "<p>You are logged in as <strong>".$this->curuser['username']."</strong> with authorization level <strong>".$this->curuser['auth']."</strong>.</p>\n";
@@ -192,7 +192,7 @@
         $cameralife->error($error);
       }
 
-      return ($this->curuser['auth'] >= $this->getPref($auth_name));
+      return ($this->curuser['auth'] >= $this->getPref($authName));
     }
   }
 

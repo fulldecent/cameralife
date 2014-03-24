@@ -156,7 +156,7 @@ class Folder extends Search
   }
 
   /**
-   * Updates the DB to match actual contents of photo bucket from filestore.
+   * Updates the DB to match actual contents of photo bucket from fileStore.
    * Returns an array of errors or warning.
    * Tries very hard to avoid creating a new record and deleting an old if in fact the
    * photo was simply moved.
@@ -167,7 +167,7 @@ class Folder extends Search
 
     $retval = array();
     $filesInStoreNotYetMatchedToDB = $cameralife->fileStore->ListFiles('photo');
-    if (!count($filesInStoreNotYetMatchedToDB)) return array('Nothing was found in the filestore.');
+    if (!count($filesInStoreNotYetMatchedToDB)) return array('Nothing was found in the fileStore.');
     $result = $cameralife->database->Select('photos','id,filename,path,fsize','','ORDER BY path,filename');
 
     // Verify each photo in the DB
@@ -180,8 +180,8 @@ class Folder extends Search
       // Found in correct location
       if (isset($filesInStoreNotYetMatchedToDB[$photopath])) {
         # Bonus code, if this is local, we can do more verification
-        if ($cameralife->getPref('filestore')=='local' && $photo['fsize']) {
-          $photofile = $cameralife->fileStore->PhotoDir."/$photopath";
+        if ($cameralife->getPref('fileStore')=='local' && $photo['fsize']) {
+          $photofile = $cameralife->fileStore->photoDir."/$photopath";
           $actualsize = filesize($photofile);
           // Found, but changed
           if ($actualsize != $photo['fsize']) {
@@ -319,7 +319,7 @@ class Folder extends Search
       $condition = "filename LIKE '".mysql_real_escape_string($newbase)."'";
       $result = $cameralife->database->Select('photos','id, filename, path',$condition);
 
-      // Is anything in the filestore too similar (given available information) to let this photo in?
+      // Is anything in the fileStore too similar (given available information) to let this photo in?
       if ($photo = $result->FetchAssoc()) {
         // With the case-insensitive LIKE above, this will handle files renamed only by case
         if (strcasecmp($photo['path'].$photo['filename'], $new_file) == 0) {
@@ -331,9 +331,9 @@ class Folder extends Search
 
         # Bonus code
         $same = FALSE;
-        if ($cameralife->getPref('filestore')=='local') {
-          $a = file_get_contents($cameralife->fileStore->PhotoDir . $photoFullpath);
-          $b = file_get_contents($cameralife->fileStore->PhotoDir . $new_file);
+        if ($cameralife->getPref('fileStore')=='local') {
+          $a = file_get_contents($cameralife->fileStore->photoDir . $photoFullpath);
+          $b = file_get_contents($cameralife->fileStore->photoDir . $new_file);
           if ($a == $b)
             $same = TRUE;
         }

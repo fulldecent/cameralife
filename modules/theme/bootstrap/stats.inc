@@ -7,11 +7,11 @@
  */
 
 # $cameralife and $album are set by showPage()
-$cameralife->getFeature('filestore');
+$cameralife->getFeature('fileStore');
 
 $stats = new Stats;
 $counts = $stats->getCounts();
-$popular_photos = $stats->getPopularPhotos();
+$popularPhotos = $stats->getPopularPhotos();
 $popular_albums = $stats->getPopularAlbums();
 $funfacts = $stats->getFunFacts();
 
@@ -28,8 +28,8 @@ $cameralife->theme->Header($cameralife);
             <div class="panel-body">
               <table class="table table-condensed">
 <?php
-foreach ($popular_photos as $photo) {  
-  $percent = $photo->Get('hits') * 100 / $popular_photos[0]->Get('hits');
+foreach ($popularPhotos as $photo) {  
+  $percent = $photo->Get('hits') * 100 / $popularPhotos[0]->Get('hits');
   echo "<tr><td>";
   echo "<div style=\"width:50px; clear:left\" class=\"progress\"><div class=\"progress-bar progress-info\" style=\"width: $percent%\"></div></div>";
   echo "<td>".number_format($photo->Get('hits'));
@@ -49,7 +49,7 @@ foreach ($popular_photos as $photo) {
               <table class="table table-condensed">
 <?php
 foreach ($popular_albums as $photo) {  
-  $percent = $photo->Get('hits') * 100 / $popular_photos[0]->Get('hits');
+  $percent = $photo->Get('hits') * 100 / $popularPhotos[0]->Get('hits');
   echo "<tr><td>";
   echo "<div style=\"width:50px; clear:left\" class=\"progress\"><div class=\"progress-bar progress-bar-success\" style=\"width: $percent%\"></div></div>";
   echo "<td>".number_format($photo->Get('hits'));

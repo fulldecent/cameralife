@@ -1,6 +1,6 @@
 <?php
 /**
- * A filestore can store and retrieve files, it also makes certain
+ * A fileStore can store and retrieve files, it also makes certain
  * files accessible for download via a URL
  * 
  * Generally, you will update the photo object and then call the functions.
@@ -44,7 +44,7 @@ class FileStore extends CameraLifeModule
   function getFile($bucket, $path) {}
 
   /**
-   * Save a file to the filestore
+   * Save a file to the fileStore
    *
    * @param $bucket - one of ('photo', 'other')
    * @param $path - the location of the stored file, starts with '/'
@@ -76,7 +76,7 @@ class FileStore extends CameraLifeModule
   function eraseFile($bucket, $path) {}
 
   /**
-   * Returns a list of all files in the filestore
+   * Returns a list of all files in the fileStore
    *
    * @param $bucket - one of ('photo', 'other')
    * @param $path - the location of the stored file, starts with '/'

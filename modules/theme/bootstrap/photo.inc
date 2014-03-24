@@ -10,8 +10,8 @@
 # Display a photo, edit a photo, link to relevant places
 
 $cameralife->getFeature('security');
-$cameralife->getFeature('filestore');
-$cameralife->getFeature('imageprocessing');
+$cameralife->getFeature('fileStore');
+$cameralife->getFeature('imageProcessing');
 $openGraph = $photo->getOpenGraph();
 
 if (isset($_GET['referer']))

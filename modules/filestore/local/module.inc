@@ -18,13 +18,11 @@ class LocalFileStore extends FileStore
 
     $this->preferences[] = array('name'=>'photo_dir', 'desc'=>'Main photo directory', 'type'=>'directory', 'default'=>'images/photos');
     $this->preferences[] = array('name'=>'cache_dir', 'desc'=>'Data directory', 'type'=>'directoryrw', 'default'=>'images/cache');
-    $this->preferences[] = array('name'=>'deleted_dir', 'desc'=>'Deleted photos (...where they go when you "erase" them)', 'type'=>'directoryrw', 'default'=>'images/deleted');
 
     $prevdir = getcwd();
     chdir($cameralife->baseDir);
-    $this->PhotoDir = rtrim(realpath($this->getPref('photo_dir')), '/');
-    $this->CacheDir = rtrim(realpath($this->getPref('cache_dir')), '/');
-    $this->DeletedDir = rtrim(realpath($this->getPref('deleted_dir')), '/');
+    $this->photoDir = rtrim(realpath($this->getPref('photo_dir')), '/');
+    $this->cacheDir = rtrim(realpath($this->getPref('cache_dir')), '/');
     chdir($prevdir);
   } 
 
@@ -51,11 +49,9 @@ class LocalFileStore extends FileStore
     global $cameralife;
     $fullpath = '';
     if ($bucket == 'photo')
-      $fullpath = $this->PhotoDir.$path;
+      $fullpath = $this->photoDir.$path;
     else if ($bucket == 'other')
-      $fullpath = $this->CacheDir.$path;
-    else if ($bucket == 'deleted')
-      $fullpath = $this->DeletedDir.$path;
+      $fullpath = $this->cacheDir.$path;
     else
       $cameralife->error("The FileStore bucket <b>$bucket</b> is invalid");
 
@@ -66,7 +62,7 @@ class LocalFileStore extends FileStore
   }
 
   /**
-   * Save a file to the filestore
+   * Save a file to the fileStore
    *
    * @param $bucket - one of ('photo', 'other')
    * @param $path - the location of the stored file
@@ -79,11 +75,9 @@ class LocalFileStore extends FileStore
     global $cameralife;
     $fullpath = '';
     if ($bucket == 'photo')
-      $fullpath = $this->PhotoDir.$path;
+      $fullpath = $this->photoDir.$path;
     else if ($bucket == 'other')
-      $fullpath = $this->CacheDir.$path;
-    else if ($bucket == 'deleted')
-      $fullpath = $this->DeletedDir.$path;
+      $fullpath = $this->cacheDir.$path;
     else
       $cameralife->error("The FileStore bucket <b>$bucket</b> is invalid");
     
@@ -119,18 +113,16 @@ die('NOT YET');
     global $cameralife;
     $fullpath = '';
     if ($bucket == 'photo')
-      $fullpath = $this->PhotoDir.$path;
+      $fullpath = $this->photoDir.$path;
     else if ($bucket == 'other')
-      $fullpath = $this->CacheDir.$path;
-    else if ($bucket == 'deleted')
-      $fullpath = $this->DeletedDir.$path;
+      $fullpath = $this->cacheDir.$path;
     else
       $cameralife->error("The FileStore bucket <b>$bucket</b> is invalid");
     unlink($fullpath);
   }
 
   /**
-   * Returns a list of all files in the filestore
+   * Returns a list of all files in the fileStore
    *
    * @param $bucket - one of ('photo', 'other')
    * @param $path - the location of the stored file, starts with '/'
@@ -142,11 +134,9 @@ die('NOT YET');
     global $cameralife;
     $fullpath = '';
     if ($bucket == 'photo')
-      $fullpath = $this->PhotoDir.$path;
+      $fullpath = $this->photoDir.$path;
     else if ($bucket == 'other')
-      $fullpath = $this->CacheDir.$path;
-    else if ($bucket == 'deleted')
-      $fullpath = $this->DeletedDir.$path;
+      $fullpath = $this->cacheDir.$path;
     else
       $cameralife->error("The FileStore bucket <b>$bucket</b> is invalid");
 

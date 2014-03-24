@@ -12,7 +12,7 @@
   */
 
 $cameralife->getFeature('security');
-$cameralife->getFeature('filestore');
+$cameralife->getFeature('fileStore');
 $results = $album->getPhotos();
 $counts = $album->getCounts();
 $openGraph = $album->getOpenGraph();

@@ -69,11 +69,11 @@
           <ul>
             <li>Place them in the folder <code>images/photos</code>
             <li>Make your existing folder writable and set your photo directory in the
-                <a href="../admin/filestore.php" target="_blank">File Storage setup</a>
+                <a href="../admin/fileStore.php" target="_blank">File Storage setup</a>
             <li>Use the <a href="../upload.php" target="_blank">Upload Page</a></li>
             <li>Use <a href="https://itunes.apple.com/us/app/ftpmanager-free/id525959186?mt=8" target="_blank">your iPhone</a>, or other device to upload directly to your site</li>
 <!--            <li>Use rsync to photos from your desktop to your server</li> -->
-            <li>Change your <a href="../admin/filestore.php" target="_blank">File Storage setup</a> to use Amazon S3, or Flickr, or remote FTP storage (advanced)</li>
+            <li>Change your <a href="../admin/fileStore.php" target="_blank">File Storage setup</a> to use Amazon S3, or Flickr, or remote FTP storage (advanced)</li>
           </ul>
         </div>
         <div class="col-sm-4">

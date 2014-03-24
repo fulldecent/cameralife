@@ -79,50 +79,50 @@ class GDImageProcessingImage extends ImageProcessingImage
     */
     global $cameralife;
 
-    $base_image = $this->original_image;
-    $base_size = $this->size;
+    $baseImage = $this->original_image;
+    $baseSize = $this->size;
 
     if (count($this->scaled_images))
     foreach ($this->scaled_images as $size => $image)
     {
-      if ($size < $base_size && $size > $newSize)
+      if ($size < $baseSize && $size > $newSize)
       {
-        $base_image = $image;
-        $base_size = $size;
+        $baseImage = $image;
+        $baseSize = $size;
       }
     }
-    $base_width = $this->width * $base_size / $this->size;
-    $base_height = $this->height * $base_size / $this->size;
+    $baseWidth = $this->width * $baseSize / $this->size;
+    $baseHeight = $this->height * $baseSize / $this->size;
     
-    $new_width = $this->width * $newSize / $this->size;
+    $newWidth = $this->width * $newSize / $this->size;
     $new_height = $this->height * $newSize / $this->size;
-    $new_image = imagecreatetruecolor($new_width, $new_height)
+    $newImage = imagecreatetruecolor($newWidth, $new_height)
       or die("Can't make new image");
 
-    imagecopyresampled($new_image, $base_image,
+    imagecopyresampled($newImage, $baseImage,
                        0, 0, 0, 0,
-                       $new_width, $new_height,
-                       $base_width, $base_height);
+                       $newWidth, $new_height,
+                       $baseWidth, $baseHeight);
  
     if ($this->extension=='jpeg' || $this->extension=='jpg' || $this->extension=='') # wild guess
     {
-      @imagejpeg($new_image, $filename, $quality)
+      @imagejpeg($newImage, $filename, $quality)
         or $cameralife->error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
     }
     elseif ($this->extension=='png')
     {
-      @imagepng($new_image, $filename, 9-$quality/11)
+      @imagepng($newImage, $filename, 9-$quality/11)
         or $cameralife->error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
     }
     elseif ($this->extension=='gif')
     {
-      @imagegif($new_image, $filename, 9-$quality/11)
+      @imagegif($newImage, $filename, 9-$quality/11)
         or $cameralife->error("Could not write the file $filename is the directory writable?", __FILE__, __LINE__);
     }
 
-    $this->scaled_image[$newSize] = $new_image;
+    $this->scaled_image[$newSize] = $newImage;
 
-    return array($new_width, $new_height);
+    return array($newWidth, $new_height);
   }
 
   /**rotate the image a 90, 180 or 270 degrees

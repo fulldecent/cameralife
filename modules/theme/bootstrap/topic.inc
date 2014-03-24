@@ -7,7 +7,7 @@
  */
 
 $cameralife->getFeature('security');
-$cameralife->getFeature('filestore');
+$cameralife->getFeature('fileStore');
 $albums = $topic->getAlbums();
 $counts = $topic->getCounts();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;

@@ -17,7 +17,7 @@
  * @access public
  */
 
-$features=array('security','imageprocessing', 'filestore');
+$features=array('security','imageProcessing', 'fileStore');
 require 'main.inc';
 
 $photo = new Photo(intval($_GET['id']));

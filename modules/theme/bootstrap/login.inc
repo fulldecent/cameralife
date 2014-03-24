@@ -20,7 +20,7 @@
   # $cameralife and $album are set by showPage()
 
   $cameralife->getFeature('security');
-  $cameralife->getFeature('filestore');
+  $cameralife->getFeature('fileStore');
 
   # Handles logging in and registering... then sends 'em to the index page
 

@@ -18,8 +18,6 @@
 */
   class ImageProcessingModule extends CameraLifeModule
   {
-    function ImageProcessingModule () { }
-
     function CreateImage($filename) { }
   }
 /**Carries functions that enable operations on images

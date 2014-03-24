@@ -4,7 +4,7 @@ Camera Life Module API
 Camera life has FEATURES, and each feature is a folder in the modules/folder. Functionality in a FEATURE is implemented by a MODULE. 
 
 When a page loads, it requests FEATURES like this:
-$features=array('theme','filestore', 'imageprocessing', 'security');
+$features=array('theme','fileStore', 'imageProcessing', 'security');
 require "main.inc";
 
 Preferences for which MODULE implements a given FEATURE are configured in the administration section and stored in the PREFERENCES for the CameraLife class. You can view the default selections in main.inc.

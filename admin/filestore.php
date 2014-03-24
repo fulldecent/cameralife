@@ -1,11 +1,11 @@
 <?php
 /*
- * set filestore module
+ * set fileStore module
  * @author Will Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2013 Will Entriken
  * @access public
  */
-$features=array('security', 'filestore', 'theme');
+$features=array('security', 'fileStore', 'theme');
 require '../main.inc';
 $cameralife->baseURL = dirname($cameralife->baseURL);
 $cameralife->security->authorize('admin_customize', 1); // Require
@@ -39,7 +39,7 @@ require 'admin.inc';
     <div class="container">
       <h2>Module</h2>
       <form class="form-horizontal well" method="post" action="controller_prefs.php">
-        <a onclick="$('#chgps').show();$('#chgpshead').hide()" class="btn btn-default" id="chgpshead">To change your filestore, click here</a>
+        <a onclick="$('#chgps').show();$('#chgpshead').hide()" class="btn btn-default" id="chgpshead">To change your fileStore, click here</a>
         <div style="display:none" id="chgps">
           <h3>If you have no photos:</h3>
           <p>Just change the drop-down and configure below</p>
@@ -58,7 +58,7 @@ require 'admin.inc';
             <div class="controls">
               <select name="value1" id="inputTheme" class="form-control">
 <?php
-$feature = 'filestore';
+$feature = 'fileStore';
 foreach ($cameralife->getModules($feature) as $module) {
   echo "<option $selected value=\"$module\">";
   echo "<b>$module</b>";

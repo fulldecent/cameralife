@@ -13,14 +13,14 @@
  */
 
   @ini_set('max_execution_time',9000);
-  $features = array('security', 'imageprocessing', 'theme', 'filestore');
+  $features = array('security', 'imageProcessing', 'theme', 'fileStore');
   require 'main.inc';
 
   /**
    * Adds a file to the system
    *
    * Precondition - the images exists at $file
-   * Postcondition: image is added to the filestore at $path$filename
+   * Postcondition: image is added to the fileStore at $path$filename
    *
    * @access private
    * @return int 0 | string describing the error

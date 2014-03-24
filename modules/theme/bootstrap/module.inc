@@ -288,37 +288,37 @@ if ($cameralife->security->GetName()) {
       echo "</ul>";
     }
 
-    function PageSelector($start, $total, $per_page, $url)
+    function PageSelector($start, $total, $perPage, $url)
     {
       global $theme;
     
-      if ($total > $per_page) // Refuse to only show one page
+      if ($total > $perPage) // Refuse to only show one page
       {
         echo '<ul class="pagination">';
 
         if ($start==-1) {
-          echo "<span class='current'>Randomly showing <b>$per_page</b> of <b>$total</b></span> ";
+          echo "<span class='current'>Randomly showing <b>$perPage</b> of <b>$total</b></span> ";
           echo "<a class='nextprev' href=\"$url\">More &#187;</a>";
         } else {
-          $first=max($start-2*$per_page,0);
-          $last=min($first+4*$per_page,intval(($total-1)/$per_page)*$per_page);
-          $first=max($last-4*$per_page,0);
+          $first=max($start-2*$perPage,0);
+          $last=min($first+4*$perPage,intval(($total-1)/$perPage)*$perPage);
+          $first=max($last-4*$perPage,0);
           if ($last==0) $last=1;
       
           if ($first != $start)
-              echo "<li><a href=\"".AddParam($url,'start',$start-$per_page)."\">&laquo;</a></li>";
+              echo "<li><a href=\"".AddParam($url,'start',$start-$perPage)."\">&laquo;</a></li>";
           else
               echo "<li class=\"disabled\"><span>&laquo;</span></li>";
 
-          for ($i=$first; $i<=$last; $i+=$per_page) {
+          for ($i=$first; $i<=$last; $i+=$perPage) {
             if ($i==$start) 
-                echo "<li class=\"active\"><a href=\"".AddParam($url,'start',$i)."\">".($i/$per_page+1)."</a></li>";
+                echo "<li class=\"active\"><a href=\"".AddParam($url,'start',$i)."\">".($i/$perPage+1)."</a></li>";
             else
-                echo "<li><a href=\"".AddParam($url,'start',$i)."\">".($i/$per_page+1)."</a></li>";
+                echo "<li><a href=\"".AddParam($url,'start',$i)."\">".($i/$perPage+1)."</a></li>";
           }
   
           if ($last != $start)
-              echo "<li><a href=\"".AddParam($url,'start',$start+$per_page)."\">&raquo;</a></li>";
+              echo "<li><a href=\"".AddParam($url,'start',$start+$perPage)."\">&raquo;</a></li>";
           else 
               echo "<li class=\"disabled\"><span>&raquo;</span></li>";
         }

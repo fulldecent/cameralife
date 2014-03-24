@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2001-2013 Will Entriken
  * @access public
  */
-$features=array('security', 'filestore');
+$features=array('security', 'fileStore');
 require '../main.inc';
 chdir ($cameralife->baseDir);
 $cameralife->baseURL = dirname($cameralife->baseURL);

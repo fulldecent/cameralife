@@ -50,9 +50,9 @@ class CameraLife extends CameraLifeModule # and View
     
     $this->preferences[] = array('name'=>'theme', 'type'=>'string', 'default'=>'bootstrap');
     $this->preferences[] = array('name'=>'iconset', 'type'=>'string', 'default'=>'cartoonic');
-    $this->preferences[] = array('name'=>'filestore', 'type'=>'string', 'default'=>'local');
+    $this->preferences[] = array('name'=>'fileStore', 'type'=>'string', 'default'=>'local');
     $this->preferences[] = array('name'=>'security', 'type'=>'string', 'default'=>'openid');
-    $this->preferences[] = array('name'=>'imageprocessing', 'type'=>'string', 'default'=>'gd');
+    $this->preferences[] = array('name'=>'imageProcessing', 'type'=>'string', 'default'=>'gd');
 
     $this->preferences[] = array('name'=>'checkpointlogs', 'type'=>'number', 'default'=>'0');
     $this->preferences[] = array('name'=>'checkpointcomments', 'type'=>'number', 'default'=>'0');
@@ -94,16 +94,16 @@ class CameraLife extends CameraLifeModule # and View
     elseif ($this->loadedFeatures[$feature]=='loading')
       $this->error('Circular reference in features :-(');
 
-    $allfeatures = array('core'=>'core', 'imageprocessing'=>'imageProcessing', 'security'=>'security', 'theme'=>'theme', 'filestore'=>'fileStore');
-    if (!isset($allfeatures[$feature]))
+    $allfeatures = array('core', 'imageProcessing', 'security', 'theme', 'fileStore');
+    if (!in_array($feature, $allfeatures))
       $this->error("Non-existant feature requested: $feature");
-    $cutename = $allfeatures[$feature];
-    $this->relativeInclude("modules/$feature/module.inc");
+    $this->relativeInclude('modules/'.strtolower($feature).'/module.inc');
     if ($feature != 'core') { // Need to load implementation
+//TODO should core even be a "feature?"
       $implementation = $this->getPref($feature);
-      $this->relativeInclude("modules/$feature/$implementation/module.inc");
+      $this->relativeInclude('modules/'.strtolower($feature)."/$implementation/module.inc");
       $modulename = $implementation.$feature;
-      $this->$cutename = new $modulename;
+      $this->$feature = new $modulename;
     }
     $this->loadedFeatures[$feature]='loaded';
   }
