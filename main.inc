@@ -33,8 +33,8 @@ class CameraLife extends CameraLifeModule # and View
   var $loaded_features;
   var $userpreferences;
   var $version;
-  var $base_dir;
-  var $base_url; // like http://camera.phor.net or http://phor.net/life/camera
+  var $baseDir;
+  var $baseURL; // like http://camera.phor.net or http://phor.net/life/camera
   var $receipt;
 
   function __construct()
@@ -44,8 +44,8 @@ class CameraLife extends CameraLifeModule # and View
       date_default_timezone_set('GMT');
     ini_set('magic_quotes_runtime', 0);
     ini_set('magic_quotes_sybase', 0);
-    $this->base_dir = dirname(__FILE__);
-    $this->base_url = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']),'/');
+    $this->baseDir = dirname(__FILE__);
+    $this->baseURL = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']),'/');
     $this->version = '2.6.7';
     
     $this->preferences[] = array('name'=>'theme', 'type'=>'string', 'default'=>'bootstrap');
@@ -72,15 +72,15 @@ class CameraLife extends CameraLifeModule # and View
     
   function relativeInclude($file)
   {
-    if (file_exists($this->base_dir."/$file"))
-      require $this->base_dir."/$file";
+    if (file_exists($this->baseDir."/$file"))
+      require $this->baseDir."/$file";
     else
-      $this->error("File does not exist: ".$this->base_dir."/$file");
+      $this->error("File does not exist: ".$this->baseDir."/$file");
   }
 
   function getModules($feature)
   {
-    $modules = glob($this->base_dir."/modules/$feature/*", GLOB_ONLYDIR);
+    $modules = glob($this->baseDir."/modules/$feature/*", GLOB_ONLYDIR);
     $modules = array_map('basename', $modules);
     return $modules;
   }
@@ -156,7 +156,7 @@ class CameraLife extends CameraLifeModule # and View
     $retval = array();
     $retval['og:title'] = $this->getPref('siteabbr');
     $retval['og:type'] = 'website';
-    $retval['og:url'] = $this->base_url.'/index.php';
+    $retval['og:url'] = $this->baseURL.'/index.php';
     $retval['og:image'] = $cameralife->iconURL('main');
     $retval['og:image:type'] = 'image/png';
     return $retval;    
@@ -164,7 +164,7 @@ class CameraLife extends CameraLifeModule # and View
 
   function iconURL($name)
   {
-    return $this->base_url."/modules/iconset/".$this->getPref('iconset')."/$name.png";
+    return $this->baseURL."/modules/iconset/".$this->getPref('iconset')."/$name.png";
   }
 
   function error($message, $file='', $line='')

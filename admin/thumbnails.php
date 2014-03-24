@@ -9,8 +9,8 @@ $features=array('security', 'filestore', 'imageprocessing');
 @ini_set('max_execution_time',9000);
 require '../main.inc';
 $cameralife->Security->authorize('admin_customize', 1); // Require
-$cameralife->base_url = dirname($cameralife->base_url);
-chdir ($cameralife->base_dir);
+$cameralife->baseURL = dirname($cameralife->baseURL);
+chdir ($cameralife->baseDir);
 require 'admin.inc';
 $cameralife->Security->authorize('admin_file', 1); // Require
 $lastdone = isset($_GET['lastdone']) ? (int) $_GET['lastdone'] : 0;

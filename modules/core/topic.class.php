@@ -49,9 +49,9 @@ class Topic extends Search
     $retval = array();
     $retval['og:title'] = $this->name;
     $retval['og:type'] = 'website';
-    $retval['og:url'] = $cameralife->base_url.'/topics/'.rawurlencode($this->name);
+    $retval['og:url'] = $cameralife->baseURL.'/topics/'.rawurlencode($this->name);
     if ($cameralife->getPref('rewrite') == 'no')
-      $retval['og:url'] = $cameralife->base_url.'/topic.php?name='.rawurlencode($this->name);
+      $retval['og:url'] = $cameralife->baseURL.'/topic.php?name='.rawurlencode($this->name);
     $retval['og:image'] = $cameralife->iconURL('topic');
     $retval['og:image:type'] = 'image/png';
     //$retval['og:image:width'] = 

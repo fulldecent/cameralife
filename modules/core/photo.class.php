@@ -287,9 +287,9 @@ class Photo extends View
       return $url;
 
     if ($cameralife->getPref('rewrite') == 'yes')
-      return $cameralife->base_url."/photos/".$this->record['id'].'.'.$this->extension.'?'.'scale='.$format.'&'.'ver='.($this->record['mtime']+0);
+      return $cameralife->baseURL."/photos/".$this->record['id'].'.'.$this->extension.'?'.'scale='.$format.'&'.'ver='.($this->record['mtime']+0);
     else
-      return $cameralife->base_url.'/media.php?id='.$this->record['id']."&size=$format&ver=".($this->record['mtime']+0);
+      return $cameralife->baseURL.'/media.php?id='.$this->record['id']."&size=$format&ver=".($this->record['mtime']+0);
   }
   /// DEPRECATED
   public function getMedia($size='thumbnail')
@@ -532,9 +532,9 @@ class Photo extends View
     $retval = array();
     $retval['og:title'] = $this->record['description'];
     $retval['og:type'] = 'website';
-    $retval['og:url'] = $cameralife->base_url.'/photos/'.$this->record['id'];
+    $retval['og:url'] = $cameralife->baseURL.'/photos/'.$this->record['id'];
     if ($cameralife->getPref('rewrite') == 'no')
-      $retval['og:url'] = $cameralife->base_url.'/photo.php?id='.$this->record['id'];
+      $retval['og:url'] = $cameralife->baseURL.'/photo.php?id='.$this->record['id'];
     $retval['og:image'] = $this->getMediaURL('thumbnail');
     $retval['og:image:type'] = 'image/jpeg';
     $retval['og:image:width'] = $this->record['tn_width'];

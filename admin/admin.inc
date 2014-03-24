@@ -42,9 +42,9 @@ function renderPrefsAsHTML($module)
       echo "      <input class=\"form-control\" type=\"text\" name=\"value$prefnum\" value=\"$value\" />\n";
     } if ($pref['type'] == 'directory' || $pref['type'] == 'directoryrw') {
       echo "      <input class=\"form-control\" type=\"text\" name=\"value$prefnum\" value=\"$value\" />\n";
-      if (!is_dir($value) && !is_dir($cameralife->base_dir."/$value"))
+      if (!is_dir($value) && !is_dir($cameralife->baseDir."/$value"))
         echo '<p class="text-error">This is not a directory</p>';
-      elseif ($pref['type'] == 'directoryrw' && !is_writable($value) && !is_writable($cameralife->base_dir."/$value"))
+      elseif ($pref['type'] == 'directoryrw' && !is_writable($value) && !is_writable($cameralife->baseDir."/$value"))
         echo '<p class="text-error">This directory is not writable</p>';
     } elseif (is_array($pref['type'])) { // enumeration
       echo "      <select class=\"form-control\" name=\"value$prefnum\" />\n";

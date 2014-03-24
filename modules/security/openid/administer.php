@@ -14,7 +14,7 @@
 
   $features=array('security');
   require '../../../main.inc';
-  $cameralife->base_url = dirname(dirname(dirname($cameralife->base_url)));
+  $cameralife->baseURL = dirname(dirname(dirname($cameralife->baseURL)));
 
   $cameralife->Security->authorize('admin_customize', 1); //require
 
@@ -180,8 +180,8 @@ foreach (array('users'=>'Users', 'policies'=>'Policies') as $id=>$name) {
     </table>
 
 <?php } elseif ($_GET['page'] == 'policies') { ?>
-    <form method="post" action="<?= $cameralife->base_url . '/admin/controller_prefs.php' ?>">
-    <input type="hidden" name="target" value="<?= $cameralife->base_url .'/modules/security/'.$cameralife->getPref('security').'/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
+    <form method="post" action="<?= $cameralife->baseURL . '/admin/controller_prefs.php' ?>">
+    <input type="hidden" name="target" value="<?= $cameralife->baseURL .'/modules/security/'.$cameralife->getPref('security').'/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
     <table class="table">
       <tr>
         <th colspan=2>

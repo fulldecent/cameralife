@@ -56,7 +56,7 @@
     $newId = $cameralife->Database->Insert('albums',$album_record);
 
     if ($_POST['target'] != 'ajax')
-      $_POST['target'] = $cameralife->base_url.'/album.php?id='.$newId;
+      $_POST['target'] = $cameralife->baseURL.'/album.php?id='.$newId;
   } elseif ($_POST['action'] == "Update") {
     $cameralife->Security->authorize('admin_albums',1);
 
@@ -74,9 +74,9 @@
       // Are there other albums in this topic?
       $total = $cameralife->Database->SelectOne('albums','COUNT(*)',"topic='".$album->get('topic')."'");
       if ($total)
-        $_POST['target'] = $cameralife->base_url.'/topic.php?name='.$album->get('topic');
+        $_POST['target'] = $cameralife->baseURL.'/topic.php?name='.$album->get('topic');
       else
-        $_POST['target'] = $cameralife->base_url.'/index.php';
+        $_POST['target'] = $cameralife->baseURL.'/index.php';
     }
   } elseif ($_POST['action'] == 'Poster') {
     $cameralife->Security->authorize('admin_albums',1);

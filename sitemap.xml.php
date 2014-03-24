@@ -13,7 +13,7 @@
   $page = $_GET['page'];
   $id = (int) $_GET['id'];
 
-  $baseurl = $cameralife->base_url;
+  $baseurl = $cameralife->baseURL;
   $stats = new Stats;
   $counts = $stats->getCounts();
 

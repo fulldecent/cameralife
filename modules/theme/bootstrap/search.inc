@@ -31,7 +31,7 @@ if ((isset($_GET['page']) && $_GET['page'] == 'a') || (!isset($_GET['page']) && 
   $results = $search->getPhotos();
 }
 
-$header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of'.htmlentities($search->getQuery()).'" href="'.$cameralife->base_url.'/rss.php?q='.urlencode($search->getQuery()).'" />';
+$header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of'.htmlentities($search->getQuery()).'" href="'.$cameralife->baseURL.'/rss.php?q='.urlencode($search->getQuery()).'" />';
 
 $sidebar = <<<HTML
     <ul class="nav nav-list">

@@ -23,7 +23,7 @@ $cameralife->Theme->Header($topic);
 ?>
   <div class="administrative" align=center>
     <input type="hidden" name="param4" value="<?= htmlentities($_GET['term']) ?>">
-    <input type="hidden" name="target" value="<?= $cameralife->base_url ?>/index.php">
+    <input type="hidden" name="target" value="<?= $cameralife->baseURL ?>/index.php">
 
     <p class="info" align=left>
       You are about to create an Album of photos whose descriptions contain "<b><?= htmlentities($_GET['term']) ?></b>".

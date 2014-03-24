@@ -7,7 +7,7 @@
  */
 $features=array('security', 'filestore');
 require '../main.inc';
-$cameralife->base_url = dirname($cameralife->base_url);
+$cameralife->baseURL = dirname($cameralife->baseURL);
 
 $numdel = $cameralife->Database->SelectOne('photos','COUNT(*)','status=1');
 $numpri = $cameralife->Database->SelectOne('photos','COUNT(*)','status=2');

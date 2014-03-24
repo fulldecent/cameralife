@@ -85,7 +85,7 @@
     function loginURL ()
     { 
       global $cameralife;
-      return $cameralife->base_url."/modules/security/openid/login.php";
+      return $cameralife->baseURL."/modules/security/openid/login.php";
     }
 
     /* Return TRUE + cookie or a string that is an error message */
@@ -142,7 +142,7 @@
       if ($this->authorize('admin_file') ||
           $this->authorize('admin_theme') ||
           $this->authorize('admin_customize'))
-      return $cameralife->base_url."/modules/security/openid/administer.php";
+      return $cameralife->baseURL."/modules/security/openid/administer.php";
       return FALSE;
     }
 
@@ -190,7 +190,7 @@
         else
         {
           $error.= "<p>You are not logged in.</p>\n";
-          $error.= "<p>You may attempt to <a href='".$cameralife->base_url."/login.php'>log in here,</a>\n";
+          $error.= "<p>You may attempt to <a href='".$cameralife->baseURL."/login.php'>log in here,</a>\n";
           $error.= "<p>Do you have cookies disabled?</p>\n";
         }
         $cameralife->error($error);

@@ -8,8 +8,8 @@
  */
 $features=array('security', 'filestore');
 require '../main.inc';
-chdir ($cameralife->base_dir);
-$cameralife->base_url = dirname($cameralife->base_url);
+chdir ($cameralife->baseDir);
+$cameralife->baseURL = dirname($cameralife->baseURL);
 $cameralife->Security->authorize('admin_customize', 1); // Require
 $_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 'flagged';
 @ini_set('max_execution_time',9000); // for rescan

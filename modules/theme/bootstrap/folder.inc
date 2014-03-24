@@ -35,7 +35,7 @@ if ($folder->path())
 
 if ($cameralife->Security->Authorize('admin_file'))
   $menu[] = array('name'=>'Upload photo here',
-                  'href'=>$cameralife->base_url.'/upload.php&#63;path='.$folder->path(),
+                  'href'=>$cameralife->baseURL.'/upload.php&#63;path='.$folder->path(),
                   'image'=>'small-main');
 
 $folder_name = $folder->basename()

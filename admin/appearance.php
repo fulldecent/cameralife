@@ -7,7 +7,7 @@
  */
 $features=array('security', 'theme');
 require '../main.inc';
-$cameralife->base_url = dirname($cameralife->base_url);
+$cameralife->baseURL = dirname($cameralife->baseURL);
 $cameralife->Security->authorize('admin_customize', 1); // Require
 if(!isset($_GET['page'])) $_GET['page'] = 'setup';
 require 'admin.inc';
@@ -53,7 +53,7 @@ require 'admin.inc';
 <?php
 $feature = 'theme';
 foreach ($cameralife->getModules($feature) as $module) {
-  $info = json_decode(file_get_contents($cameralife->base_dir."/modules/$feature/$module/module-info.json"));
+  $info = json_decode(file_get_contents($cameralife->baseDir."/modules/$feature/$module/module-info.json"));
   $selected = $cameralife->getPref($feature) == basename($module) ? 'selected' : '';
   echo "<option $selected value=\"{$module}\">";
   echo "<b>{$info->name}</b> - <i>version {$info->version} by {$info->author}</i>";
@@ -71,7 +71,7 @@ foreach ($cameralife->getModules($feature) as $module) {
 <?php
 $feature = 'iconset';
 foreach ($cameralife->getModules($feature) as $module) {
-  $info = json_decode(file_get_contents($cameralife->base_dir."/modules/$feature/$module/module-info.json"));
+  $info = json_decode(file_get_contents($cameralife->baseDir."/modules/$feature/$module/module-info.json"));
   $selected = $cameralife->getPref($feature) == basename($module) ? 'selected' : '';
   echo "<option $selected value=\"{$module}\">";
   echo "<b>{$info->name}</b> - <i>version {$info->version} by {$info->author}</i>";
