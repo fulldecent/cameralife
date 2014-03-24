@@ -19,7 +19,7 @@ class DefaultSecurity extends SecurityModule
     var $curuser;
     var $authcookie;
 
-    function DefaultSecurity()
+    function __construct()
     {
         $this->preferences[] = array('name' => 'auth_photo_rename', 'type' => 'number', 'default' => '0');
         $this->preferences[] = array('name' => 'auth_photo_delete', 'type' => 'number', 'default' => '0');

@@ -19,10 +19,6 @@
  */
 class SecurityModule extends CameraLifeModule
 {
-    function SecurityModule()
-    {
-    }
-
     /* Provides a URL, relative to $cameralife->baseURL that the user can
     ** login at
     */

@@ -11,10 +11,6 @@
  */
 class FileStore extends CameraLifeModule
 {
-    function FileStore()
-    {
-    }
-
     /**
      * Gets a URL for the client to access the selected resource. Or return FALSE.
      * If FALSE, the caller must construct a URL to media.php which will

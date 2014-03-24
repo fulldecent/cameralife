@@ -11,7 +11,7 @@
  */
 class LocalFileStore extends FileStore
 {
-    function LocalFileStore()
+    function __construct()
     {
         global $cameralife;
 
