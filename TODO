@@ -13,7 +13,6 @@ BASIC REGRESSION AND VALIDATION TESTING:
   RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/rss.php%3Fq%3Dwill
   mysqldump fdcl -d > setup/install.mysql # and add insert statements
   Test Amazon S3 http://github.com/technoweenie/parkplace
-  Test Gallery API
   git grep -i Deprecated # create issues for these
   git grep -i TODO # create issues for these and remove from code?
   run phpmd

@@ -71,7 +71,7 @@
             <li>Make your existing folder writable and set your photo directory in the
                 <a href="../admin/filestore.php" target="_blank">File Storage setup</a>
             <li>Use the <a href="../upload.php" target="_blank">Upload Page</a></li>
-            <li>Use <a href="http://zwily.com/iphoto/" target="_blank">iPhotoToGallery</a>, <a href="http://www.digikam.org/" target="_blank">digKkam</a>, <a href="http://gallery.menalto.com/wiki/Gallery_Remote" target="_blank">Gallery Remote</a> or any <a href="http://codex.gallery2.org/Other_Clients#Photonator_.28Mac_OS_X.29" target="_blank">other software</a> compatible with the Gallery Remote API</li>
+            <li>Use <a href="https://itunes.apple.com/us/app/ftpmanager-free/id525959186?mt=8" target="_blank">your iPhone</a>, or other device to upload directly to your site</li>
 <!--            <li>Use rsync to photos from your desktop to your server</li> -->
             <li>Change your <a href="../admin/filestore.php" target="_blank">File Storage setup</a> to use Amazon S3, or Flickr, or remote FTP storage (advanced)</li>
           </ul>

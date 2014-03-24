@@ -35,7 +35,7 @@ descriptions, you can easily revert changes to the site.
 
   Users can upload photos via the web, FTP access, iPhoto, iPhone, 
 Mac/Windows/Linux software, Digikam, or any other product that supports 
-the Gallery Remote protocol.
+FTP.
 
 5. Responsive
 
