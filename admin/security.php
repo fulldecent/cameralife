@@ -39,15 +39,11 @@ require 'admin.inc';
     <h2>Module</h2>
 
     <form class="form-horizontal well" method="post" action="controller_prefs.php">
-        <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] . '&#63;page=' . $_GET['page'] ?>"/>
-        <input type="hidden" name="module1" value="CameraLife"/>
-        <input type="hidden" name="param1" value="security"/>
-
-        <div class="control-group">
-            <label class="control-label" for="inputTheme">Security module</label>
-
-            <div class="controls">
-                <select name="value1" id="inputTheme" class="input-xxlarge">
+        <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] . '&#63;page=' . htmlspecialchars($_GET['page']) ?>"/>
+        <div class="form-group form-inline">
+            <label class="col-md-2 control-label" for="module">Security module</label>
+            <div class="col-md-10">
+                <select name="CameraLife|security" id="module" class="form-control">
                     <?php
                     $feature = 'security';
                     foreach ($cameralife->getModules($feature) as $module) {

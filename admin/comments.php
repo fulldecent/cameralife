@@ -66,9 +66,7 @@ $latestComment = $cameralife->database->SelectOne('comments', 'max(id)');
         <form class="alert alert-info" method="post" action="controller_prefs.php">
             A checkpoint was set on <?= date("Y-m-d", $checkpointDate) ?>. Only comments after then are shown.
             <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] ?>"/>
-            <input type="hidden" name="module1" value="CameraLife"/>
-            <input type="hidden" name="param1" value="checkpointcomments"/>
-            <input type="hidden" name="value1" value="0">
+            <input type="hidden" name="CameraLife|checkpointcomments" value="0">
             <input class="btn btn-default" type="submit" value="Reset checkpoint">
             <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn btn-default"><i
                     class="icon-info-sign"></i> Learn about checkpoints</a>
@@ -79,9 +77,7 @@ $latestComment = $cameralife->database->SelectOne('comments', 'max(id)');
         <form class="alert alert-info" method="post" action="controller_prefs.php">
             No checkpoint is set. All comments are being shown.
             <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] ?>"/>
-            <input type="hidden" name="module1" value="CameraLife"/>
-            <input type="hidden" name="param1" value="checkpointcomments"/>
-            <input type="hidden" name="value1" value="<?= $latestComment ?>">
+            <input type="hidden" name="CameraLife|checkpointcomments" value="<?= $latestComment ?>">
             <input class="btn btn-default" type="submit" value="Hide comments up to now">
             <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn btn-default"><i
                     class="icon-info-sign"></i> Learn about checkpoints</a>

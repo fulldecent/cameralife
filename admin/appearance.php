@@ -42,17 +42,11 @@ require 'admin.inc';
     <h2>Modules</h2>
 
     <form class="form-horizontal well" method="post" action="controller_prefs.php">
-        <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] . '&#63;page=' . $_GET['page'] ?>"/>
-        <input type="hidden" name="module1" value="CameraLife"/>
-        <input type="hidden" name="param1" value="theme"/>
-        <input type="hidden" name="module2" value="CameraLife"/>
-        <input type="hidden" name="param2" value="iconset"/>
-
-        <div class="form-group">
-            <label class="col-lg-2 control-label" for="inputTheme">Theme engine</label>
-
-            <div class="col-lg-10">
-                <select name="value1" id="inputTheme" class="input-xxlarge">
+        <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] . '&#63;page=' . htmlspecialchars($_GET['page']) ?>"/>
+        <div class="form-group form-inline">
+            <label class="col-md-2 control-label" for="inputTheme">Theme engine</label>
+            <div class="col-md-10">
+                <select name="CameraLife|theme" id="inputTheme" class="form-control">
                     <?php
                     $feature = 'theme';
                     foreach ($cameralife->getModules($feature) as $module) {
@@ -69,11 +63,10 @@ require 'admin.inc';
                 <input type="submit" value="Choose" class="btn btn-default">
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-lg-2 control-label" for="inputIconset">Iconset</label>
-
-            <div class="col-lg-10">
-                <select name="value2" id="inputIconset" class="input-xxlarge">
+        <div class="form-group form-inline">
+            <label class="col-md-2 control-label" for="inputIconset">Iconset</label>
+            <div class="col-md-10">
+                <select name="CameraLife|iconset" id="inputIconset" class="form-control">
                     <?php
                     $feature = 'iconset';
                     foreach ($cameralife->getModules($feature) as $module) {
@@ -95,95 +88,74 @@ require 'admin.inc';
     <h2>Site Parameters</h2>
 
     <form method="post" action="controller_prefs.php" class="form-horizontal">
-        <div class="form-group">
-            <label class="col-lg-2 control-label" for="sitename">Site name</label>
-
-            <div class="col-lg-10 controls">
-                <input type="hidden" name="module1" value="CameraLife"/>
-                <input type="hidden" name="param1" value="sitename"/>
-                <input type="text" id="sitename" name="value1" size=30 value="<?= $cameralife->getPref('sitename') ?>">
+        <div class="form-group form-inline">
+            <label class="col-md-2 control-label" for="sitename">Site name</label>
+            <div class="col-md-10 form-inline">
+                <input type="text" id="sitename" name="CameraLife|sitename" size=30 value="<?= $cameralife->getPref('sitename') ?>" class="form-control">
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="siteabbr">Site abbreviation</label>
-
-            <div class="col-lg-10 controls">
-                <input type="hidden" name="module2" value="CameraLife"/>
-                <input type="hidden" name="param2" value="siteabbr"/>
-                <input type="text" id="siteabbr" name="value2" size=30 value="<?= $cameralife->getPref('siteabbr') ?>">
-                <span class="help-inline">used to refer to the main page</span>
+            <label class="col-md-2 control-label" for="siteabbr">Site abbreviation</label>
+            <div class="col-md-10 form-inline">
+                <input type="text" id="siteabbr" name="CameraLife|siteabbr" size=30 value="<?= $cameralife->getPref('siteabbr') ?>" class="form-control" style="width:auto; display:inline-block">
+                <span class="text-muted">refers to the main page</span>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="owner_email">Owner E-mail address</label>
-
-            <div class="col-lg-10 controls">
-                <input type="hidden" name="module3" value="CameraLife"/>
-                <input type="hidden" name="param3" value="owner_email"/>
-                <input type="text" id="owner_email" name="value3" size=30
-                       value="<?= $cameralife->getPref('owner_email') ?>">
-                <span class="help-inline">shown if something goes wrong</span>
+            <label class="col-md-2 control-label" for="owner_email">Owner E-mail address</label>
+            <div class="col-md-10 form-inline">
+                <input type="text" id="owner_email" name="CameraLife|owner_email" size=30
+                       value="<?= $cameralife->getPref('owner_email') ?>" class="form-control">
+                <span class="text-muted">shown if something goes wrong</span>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="rewrite">Use pretty URL's</label>
+            <label class="col-md-2 control-label" for="rewrite">Use pretty URL's</label>
 
-            <div class="col-lg-10 controls">
-                <input type="hidden" name="module4" value="CameraLife"/>
-                <input type="hidden" name="param4" value="rewrite"/>
-                <select name="value4" id="rewrite">
+            <div class="col-md-10 form-inline">
+                <select name="CameraLife|rewrite" id="rewrite" class="form-control">
                     <option <?= $cameralife->getPref('rewrite') == 'no' ? 'selected="selected"' : '' ?>>no</option>
                     <option <?= $cameralife->getPref('rewrite') == 'yes' ? 'selected="selected"' : '' ?>>yes</option>
                 </select>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="autorotate">Autorotate photos</label>
+            <label class="col-md-2 control-label" for="autorotate">Autorotate photos</label>
 
-            <div class="col-lg-10 controls">
-                <input type="hidden" name="module6" value="CameraLife"/>
-                <input type="hidden" name="param6" value="autorotate"/>
-                <select name="value6" id="autorotate">
+            <div class="col-md-10 form-inline">
+                <select name="CameraLife|autorotate" id="autorotate" class="form-control">
                     <option <?= $cameralife->getPref('autorotate') == 'no' ? 'selected="selected"' : '' ?>>no</option>
                     <option <?= $cameralife->getPref('autorotate') == 'yes' ? 'selected="selected"' : '' ?>>yes</option>
                 </select>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="thumbsize">Size for thumbnails</label>
-
-            <div class="col-lg-10 controls">
-                <input type="hidden" name="module7" value="CameraLife"/>
-                <input type="hidden" name="param7" value="thumbsize"/>
-                <input type="number" id="thumbsize" name="value7" size=10
-                       value="<?= $cameralife->getPref('thumbsize') ?>">
-                <span class="help-inline">in pixels</span>
+            <label class="col-md-2 control-label" for="thumbsize">Size for thumbnails</label>
+            <div class="col-md-10 form-inline">
+                <input type="number" id="thumbsize" name="CameraLife|thumbsize" size=10
+                       value="<?= $cameralife->getPref('thumbsize') ?>" class="form-control">
+                <span class="text-muted">in pixels</span>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="scaledsize">Size for preview images</label>
+            <label class="col-md-2 control-label" for="scaledsize">Size for preview images</label>
 
-            <div class="col-lg-10 controls">
-                <input type="hidden" name="module8" value="CameraLife"/>
-                <input type="hidden" name="param8" value="scaledsize"/>
-                <input type="number" id="scaledsize" name="value8" size=30
-                       value="<?= $cameralife->getPref('scaledsize') ?>">
-                <span class="help-inline">in pixels</span>
+            <div class="col-md-10 form-inline">
+                <input type="number" id="scaledsize" name="CameraLife|scaledsize" size=10
+                       value="<?= $cameralife->getPref('scaledsize') ?>" class="form-control">
+                <span class="text-muted">in pixels</span>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="optionsizes">Other sizes users can see</label>
-
-            <div class="col-lg-10 controls">
-                <input type="hidden" name="module9" value="CameraLife"/>
-                <input type="hidden" name="param9" value="optionsizes"/>
-                <input type="text" id="optionsizes" name="value9" size=30
-                       value="<?= join(',', preg_split('/[, ]+/', $cameralife->getPref('optionsizes'))) ?>">
-                <span class="help-inline">comma separated (you can also leave this blank)</span>
+            <label class="col-md-2 control-label" for="optionsizes">Other available sizes</label>
+            <div class="col-md-10 form-inline">
+                <input type="text" id="optionsizes" name="CameraLife|optionsizes" size=30
+                       value="<?= join(',', preg_split('/[, ]+/', $cameralife->getPref('optionsizes'))) ?>" class="form-control">
+                <span class="text-muted">comma separated (you can also leave this blank)</span>
             </div>
         </div>
         <div class="form-group">
-            <div class="col-lg-10 controls">
+            <div class="col-md-10 form-inline">
                 <input type="submit" value="Save changes" class="btn btn-primary"/>
             </div>
         </div>

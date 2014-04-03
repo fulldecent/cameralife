@@ -53,10 +53,10 @@ class DefaultSecurity extends SecurityModule
      * @param $password
      * @return bool|string TRUE if successful, or error message
      */
-    function Login($username, $password)
+    function login($username, $post)
     {
         global $cameralife;
-
+        $password = $post['password'];
         $username = strtolower($username);
         $username = preg_replace('/[^0-9a-z_]/', '', $username);
         $password = crypt($password, $username);
@@ -92,10 +92,11 @@ class DefaultSecurity extends SecurityModule
      * @param string $email
      * @return bool|string TRUE if successful or error message
      */
-    function register($username, $password, $email = '')
+    function register($username, $post)
     {
         global $cameralife;
-
+        $password = $post['password'];
+        $email = $post['email'];
         $username = strtolower($username);
         $username = preg_replace('/[^0-9a-z]/i','',$username);
         $result = $cameralife->database->Select('users', '*', "username='$username'");

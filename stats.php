@@ -10,4 +10,4 @@ $features = array('theme', 'security');
 require 'main.inc';
 
 $stats = new Stats;
-$cameralife->theme->ShowPage('stats');
+$cameralife->theme->showPage('stats');

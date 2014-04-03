@@ -31,7 +31,7 @@ Feedback, hints and a couple patches are always coming, which is great. Code is 
 
  - The database functionality is delegated as a feature through CameraLife, and it is currently implemented by the MysqlDatabase class which lives in modules/database/mysql/mysql.inc
 
- - photo.php delegates displaying the page through a Theme module (ShowPage function)
+ - photo.php delegates displaying the page through a Theme module (showPage function)
 
  - The theme is responsible for displaying stuff to the user
 

@@ -2,7 +2,7 @@
 /**
  * Common features in the admin/ directory
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2013 William Entriken
+ * @copyright Copyright (c) 2001-2014 William Entriken
  * @access public
  */
 
@@ -19,31 +19,28 @@ function renderPrefsAsHTML($module)
     echo "<form class=\"form-horizontal\" method=\"post\" action=\"controller_prefs.php\">\n";
     echo "<input type=\"hidden\" name=\"target\" value=\"" . $_SERVER['PHP_SELF'] . "\" />\n";
     if (isset($module->about)) {
-        echo "<p>" . $module->about . "</p>\n";
+        echo "<p class=\"lead\">" . $module->about . "</p>\n";
     }
     echo "<table>\n";
 
     $prefnum = 0;
     if (!count($module->preferences)) {
         echo "<p>(no settings for this module)</p>\n";
-    } else {
+    } else {    
         foreach ($module->preferences as $pref) {
-            $prefnum++;
+            $tag = get_class($module) . '|' . $pref['name'];
             echo '<div class="form-group">';
-            echo '  <label class="col-lg-2 control-label" for="' . $pref['name'] . '">' . $pref['name'] . '</label>';
-            echo '  <div class="col-lg-10">';
-            echo "    <input type=\"hidden\" name=\"module$prefnum\" value=\"" . get_class($module) . "\" />\n";
-            echo "    <input type=\"hidden\" name=\"param$prefnum\" value=\"" . $pref['name'] . "\" />\n";
-
+            echo '  <label class="col-md-2 control-label" for="' . $tag . '">' . $pref['name'] . '</label>';
+            echo '  <div class="col-md-10 form-inline">';
             $value = $module->getPref($pref['name']);
 
             if ($pref['type'] == 'number') {
-                echo "      <input class=\"form-control\" type=\"number\" name=\"value$prefnum\" value=\"$value\" />\n";
+                echo "      <input class=\"form-control\" type=\"number\" name=\"$tag\" value=\"$value\" />\n";
             } elseif ($pref['type'] == 'string') {
-                echo "      <input class=\"form-control\" type=\"text\" name=\"value$prefnum\" value=\"$value\" />\n";
+                echo "      <input class=\"form-control\" type=\"text\" name=\"$tag\" value=\"".htmlspecialchars($value)."\" />\n";
             }
             if ($pref['type'] == 'directory' || $pref['type'] == 'directoryrw') {
-                echo "      <input class=\"form-control\" type=\"text\" name=\"value$prefnum\" value=\"$value\" />\n";
+                echo "      <input class=\"form-control\" type=\"text\" name=\"$tag\" value=\"$value\" />\n";
                 if (!is_dir($value) && !is_dir($cameralife->baseDir . "/$value")) {
                     echo '<p class="text-error">This is not a directory</p>';
                 } elseif ($pref['type'] == 'directoryrw' && !is_writable($value) && !is_writable(
@@ -53,7 +50,7 @@ function renderPrefsAsHTML($module)
                     echo '<p class="text-error">This directory is not writable</p>';
                 }
             } elseif (is_array($pref['type'])) { // enumeration
-                echo "      <select class=\"form-control\" name=\"value$prefnum\">\n";
+                echo "      <select class=\"form-control\" name=\"$tag\">\n";
                 foreach ($pref['type'] as $index => $desc) {
                     if ($index == $value) {
                         echo "        <option selected value=\"$index\">$desc</option>\n";
@@ -63,7 +60,7 @@ function renderPrefsAsHTML($module)
                 }
                 echo "      </select />\n";
             } elseif ($pref['type'] == 'yesno') {
-                echo "      <select name=\"value$prefnum\">\n";
+                echo "      <select name=\"$tag\">\n";
                 foreach (array('1' => 'Yes', '0' => 'No') as $index => $desc) {
                     if ($index == $value) {
                         echo "        <option class=\"form-control\" selected value=\"$index\">$desc</option>\n";
@@ -73,7 +70,7 @@ function renderPrefsAsHTML($module)
                 }
                 echo "      </select />\n";
             }
-            echo '    <span class="help-inline">' . $pref['desc'] . '</span>';
+            echo '    <span class="text-muted">' . $pref['desc'] . '</span>';
             echo '  </div>';
             echo '</div>';
         }
@@ -84,4 +81,3 @@ function renderPrefsAsHTML($module)
     }
     echo "</form>\n";
 }
-

@@ -9,4 +9,4 @@
 $features = array('theme');
 require 'main.inc';
 
-$cameralife->theme->ShowPage('upload');
+$cameralife->theme->showPage('upload');

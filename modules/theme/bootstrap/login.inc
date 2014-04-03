@@ -1,33 +1,17 @@
 <?php
-/**Enables
- *<ul>
- *<li>registering to the site </li>
- *<li>Log in</li>
- *</ul>
- *
- *<b>Note</b>
- *<ul><li>It precedes the index page</li>
- *<li>$cameralife and $album are set by showPage()</li></ul>
+/**
+ * View for logging in or registering
  * @author William Entriken<cameralife@phor.net>
  * @access public
  * @copyright Copyright (c) 2001-2009 William Entriken
  */
-/**
- *
- *
- *
- */
-# $cameralife and $album are set by showPage()
-
+ 
+# $cameralife set by showPage()
 $cameralife->getFeature('security');
 $cameralife->getFeature('fileStore');
-
-# Handles logging in and registering... then sends 'em to the index page
-
 $cameralife->getFeature('security');
 
-$_GET['page']
-or $_GET['page'] = 'login';
+$_GET['page'] or $_GET['page'] = 'login';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -55,13 +39,13 @@ or $_GET['page'] = 'login';
     <table>
         <tr>
             <td>Username:
-            <td><input type="text" name="param1" value="<?= $_POST["username"] ?>">
+            <td><input type="text" name="username" value="<?= $_POST["username"] ?>">
         <tr>
             <td>Password:
-            <td><input type="password" name="param2" value="">
+            <td><input type="password" name="password" value="">
                 <?php
                 if ($_GET['page'] == 'register') {
-                    echo '<tr><td>E-Mail (optional):<td><input type="text" name="param3" value="' . $_POST["email"] . '">';
+                    echo '<tr><td>E-Mail (optional):<td><input type="text" name="email" value="' . $_POST["email"] . '">';
                 }
                 ?>
     </table>

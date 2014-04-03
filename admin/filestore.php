@@ -54,16 +54,11 @@ require 'admin.inc';
                 load any other pages during this process, the consequences could be dire.</p>
 
             <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] . '&#63;page=' . $_GET['page'] ?>"/>
-            <input type="hidden" name="module1" value="CameraLife"/>
-            <input type="hidden" name="param1" value="theme"/>
-            <input type="hidden" name="module2" value="CameraLife"/>
-            <input type="hidden" name="param2" value="iconset"/>
-
             <div class="control-group">
                 <label class="control-label" for="inputTheme">Filestore</label>
 
                 <div class="controls">
-                    <select name="value1" id="inputTheme" class="form-control">
+                    <select name="CameraLife|fileStore" id="inputTheme" class="form-control">
                         <?php
                         $feature = 'fileStore';
                         foreach ($cameralife->getModules($feature) as $module) {

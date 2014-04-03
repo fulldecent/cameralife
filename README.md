@@ -1,8 +1,8 @@
 Camera Life [![Build Status](https://travis-ci.org/fulldecent/cameralife.png?branch=master)](https://travis-ci.org/fulldecent/cameralife)
 ===========
 
-Version 2.6  
-Copyright (C) 2001-2012 William Entriken  
+Version 2.7
+Copyright (C) 2001-2014 William Entriken  
 https://github.com/fulldecent/cameralife  
 cameralife@phor.net
 

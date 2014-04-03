@@ -1,18 +1,16 @@
 <?php
 /**
- * Handles a POST FORM and lets you set/edit the site preferences and then redirects you to the target page
+ * Handles various POST actions from admin views
  *
- * Pass variables such as the following
- * <ul>
- * <li>module1 = CameraLife</li>
- * <li>param1 = site_name</li>
- * <li> value1 = Camera Life</li>
- * <li>target = admin/customize.php</li>
- * </ul>
+ * Form variables:
+ *  target        REQUIRED "ajax" or a URL for the next view to load
+ *  MODULE|PARAM  sets a new value for MODULE's PARAM
+ *
  * @author William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
+
 $features = array('security');
 require '../main.inc';
 $cameralife->baseURL = dirname($cameralife->baseURL);
@@ -20,13 +18,14 @@ $cameralife->security->authorize('admin_customize', 1); // Require
 $prefs = array();
 
 foreach ($_POST as $key => $val) {
-    if (strpos($key, 'module') === 0) {
-        $prefs[substr($key, 6)]['module'] = $val;
-    } elseif (strpos($key, 'param') === 0) {
-        $prefs[substr($key, 5)]['param'] = $val;
-    } elseif (strpos($key, 'value') === 0) {
-        $prefs[substr($key, 5)]['value'] = $val;
-    }
+    if ($key == 'target') { 
+        continue;
+    } else {
+        $array = explode('|', $key);
+        if (count($array) != 2)
+          $cameralife->error('Invalid module / key');
+        $prefs[] = array('module'=>$array[0], 'param'=>$array[1], 'value'=>$val);
+    }     
 }
 
 foreach ($prefs as $pref) {
@@ -34,6 +33,7 @@ foreach ($prefs as $pref) {
         $cameralife->userpreferences[$pref['module']][$pref['param']] = $pref['value'];
         $cameralife->savePreferences();
     } else {
+        var_dump($prefs);
         die ('passed wrong');
     }
 }

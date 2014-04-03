@@ -69,6 +69,6 @@ class View
     {
         global $cameralife;
         $cameralife->getFeature('theme');
-        $cameralife->theme->ShowPage(strtolower(get_class($this)), $this);
+        $cameralife->theme->showPage(strtolower(get_class($this)), $this);
     }
 }

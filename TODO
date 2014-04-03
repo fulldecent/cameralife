@@ -20,6 +20,7 @@ BASIC REGRESSION AND VALIDATION TESTING:
   phpmd . text design --exclude lightopenid
   phpmd . text naming --exclude lightopenid
   phpmd . text unusedcode --exclude lightopenid
+  static code analysis in PHPStorm
   
   http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2F
   http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Fphotos%2F15608
@@ -58,13 +59,9 @@ xargs -0 sed "1,10 s/@\(\W*\)version\W*[0-9.a-z]\+/@\1version $VERSION/" -i
 git commit -am "Releasing version $VERSION"
 git tag -a "v$VERSION" -m "Version $VERSION"
 git push --tags
-phpdoc --directory . --target ../docs/ --title 'Camera Life Developer Manual' --ignore '*/*/*/phpFlickr-2.2.0/,*/*/*/php-openid-1.2.3/'
+phpdoc --directory . --target ../docs/ --title 'Camera Life Developer Manual' --ignore 'lightopenid/'
 
 #GOTO  http://freecode.com/projects/fdcl/releases/new
-
---------- Do other static analysis?
-php phpcpd.phar  /var/www/cameralifeSVN/ ?
-PSR-2 cross compiler?
 
 ===================================
 WHEN MAKING CHANGES TO THE DATABASE

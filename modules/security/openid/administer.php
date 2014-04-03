@@ -1,21 +1,14 @@
 <?php
-/** Enables administration of site activities and settings
- *
- *<ul>
- *<li>Allows monitoring of user activities</li>
- *<li>Enables editing of security settings</li>
- *</ul>
+/**
+ * Administers user access priviliges
  * @author William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
- */
-/**
  */
 
 $features = array('security');
 require '../../../main.inc';
 $cameralife->baseURL = dirname(dirname(dirname($cameralife->baseURL)));
-
 $cameralife->security->authorize('admin_customize', 1); //require
 
 $_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 'users';
@@ -29,49 +22,27 @@ foreach ($_POST as $key => $val) {
 }
 $cameralife->savePreferences();
 
-public
 function html_select_auth($param_name)
 {
     global $cameralife;
-    global $prefnum;
-    $prefnum++;
-
-    echo "      <input type=\"hidden\" name=\"module$prefnum\" value=\"" . get_class($cameralife->security) . "\" />\n";
-    echo "      <input type=\"hidden\" name=\"param$prefnum\" value=\"" . $param_name . "\" />\n";
-    echo "      <select name=\"value$prefnum\">\n";
-    if ($cameralife->security->getPref($param_name) == 0) {
-        echo "  <option selected value=\"0\">Anyone</option>\n";
-    } else {
-        echo "  <option value=\"0\">Anyone</option>\n";
-    }
-    if ($cameralife->security->getPref($param_name) == 1) {
-        echo "  <option selected value=\"1\">Unconfirmed registration</option>\n";
-    } else {
-        echo "  <option value=\"1\">Unconfirmed registration</option>\n";
-    }
-    if ($cameralife->security->getPref($param_name) == 2) {
-        echo "  <option selected value=\"2\">Confirmed registration</option>\n";
-    } else {
-        echo "  <option value=\"2\">Confirmed registration</option>\n";
-    }
-    if ($cameralife->security->getPref($param_name) == 3) {
-        echo "  <option selected value=\"3\">Privileged account</option>\n";
-    } else {
-        echo "  <option value=\"3\">Priviliged account</option>\n";
-    }
-    if ($cameralife->security->getPref($param_name) == 4) {
-        echo "  <option selected value=\"4\">Administrator</option>\n";
-    } else {
-        echo "  <option value=\"4\">Administrator</option>\n";
-    }
-    if ($cameralife->security->getPref($param_name) == 5) {
-        echo "  <option selected value=\"5\">Owner</option>\n";
-    } else {
-        echo "  <option value=\"5\">Owner</option>\n";
+    $tag = get_class($cameralife->security) . '|' . $param_name;
+    $authLevels = array(
+        0 => 'Anyone',
+        1 => 'Unconfirmed registration',
+        2 => 'Confirmed registration',
+        3 => 'Privileged account',
+        4 => 'Administrator',
+        5 => 'Owner'
+    );
+    echo "      <select name=\"$tag\">\n";    
+    foreach ($authLevels as $authLevelNum => $authLevelName) {
+        if ($cameralife->security->getPref($param_name) == $authLevelNum)
+            echo "  <option selected value=\"$authLevelNum\">$authLevelName</option>\n";
+        else
+            echo "  <option value=\"$authLevelNum\">$authLevelName</option>\n";
     }
     echo "</select>\n";
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -85,12 +56,6 @@ function html_select_auth($param_name)
 
     <!-- Le styles -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-    <style type="text/css">
-        body {
-            padding-top: 60px;
-            padding-bottom: 40px;
-        }
-    </style>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -107,13 +72,12 @@ function html_select_auth($param_name)
     </script>
 </head>
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <span class="brand"><a href="../../../"><?= $cameralife->getPref('sitename') ?></a> / Administration</span>
-        </div>
-    </div>
-</div>
+  <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+          <span class="navbar-brand"><a href="../"><?= $cameralife->getPref("sitename") ?></a> / Administration</span>
+      </div>
+  </div>
+
 <div class="container">
 
     <h1>Security Manager (openid)</h1>
@@ -127,9 +91,9 @@ function html_select_auth($param_name)
         ?>
     </ul>
 
-    <?php
-    if ($_GET['page'] == 'users') {
-    ?>
+<?php
+if ($_GET['page'] == 'users') {
+?>
     <form method="post">
         <table class="table">
             <tr>
@@ -199,47 +163,48 @@ function html_select_auth($param_name)
                 ?>
         </table>
 
-        <?php } elseif ($_GET['page'] == 'policies') { ?>
+<?php } elseif ($_GET['page'] == 'policies') { ?>
         <form method="post" action="<?= $cameralife->baseURL . '/admin/controller_prefs.php' ?>">
             <input type="hidden" name="target"
                    value="<?=
                    $cameralife->baseURL . '/modules/security/' . $cameralife->getPref(
                        'security'
                    ) . '/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
+            <p class="lead">Permissions - <i>the minimum user class required to perform certain actions</i></p>
             <table class="table">
                 <tr>
-                    <th colspan=2>
-                        Permissions - <i>the minimum user class required to perform certain actions</i>
-                        <tr>
-                            <td>Edit photo descriptions
-                            <td width=100><?php html_select_auth("auth_photo_rename") ?>
-                                <tr>
-                                    <td>Delete photos (can be easily restored in file manager)
-                                    <td><?php html_select_auth("auth_photo_delete") ?>
-                                        <tr>
-                                            <td>Upload photos
-                                            <td><?php html_select_auth("auth_photo_upload") ?>
-                                                <tr>
-                                                    <td>Modify photos (rotate, crop, resize...)
-                                                    <td><?php html_select_auth("auth_photo_modify") ?>
-                                                        <tr>
-                                                            <td>Change and add albums and topics
-                                                            <td><?php html_select_auth("auth_admin_albums") ?>
-                                                                <tr>
-                                                                    <td>Administer file manager
-                                                                    <td><?php html_select_auth("auth_admin_file") ?>
-                                                                        <tr>
-                                                                            <td>Administer theme manager (effects entire
-                                                                                site)
-                                                                            <td><?php html_select_auth(
-    "auth_admin_theme"
-) ?>
+                    <td>Edit photo descriptions</td>
+                    <td><?php html_select_auth("auth_photo_rename") ?></td>
+                </td>
                 <tr>
-                    <td>Upper administation (users, customize, register...)
-                    <td><?php html_select_auth("auth_admin_customize") ?>
+                    <td>Delete photos (can be easily restored in file manager)</td>
+                    <td><?php html_select_auth("auth_photo_delete") ?></td>
+                </tr>
+                <tr>
+                    <td>Upload photos</td>
+                    <td><?php html_select_auth("auth_photo_upload") ?></td>
+                </tr>
+                <tr>
+                    <td>Modify photos (rotate, crop, resize...)</td>
+                    <td><?php html_select_auth("auth_photo_modify") ?></td>
+                </tr>
+                <tr>
+                    <td>Change and add albums and topics</td>
+                    <td><?php html_select_auth("auth_admin_albums") ?></td>
+                </tr>
+                <tr>
+                    <td>Administer file manager</td>
+                    <td><?php html_select_auth("auth_admin_file") ?></td>
+                <tr>
+                    <td>Administer theme manager (effects entire site)</td>
+                    <td><?php html_select_auth("auth_admin_theme") ?></td>
+                </tr>
+                <tr>
+                    <td>Upper administation (users, customize, register...)</td>
+                    <td><?php html_select_auth("auth_admin_customize") ?></td>
+                </tr>
             </table>
-            <?php } ?>
-
+<?php } ?>
             <p>
                 <input type="submit" value="Commit Changes" class="btn btn-primary">
                 <a href="users.php" class="btn">Revert to last saved</a>

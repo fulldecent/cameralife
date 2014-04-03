@@ -1,7 +1,6 @@
 <?php
-
-/** Implements OpenID login
- *
+/** 
+ * Implements OpenID login
  * @author William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2011 William Entriken
  * @access public
@@ -41,9 +40,10 @@ class OpenIDSecurity extends SecurityModule
 
     /** Logs a user in after they have been authenticated with ID and EMAIL
      */
-    function Login($id, $email)
+    function Login($id, $post)
     {
         global $cameralife;
+        $email = $post['email'];
         $id = mysql_real_escape_string($id);
         $email = mysql_real_escape_string($email);
 
@@ -84,7 +84,6 @@ class OpenIDSecurity extends SecurityModule
         }
     }
 
-
     function loginURL()
     {
         global $cameralife;
@@ -97,9 +96,11 @@ class OpenIDSecurity extends SecurityModule
      * @param string $email
      * @return bool|string TRUE if successful, or error message
      */
-    function register($username, $password, $email = '')
+    function register($username, $post)
     {
         global $cameralife;
+        $password = $post['password'];
+        $email = $post['email'];
 
         $username = strtolower($username);
         $username = preg_replace('/[^0-9a-z_]/', '', $username);
@@ -131,14 +132,13 @@ class OpenIDSecurity extends SecurityModule
     /**Logs the user out
      * @return true | exit URL if you really want to quit the cameralife site
      */
-
     function logout()
     {
         setcookie($this->getPref('auth_cookie'), '', time(), '/');
         return true;
     }
 
-    /**.
+    /**
      * Provides a URL, that the user can go to, to administer users and permissions
      *  Or
      * @return FALSE if the user is not allowed to administer.
@@ -155,8 +155,8 @@ class OpenIDSecurity extends SecurityModule
         return false;
     }
 
-    /* Returns the current user's name or the empty string if not logged in */
-    /**@return the current user's name or the empty string if not logged in
+    /**
+     * @return mixed the current user's name or '' if not logged in
      */
     function getName()
     {
@@ -166,17 +166,22 @@ class OpenIDSecurity extends SecurityModule
         return $this->curuser['username'];
     }
 
-    /* Determines if the user is authoried to performed the named action,
-    ** if REQUIRED is set, nonauthorization is a fatal error.
-    ** This function must at least support the actions named in the README
-    ** file, of the directory of the file you are currently reading at this
-    ** time.
-    */
-    /**Determines if the user is authoried to performed the named action;if REQUIRED is set, nonauthorization is a fatal error.
-     * This function must at least support the actions named in the README file, of the directory of the file you are currently reading at this
-     * time.
+    /**
+     * Determines if current user is authorized to perform AUTHNAME
+     *
+     * AUTHNAME can be:
+     *  <li>photo_rename</li>
+     *  <li>photo_delete</li>
+     *  <li>photo_modify</li>
+     *  <li>admin_albums</li>
+     *  <li>photo_upload</li>
+     *  <li>admin_file</li>
+     *  <li>admin_theme </li>
+     *  <li>admin_customize</li>
+     * 
+     * @return bool
      */
-    function authorize($authName, $required = false)
+    function authorize($authName, $required=false)
     {
         global $cameralife;
 
