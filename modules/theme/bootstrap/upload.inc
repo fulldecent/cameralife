@@ -16,7 +16,8 @@ if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/' . $cameralife->se
     $path = 'upload/' . $cameralife->security->getName() . '/';
 }
 $folder = new Folder($path);
-$folderURL = $folder->getOpenGraph()['og:url'];
+$folderOpenGraph = $folder->getOpenGraph();
+$folderURL = $folderOpenGraph['og:url'];
 
 $headers = '<script src="' . $cameralife->baseURL . '/modules/theme/' . $cameralife->getPref(
         'theme'

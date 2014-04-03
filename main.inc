@@ -16,7 +16,10 @@ ini_set('display_errors', '1');
 if (file_exists(dirname(__FILE__) . '/modules/config.inc')) {
     require(dirname(__FILE__) . '/modules/config.inc');
 } else {
-    header('Location: http://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/setup/');
+    $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+    || $_SERVER['SERVER_PORT'] == 443;
+    $url = ($secure?'https//':'http//').$_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/setup/';
+    header("Location: $url");
     die('Redirecting to installer...');
 }
 

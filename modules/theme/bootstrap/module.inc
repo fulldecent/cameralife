@@ -119,7 +119,8 @@ class BootstrapTheme extends ThemeModule
         $openGraph = $view->GetOpenGraph();
 
         $myfolder = new Folder ('/upload/' . $cameralife->security->getName());
-        $myfolderURL = $myfolder->getOpenGraph()['og:url'];
+        $myfolderOpenGraph = $myfolder->getOpenGraph();
+        $myfolderURL = $myfolderOpenGraph['og:url'];
         $body = $onload ? "<body onLoad=\"$onload\">" : '<body>';
         ?>
         <!DOCTYPE html>
