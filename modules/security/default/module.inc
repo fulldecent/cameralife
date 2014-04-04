@@ -16,8 +16,8 @@
  */
 class DefaultSecurity extends SecurityModule
 {
-    var $curuser;
-    var $authcookie;
+    public $curuser;
+    public $authcookie;
 
     function __construct()
     {
@@ -32,13 +32,11 @@ class DefaultSecurity extends SecurityModule
         $this->preferences[] = array('name' => 'auth_cookie', 'type' => 'string', 'default' => 'cameralifeauth');
     }
 
-    function GetCurUser()
+    function getCurUser()
     {
         global $_COOKIE, $cameralife;
-
         $cookiename = $this->getPref('auth_cookie');
         $authcookie = isset($_COOKIE[$cookiename]) ? $_COOKIE[$cookiename] : null;
-
         if ($authcookie) {
             $result = $cameralife->database->Select('users', '*', "cookie='$authcookie'");
             $this->curuser = $result->fetchAssoc()
@@ -78,7 +76,6 @@ class DefaultSecurity extends SecurityModule
             return "Invalid login";
         }
     }
-
 
     function loginURL()
     {
@@ -157,7 +154,7 @@ class DefaultSecurity extends SecurityModule
     function getName()
     {
         if (!isset ($this->curuser)) {
-            $this->GetCurUser();
+            $this->getCurUser();
         }
         return isset($this->curuser['username']) ? $this->curuser['username'] : '';
     }
@@ -178,7 +175,7 @@ class DefaultSecurity extends SecurityModule
 
         $authName = "auth_$authName";
         if (!isset ($this->curuser)) {
-            $this->GetCurUser();
+            $this->getCurUser();
         }
 
         if (null == ($this->getPref($authName))) {

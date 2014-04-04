@@ -11,7 +11,7 @@ class BootstrapTheme extends ThemeModule
 {
     var $menu;
 
-    function BootstrapTheme()
+    function __construct()
     {
         $this->name = 'Bootstrap';
         $this->about = 'Sends all pages a marked-up Twitter Bootstrap content and style';

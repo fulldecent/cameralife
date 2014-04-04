@@ -7,10 +7,10 @@
  */
 class OpenIDSecurity extends SecurityModule
 {
-    var $curuser;
-    var $authcookie;
+    public $curuser;
+    public $authcookie;
 
-    function __construct()
+    public function __construct()
     {
         $this->preferences[] = array('name' => 'auth_photo_rename', 'type' => 'number', 'default' => '0');
         $this->preferences[] = array('name' => 'auth_photo_delete', 'type' => 'number', 'default' => '0');
@@ -23,7 +23,7 @@ class OpenIDSecurity extends SecurityModule
         $this->preferences[] = array('name' => 'auth_cookie', 'type' => 'string', 'default' => 'cameralifeauth');
     }
 
-    function GetCurUser()
+    public function getCurUser()
     {
         global $_COOKIE, $cameralife;
         $cookiename = $this->getPref('auth_cookie');
@@ -40,7 +40,7 @@ class OpenIDSecurity extends SecurityModule
 
     /** Logs a user in after they have been authenticated with ID and EMAIL
      */
-    function Login($id, $post)
+    public function Login($id, $post)
     {
         global $cameralife;
         $email = $post['email'];
@@ -84,7 +84,7 @@ class OpenIDSecurity extends SecurityModule
         }
     }
 
-    function loginURL()
+    public function loginURL()
     {
         global $cameralife;
         return $cameralife->baseURL . "/modules/security/openid/login.php";
@@ -96,7 +96,7 @@ class OpenIDSecurity extends SecurityModule
      * @param string $email
      * @return bool|string TRUE if successful, or error message
      */
-    function register($username, $post)
+    public function register($username, $post)
     {
         global $cameralife;
         $password = $post['password'];
@@ -132,7 +132,7 @@ class OpenIDSecurity extends SecurityModule
     /**Logs the user out
      * @return true | exit URL if you really want to quit the cameralife site
      */
-    function logout()
+    public function logout()
     {
         setcookie($this->getPref('auth_cookie'), '', time(), '/');
         return true;
@@ -143,7 +143,7 @@ class OpenIDSecurity extends SecurityModule
      *  Or
      * @return FALSE if the user is not allowed to administer.
      */
-    function administerURL()
+    public function administerURL()
     {
         global $cameralife;
         if ($this->authorize('admin_file') ||
@@ -158,10 +158,10 @@ class OpenIDSecurity extends SecurityModule
     /**
      * @return mixed the current user's name or '' if not logged in
      */
-    function getName()
+    public function getName()
     {
         if (!isset($this->curuser)) {
-            $this->GetCurUser();
+            $this->getCurUser();
         }
         return $this->curuser['username'];
     }
@@ -181,13 +181,13 @@ class OpenIDSecurity extends SecurityModule
      * 
      * @return bool
      */
-    function authorize($authName, $required=false)
+    public function authorize($authName, $required = false)
     {
         global $cameralife;
 
         $authName = "auth_$authName";
         if (!isset ($this->curuser)) {
-            $this->GetCurUser();
+            $this->getCurUser();
         }
 
         if (null == ($this->getPref($authName))) {

@@ -64,8 +64,7 @@ if ($format == 'photo' || $format == '') {
         'other',
         '/' . $photo->get('id') . '_' . $cameralife->getPref('thumbsize') . '.' . $extension
     );
-}
-elseif (is_numeric($format)) {
+} elseif (is_numeric($format)) {
     $valid = preg_split('/[, ]+/', $cameralife->getPref('optionsizes'));
     if (in_array($format, $valid)) {
         list($file, $temp, $mtime) = $cameralife->fileStore->GetFile(

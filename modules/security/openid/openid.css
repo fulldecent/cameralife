@@ -1,96 +1,69 @@
-﻿body {
-    font-family: Arial;
+/*
+	Simple OpenID Plugin
+	http://code.google.com/p/openid-selector/
+	
+	This code is licensed under the New BSD License.
+*/
+
+#openid_form {
+	width: 580px;
 }
 
-fieldset {
-    border-style: none;
+#openid_form legend {
+	font-weight: bold;
 }
 
-img {
-    border-style: none;
+#openid_choice {
+	display: none;
 }
 
-form.openid ul {
-    text-align: center;
-    list-style-type: none;
-    display: inline;
+#openid_input_area {
+	clear: both;
+	padding: 10px;
 }
 
-form.openid ul li {
-    float: left;
-    padding: 4px
+#openid_btns, #openid_btns br {
+	clear: both;
 }
 
-form.openid ul li span {
-    padding: 0 1em 0 3px
+#openid_highlight {
+	padding: 3px;
+	background-color: #FFFCC9;
+	float: left;
 }
 
-form.openid fieldset {
-    clear: both;
-    padding: 1em 0
+.openid_large_btn {
+	width: 100px;
+	height: 60px;
+/* fix for IE 6 only: http://en.wikipedia.org/wiki/CSS_filter#Underscore_hack */
+	_width: 102px;
+	_height: 62px;
+
+	border: 1px solid #DDD;
+	margin: 3px;
+	float: left;
 }
 
-form.openid div + fieldset {
-    display: none
+.openid_small_btn {
+	width: 24px;
+	height: 24px;
+/* fix for IE 6 only: http://en.wikipedia.org/wiki/CSS_filter#Underscore_hack */
+	_width: 26px;
+	_height: 26px;
+
+	border: 1px solid #DDD;
+	margin: 3px;
+	float: left;
 }
 
-form.openid label {
-    display: block;
-    font-weight: bold;
-    font-size: larger;
-    margin-bottom: .5em
+a.openid_large_btn:focus {
+	outline: none;
 }
 
-input[name=openid_username] {
-    width: 8em
+a.openid_large_btn:focus {
+	-moz-outline-style: none;
 }
 
-input[name=openid_identifier] {
-    width: 18em
-}
-
-form.openid ul li.highlight {
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    background-color: #FD6
-}
-
-form.openid fieldset div {
-    font-family: arial;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    background: #DCDCDC url(images/fadegrey.png);
-    padding: 10px;
-    display: inline-block
-}
-
-form.openid input[type='submit'] {
-    margin-left: 1em;
-}
-
-.openid_logo {
-    color: #F7931E;
-    padding: 6px 0px 8px 28px;
-    background: url(images/openidico.png) no-repeat
-}
-
-#openid_login {
-    float: left;
-    font-size: larger;
-    width: 30%;
-    margin: 2em 1em;
-    text-align: center
-}
-
-#openid_login div {
-    margin-top: 0.5em
-}
-
-#openid_login div + span {
-    font-size: smaller
-}
-
-h2 {
-    background: #ddd;
-    padding: 1em
+.openid_selected {
+	border: 4px solid #DDD;
 }

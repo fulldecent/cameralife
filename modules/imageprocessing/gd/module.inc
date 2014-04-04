@@ -8,7 +8,7 @@
  */
 class GDImageProcessing extends ImageProcessingModule
 {
-    function CreateImage($filename)
+    function createImage($filename)
     {
         return new GDImageProcessingImage($filename);
     }
@@ -26,7 +26,7 @@ class GDImageProcessingImage extends ImageProcessingImage
     var $extension;
     var $scaledImages;
 
-    function GDImageProcessingImage($filename)
+    function __construct($filename)
     {
         global $cameralife;
         if (!file_exists($filename)) {

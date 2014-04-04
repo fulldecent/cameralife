@@ -91,9 +91,9 @@ function html_select_auth($param_name)
         ?>
     </ul>
 
-<?php
-if ($_GET['page'] == 'users') {
-?>
+    <?php
+    if ($_GET['page'] == 'users') {
+    ?>
     <form method="post">
         <table class="table">
             <tr>

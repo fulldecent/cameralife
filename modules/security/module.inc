@@ -1,9 +1,9 @@
 <?php
 
-/**This "API" is subject to change; specifically the URL part will be altered.
- *
- *The following named security actions must be supported by authorize():
- *<ul>
+/**
+ * This "API" is subject to change; specifically the URL part will be altered.
+ * The following named security actions must be supported by authorize():
+ * <ul>
  *  <li>photo_rename</li>
  *  <li>photo_delete</li>
  *  <li>photo_modify</li>
@@ -12,7 +12,7 @@
  *  <li>admin_file</li>
  *  <li>admin_theme </li>
  *  <li>admin_customize</li>
- *</ul>
+ * </ul>
  * @author William Entriken <cameralife@phor.net>
  * @access public
  * @copyright Copyright (c) 2001-2009 William Entriken
@@ -22,12 +22,12 @@ class SecurityModule extends CameraLifeModule
     /* Provides a URL, relative to $cameralife->baseURL that the user can
     ** login at
     */
-    function loginURL()
+    public function loginURL()
     {
     }
 
     /* Logs the user out. Returns true or and exit url if you really want to */
-    function logout()
+    public function logout()
     {
     }
 
@@ -35,12 +35,12 @@ class SecurityModule extends CameraLifeModule
     ** go to, to administer users and permissions. Or returns FALSE, if the
     ** user is not allowed to administer.
     */
-    function administerURL()
+    public function administerURL()
     {
     }
 
     /* Returns the current user's name or the empty string if not logged in */
-    function getName()
+    public function getName()
     {
     }
 
@@ -58,7 +58,7 @@ class SecurityModule extends CameraLifeModule
      *  <li>admin_customize</li>
      * </ul>
      */
-    function authorize($action, $required = false)
+    public function authorize($action, $required = false)
     {
     }
 }

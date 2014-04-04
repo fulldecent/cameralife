@@ -19,7 +19,7 @@
  */
 class ImageProcessingModule extends CameraLifeModule
 {
-    function CreateImage($filename)
+    function createImage($filename)
     {
     }
 }
