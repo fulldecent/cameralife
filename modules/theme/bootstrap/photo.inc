@@ -94,7 +94,7 @@ if ($photo->get('status') > 0) {
     <?php
     if ($cameralife->security->authorize('photo_rename')) {
         ?>
-        <a href="<?= AddParamRawUrlEncode('action', 'rename') ?>"
+        <a href="<?= addParam($_SERVER['REQUEST_URI'], 'action', 'rename') ?>"
            id="showHideRenameForm"
            class="btn btn-sm btn-default"
            style="<?= (isset($_GET['action']) && $_GET['action'] == 'rename') ? 'display:none' : '' ?>"
@@ -164,7 +164,7 @@ if ($cameralife->security->authorize('photo_delete')) {
           style="<?= (isset($_GET['action']) && $_GET['action'] == 'flag') ? '' : 'display:none' ?>">
         <input type="hidden" name="id" value="<?= $photo->get('id') ?>"/>
         <input type="hidden" name="target" value="<?=
-        AddParam(
+        $cameralife->theme->addParam(
             htmlspecialchars($openGraph['og:url']),
             'referer',
             urlencode($_SERVER['HTTP_REFERER'])
@@ -399,27 +399,27 @@ echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px sol
             )}px)</a></li>";
 
         if ($cameralife->security->authorize('photo_rename')) {
-            echo "<li><a onClick=\"$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false\" href=\"" . html_entity_decode(
-                    AddParamRawUrlEncode('action', 'rename')
-                ) . "\"><i class=\"icon-font\"></i> Rename photo</a></li>";
+            echo "<li><a onClick=\"$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false\" href=\"" . 
+                    addParam($_SERVER['REQUEST_URI'], 'action', 'rename')
+                 . "\"><i class=\"icon-font\"></i> Rename photo</a></li>";
         }
 
         if ($cameralife->security->authorize('photo_delete')) {
-            echo "<li><a onClick=\"$('#deleteform').show();return false\" href=\"" . html_entity_decode(
-                    AddParamRawUrlEncode('action', 'flag')
-                ) . "\"><i class=\"icon-flag\"></i> Flag photo</a></li>";
+            echo "<li><a onClick=\"$('#deleteform').show();return false\" href=\"" . 
+                    addParam($_SERVER['REQUEST_URI'], 'action', 'flag')
+                 . "\"><i class=\"icon-flag\"></i> Flag photo</a></li>";
         }
 
         if ($cameralife->security->authorize('photo_modify')) {
-            echo "<li><a onClick=\"$('#modify').show();return false\" href=\"" . html_entity_decode(
-                    AddParamRawUrlEncode('action', 'modify')
-                ) . "\"><i class=\"icon-wrench\"></i> Modify photo (rotate, revert, ...)</a></li>";
+            echo "<li><a onClick=\"$('#modify').show();return false\" href=\"" . 
+                    addParam($_SERVER['REQUEST_URI'], 'action', 'modify')
+                 . "\"><i class=\"icon-wrench\"></i> Modify photo (rotate, revert, ...)</a></li>";
         }
 
         if ($photo->get('status') == 0) {
-            echo "<li><a onClick=\"$('#print').show();return false\" href=\"" . html_entity_decode(
-                    AddParamRawUrlEncode('action', 'print')
-                ) . "\"><i class=\"icon-print\"></i> Order prints</a></li>";
+            echo "<li><a onClick=\"$('#print').show();return false\" href=\"" . 
+                    addParam($_SERVER['REQUEST_URI'], 'action', 'print')
+                 . "\"><i class=\"icon-print\"></i> Order prints</a></li>";
         }
 
         echo "<li><a href=\"http://www.facebook.com/sharer.php?u='" . rawurlencode(

@@ -103,7 +103,7 @@ if (isset($_GET['albumhelp']) && $_GET['albumhelp']) {
     echo "<input type=hidden name=q value=\"" . htmlentities($search->getQuery()) . "\" />";
     echo "<input type=hidden name=page value=\"" . htmlentities($_GET['page']) . "\" />";
     $openGraph = $search->getOpenGraph();
-    $href = AddParam($openGraph['og:url'], "page", $_GET['page']);
+    $href = $cameralife->theme->addParam($openGraph['og:url'], "page", $_GET['page']);
     if ($_GET['page'] == "a") {
         $cameralife->theme->pageSelector($start, $counts['albums'], 12, $href);
     } else {

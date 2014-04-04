@@ -9,9 +9,9 @@
  */
 class BootstrapTheme extends ThemeModule
 {
-    var $menu;
+    private $menu;
 
-    function __construct()
+    public function __construct()
     {
         $this->name = 'Bootstrap';
         $this->about = 'Sends all pages a marked-up Twitter Bootstrap content and style';
@@ -66,7 +66,7 @@ class BootstrapTheme extends ThemeModule
         );
     }
 
-    function showPage($name, $object = null)
+    public function showPage($name, $object = null)
     {
         global $cameralife, $_SERVER, $_GET, $_POST;
         $objectname = strtolower($name);
@@ -75,7 +75,7 @@ class BootstrapTheme extends ThemeModule
     }
 
 //TODO: GET RID OF THIS, BECAUSE ALT CAN BE SET BETTER BY THE CALLER?
-    function Image($name, $extra = array())
+    public function Image($name, $extra = array())
     {
         global $cameralife;
         if (preg_match('/src="([^"]*)"/i', $name)) # HTML IMG
@@ -112,7 +112,7 @@ class BootstrapTheme extends ThemeModule
      * @param string $onload (default: '')
      * @return void
      */
-    function header($view, $menu = '', $extrahead = '', $onload = '')
+    public function header($view, $menu = '', $extrahead = '', $onload = '')
     {
         global $cameralife;
         $this->menu = $menu;
@@ -219,7 +219,7 @@ class BootstrapTheme extends ThemeModule
     }
     }
 
-    function footer()
+    public function footer()
     {
         global $cameralife;
         if ($this->menu) {
@@ -285,7 +285,7 @@ class BootstrapTheme extends ThemeModule
     }
 
     // Query is an array of Views
-    function grid($views)
+    public function grid($views)
     {
         echo '<div>' . PHP_EOL;
         foreach ($views as $view) {
@@ -332,7 +332,7 @@ class BootstrapTheme extends ThemeModule
     */
 
     /// Taken an Icon to make base url
-    function multiSection($sections, $baseURL, $conjunction = 'and', $query = null)
+    public function multiSection($sections, $baseURL, $conjunction = 'and', $query = null)
     {
         global $_GET;
 
@@ -343,14 +343,9 @@ class BootstrapTheme extends ThemeModule
             } else {
                 echo "<li>";
             }
-
-            $url = $baseURL;
-            $url = AddParam($url, 'page', $section['page_name']);
-            if (isset($query)) {
-                foreach ($query as $p => $v) {
-                    $url = AddParam($url, $p, $v);
-                }
-            }
+            parse_str(parse_url($baseURL, PHP_URL_QUERY), $query);
+            $query['page'] = $section['page_name'];
+            $url = preg_replace('/\?.*/', '', $baseURL) . '?' . http_build_query($query);
             echo "<a href=\"$url\">";
             echo $section['name'];
             echo "</a>";
@@ -360,7 +355,7 @@ class BootstrapTheme extends ThemeModule
         echo "</ul>";
     }
 
-    function pageSelector($start, $total, $perPage, $url)
+    public function pageSelector($start, $total, $perPage, $url)
     {
         if ($total > $perPage) // Refuse to only show one page
         {
@@ -378,31 +373,47 @@ class BootstrapTheme extends ThemeModule
                 }
 
                 if ($first != $start) {
-                    echo "<li><a href=\"" . AddParam($url, 'start', $start - $perPage) . "\">&laquo;</a></li>";
+                    parse_str(parse_url($url, PHP_URL_QUERY), $query);
+                    $query['start'] = $start - $perPage;
+                    $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
+                    echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">&laquo;</a></li>";
                 } else {
                     echo "<li class=\"disabled\"><span>&laquo;</span></li>";
                 }
 
                 for ($i = $first; $i <= $last; $i += $perPage) {
                     if ($i == $start) {
-                        echo "<li class=\"active\"><a href=\"" . AddParam(
-                                $url,
-                                'start',
-                                $i
-                            ) . "\">" . ($i / $perPage + 1) . "</a></li>";
+                        parse_str(parse_url($url, PHP_URL_QUERY), $query);
+                        $query['start'] = $i;
+                        $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
+                        echo "<li class=\"active\"><a href=\"" . htmlspecialchars($newURL) . "\">" . ($i / $perPage + 1) . "</a></li>";
                     } else {
-                        echo "<li><a href=\"" . AddParam($url, 'start', $i) . "\">" . ($i / $perPage + 1) . "</a></li>";
+                        parse_str(parse_url($url, PHP_URL_QUERY), $query);
+                        $query['start'] = $i;
+                        $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
+                        echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">" . ($i / $perPage + 1) . "</a></li>";
                     }
                 }
 
                 if ($last != $start) {
-                    echo "<li><a href=\"" . AddParam($url, 'start', $start + $perPage) . "\">&raquo;</a></li>";
+                    parse_str(parse_url($url, PHP_URL_QUERY), $query);
+                    $query['start'] = $i;
+                    $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
+                
+                    echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">&raquo;</a></li>";
                 } else {
                     echo "<li class=\"disabled\"><span>&raquo;</span></li>";
                 }
             }
             echo "</ul>\n";
         }
+    }
+    
+    public function addParam($url, $var, $val)
+    {
+      parse_str(parse_url($url, PHP_URL_QUERY), $query);
+      $query[$val] = $val;
+      return preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
     }
 }
 

@@ -59,8 +59,9 @@ class Folder extends Search
             } else {
                 $href = $cameralife->baseURL . '/folder.php&#63;path=' . str_replace(" ", "%20", $this->path);
             }
-            $href = AddParam($href, 'start', $this->myStart - $this->myLimitCount);
-
+            parse_str(parse_url($url, PHP_URL_QUERY), $query);
+            $query['start'] = $this->myStart - $this->myLimitCount;
+            $href = preg_replace('/\?.*/', '', $href) . '?' . http_build_query($query);
             return $href;
         }
 

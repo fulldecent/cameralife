@@ -38,14 +38,14 @@ require dirname(__FILE__) . '/modules/module.inc';
 
 class CameraLife extends CameraLifeModule # and View
 {
-    var $loadedFeatures;
-    var $userpreferences;
-    var $version;
-    var $baseDir;
-    var $baseURL; // like http://camera.phor.net or http://phor.net/life/camera
-    var $receipt;
+    private $loadedFeatures;
+    public $userpreferences;
+    public $version;
+    public $baseDir;
+    public $baseURL; // like http://camera.phor.net or http://phor.net/life/camera
+    public $receipt;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         if (!ini_get('date.timezone')) {
@@ -79,7 +79,7 @@ class CameraLife extends CameraLifeModule # and View
         $this->preferences[] = array('name' => 'optionsizes', 'type' => 'string', 'default' => '');
     }
 
-    function relativeInclude($file)
+    public function relativeInclude($file)
     {
         if (file_exists($this->baseDir . "/$file")) {
             require $this->baseDir . "/$file";
@@ -88,14 +88,14 @@ class CameraLife extends CameraLifeModule # and View
         }
     }
 
-    function getModules($feature)
+    public function getModules($feature)
     {
         $modules = glob($this->baseDir . "/modules/$feature/*", GLOB_ONLYDIR);
         $modules = array_map('basename', $modules);
         return $modules;
     }
 
-    function getFeature($feature)
+    public function getFeature($feature)
     {
         if (!isset($this->loadedFeatures[$feature])) {
             $loadedFeatures[$feature] = 'loading';
@@ -120,7 +120,7 @@ class CameraLife extends CameraLifeModule # and View
         $this->loadedFeatures[$feature] = 'loaded';
     }
 
-    function loadPreferences()
+    public function loadPreferences()
     {
         $query = $this->database->Select('preferences', '*');
         while ($result = $query->fetchAssoc()) {
@@ -128,7 +128,7 @@ class CameraLife extends CameraLifeModule # and View
         }
     }
 
-    function savePreferences()
+    public function savePreferences()
     {
         foreach ($this->userpreferences as $module => $moduleprefs) {
             if (is_array($moduleprefs)) {
@@ -160,12 +160,12 @@ class CameraLife extends CameraLifeModule # and View
         return $retval;
     }
 
-    function iconURL($name)
+    public function iconURL($name)
     {
         return $this->baseURL . "/modules/iconset/" . $this->getPref('iconset') . "/$name.png";
     }
 
-    function error($message)
+    public function error($message)
     {
         global $cameralife;
         echo "<link rel=\"stylesheet\" href=\"//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css\">";
@@ -219,48 +219,4 @@ if (isset($_GET['receipt']) && is_numeric($_GET['receipt'])) {
     if ($receipt->isValid()) {
         $cameralife->receipt = $receipt;
     }
-}
-
-####
-#
-# Convenience functions:
-#
-
-/**
- * @param mixed $url an HTML-escaped url
- * @param mixed $param HTML-escaped param
- * @param string $value HTML-escaped value
- * @return mixed $url an HTML-escaped url with a get parameter added
- */
-function AddParam($url, $param, $value = null)
-{
-    if ((strpos($url, '&#63;') !== false) || (strpos($url, '?') !== false) || (strpos($url, '&amp;') !== false)) {
-        $url .= "&amp;$param";
-    } else {
-        $url .= "&#63;$param";
-    }
-
-    if ($value !== null) {
-        $url .= "=" . rawurlencode($value);
-    }
-
-    return $url;
-}
-
-function AddParamRawUrlEncode($param, $value = null, $url = null)
-{
-    if ($url == null) {
-        $url = $_SERVER['REQUEST_URI'];
-    }
-    if ((strpos($url, '&#63;') !== false) || (strpos($url, '?') !== false) || (strpos($url, '&amp;') !== false)) {
-        $url .= "&amp;";
-    } else {
-        $url .= "&#63;";
-    }
-    $url .= rawurlencode($param);
-    if ($value !== null) {
-        $url .= "=" . rawurlencode($value);
-    }
-
-    return $url;
 }
