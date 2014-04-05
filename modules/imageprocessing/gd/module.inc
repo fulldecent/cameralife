@@ -8,7 +8,7 @@
  */
 class GDImageProcessing extends ImageProcessingModule
 {
-    function createImage($filename)
+    public function createImage($filename)
     {
         return new GDImageProcessingImage($filename);
     }
@@ -26,7 +26,7 @@ class GDImageProcessingImage extends ImageProcessingImage
     var $extension;
     var $scaledImages;
 
-    function __construct($filename)
+    public function __construct($filename)
     {
         global $cameralife;
         if (!file_exists($filename)) {
@@ -50,7 +50,7 @@ class GDImageProcessingImage extends ImageProcessingImage
         $this->size = sqrt($this->width * $this->width + $this->height * $this->height);
     }
 
-    function destroy()
+    public function destroy()
     {
         imagedestroy($this->originalImage);
         if (isset($this->scaled_image) && count($this->scaled_image) > 0) {
@@ -60,12 +60,12 @@ class GDImageProcessingImage extends ImageProcessingImage
         }
     }
 
-    function check()
+    public function check()
     {
         return ($this->originalImage == true);
     }
 
-    function GetSize()
+    public function getSize()
     {
         return array($this->width, $this->height);
     }
@@ -80,7 +80,7 @@ class GDImageProcessingImage extends ImageProcessingImage
      * @param int $quality
      * @return array|void dimensions new width and height
      */
-    function Resize($filename, $newSize, $quality = 91)
+    public function resize($filename, $newSize, $quality = 91)
     {
         /* If we have already resized this image to something larger than we want
         ** now, we can scale from it. This is much faster than
@@ -139,14 +139,14 @@ class GDImageProcessingImage extends ImageProcessingImage
 
     /**rotate the image a 90, 180 or 270 degrees
      */
-    function rotate($degrees)
+    public function rotate($degrees)
     {
         @ini_set('max_execution_time', 100);
 
         if (function_exists('imagerotate')) {
             $rotated = imagerotate($this->originalImage, -$degrees, 0);
         } else {
-            $rotated = ImagerotateRightAngle($this->originalImage, $degrees);
+            $rotated = $this->imagerotateRightAngle($this->originalImage, $degrees);
         }
         if ($degrees == 90 || $degrees == 270) {
             $oldwidth = $this->width;
@@ -159,7 +159,7 @@ class GDImageProcessingImage extends ImageProcessingImage
 
     /**Saves the image at orginal resolution
      */
-    function Save($filename, $quality = 91)
+    public function save($filename, $quality = 91)
     {
         if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') # on a limb...
         {
@@ -170,45 +170,45 @@ class GDImageProcessingImage extends ImageProcessingImage
                 or $cameralife->Error("Could not write the file $filename is the directory writable?");
         }
     }
+
+    /**
+     * @var $srcX dimension of source image
+     * @var $srcY dimension of source image
+     * @return resource GD output image
+     */
+    private function imagerotateRightAngle($imgSrc, $angle)
+    {
+        // dimenstion of source image
+        $srcX = imagesx($imgSrc);
+        $srcY = imagesy($imgSrc);
+        if ($angle == 90 || $angle == 270) {
+            $imgDest = imagecreatetruecolor($srcY, $srcX);
+        } else {
+            $imgDest = imagecreatetruecolor($srcX, $srcY);
+        }
+    
+        if ($angle == 90) {
+            for ($x = 0; $x < $srcX; $x++) {
+                for ($y = 0; $y < $srcY; $y++) {
+                    imagecopy($imgDest, $imgSrc, $srcY - $y - 1, $x, $x, $y, 1, 1);
+                }
+            }
+        } elseif ($angle == 270) {
+            for ($x = 0; $x < $srcX; $x++) {
+                for ($y = 0; $y < $srcY; $y++) {
+                    imagecopy($imgDest, $imgSrc, $y, $srcX - $x - 1, $x, $y, 1, 1);
+                }
+            }
+        } elseif ($angle == 180) {
+            for ($x = 0; $x < $srcX; $x++) {
+                for ($y = 0; $y < $srcY; $y++) {
+                    imagecopy($imgDest, $imgSrc, $srcX - $x - 1, $srcy - $y - 1, $x, $y, 1, 1);
+                }
+            }
+        }
+    
+        return ($imgDest);
+    } 
 }
-
-/**
- * @var $srcX dimension of source image
- * @var $srcY dimension of source image
- * @return resource GD output image
- */
-function ImagerotateRightAngle($imgSrc, $angle)
-{
-    // dimenstion of source image
-    $srcX = imagesx($imgSrc);
-    $srcY = imagesy($imgSrc);
-    if ($angle == 90 || $angle == 270) {
-        $imgDest = imagecreatetruecolor($srcY, $srcX);
-    } else {
-        $imgDest = imagecreatetruecolor($srcX, $srcY);
-    }
-
-    if ($angle == 90) {
-        for ($x = 0; $x < $srcX; $x++) {
-            for ($y = 0; $y < $srcY; $y++) {
-                imagecopy($imgDest, $imgSrc, $srcY - $y - 1, $x, $x, $y, 1, 1);
-            }
-        }
-    } elseif ($angle == 270) {
-        for ($x = 0; $x < $srcX; $x++) {
-            for ($y = 0; $y < $srcY; $y++) {
-                imagecopy($imgDest, $imgSrc, $y, $srcX - $x - 1, $x, $y, 1, 1);
-            }
-        }
-    } elseif ($angle == 180) {
-        for ($x = 0; $x < $srcX; $x++) {
-            for ($y = 0; $y < $srcY; $y++) {
-                imagecopy($imgDest, $imgSrc, $srcX - $x - 1, $srcy - $y - 1, $x, $y, 1, 1);
-            }
-        }
-    }
-
-    return ($imgDest);
-} 
 
 

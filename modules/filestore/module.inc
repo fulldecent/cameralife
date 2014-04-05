@@ -9,7 +9,7 @@
  * @access public
  * @copyright Copyright (c) 2014 William Entriken
  */
-class FileStore extends CameraLifeModule
+abstract class FileStore extends CameraLifeModule
 {
     /**
      * Gets a URL for the client to access the selected resource. Or return FALSE.
@@ -23,10 +23,7 @@ class FileStore extends CameraLifeModule
      * @param $path - the location of the stored file, starts with '/'
      * @return mixed URL or FALSE
      */
-    function getURL($bucket, $path)
-    {
-        return false;
-    }
+    abstract public function getURL($bucket, $path);
 
     /**
      * Gets a local filename for the requested resource. It is downloaded if necessary.
@@ -40,9 +37,7 @@ class FileStore extends CameraLifeModule
      *
      * If temporary is TRUE, the caller is responsible for deleting this file when done.
      */
-    function getFile($bucket, $path)
-    {
-    }
+    abstract public function getFile($bucket, $path);
 
     /**
      * Save a file to the fileStore
@@ -52,19 +47,14 @@ class FileStore extends CameraLifeModule
      * @param $file - the local file which is to be put in the store
      * @param $secure - if secure, ensure this file will not be publicly accessible
      */
-    function putFile($bucket, $path, $file, $secure = 0)
-    {
-    }
+    abstract public function putFile($bucket, $path, $file, $secure = 0);
 
     /**
      * @param $bucket one of ('photo', 'other')
      * @param $path the location of the stored file, starts with '/'
      * @param $secure if secure, ensure this file will not be publicly accessible
      */
-    function setPrivacy($bucket, $path, $secure)
-    {
-        //TODO SET PRIVACY
-    }
+    abstract public function setPrivacy($bucket, $path, $secure);
 
     /**
      * erase a file
@@ -72,10 +62,7 @@ class FileStore extends CameraLifeModule
      * @param $bucket - one of ('photo', 'other')
      * @param $path - the location of the stored file, starts with '/'
      */
-    function eraseFile($bucket, $path)
-    {
-        //TODO ERASE
-    }
+    abstract public function eraseFile($bucket, $path);
 
     /**
      * Returns a list of all files in the fileStore
@@ -85,7 +72,5 @@ class FileStore extends CameraLifeModule
      * @param $recursive - whether to list recursively
      * @return arry of files, in the form 'path'=>basename(path)
      */
-    function listFiles($bucket, $path = '', $recursive = true)
-    {
-    }
+    abstract public function listFiles($bucket, $path = '', $recursive = true);
 }

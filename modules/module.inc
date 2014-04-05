@@ -1,15 +1,15 @@
 <?php
-
-/** Base class for all modules -- Retrieving of preferences
+/**
+ * Base class for all modules -- Retrieving of preferences
  * @author William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
-class CameraLifeModule
+abstract class CameraLifeModule
 {
     var $name;
 
-    function __construct()
+    public function __construct()
     {
     }
 
@@ -24,9 +24,9 @@ class CameraLifeModule
      *  <li> 'default' => the default value</li>
      * </ul>
      */
-    var $preferences;
+    public $preferences;
 
-    function getPref($key)
+    public function getPref($key)
     {
         global $cameralife;
 

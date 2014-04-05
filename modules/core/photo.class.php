@@ -161,7 +161,7 @@ class Photo extends View
         }
 
         if (!$onlyWantEXIF) {
-            $this->image = $cameralife->ImageProcessing->createImage($file)
+            $this->image = $cameralife->imageProcessing->createImage($file)
             or $cameralife->error("Bad photo load: $file");
             if (!$this->image->Check()) {
                 $cameralife->error("Bad photo processing: $file");

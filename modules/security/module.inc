@@ -17,32 +17,24 @@
  * @access public
  * @copyright Copyright (c) 2001-2009 William Entriken
  */
-class SecurityModule extends CameraLifeModule
+abstract class SecurityModule extends CameraLifeModule
 {
     /* Provides a URL, relative to $cameralife->baseURL that the user can
     ** login at
     */
-    public function loginURL()
-    {
-    }
+    abstract public function loginURL();
 
     /* Logs the user out. Returns true or and exit url if you really want to */
-    public function logout()
-    {
-    }
+    abstract public function logout();
 
     /* Provides a URL, relative to $cameralife->baseURL that the user can
     ** go to, to administer users and permissions. Or returns FALSE, if the
     ** user is not allowed to administer.
     */
-    public function administerURL()
-    {
-    }
+    abstract public function administerURL();
 
     /* Returns the current user's name or the empty string if not logged in */
-    public function getName()
-    {
-    }
+    abstract public function getName();
 
     /**Determines if the user is authoried to performed the named action,
      * if REQUIRED is set, nonauthorization is a fatal error.
@@ -58,7 +50,5 @@ class SecurityModule extends CameraLifeModule
      *  <li>admin_customize</li>
      * </ul>
      */
-    public function authorize($action, $required = false)
-    {
-    }
+    abstract public function authorize($action, $required = false);
 }

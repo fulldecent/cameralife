@@ -11,7 +11,7 @@
  */
 class LocalFileStore extends FileStore
 {
-    function __construct()
+    public function __construct()
     {
         global $cameralife;
 
@@ -42,6 +42,9 @@ class LocalFileStore extends FileStore
      * We don't not have special URLs to access the photos.
      * The parent class defaults to returning FALSE.
      */
+    public function getURL($bucket, $path){
+        return false;
+    }
 
     /**
      * Gets a local filename for the requested resource. It is downloaded if necessary.
@@ -55,7 +58,7 @@ class LocalFileStore extends FileStore
      *
      * If temporary is TRUE, the caller is responsible for deleting this file when done.
      */
-    function getFile($bucket, $path)
+    public function getFile($bucket, $path)
     {
         global $cameralife;
         $fullpath = '';
@@ -84,7 +87,7 @@ class LocalFileStore extends FileStore
      * @param $file - the local file which is to be put in the store
      * @param $secure - if secure, ensure this file will not be publicly accessible
      */
-    function putFile($bucket, $path, $file, $secure = 0)
+    public function putFile($bucket, $path, $file, $secure = 0)
     {
         global $cameralife;
         $fullpath = '';
@@ -107,7 +110,7 @@ class LocalFileStore extends FileStore
      * @param string $path the location of the stored file
      * @param string $secure if secure, ensure this file will not be publicly accessible
      */
-    function setPrivacy($bucket, $path, $secure)
+    public function setPrivacy($bucket, $path, $secure)
     {
         global $cameralife;
         $cameralife->error('FEATURE MISSING: PRIVACY');
@@ -121,7 +124,7 @@ class LocalFileStore extends FileStore
      *
      * @return none
      */
-    function eraseFile($bucket, $path)
+    public function eraseFile($bucket, $path)
     {
         global $cameralife;
         $fullpath = '';
@@ -145,7 +148,7 @@ class LocalFileStore extends FileStore
      * @param $recursive - whether to list recursively
      * @return an array of files, in the form 'path'=>basename(path)
      */
-    function listFiles($bucket, $path = '/', $recursive = true)
+    public function listFiles($bucket, $path = '/', $recursive = true)
     {
         global $cameralife;
         $fullpath = '';

@@ -19,7 +19,7 @@ class DefaultSecurity extends SecurityModule
     public $curuser;
     public $authcookie;
 
-    function __construct()
+    public function __construct()
     {
         $this->preferences[] = array('name' => 'auth_photo_rename', 'type' => 'number', 'default' => '0');
         $this->preferences[] = array('name' => 'auth_photo_delete', 'type' => 'number', 'default' => '0');
@@ -32,7 +32,7 @@ class DefaultSecurity extends SecurityModule
         $this->preferences[] = array('name' => 'auth_cookie', 'type' => 'string', 'default' => 'cameralifeauth');
     }
 
-    function getCurUser()
+    public function getCurUser()
     {
         global $_COOKIE, $cameralife;
         $cookiename = $this->getPref('auth_cookie');
@@ -51,7 +51,7 @@ class DefaultSecurity extends SecurityModule
      * @param $password
      * @return bool|string TRUE if successful, or error message
      */
-    function login($username, $post)
+    public function login($username, $post)
     {
         global $cameralife;
         $password = $post['password'];
@@ -77,7 +77,7 @@ class DefaultSecurity extends SecurityModule
         }
     }
 
-    function loginURL()
+    public function loginURL()
     {
         global $cameralife;
         return $cameralife->baseURL . "/modules/security/default/login.php";
@@ -89,7 +89,7 @@ class DefaultSecurity extends SecurityModule
      * @param string $email
      * @return bool|string TRUE if successful or error message
      */
-    function register($username, $post)
+    public function register($username, $post)
     {
         global $cameralife;
         $password = $post['password'];
@@ -124,8 +124,7 @@ class DefaultSecurity extends SecurityModule
     /**Logs the user out
      * @return true | exit URL if you really want to quit the cameralife site
      */
-
-    function logout()
+    public function logout()
     {
         setcookie($this->getPref('auth_cookie'), '', time(), '/');
         return true;
@@ -136,7 +135,7 @@ class DefaultSecurity extends SecurityModule
      *  Or
      * @return FALSE if the user is not allowed to administer.
      */
-    function administerURL()
+    public function administerURL()
     {
         global $cameralife;
         if ($this->authorize('admin_file') ||
@@ -151,7 +150,7 @@ class DefaultSecurity extends SecurityModule
     /* Returns the current user's name or the empty string if not logged in */
     /**@return the current user's name or the empty string if not logged in
      */
-    function getName()
+    public function getName()
     {
         if (!isset ($this->curuser)) {
             $this->getCurUser();
@@ -169,7 +168,7 @@ class DefaultSecurity extends SecurityModule
      * This function must at least support the actions named in the README file, of the directory of the file you are currently reading at this
      * time.
      */
-    function authorize($authName, $required = false)
+    public function authorize($authName, $required = false)
     {
         global $cameralife;
 

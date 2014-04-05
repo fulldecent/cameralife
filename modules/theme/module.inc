@@ -2,7 +2,7 @@
 /**
  * The base class for themes
  */
-class ThemeModule extends CameraLifeModule
+abstract class ThemeModule extends CameraLifeModule
 {
     /**
      *  Displays all HTML to the user given the specified name and associated data
@@ -10,7 +10,5 @@ class ThemeModule extends CameraLifeModule
      * @param string $name the name of the page
      * @param mixed $object any extra data
      */
-    function showPage($name, $object = null)
-    {
-    }
+    abstract public function showPage($name, $object = null);
 }
