@@ -2,9 +2,8 @@
 /**
  * Handles various POST actions from admin views
  *
- * Form variables:
- *  target        REQUIRED "ajax" or a URL for the next view to load
- *  MODULE|PARAM  sets a new value for MODULE's PARAM
+ * @uses $_POST['target'] REQUIRED "ajax" or a URL for the next view to load
+ * @uses $_POST['MODULE|PARAM'] REQUIRED sets a new value for MODULE's PARAM
  *
  * @author William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 William Entriken

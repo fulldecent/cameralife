@@ -94,7 +94,7 @@ if ($photo->get('status') > 0) {
     <?php
     if ($cameralife->security->authorize('photo_rename')) {
         ?>
-        <a href="<?= addParam($_SERVER['REQUEST_URI'], 'action', 'rename') ?>"
+        <a href="<?= $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'rename') ?>"
            id="showHideRenameForm"
            class="btn btn-sm btn-default"
            style="<?= (isset($_GET['action']) && $_GET['action'] == 'rename') ? 'display:none' : '' ?>"
@@ -400,25 +400,25 @@ echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px sol
 
         if ($cameralife->security->authorize('photo_rename')) {
             echo "<li><a onClick=\"$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false\" href=\"" . 
-                    addParam($_SERVER['REQUEST_URI'], 'action', 'rename')
+                    $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'rename')
                  . "\"><i class=\"icon-font\"></i> Rename photo</a></li>";
         }
 
         if ($cameralife->security->authorize('photo_delete')) {
             echo "<li><a onClick=\"$('#deleteform').show();return false\" href=\"" . 
-                    addParam($_SERVER['REQUEST_URI'], 'action', 'flag')
+                    $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'flag')
                  . "\"><i class=\"icon-flag\"></i> Flag photo</a></li>";
         }
 
         if ($cameralife->security->authorize('photo_modify')) {
             echo "<li><a onClick=\"$('#modify').show();return false\" href=\"" . 
-                    addParam($_SERVER['REQUEST_URI'], 'action', 'modify')
+                    $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'modify')
                  . "\"><i class=\"icon-wrench\"></i> Modify photo (rotate, revert, ...)</a></li>";
         }
 
         if ($photo->get('status') == 0) {
             echo "<li><a onClick=\"$('#print').show();return false\" href=\"" . 
-                    addParam($_SERVER['REQUEST_URI'], 'action', 'print')
+                    $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'print')
                  . "\"><i class=\"icon-print\"></i> Order prints</a></li>";
         }
 
@@ -434,7 +434,7 @@ echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px sol
 <?php
 # Cache the next image the user is likely to look at
 if ($photoNext) {
-    echo '<img style="display:none" src="' . $photoNext->GetMedia('scaled') . '" alt="hidden photo">';
+    echo '<img style="display:none" src="' . htmlspecialchars($photoNext->getMediaURL('scaled')) . '" alt="hidden photo">';
 }
 
 $cameralife->theme->footer();

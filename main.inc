@@ -10,6 +10,7 @@
  */
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
+define('CAMERALIFE_LATEST_SCHEMA_VERSION', '4');
 
 
 // Is this the first run?
@@ -24,7 +25,7 @@ if (file_exists(dirname(__FILE__) . '/modules/config.inc')) {
 }
 
 // Is the software newer than the database?
-if (!isset($db_schema_version) || $db_schema_version < 4) {
+if (!isset($db_schema_version) || $db_schema_version < CAMERALIFE_LATEST_SCHEMA_VERSION) {
     header(
         'Location: http://' . $_SERVER['HTTP_HOST'] . rtrim(
             dirname($_SERVER['PHP_SELF']),
