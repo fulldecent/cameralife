@@ -20,6 +20,10 @@ $system = isset($_GET['system']) && in_array(
 $checkPrerequesites = array(); // each is {desc:HTML,type:warning/danger/success}
 $fixes = array(); // each is {ubuntu:HTML,cpanel:HTML}
 
+if (function_exists('phpversion')) {
+    $checkPrerequesites[] = array('desc' => 'Using PHP version '.phpversion(), 'type' => 'success');
+}
+
 if (function_exists('mysql_query')) {
     $checkPrerequesites[] = array('desc' => 'MySQL is installed', 'type' => 'success');
 } else {
@@ -52,7 +56,7 @@ if (function_exists('gd_info')) {
     );
 }
 
-if (get_magic_quotes_gpc()) {
+if (get_magic_quotes_gpc() == 0) {
     $checkPrerequesites[] = array('desc' => 'Magic quotes is disabled, as it should be', 'type' => 'success');
 } else {
     $checkPrerequesites[] = array('desc' => 'Magic quotes is enabled, you want to turn this off', 'type' => 'warning');
@@ -193,8 +197,9 @@ if (file_exists('.htaccess')) {
             <span class="navbar-brand">INSTALL CAMERA LIFE</span>
         </div>
         <ul class="nav navbar-nav">
-            <li class="active"><a>1. Setup</a></li>
-            <li><a>2. Use Camera Life</a></li>
+            <li class="active"><a>1. Login</a></li>
+            <li><a>2. Setup</a></li>
+            <li><a>3. Use Camera Life</a></li>
         </ul>
         <a class="btn btn-default navbar-btn pull-right" href="mailto:cameralifesupport@phor.net">
             <i class="glyphicon glyphicon-envelope"></i>
@@ -211,8 +216,7 @@ if (file_exists('.htaccess')) {
     <div class="container">
         <h2>You are installing Camera Life <?php readfile('../VERSION') ?></h2>
 
-        <p>Thank you for choosing to install Camera Life. We hope you will find this software is easy to use and fun.
-            This project is licensed under the GNU General Public License, version 2. If you are upgrading from a
+        <p>Thank you for choosing to install Camera Life, we hope you will find this software is easy to use and fun. If you are upgrading from a
             previous version of Camera Life, stop and read the file <a href="../UPGRADE">UPGADE</a>.</p>
     </div>
     <p style="text-align:center"><img src="images/intro1.png">
