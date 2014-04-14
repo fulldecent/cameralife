@@ -30,10 +30,12 @@ abstract class FileStore extends CameraLifeModule
      *
      * @param $bucket - one of ('photo', 'other')
      * @param $path - the location of the stored file, starts with '/'
-     * @return array with these elements:
+     * @return mixed
+     *   array with these elements:
      *     filename - string - the local file you requested
      *     temporary - boolean
      *     mtime - unix time that this file was modified
+     *   or null
      *
      * If temporary is TRUE, the caller is responsible for deleting this file when done.
      */

@@ -44,38 +44,34 @@ if (!$cameralife->security->authorize('admin_file')) {
     }
 }
 
+$bucket = 'other';
+$filepath = '';
+
 if ($format == 'photo' || $format == '') {
     if ($photo->get('modified')) {
-        list($file, $temp, $mtime) = $cameralife->fileStore->GetFile(
-            'other',
-            '/' . $photo->get('id') . '_mod.' . $extension
-        );
+        $filepath = '/' . $photo->get('id') . '_mod.' . $extension;
     } else {
-        $fullpath = rtrim('/' . ltrim($photo->get('path'), '/'), '/') . '/' . $photo->get('filename');
-        list($file, $temp, $mtime) = $cameralife->fileStore->GetFile('photo', $fullpath);
+        $bucket = 'photo';
+        $filepath = rtrim('/' . ltrim($photo->get('path'), '/'), '/') . '/' . $photo->get('filename');
     }
 } elseif ($format == 'scaled') {
-    list($file, $temp, $mtime) = $cameralife->fileStore->getFile(
-        'other',
-        '/' . $photo->get('id') . '_' . $cameralife->getPref('scaledsize') . '.' . $extension
-    );
+    $filepath = '/' . $photo->get('id') . '_' . $cameralife->getPref('scaledsize') . '.' . $extension;
 } elseif ($format == 'thumbnail') {
-    list($file, $temp, $mtime) = $cameralife->fileStore->GetFile(
-        'other',
-        '/' . $photo->get('id') . '_' . $cameralife->getPref('thumbsize') . '.' . $extension
-    );
+    $filepath = '/' . $photo->get('id') . '_' . $cameralife->getPref('thumbsize') . '.' . $extension;
 } elseif (is_numeric($format)) {
+    $filepath = '/' . $photo->get('id') . '_' . $format . '.' . $extension;
     $valid = preg_split('/[, ]+/', $cameralife->getPref('optionsizes'));
-    if (in_array($format, $valid)) {
-        list($file, $temp, $mtime) = $cameralife->fileStore->GetFile(
-            'other',
-            '/' . $photo->get('id') . '_' . $format . '.' . $extension
-        );
-    } else {
+    if (!in_array($format, $valid)) {
         $cameralife->error('This image size has not been allowed');
     }
 } else {
     $cameralife->error('Bad size parameter. Query string: ' . htmlentities($_SERVER['QUERY_STRING']));
+}
+
+list($file, $temp, $mtime) = $cameralife->fileStore->GetFile('other', $filepath);
+if (!$file) {
+    $photo->generateThumbnail();
+    list($file, $temp, $mtime) = $cameralife->fileStore->GetFile('other', $filepath);    
 }
 
 if ($extension == 'jpg' || $extension == 'jpeg') {
@@ -96,7 +92,8 @@ header("Date: " . gmdate("D, d M Y H:i:s", $mtime) . " GMT");
 header("Last-Modified: " . gmdate("D, d M Y H:i:s", $mtime) . " GMT");
 header("Expires: " . gmdate("D, d M Y H:i:s", time() + 2592000) . " GMT"); // One month
 
-readfile($file);
+if ($file)
+    readfile($file);
 if ($temp) {
     unlink($file);
 }

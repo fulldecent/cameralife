@@ -19,12 +19,12 @@ class GDImageProcessing extends ImageProcessingModule
  */
 class GDImageProcessingImage extends ImageProcessingImage
 {
-    var $originalImage;
-    var $width;
-    var $height;
-    var $size;
-    var $extension;
-    var $scaledImages;
+    public $width;
+    public $height;
+    public $extension;
+    private $size;
+    private $originalImage;
+    private $scaledImages;
 
     public function __construct($filename)
     {

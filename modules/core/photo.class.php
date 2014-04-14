@@ -161,6 +161,7 @@ class Photo extends View
         }
 
         if (!$onlyWantEXIF) {
+die($file);        
             $this->image = $cameralife->imageProcessing->createImage($file)
             or $cameralife->error("Bad photo load: $file");
             if (!$this->image->Check()) {
@@ -214,12 +215,8 @@ class Photo extends View
 
         $fullpath = rtrim('/' . ltrim($this->record['path'], '/'), '/') . '/' . $this->record['filename'];
         foreach ($files as $size => $file) {
-            $cameralife->fileStore->PutFile(
-                'other',
-                '/' . $this->record['id'] . '_' . $size . '.' . $this->extension,
-                $file,
-                $this->record['status'] != 0
-            );
+            $filename = '/' . $this->record['id'] . '_' . $size . '.' . $this->extension;
+            $cameralife->fileStore->PutFile('other', $filename, $file, $this->record['status'] != 0);
             @unlink($file);
         }
 

@@ -7,7 +7,7 @@
  */
 abstract class CameraLifeModule
 {
-    var $name;
+    public $name;
 
     public function __construct()
     {
