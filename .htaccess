@@ -1,0 +1,31 @@
+DirectoryIndex index.php
+Options -Indexes +MultiViews +FollowSymLinks
+
+php_value post_max_size 20971520
+php_value upload_max_filesize 20971520
+php_value memory_limit 128M
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteRule photos/(\d+)$ photo.php?id=$1&%{QUERY_STRING}
+RewriteRule photos/([^/]+)/(\d+)-(\d+)\. media.php?format=$1&id=$2&ver=$3
+RewriteRule photos/([^/]+)/(\d+)\. media.php?format=$1&id=$2&ver=%{QUERY_STRING}
+RewriteRule photos/(\d+)\.([^?]+)$ media.php?id=$1&%{QUERY_STRING}
+RewriteRule folders/(.*) folder.php?path=/$1&%{QUERY_STRING}
+RewriteRule albums/(\d+) album.php?id=$1&%{QUERY_STRING}
+RewriteRule topics/(.+) topic.php?name=$1&%{QUERY_STRING}
+#
+# Note: these rewrites affect photo.class.php, who analyzes the HTTP referer
+#
+
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule (.*) search.php?q=$1 [L]
+</IfModule>
+
+<Files ~ ".inc">
+Order allow,deny
+Deny from all
+</Files>

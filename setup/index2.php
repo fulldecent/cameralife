@@ -2,7 +2,7 @@
 /**
  * Displays post installation notifcation messages
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright Copyright (c) 2001-2014 William Entriken
  * @access public
  */
 
@@ -10,9 +10,131 @@ $continue = true;
 if (file_exists('../modules/config.inc')) {
     die("Camera Life already appears to be set up, because modules/config.inc exists.");
 }
+$system = isset($_GET['system']) && in_array(
+    $_GET['system'],
+    array('Ubuntu', 'CPanel', 'MAMP')
+) ? $_GET['system'] : 'Ubuntu';
 
-// Pretend like the user will authenticate by giving them a cookie.
-setcookie("cameralifeauth", $HTTP_SERVER_VARS['REMOTE_ADDR'], time() + 3600, '/');
+###### CHECK ALL PREREQUESITES #####
+
+$checkPrerequesites = array(); // each is {desc:HTML,type:warning/danger/success}
+$fixes = array(); // each is {ubuntu:HTML,cpanel:HTML}
+
+if (function_exists('phpversion')) {
+    $checkPrerequesites[] = array('desc' => 'Using PHP version '.phpversion(), 'type' => 'success');
+}
+
+if (function_exists('mysql_query')) {
+    $checkPrerequesites[] = array('desc' => 'MySQL is installed', 'type' => 'success');
+} else {
+    $checkPrerequesites[] = array('desc' => 'MySQL is required, but not installed', 'type' => 'danger');
+    $fixes[] = array(
+        'Ubuntu' => 'See http://php.net/manual/en/ref.mysql.php for information about MySQL',
+        'CPanel' => 'Contact your host to configure MySQL'
+    );
+}
+
+if (function_exists('gd_info')) {
+    $info = @gd_info();
+    if ($info['JPG Support'] || $info['JPEG Support']) {
+        $checkPrerequesites[] = array('desc' => 'GD installed and configured properly', 'type' => 'success');
+    } else {
+        $checkPrerequesites[] = array('desc' => 'GD needs to support JPEG, but it does not', 'type' => 'danger');
+        $fixes[] = array(
+            'Ubuntu' => "See http://us4.php.net/manual/en/ref.image.php for more information. Following is configuration about your GD: " . print_r(
+                $info,
+                true
+            ),
+            'CPanel' => 'Contact your host to configure PHP-GD for JPEG'
+        );
+    }
+} else {
+    $checkPrerequesites[] = array('desc' => 'GD is required but not installed', 'type' => 'danger');
+    $fixes[] = array(
+        'Ubuntu' => '<pre>sudo apt-get install php5-gd\nsudo /etc/init.d/apache2 restart</pre>',
+        'CPanel' => 'Contact your host to configure PHP-GD'
+    );
+}
+
+if (get_magic_quotes_gpc() == 0) {
+    $checkPrerequesites[] = array('desc' => 'Magic quotes is disabled, as it should be', 'type' => 'success');
+} else {
+    $checkPrerequesites[] = array('desc' => 'Magic quotes is enabled, you want to turn this off', 'type' => 'warning');
+    $fixes[] = array(
+        'Ubuntu' => 'Disable magic quotes, see <a href="http://php.net/manual/en/security.magicquotes.php" target="_blank">http://php.net/manual/en/security.magicquotes.php</a>',
+        'CPanel' => 'Contact your host to disable magic quotes'
+    );
+}
+
+$url = 'http://' . $_SERVER['HTTP_HOST'] . ($_SERVER['SERVER_PORT'] == 80 ? '' : ':' . $_SERVER['SERVER_PORT']);
+$url .= str_replace(basename(__FILE__), '', $_SERVER['PHP_SELF']). 'images/clear-REWRITETEST.gif';
+if (@fopen($url, 'r')) {
+    $checkPrerequesites[] = array(
+        'desc' => 'Mod rewrite is set up correctly, you can use pretty URLs',
+        'type' => 'success'
+    );
+} else {
+    $checkPrerequesites[] = array(
+        'desc' => 'MOD REWRITE is not set up, enable this to use pretty URLs.',
+        'type' => 'warning'
+    );
+    $fixes[] = array(
+        'Ubuntu' => 'set up MOD REWRITE to get pretty URLs, see <a href="http://stackoverflow.com/q/869092" target="_blank">http://stackoverflow.com/q/869092</a>',
+        'CPanel' => 'Contact your host to set up MOD REWRITE for pretty URLs'
+    );
+}
+
+$writable = array();
+$writable[] = array('modules', 'for automatic setup', 'warning');
+$writable[] = array('images/photos', 'to allow photo uploads', 'warning');
+$writable[] = array('images/cache', 'but needs to be', 'danger');
+$allerrors = 0;
+$unwritable = array();
+foreach ($writable as $a) {
+    $fullDir = dirname(dirname(__FILE__)) . '/' . $a[0];
+    if (is_writable($fullDir)) {
+        //$checkPrerequesites[] = array('desc'=>"Directory <code>$fullDir</code> is writable", 'type'=>'success');
+    } else {
+        $checkPrerequesites[] = array(
+            'desc' => "Directory <code>$fullDir</code> is not writable {$a[1]}",
+            'type' => $a[2]
+        );
+        $fixes[] = array(
+            'Ubuntu' => "<pre>sudo chmod 777 \"$fullDir\"</pre>",
+            'CPanel' => "Make <code>$fullDir</code> writeable",
+            'MAMP' => "<pre>sudo chmod 777 \"$fullDir\"</pre>"
+        );
+    }
+}
+
+if (file_exists('../.htaccess')) {
+    $checkPrerequesites[] = array(
+        'desc' => 'Your file <code>.htaccess</code> is set up properly',
+        'type' => 'success'
+    );
+} else {
+    $checkPrerequesites[] = array(
+        'desc' => 'Your <code>.htaccess</code> was not unpacked, check your ZIP file', 
+        'type' => 'success'
+    );
+    $fixes[] = array(
+        'Ubuntu' => "Download the .htaccess file from the same place you got Camera Life",
+        'CPanel' => 'Download the .htaccess file from the same place you got Camera Life'
+    );
+}
+
+session_start();
+if (isset($_SESSION['openid_identity'])) {
+    $checkPrerequesites[] = array(
+        'desc' => "You logged in with OpenID <strong>{$_SESSION['openid_identity']}</strong>",
+        'type' => 'success'
+    );
+} else {
+    $checkPrerequesites[] = array(
+        'desc' => 'You did not log in with OpenID, go back', 
+        'type' => 'danger'
+    );
+}
 
 ?>
 
@@ -46,8 +168,9 @@ setcookie("cameralifeauth", $HTTP_SERVER_VARS['REMOTE_ADDR'], time() + 3600, '/'
             <span class="navbar-brand">INSTALL CAMERA LIFE</span>
         </div>
         <ul class="nav navbar-nav">
-            <li class="active"><a>1. Setup</a></li>
-            <li><a>2. Use Camera Life</a></li>
+            <li><a>1. Login</a></li>
+            <li class="active"><a>2. Setup</a></li>
+            <li><a>3. Use Camera Life</a></li>
         </ul>
         <a class="btn btn-default navbar-btn pull-right" href="mailto:cameralifesupport@phor.net">
             <i class="glyphicon glyphicon-envelope"></i>
@@ -60,253 +183,183 @@ setcookie("cameralifeauth", $HTTP_SERVER_VARS['REMOTE_ADDR'], time() + 3600, '/'
     </div>
 </nav>
 
-<div class="jumbotron">
-    <div class="container">
-        <h2>Installing to database</h2>
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <h3 class="col-sm-6">Site setup</h3>
+                <div class="btn-group col-sm-6" style="padding-top:20px; padding-bottom:10px">
+                    <?php
+                    foreach (array('Ubuntu', 'CPanel', 'MAMP') as $aSystem) {
+                        $class = $aSystem == $system ? 'primary' : 'default';
+                        echo "          <a href=\"?system=$aSystem\" class=\"btn btn-$class\">$aSystem</a>\n";
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body row">
+            <div class="col-sm-6">
+                <?php
+                function cmp($a, $b)
+                {
+                    if ($a['type'] == 'success' || $b['type'] == 'danger') {
+                        return -1;
+                    }
+                    return 1;
+                }
+
+                usort($checkPrerequesites, "cmp");
+
+                $icons = array(
+                    'warning' => 'glyphicon glyphicon-question-sign',
+                    'danger' => 'glyphicon glyphicon-remove-sign',
+                    'success' => 'glyphicon glyphicon-ok-sign'
+                );
+                foreach ($checkPrerequesites as $prequesiteResult) {
+                    $icon = $icons[$prequesiteResult['type']];
+                    echo "<p class=\"text-{$prequesiteResult['type']}\"><i class=\"$icon\"></i> {$prequesiteResult['desc']}</p>\n";
+                }
+
+                ?>
+            </div>
+            <div class="col-sm-6">
+                <h4>Fixes for <?= $system ?></h4>
+                <?php
+                foreach ($fixes as $fix) {
+                    echo "<p>{$fix[$system]}</p>\n";
+                }
+                ?>
+
+            </div>
+        </div>
+        <div class="panel-footer">
+            <?php
+            $continue = 1;
+            foreach ($checkPrerequesites as $result) {
+                if ($result['type'] == 'danger') {
+                    $continue = 0;
+                }
+            }
+            if ($continue) {
+                ?>
+                Prerequisites OK <a class="btn btn-default" href=""><i class="glyphicon glyphicon-refresh"></i> Check
+                    again</a>
+            <?php
+            } else {
+            ?>
+            You must fix errors before continuing <a class="btn btn-primary" href=""><i
+                    class="glyphicon glyphicon-refresh"></i> Check again</a>
+        </div>
+</body>
+</html>
+<?php
+exit(0);
+}
+?>
+</div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>Database setup</h3>
+    </div>
+    <div class="panel-body row">
+        <div class="col-sm-6">
+            <h4>Use these instructions for <?= $system ?></h4>
+            <?php if ($system == 'Ubuntu') { ?>
+                <table>
+                    <tr>
+                        <td><pre>$
+mysql&gt;
+mysql&gt;
+    -&gt;
+    -&gt; </pre>
+                        <td><pre>sudo mysql
+CREATE DATABASE <b><span class="var-host">cameralife</span></b>;
+GRANT ALL ON <b>cameralife</b>.*
+TO <b>user</b>@<b>localhost</b>
+IDENTIFIED BY '<b>pass</b>';</pre>
+                </table>
+            <?php } elseif ($system == 'CPanel') { ?>
+                <ul>
+                    <li><a target="_new" href="http://phor.net/cpanel">Login to cPanel</a></li>
+                    <li>Click <a target="_new" href="http://phor.net:2082/frontend/x3/sql/index.html">MySQL
+                            Databases</a></li>
+                    <li>Create Database: enter <b>cameralife</b>, read what your database is actually named, go back
+                    </li>
+                    <li>Add New User: <b>username</b> <b>password</b></li>
+                    <li>Add User To Database: select your user and database, and tick ALL PRIVILEGES</li>
+                    <li>Note, your cPanel account name will proceed your database and user names below. For example,
+                        your database name will be mycpanelname_cameralife
+                    </li>
+                </ul>
+            <?php } elseif ($system == 'MAMP') { ?>
+                <li>Open MAMP Preferences | Ports | Set MySQL to 3306 standard</li>
+                <li>Login to phpMyAdmin (<a href="http://localhost/phpMyAdminForPHP5/">link for MAMP on localhost</a>)
+                </li>
+                <li>Click SQL along the top, then paste in:
+                <pre class="code">CREATE DATABASE <b>cameralife</b>;
+GRANT ALL ON <b>cameralife</b>.* 
+TO <b>user</b>@<b>localhost</b> 
+IDENTIFIED BY '<b>pass</b>';</pre>
+                </li>
+            <?php } ?>
+        </div>
+        <form class="form form-horizontal col-sm-6" method="post" action="index3.php">
+            <h4>Then fill in these details</h4>
+
+            <div class="form-group">
+                <label class="col-lg-4 control-label" for="host">Database server</label>
+
+                <div class="col-lg-8">
+                    <input type="text" id="host" name="host" value="localhost" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-4 control-label" for="name">Database name</label>
+
+                <div class="col-lg-8">
+                    <input type="text" id="name" name="name" value="cameralife" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-4 control-label" for="user">Database user</label>
+
+                <div class="col-lg-8">
+                    <input type="text" id="user" name="user" value="user" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-4 control-label" for="pass">Database password</label>
+
+                <div class="col-lg-8">
+                    <input type="password" id="pass" name="pass" value="pass" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-4 control-label" for="prefix">Database prefix</label>
+
+                <div class="col-lg-8">
+                    <input type="text" id="prefix" name="prefix" placeholder="(optional)" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-8 col-lg-offset-4">
+                    <button type="submit" class="btn btn-primary btn-large">Continue</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="panel-footer">
+        Please follow instructions on the left and then the right
     </div>
 </div>
-
-<div class="container">
-<?php
-if (!$_POST['host']) {
-    die ("You didn't specify a server to connect to, <a href=\"index.php\">go back</a> and try again");
-}
-if (!$_POST['name']) {
-    die ("You didn't specify a database, <a href=\"index.php\">go back</a> and try again");
-}
-if (!$_POST['user']) {
-    die ("You didn't specify a username, <a href=\"index.php\">go back</a> and try again");
-}
-if (!$_POST['pass']) {
-    die ("You didn't specify a password, <a href=\"index.php\">go back</a> and try again");
-}
-if (!$_POST['sitepass']) {
-    die ("You didn't specify a site password, <a href=\"index.php\">go back</a> and try again");
-}
-$prefix = $_POST['prefix'];
-
-$setupLink = @mysql_connect($_POST['host'], $_POST['user'], $_POST['pass'])
-    or die ("I couldn't connect using those credentials, <a href=\"index.php\">go back</a> and try again");
-
-@mysql_select_db($_POST['name'], $setupLink)
-    or die ("I couldn't select that database, <a href=\"index.php\">go back</a> and try again");
-
-$result = mysql_query(
-    'SHOW TABLES FROM ' . $_POST['name'] . ' WHERE tables_in_' . $_POST['name'] . ' LIKE "' . $_POST['prefix'] . '%"',
-    $setupLink
-);
-if (mysql_fetch_array($result)) {
-    die ("The database " . $_POST['name'] . " has tables in it. The installer will not change
-            the existing tables! To upgrade, consult the <a href='../UPGRADE'>UPGRADE</a> file");
-}
-?>
-
-<h3>Logged in to database...</h3>
-
-<?php
-
-$SQL = "
-      CREATE TABLE `${prefix}albums` (
-        `id` int(11) NOT NULL auto_increment,
-        `topic` varchar(20) NOT NULL default '',
-        `name` varchar(25) NOT NULL default '',
-        `term` varchar(20) NOT NULL default '',
-        `poster_id` int(11) NOT NULL default '0',
-        `hits` bigint(20) NOT NULL default '0',
-        PRIMARY KEY  (`id`)
-      );";
-mysql_query($SQL)
-or die(mysql_error() . ' ' . __LINE__);
-
-$SQL = "
-      CREATE TABLE `${prefix}photos` (
-        `id` int(11) NOT NULL auto_increment,
-        `filename` varchar(255) NOT NULL default '',
-        `path` varchar(255) NOT NULL default '',
-        `description` varchar(255) NOT NULL default '',
-        `keywords` varchar(255) NOT NULL default '',
-        `username` varchar(30) default NULL,
-        `status` int(11) NOT NULL default '0',
-        `flag` enum('indecent','photography','subject','bracketing') default NULL,
-        `width` int(11) default '0',
-        `height` int(11) default '0',
-        `tn_width` int(11) default '0',
-        `tn_height` int(11) default '0',
-        `hits` bigint(20) NOT NULL default '0',
-        `created` date default NULL,
-        `fsize` bigint(20) NOT NULL default '0',
-        `mtime` bigint(20) NOT NULL default '0',
-        `modified` int(1) NOT NULL default '0',
-        PRIMARY KEY  (`id`),
-        UNIQUE KEY `path` (`path`, `filename`)
-      );";
-mysql_query($SQL)
-or die(mysql_error() . ' ' . __LINE__);
-
-$SQL = "
-      CREATE TABLE `${prefix}ratings` (
-        `id` int(11) NOT NULL,
-        `username` varchar(30) default NULL,
-        `user_ip` varchar(16) NOT NULL,
-        `rating` int(11) NOT NULL,
-        `date` datetime NOT NULL,
-        UNIQUE KEY `id_3` (`id`,`username`,`user_ip`),
-        KEY `id` (`id`),
-        KEY `id_2` (`id`,`username`,`user_ip`),
-        KEY `id_4` (`id`)
-      );";
-mysql_query($SQL)
-or die(mysql_error() . ' ' . __LINE__);
-
-$SQL = "
-      CREATE TABLE `${prefix}comments` (
-        `id` int(11) NOT NULL auto_increment,
-        `photo_id` int(11) NOT NULL,
-        `username` varchar(30) NOT NULL,
-        `user_ip` varchar(16) NOT NULL,
-        `comment` varchar(255) NOT NULL,
-        `date` datetime NOT NULL,
-        PRIMARY KEY  (`id`),
-        KEY `id` (`photo_id`)
-      );";
-mysql_query($SQL)
-or die(mysql_error() . ' ' . __LINE__);
-
-$SQL = "
-      CREATE TABLE `${prefix}preferences` (
-        `prefmodule` varchar(64) NOT NULL default 'core',
-        `prefkey` varchar(64) NOT NULL default '',
-        `prefvalue` varchar(255) NOT NULL default '',
-        `prefdefault` varchar(255) NOT NULL default '',
-        PRIMARY KEY  (`prefmodule`,`prefkey`)
-      );";
-mysql_query($SQL)
-or die(mysql_error() . ' ' . __LINE__);
-
-mysql_query("INSERT INTO `${prefix}preferences` VALUES('CameraLife','sitedate',NOW(),NOW())")
-or die(mysql_error() . ' ' . __LINE__);
-
-$SQL = "
-      CREATE TABLE `${prefix}users` (
-        `id` int(10) NOT NULL auto_increment,
-        `username` varchar(30) NOT NULL default '',
-        `password` varchar(255) NOT NULL default '',
-        `auth` int(11) NOT NULL default '0',
-        `cookie` varchar(64) NOT NULL default '',
-        `last_online` date NOT NULL default '0000-00-00',
-        `last_ip` varchar(20) default NULL,
-        `email` varchar(80) default NULL,
-        PRIMARY KEY  (`username`),
-        UNIQUE KEY `username` (`username`),
-        UNIQUE KEY `id` (`id`)
-      );";
-mysql_query($SQL)
-or die(mysql_error() . ' ' . __LINE__);
-
-$SQL = "
-      CREATE TABLE `${prefix}exif` (
-        `photoid` int(11) NOT NULL,
-        `tag` varchar(50) NOT NULL,
-        `value` varchar(255) NOT NULL,
-        PRIMARY KEY  (`photoid`,`tag`),
-        KEY `photoid` (`photoid`)
-      );";
-mysql_query($SQL)
-or die(mysql_error() . ' ' . __LINE__);
-
-$SQL = "
-      CREATE TABLE `${prefix}logs` (
-        `id` int(11) NOT NULL auto_increment,
-        `record_type` enum('album','photo','preference','user') NOT NULL default 'album',
-        `record_id` int(11) NOT NULL default '0',
-        `value_field` varchar(40) NOT NULL default '',
-        `value_new` text NOT NULL,
-        `user_name` varchar(30) NOT NULL default '',
-        `user_ip` varchar(16) NOT NULL default '',
-        `user_date` date NOT NULL default '0000-00-00',
-        PRIMARY KEY  (`id`)
-      );";
-mysql_query($SQL)
-or die(mysql_error() . ' ' . __LINE__);
-
-echo "<p>Creating tables...</p>";
-
-$salted_password = crypt($_POST['sitepass'], 'admin');
-$SQL = "INSERT INTO ${prefix}users (username, password, auth, cookie, last_online)
-            VALUES ('admin','$salted_password',5,'" . $HTTP_SERVER_VARS['REMOTE_ADDR'] . "',NOW())";
-mysql_query($SQL)
-or die(mysql_error() . ' ' . __LINE__);
-
-echo "<p>Creating admin account</p>";
-
-?>
-
-<h3>Writing configuration file</h3>
-
-<?php
-$config[] = "<?php\n";
-$config[] = "\$db_host = '" . $_POST['host'] . "';\n";
-$config[] = "\$db_name = '" . $_POST['name'] . "';\n";
-$config[] = "\$db_user = '" . $_POST['user'] . "';\n";
-$config[] = "\$db_pass = '" . $_POST['pass'] . "';\n";
-$config[] = "\$db_prefix = '" . $_POST['prefix'] . "';\n";
-$config[] = "\$db_schema_version = 4;\n";
-$config[] = "?>\n";
-
-if ($fd = fopen('../modules/config.inc', 'x')) {
-    foreach ($config as $line) {
-        fwrite($fd, $line);
-    }
-    fclose($fd);
-
-    echo "<p>Writing configuration file...</p>";
-    echo "<p>Configuration is complete.</p>";
-} else {
-    echo "<p>I cannot write your config file modules/config.inc ";
-    echo "Please create this file and paste in the following:<pre class='code'>";
-    foreach ($config as $line) {
-        echo htmlentities($line) . "\n";
-    }
-    echo "</pre></p>";
-}
-?>
-
-<h3>Setting up .htaccess</h3>
-
-<?php
-$htaccess = file('../.htaccess');
-if (!$htaccess) {
-    $htaccess = file('example.htaccess');
-}
-if (!$htaccess) {
-    die('Serious error, could not read htaccess file from setup directory or base directory');
-}
-
-$fixed = 0;
-$dir = dirname(dirname($_SERVER['PHP_SELF']));
-$dir = trim($dir, '/');
-$newht = preg_replace('/RewriteBase .*/', "RewriteBase /$dir/", $htaccess, 1, $fixed);
-
-if ($fd = fopen('../.htaccess', 'w+')) {
-    foreach ($newht as $line) {
-        fwrite($fd, $line);
-    }
-    fclose($fd);
-
-    echo "<p>Writing .htaccess file...</p>";
-    echo "<p>.htaccess is complete.</p>";
-} else {
-    echo "<p>I cannot write your " . dirname(dirname(__FILE__)) . "/.htaccess file. ";
-    echo "Please create this file and paste in the following:<pre class='code'>";
-    foreach ($newht as $line) {
-        echo htmlentities($line) . "\n";
-    }
-    echo "</pre></p>";
-}
-?>
-
-<a class="btn btn-primary btn-lg" href="index3.php">Continue --&gt;</a>
-</div>
-<!-- /container -->
+</div> <!-- /container -->
+<!--
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+-->
 </body>
 </html>
