@@ -51,7 +51,7 @@ if (function_exists('gd_info')) {
 } else {
     $checkPrerequesites[] = array('desc' => 'GD is required but not installed', 'type' => 'danger');
     $fixes[] = array(
-        'Ubuntu' => '<pre>sudo apt-get install php5-gd\nsudo /etc/init.d/apache2 restart</pre>',
+        'Ubuntu' => "<pre>sudo apt-get install php5-gd\nsudo /etc/init.d/apache2 restart</pre>",
         'CPanel' => 'Contact your host to configure PHP-GD'
     );
 }
