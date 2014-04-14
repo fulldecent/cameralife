@@ -50,11 +50,13 @@ class LocalFileStore extends FileStore
      * Gets a local filename for the requested resource. It is downloaded if necessary.
      *
      * @param $bucket - one of ('photo', 'other')
-     * @param $path - the location of the stored file
-     * @return array with these elements:
+     * @param $path - the location of the stored file, starts with '/'
+     * @return mixed
+     *   array with these elements:
      *     filename - string - the local file you requested
      *     temporary - boolean
      *     mtime - unix time that this file was modified
+     *   or null
      *
      * If temporary is TRUE, the caller is responsible for deleting this file when done.
      */
@@ -71,11 +73,9 @@ class LocalFileStore extends FileStore
                 $cameralife->error("The FileStore bucket <b>$bucket</b> is invalid");
             }
         }
-
         if (!file_exists($fullpath)) {
-            $cameralife->error("The FileStore file cannot be found");
+            return false;
         }
-
         return array($fullpath, false, filemtime($fullpath));
     }
 

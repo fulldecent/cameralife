@@ -53,7 +53,7 @@ $numdone = isset($_GET['numdone']) ? (int)$_GET['numdone'] : 0;
     $todo = $cameralife->database->SelectOne('photos', 'count(*)', "id > $lastdone");
     $timeleft = ceil((time() - $starttime) * $todo / ($numdone + $done / 1000 + 1) / 60);
 
-    echo "<p>Progress: $done of $total done";
+    echo "<p>Progress: ".number_format($done).' of '.number_format($total)." done";
     if ($done != $total) {
         echo " (about $timeleft minutes left)";
     }
@@ -66,13 +66,21 @@ $numdone = isset($_GET['numdone']) ? (int)$_GET['numdone'] : 0;
     $fixed = 0;
     flush();
     while (($next = $next1000->fetchAssoc()) && ($fixed < 10)) {
-        $curphoto = new Photo($next['id']);
-        if ($cameralife->fileStore->CheckThumbnails($curphoto)) {
+        $photo = new Photo($next['id']);
+        $redo = false;
+        $filepath = '/' . $photo->get('id') . '_' . $cameralife->getPref('scaledsize') . '.' . $photo->extension;
+        list($file, $temp, $mtime) = $cameralife->fileStore->GetFile('other', $filepath);
+        $redo |= !$file;
+        $filepath = '/' . $photo->get('id') . '_' . $cameralife->getPref('thumbsize') . '.' . $photo->extension;
+        list($file, $temp, $mtime) = $cameralife->fileStore->GetFile('other', $filepath);
+        $redo |= !$file;
+        if ($redo) {
+            $photo->generateThumbnail();
             echo "<div>Updated #" . $next['id'] . "</div>\n";
             flush();
             $fixed++;
         }
-        $curphoto->destroy();
+        $photo->destroy();
         $lastdone = $next['id'];
     }
 
