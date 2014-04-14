@@ -36,6 +36,10 @@ function add_image($path, $filename, $file, $description = 'unnamed', $status = 
         $cameralife->Error("Invalid mimetype for uploaded file");
     }
 
+    if (preg_match('/\.\./', $path)) {
+        $cameralife->Error("Invalid path for uploaded file");
+    }
+
     if (!$description) {
         $description = 'unnamed';
     }
@@ -60,9 +64,9 @@ function add_image($path, $filename, $file, $description = 'unnamed', $status = 
     $upload['status'] = $status;
 
     $photo = new Photo($upload);
-    $cameralife->fileStore->PutFile('photo', '/' . $upload['path'] . $upload['filename'], $file);
-    unlink($file);
-
+    $filepath = rtrim('/' . ltrim($upload['path'], '/'), '/') . '/' . $upload['filename'];
+    $cameralife->fileStore->PutFile('photo', $filepath, $file);
+    @unlink($file);
     return 0;
 }
 
@@ -71,7 +75,7 @@ if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/' . $cameralife->se
     $path = $_REQUEST['path'];
 } else {
     $cameralife->security->Authorize('photo_upload', 1);
-    $path = 'upload/' . $cameralife->security->getName() . '/';
+    $path = '/upload/' . $cameralife->security->getName();
 }
 
 /* Bonus code:

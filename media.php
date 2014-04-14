@@ -68,10 +68,10 @@ if ($format == 'photo' || $format == '') {
     $cameralife->error('Bad size parameter. Query string: ' . htmlentities($_SERVER['QUERY_STRING']));
 }
 
-list($file, $temp, $mtime) = $cameralife->fileStore->GetFile('other', $filepath);
+list($file, $temp, $mtime) = $cameralife->fileStore->getFile($bucket, $filepath);
 if (!$file) {
     $photo->generateThumbnail();
-    list($file, $temp, $mtime) = $cameralife->fileStore->GetFile('other', $filepath);    
+    list($file, $temp, $mtime) = $cameralife->fileStore->getFile($bucket, $filepath);    
 }
 
 if ($extension == 'jpg' || $extension == 'jpeg') {

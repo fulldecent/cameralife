@@ -100,8 +100,7 @@ class LocalFileStore extends FileStore
                 $cameralife->error("The FileStore bucket <b>$bucket</b> is invalid");
             }
         }
-
-        @mkdir(dirname($fullpath, 0666, true));
+        @mkdir(dirname($fullpath), 0777, true);
         rename($file, $fullpath);
     }
 

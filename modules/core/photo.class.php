@@ -161,7 +161,6 @@ class Photo extends View
         }
 
         if (!$onlyWantEXIF) {
-die($file);        
             $this->image = $cameralife->imageProcessing->createImage($file)
             or $cameralife->error("Bad photo load: $file");
             if (!$this->image->Check()) {
@@ -180,9 +179,10 @@ die($file);
         global $cameralife;
 
         $this->loadImage(); // sets $this->EXIF and $this-record
-        if (($cameralife->getPref(
-            'autorotate'
-        ) == 'yes') && ($this->record['modified'] == null || $this->record['modified'] == 0)
+        if (
+          ($cameralife->getPref('autorotate') == 'yes') && 
+          ($this->record['modified'] == null || $this->record['modified'] == 0) &&
+          isset($this->EXIF['Orientation'])
         ) {
             if ($this->EXIF['Orientation'] == 3) {
                 $this->rotate(180);

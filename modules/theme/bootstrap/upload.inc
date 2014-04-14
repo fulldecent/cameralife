@@ -8,12 +8,12 @@
 $cameralife->getFeature('security');
 $cameralife->getFeature('fileStore');
 
-if (isset($_REQUEST['path']) && $_REQUEST['path'] != 'upload/' . $cameralife->security->getName() . '/') {
+if (isset($_REQUEST['path']) && $_REQUEST['path'] != '/upload/' . $cameralife->security->getName()) {
     $cameralife->security->Authorize('admin_file', 1);
     $path = $_REQUEST['path'];
 } else {
     $cameralife->security->Authorize('photo_upload', 1);
-    $path = 'upload/' . $cameralife->security->getName() . '/';
+    $path = '/upload/' . $cameralife->security->getName();
 }
 $folder = new Folder($path);
 $folderOpenGraph = $folder->getOpenGraph();
