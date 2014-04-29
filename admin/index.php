@@ -172,7 +172,7 @@ $numcomments = $cameralife->database->SelectOne(
                     <div class="panel-body">
                         <p>Your photos can be stored on your web server, a remote server, Amazon S3, etc.</p>
 
-                        <p><a class="btn btn-default" href="fileStore.php"><i class="icon-folder-open"></i> Configure
+                        <p><a class="btn btn-default" href="filestore.php"><i class="icon-folder-open"></i> Configure
                                 fileStore &raquo;</a></p>
                     </div>
                 </div>
