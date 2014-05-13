@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Displays all albums for a given topic
  * @author William Entriken <cameralife@phor.net>
@@ -6,9 +7,9 @@
  * @access public
  */
 
-$features = array('theme');
 require 'main.inc';
-
+$features = array('theme');
+$cameralife = CameraLife::cameraLifeWithFeatures($features);
 $topic = new Topic($_GET['name']);
 
 $count = array_sum($topic->getCounts());

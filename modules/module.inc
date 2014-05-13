@@ -9,10 +9,6 @@ abstract class CameraLifeModule
 {
     public $name;
 
-    public function __construct()
-    {
-    }
-
     /**@var mixed $preferences
      *
      * An array having arrays of:
@@ -25,13 +21,17 @@ abstract class CameraLifeModule
      * </ul>
      */
     public $preferences;
+    private $cameralife;
+
+    public function __construct($cameralife = NULL)
+    {
+        $this->cameralife = $cameralife;
+    }
 
     public function getPref($key)
     {
-        global $cameralife;
-
-        if (isset($cameralife->userpreferences[get_class($this)][$key])) {
-            return $cameralife->userpreferences[get_class($this)][$key];
+        if (isset($this->cameralife->userpreferences[get_class($this)][$key])) {
+            return $this->cameralife->userpreferences[get_class($this)][$key];
         }
 
         foreach ($this->preferences as $pref) {
@@ -40,7 +40,7 @@ abstract class CameraLifeModule
             }
         }
 
-        $cameralife->error('Unable to retreive preference: ' . get_class($this) . ' ' . $key);
+        $this->cameralife->error('Unable to retrieve preference: ' . get_class($this) . ' ' . $key);
         return FALSE;
     }
 
@@ -49,8 +49,6 @@ abstract class CameraLifeModule
      */
     function setPref($key, $value)
     {
-        global $cameralife;
-
         if ($value == null) {
             foreach ($this->preferences as $pref) {
                 if ($pref['name'] == $key) {
@@ -58,8 +56,7 @@ abstract class CameraLifeModule
                 }
             }
         }
-
-        $cameralife->userpreferences[get_class($this)][$key] = $value;
-        $cameralife->savePreferences();
+        $this->cameralife->userpreferences[get_class($this)][$key] = $value;
+        $this->cameralife->savePreferences();
     }
 }

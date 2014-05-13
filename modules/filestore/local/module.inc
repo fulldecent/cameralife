@@ -11,10 +11,9 @@
  */
 class LocalFileStore extends FileStore
 {
-    public function __construct()
+    public function __construct($cameralife)
     {
-        global $cameralife;
-
+        parent::__construct($cameralife);
         $this->name = 'Local';
 
         $this->preferences[] = array(

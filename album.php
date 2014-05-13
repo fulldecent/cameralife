@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Displays an album page
  * @author William Entriken <cameralife@phor.net>
@@ -6,9 +7,9 @@
  * @access public
  */
 
-$features = array('theme');
 require 'main.inc';
-
+$features = array('theme');
+$cameralife = CameraLife::cameraLifeWithFeatures($features);
 $album = new Album($_GET['id']);
 $album->set('hits', $album->get('hits') + 1);
 

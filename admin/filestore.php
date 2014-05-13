@@ -7,6 +7,7 @@
  */
 $features = array('security', 'fileStore', 'theme');
 require '../main.inc';
+$cameralife = CameraLife::cameraLifeWithFeatures($features);
 $cameralife->baseURL = dirname($cameralife->baseURL);
 $cameralife->security->authorize('admin_customize', 1); // Require
 require 'admin.inc';

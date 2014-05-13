@@ -8,6 +8,7 @@
 $features = array('security', 'fileStore', 'imageProcessing');
 @ini_set('max_execution_time', 9000);
 require '../main.inc';
+$cameralife = CameraLife::cameraLifeWithFeatures($features);
 $cameralife->security->authorize('admin_customize', 1); // Require
 $cameralife->baseURL = dirname($cameralife->baseURL);
 chdir($cameralife->baseDir);

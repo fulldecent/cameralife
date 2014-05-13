@@ -8,8 +8,9 @@
  * @access public
  */
 
-$features = array('theme', 'security', 'fileStore');
 require 'main.inc';
+$features = array('theme', 'security', 'fileStore');
+$cameralife = CameraLife::cameraLifeWithFeatures($features);
 
 $query = isset($_GET['q']) ? $_GET['q'] : '';
 $search = new Search($query);

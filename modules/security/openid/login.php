@@ -1,6 +1,7 @@
 ﻿<?php
-$features = array('theme');
 require '../../../main.inc';
+$features = array('theme');
+$cameralife = CameraLife::cameraLifeWithFeatures($features);
 ?>
 <!DOCTYPE html>
 <html lang="en">

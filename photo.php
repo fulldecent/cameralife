@@ -1,12 +1,14 @@
 <?php
+
 /**
  * @author William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
 
-$features = array('theme', 'security', 'fileStore');
 require 'main.inc';
+$features = array('theme', 'security', 'fileStore');
+$cameralife = CameraLife::cameraLifeWithFeatures($features);
 
 if (!Photo::photoExists($_GET['id'])) {
     header("HTTP/1.0 404 Not Found");

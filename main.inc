@@ -1,7 +1,4 @@
 <?php
-#if (strpos($_SERVER['REMOTE_ADDR'], '192.168') === false)
-#die('site down 4 maintenance');
-
 /**
  * Carries classes CameraLife, CameraLife Module and View
  * @author William Entriken <cameralife@phor.net>
@@ -11,29 +8,6 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 define('CAMERALIFE_LATEST_SCHEMA_VERSION', '4');
-
-
-// Is this the first run?
-if (file_exists(dirname(__FILE__) . '/modules/config.inc')) {
-    require(dirname(__FILE__) . '/modules/config.inc');
-} else {
-    $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-    || $_SERVER['SERVER_PORT'] == 443;
-    $url = ($secure?'https://':'http://').$_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/setup/';
-    header("Location: $url");
-    die('Redirecting to installer...');
-}
-
-// Is the software newer than the database?
-if (!isset($db_schema_version) || $db_schema_version < CAMERALIFE_LATEST_SCHEMA_VERSION) {
-    header(
-        'Location: http://' . $_SERVER['HTTP_HOST'] . rtrim(
-            dirname($_SERVER['PHP_SELF']),
-            '/'
-        ) . '/setup/upgrade/upgrade.php'
-    );
-    die('Redirecting to upgrader...');
-}
 
 require dirname(__FILE__) . '/modules/module.inc';
 
@@ -116,7 +90,7 @@ class CameraLife extends CameraLifeModule # and View
             $implementation = $this->getPref($feature);
             $this->relativeInclude('modules/' . strtolower($feature) . "/$implementation/module.inc");
             $modulename = $implementation . $feature;
-            $this->$feature = new $modulename;
+            $this->$feature = new $modulename($this);
         }
         $this->loadedFeatures[$feature] = 'loaded';
     }
@@ -151,12 +125,11 @@ class CameraLife extends CameraLifeModule # and View
 
     public function getOpenGraph()
     {
-        global $cameralife;
         $retval = array();
         $retval['og:title'] = $this->getPref('siteabbr');
         $retval['og:type'] = 'website';
         $retval['og:url'] = $this->baseURL . '/index.php';
-        $retval['og:image'] = $cameralife->iconURL('main');
+        $retval['og:image'] = $this->iconURL('main');
         $retval['og:image:type'] = 'image/png';
         return $retval;
     }
@@ -168,14 +141,14 @@ class CameraLife extends CameraLifeModule # and View
 
     public function error($message)
     {
-        global $cameralife;
+//        global $cameralife;
         echo "<link rel=\"stylesheet\" href=\"//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css\">";
         echo "<div class=\"alert\">\n";
         echo "  <h2>Camera Life has encountered an error!</h2>\n";
         echo "  <blockquote class=\"lead\">" . htmlentities($message) . "</blockquote>\n";
 
-        if (isset($cameralife->security) && $cameralife->security->authorize('admin_customize')) {
-            echo "  You can have the backtrace, since you are an admin:\n";
+        if (isset($this->security) && $this->security->authorize('admin_customize')) {
+            echo "  <p class=\"alert alert-info\">You can have the backtrace, since you are an admin:</p><hr>\n";
             $calls = debug_backtrace();
             echo "  <dl>\n";
             foreach ($calls as $call) {
@@ -202,22 +175,51 @@ class CameraLife extends CameraLifeModule # and View
         echo "</div>\n";
         exit(1);
     }
-}
-
-$cameralife = new CameraLife();
-$cameralife->getFeature('core');
-$cameralife->database = new Database();
-$cameralife->loadPreferences();
-
-if (isset($GLOBALS['features']) && count($GLOBALS['features'])) {
-    foreach ($features as $fcn) {
-        $cameralife->getFeature($fcn);
-    }
-}
-
-if (isset($_GET['receipt']) && is_numeric($_GET['receipt'])) {
-    $receipt = new Receipt($_GET['receipt']);
-    if ($receipt->isValid()) {
-        $cameralife->receipt = $receipt;
+    
+    public static function cameraLifeWithFeatures($features = array())
+    {
+        global $_GET;
+        
+        // Bootstrap /////////////////////
+        // Is this the first run?
+        if (file_exists(dirname(__FILE__) . '/modules/config.inc')) {
+            require(dirname(__FILE__) . '/modules/config.inc');
+        } else {
+            $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+            || $_SERVER['SERVER_PORT'] == 443;
+            $url = ($secure?'https://':'http://').$_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/setup/';
+            header("Location: $url");
+            die('Redirecting to installer...');
+        }
+        
+        // Is the software newer than the database?
+        if (!isset($db_schema_version) || $db_schema_version < CAMERALIFE_LATEST_SCHEMA_VERSION) {
+            header(
+                'Location: http://' . $_SERVER['HTTP_HOST'] . rtrim(
+                    dirname($_SERVER['PHP_SELF']),
+                    '/'
+                ) . '/setup/upgrade/upgrade.php'
+            );
+            die('Redirecting to upgrader...');
+        }
+        
+        // Factory /////////////////////
+        $cameralife = new CameraLife();
+        $cameralife->getFeature('core');
+        $cameralife->database = new Database();
+        $cameralife->loadPreferences();
+        if (isset($features) && count($features)) {
+            foreach ($features as $feature) {
+                $cameralife->getFeature($feature);
+            }
+        }
+        
+        if (isset($_GET['receipt']) && is_numeric($_GET['receipt'])) {
+            $receipt = new Receipt($_GET['receipt']);
+            if ($receipt->isValid()) {
+                $cameralife->receipt = $receipt;
+            }
+        }
+        return $cameralife;
     }
 }

@@ -7,9 +7,9 @@
  * @access public
  */
 
-$features = array('theme', 'fileStore', 'imageProcessing', 'security');
 require 'main.inc';
-
+$features = array('theme', 'fileStore', 'imageProcessing', 'security');
+$cameralife = CameraLife::cameraLifeWithFeatures($features);
 $folder = new Folder(stripslashes($_GET['path']), true);
 
 $count = array_sum($folder->getCounts());

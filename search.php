@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Enables search queries
  * @author William Entriken <cameralife@phor.net>
@@ -6,9 +7,9 @@
  * @access public
  */
 
-$features = array('theme');
 require 'main.inc';
-
+$features = array('theme');
+$cameralife = CameraLife::cameraLifeWithFeatures($features);
 $search = new Search($_GET['q']);
 
 /* Bonus code to log searches

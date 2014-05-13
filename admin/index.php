@@ -5,8 +5,9 @@
  * @author William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2013 William Entriken
  */
-$features = array('security', 'fileStore');
 require '../main.inc';
+$features = array('security', 'fileStore');
+$cameralife = CameraLife::cameraLifeWithFeatures($features);
 $cameralife->baseURL = dirname($cameralife->baseURL);
 
 $numdel = $cameralife->database->SelectOne('photos', 'COUNT(*)', 'status=1');

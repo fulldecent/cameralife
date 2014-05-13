@@ -10,9 +10,12 @@
 class BootstrapTheme extends ThemeModule
 {
     private $menu;
+    private $cameralife;
 
-    public function __construct()
+    public function __construct($cameralife)
     {
+        parent::__construct($cameralife);
+        $this->cameralife = $cameralife;
         $this->name = 'Bootstrap';
         $this->about = 'Sends all pages a marked-up Twitter Bootstrap content and style';
 
@@ -68,7 +71,8 @@ class BootstrapTheme extends ThemeModule
 
     public function showPage($name, $object = null)
     {
-        global $cameralife, $_SERVER, $_GET, $_POST;
+        global $_SERVER, $_GET, $_POST;
+        $cameralife = $this->cameralife;
         $objectname = strtolower($name);
         $$objectname = $object;
         require dirname(__FILE__) . '/' . strtolower($name) . '.inc';
