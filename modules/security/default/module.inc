@@ -48,7 +48,8 @@ class DefaultSecurity extends SecurityModule
 
     /**
      * @param $username
-     * @param $password
+     * @param $post
+     * @internal param $password
      * @return bool|string TRUE if successful, or error message
      */
     public function login($username, $post)
@@ -85,8 +86,9 @@ class DefaultSecurity extends SecurityModule
 
     /**
      * @param $username
-     * @param $password
-     * @param string $email
+     * @param $post
+     * @internal param $password
+     * @internal param string $email
      * @return bool|string TRUE if successful or error message
      */
     public function register($username, $post)

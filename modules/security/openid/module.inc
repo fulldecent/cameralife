@@ -92,8 +92,9 @@ class OpenIDSecurity extends SecurityModule
 
     /**
      * @param $username
-     * @param $password
-     * @param string $email
+     * @param $post
+     * @internal param $password
+     * @internal param string $email
      * @return bool|string TRUE if successful, or error message
      */
     public function register($username, $post)
@@ -178,7 +179,9 @@ class OpenIDSecurity extends SecurityModule
      *  <li>admin_file</li>
      *  <li>admin_theme </li>
      *  <li>admin_customize</li>
-     * 
+     *
+     * @param $authName
+     * @param bool $required
      * @return bool
      */
     public function authorize($authName, $required = false)

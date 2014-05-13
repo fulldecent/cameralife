@@ -19,11 +19,11 @@ abstract class ImageProcessingImage
 {
     /**
      * __construct function.
-     * 
+     *
      * @access public
      * @abstract
      * @param mixed $filename
-     * @return void
+     * @return \ImageProcessingImage
      */
     abstract public function __construct($filename);
 

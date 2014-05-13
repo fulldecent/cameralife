@@ -71,7 +71,7 @@ if (!$_GET['theme'] || preg_match('/[/\\]/', $_GET['theme'])) {
             }
         } else {
             if ($image) {
-                echo "<font color=red>NO IMAGES</font>";
+                echo "<strong>NO IMAGES</strong>";
             }
         }
 
