@@ -13,17 +13,22 @@ class Database
     public $myConnection;
     public $myPrefix;
     public $myDBH;
+    private $cameralife;
 
-    public function __construct()
+    public function __construct($cameralife)
     {
 //TODO don't use global here
-        global $cameralife, $db_host, $db_user, $db_pass, $db_name, $db_prefix;
-
+        global $db_host, $db_user, $db_pass, $db_name, $db_prefix, $db_dsn;
+        $this->cameralife = $cameralife;
         try {
-            $this->myDBH = new PDO("mysql:host={$db_host};dbname={$db_name}", $db_user, $db_pass);
+            if (isset($db_dsn)) {
+                $this->myDBH = new PDO($db_dsn, $db_user, $db_pass);
+            } else {
+                $this->myDBH = new PDO("mysql:host={$db_host};dbname={$db_name}", $db_user, $db_pass);
+            }            
             $this->myDBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (Exception $e) {
-            $cameralife->error('Database error: ' . htmlentities($e->getMessage()));
+            $this->cameralife->error('Database error: ' . htmlentities($e->getMessage()));
         }
     }
 
@@ -32,7 +37,6 @@ class Database
      */
     public function select($table, $selection = '*', $condition = '1', $extra = '', $joins = '', $bind = array())
     {
-        global $cameralife;
         if (!$condition) {
             $condition = '1';
         }
@@ -53,7 +57,7 @@ class Database
             }
             $stmt->execute();
         } catch (Exception $e) {
-            $cameralife->error('Database error: ' . htmlentities($e->getMessage()));
+            $this->cameralife->error('Database error: ' . htmlentities($e->getMessage()));
         }
 
         return new PDOIterator($stmt);

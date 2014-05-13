@@ -1,6 +1,12 @@
 <?php
 /**
  * Carries classes CameraLife, CameraLife Module and View
+ * 
+ * Also supports running from the command line with arguments
+ *  1. dns for database
+ *  2. username for database
+ *  3. password for database
+ * 
  * @author William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2013 William Entriken
  * @access public
@@ -29,7 +35,12 @@ class CameraLife extends CameraLifeModule # and View
         ini_set('magic_quotes_runtime', 0);
         ini_set('magic_quotes_sybase', 0);
         $this->baseDir = dirname(__FILE__);
-        $this->baseURL = 'http://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/');
+        if (php_sapi_name() === 'cli') {
+            $this->baseURL = 'CLI://';
+        } else {
+            $this->baseURL = 'http://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/');
+        }
+            
         $this->version = '2.7.0a1';
 
         $this->preferences[] = array('name' => 'theme', 'type' => 'string', 'default' => 'bootstrap');
@@ -178,15 +189,24 @@ class CameraLife extends CameraLifeModule # and View
     
     public static function cameraLifeWithFeatures($features = array())
     {
-        global $_GET;
+        global $_GET, $db_dsn, $db_pass, $db_name, $db_prefix;
         
+        if (php_sapi_name() === 'cli' && is_numeric($_SERVER['argc']) && $_SERVER['argc'] >= 2)
+        {
+            // Configure database using argv
+            $db_dsn = $_SERVER['argv'][1];
+            $db_pass = isset($_SERVER['argv'][2]) ? $_SERVER['argv'][2] : '';
+            $db_name = isset($_SERVER['argv'][3]) ? $_SERVER['argv'][3] : '';
+            $db_prefix = isset($_SERVER['argv'][4]) ? $_SERVER['argv'][4] : '';
+            $db_schema_version = CAMERALIFE_LATEST_SCHEMA_VERSION;
+        }
+    
         // Bootstrap /////////////////////
         // Is this the first run?
         if (file_exists(dirname(__FILE__) . '/modules/config.inc')) {
             require(dirname(__FILE__) . '/modules/config.inc');
-        } else {
-            $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-            || $_SERVER['SERVER_PORT'] == 443;
+        } elseif (!isset($db_dsn)) {
+            $secure = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
             $url = ($secure?'https://':'http://').$_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/setup/';
             header("Location: $url");
             die('Redirecting to installer...');
@@ -206,7 +226,7 @@ class CameraLife extends CameraLifeModule # and View
         // Factory /////////////////////
         $cameralife = new CameraLife();
         $cameralife->getFeature('core');
-        $cameralife->database = new Database();
+        $cameralife->database = new Database($cameralife);
         $cameralife->loadPreferences();
         if (isset($features) && count($features)) {
             foreach ($features as $feature) {
