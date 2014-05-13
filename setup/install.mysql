@@ -104,9 +104,6 @@ CREATE TABLE `logs` (
 ) ENGINE=MyISAM AUTO_INCREMENT=17511 DEFAULT CHARSET=latin1 COMMENT='Logs modifications to the system';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-INSERT INTO `preferences` VALUES('CameraLife','sitedate',NOW(),NOW());
-INSERT INTO `preferences` VALUES('CameraLife','db_version','1','1');
-
 --
 -- Table structure for table `photos`
 --
@@ -153,6 +150,9 @@ CREATE TABLE `preferences` (
   PRIMARY KEY (`prefmodule`,`prefkey`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+INSERT INTO `preferences` VALUES('CameraLife','sitedate',NOW(),NOW());
+INSERT INTO `preferences` VALUES('CameraLife','db_version','1','1');
 
 --
 -- Table structure for table `ratings`
