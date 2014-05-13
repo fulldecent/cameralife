@@ -1,6 +1,8 @@
 =======================================
 RELEASE PROCESS / AND HACKING PROCESS
 =======================================
+(Now that #65 is fixed, we should implement the regression testing as continuous integration)
+
 
 CHECK ISSUES TRACKED IN GITHUB
 
