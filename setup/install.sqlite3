@@ -1,5 +1,3 @@
-PtAGMA synchronous = OFF;
-PRAGMA journal_mode = MEMORY;
 BEGIN TRANSACTION;
 CREATE TABLE "albums" (
   "id" int(11) NOT NULL ,
