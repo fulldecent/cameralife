@@ -91,8 +91,6 @@ CREATE INDEX "ratings_id_3" ON "ratings" ("id","username","user_ip");
 CREATE INDEX "ratings_id" ON "ratings" ("id");
 CREATE INDEX "ratings_id_2" ON "ratings" ("id","username","user_ip");
 CREATE INDEX "ratings_id_4" ON "ratings" ("id");
-CREATE INDEX "likebetter_id_2" ON "likebetter" ("id","addr","chosen");
-CREATE INDEX "likebetter_id" ON "likebetter" ("id");
 CREATE INDEX "photos_fingerprint" ON "photos" ("filename","fsize");
 CREATE INDEX "photos_description" ON "photos" ("description");
 CREATE INDEX "exif_photoid" ON "exif" ("photoid");
