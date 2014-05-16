@@ -13,8 +13,9 @@
  * @copyright Copyright (c) 2001-2009 William Entriken
  */
 
-$features = array('imageProcessing', 'security', 'fileStore');
 require 'main.inc';
+$features = array('imageProcessing', 'security', 'fileStore');
+$cameralife = CameraLife::cameraLifeWithFeatures($features);
 
 is_numeric($_POST['id'])
 and $photo = new Photo($_POST['id'])

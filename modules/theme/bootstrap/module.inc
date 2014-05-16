@@ -118,7 +118,7 @@ class BootstrapTheme extends ThemeModule
      */
     public function header($view, $menu = '', $extrahead = '', $onload = '')
     {
-        global $cameralife;
+        $cameralife = $this->cameralife;
         $this->menu = $menu;
         $openGraph = $view->GetOpenGraph();
 
@@ -225,7 +225,7 @@ class BootstrapTheme extends ThemeModule
 
     public function footer()
     {
-        global $cameralife;
+        $cameralife = $this->cameralife;
         if ($this->menu) {
             ?>
             </div><!--/span-->
@@ -322,18 +322,6 @@ class BootstrapTheme extends ThemeModule
         }
         echo '</div>' . PHP_EOL;
     }
-
-    /*
-        function Section($name, $href=FALSE, $image=FALSE)
-        {
-          echo "  <div class=\"section\">\n";
-          if ($href)  echo "    <a href=\"$href\">\n";
-          if ($image) $this->Image($image, array('align'=>'middle'));
-          echo "    $name\n";
-          if ($href)  echo "    </a>\n";
-          echo "  </div>\n";
-        }
-    */
 
     /// Taken an Icon to make base url
     public function multiSection($sections, $baseURL, $conjunction = 'and', $query = null)

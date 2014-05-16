@@ -28,7 +28,7 @@ class CameraLife extends CameraLifeModule # and View
 
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct($this);        
         if (!ini_get('date.timezone')) {
             date_default_timezone_set('GMT');
         }

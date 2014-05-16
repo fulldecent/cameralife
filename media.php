@@ -22,7 +22,7 @@ $features = array('security', 'imageProcessing', 'fileStore');
 $cameralife = CameraLife::cameraLifeWithFeatures($features);
 
 $photo = new Photo(intval($_GET['id']));
-$format = isset($_GET['scale']) ? $_GET['scale'] : isset($_GET['size']) ? $_GET['size'] : 'NOSIZE';
+$format = isset($_GET['scale']) ? $_GET['scale'] : (isset($_GET['size']) ? $_GET['size'] : 'NOSIZE');
 if (!is_numeric($_GET['ver'])) {
     $cameralife->error('Required number ver missing! Query string: ' . htmlentities($_SERVER['QUERY_STRING']));
 }
