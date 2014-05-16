@@ -15,17 +15,12 @@ class Database
     public $myDBH;
     private $cameralife;
 
-    public function __construct($cameralife)
+    public function __construct($cameralife, $db_dsn, $db_user, $db_pass, $db_prefix)
     {
-//TODO don't use global here
-        global $db_host, $db_user, $db_pass, $db_name, $db_prefix, $db_dsn;
         $this->cameralife = $cameralife;
+        $this->myPrefix = $db_prefix;
         try {
-            if (isset($db_dsn)) {
-                $this->myDBH = new PDO($db_dsn, $db_user, $db_pass);
-            } else {
-                $this->myDBH = new PDO("mysql:host={$db_host};dbname={$db_name}", $db_user, $db_pass);
-            }            
+            $this->myDBH = new PDO($db_dsn, $db_user, $db_pass);
             $this->myDBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (Exception $e) {
             $this->cameralife->error('Database error: ' . htmlentities($e->getMessage()));

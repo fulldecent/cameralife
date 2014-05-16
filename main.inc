@@ -15,7 +15,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 define('CAMERALIFE_LATEST_SCHEMA_VERSION', '4');
 
-require dirname(__FILE__) . '/modules/module.inc';
+require_once dirname(__FILE__) . '/modules/module.inc';
 
 class CameraLife extends CameraLifeModule # and View
 {
@@ -189,14 +189,12 @@ class CameraLife extends CameraLifeModule # and View
     
     public static function cameraLifeWithFeatures($features = array())
     {
-        global $_GET, $db_dsn, $db_pass, $db_name, $db_prefix;
-        
         if (php_sapi_name() === 'cli' && is_numeric($_SERVER['argc']) && $_SERVER['argc'] >= 2)
         {
             // Configure database using argv
             $db_dsn = $_SERVER['argv'][1];
-            $db_pass = isset($_SERVER['argv'][2]) ? $_SERVER['argv'][2] : '';
-            $db_name = isset($_SERVER['argv'][3]) ? $_SERVER['argv'][3] : '';
+            $db_user = isset($_SERVER['argv'][2]) ? $_SERVER['argv'][2] : '';
+            $db_pass = isset($_SERVER['argv'][3]) ? $_SERVER['argv'][3] : '';
             $db_prefix = isset($_SERVER['argv'][4]) ? $_SERVER['argv'][4] : '';
             $db_schema_version = CAMERALIFE_LATEST_SCHEMA_VERSION;
         }
@@ -204,7 +202,9 @@ class CameraLife extends CameraLifeModule # and View
         // Bootstrap /////////////////////
         // Is this the first run?
         if (file_exists(dirname(__FILE__) . '/modules/config.inc')) {
-            require(dirname(__FILE__) . '/modules/config.inc');
+            require_once dirname(__FILE__) . '/modules/config.inc';
+            // Sets $db_host, $db_name, $db_user, $db_pass, $db_prefix, $db_schema_version
+            $db_dsn = "mysql:host={$db_host};dbname={$db_name}";
         } elseif (!isset($db_dsn)) {
             $secure = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
             $url = ($secure?'https://':'http://').$_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/setup/';
@@ -226,7 +226,7 @@ class CameraLife extends CameraLifeModule # and View
         // Factory /////////////////////
         $cameralife = new CameraLife();
         $cameralife->getFeature('core');
-        $cameralife->database = new Database($cameralife);
+        $cameralife->database = new Database($cameralife, $db_dsn, $db_user, $db_pass, $db_prefix);
         $cameralife->loadPreferences();
         if (isset($features) && count($features)) {
             foreach ($features as $feature) {
