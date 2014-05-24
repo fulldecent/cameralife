@@ -26,7 +26,8 @@ class Photo extends View
      * @var mixed
      * @access private
      */
-    private $context;
+     ///TODO TEMPORARY
+    public $context;
 
     /**
      * contextPhotos
@@ -124,11 +125,14 @@ class Photo extends View
         if ($key != 'hits') {
             $receipt = AuditTrail::log('photo', $this->record['id'], $key, $this->record[$key], $value);
         }
+        /*
+        ///TODO: if status is changed, update permissions in file store
+        ///TODO: also update _mod and _thumbnails
         if ($key == 'status') {
             $fullpath = rtrim('/' . ltrim($this->record['path'], '/'), '/') . '/' . $this->record['filename'];
-//      $cameralife->fileStore->setPermissions('photo', $fullpath, $value!=0);
-//TODO: also set for _mod and _ thumbnails
+            $cameralife->fileStore->setPermissions('photo', $fullpath, $value!=0);
         }
+        */
         $this->record[$key] = $value;
         $cameralife->database->Update('photos', array($key => $value), 'id=' . $this->record['id']);
 
@@ -144,7 +148,7 @@ class Photo extends View
         }
     }
 
-    /// Initialize the <var>$this->image</var> variable and collect fsize and $this->loadEXIF if possible
+    /// Initialize <var>$this->image</var> variable and collect fsize and $this->loadEXIF if possible
     public function loadImage($onlyWantEXIF = false)
     {
         global $cameralife;
@@ -237,7 +241,7 @@ class Photo extends View
 
         $temp = tempnam($cameralife->getPref('tempdir'), 'cameralife_');
         $this->image->Save($temp);
-//TODO: unlink old thumbnails
+        ///TODO: unlink old thumbnails
         $this->record['mtime'] = time();
 
         $this->record['modified'] = 1;
@@ -269,6 +273,7 @@ class Photo extends View
         global $cameralife;
         $this->set('status', 9);
         /*
+        ///TODO
         $cameralife->database->Delete('photos','id='.$this->record['id']);
         $cameralife->database->Delete('logs',"record_type='photo' AND record_id=".$this->record['id']);
         $cameralife->database->Delete('ratings',"id=".$this->record['id']);
@@ -473,7 +478,7 @@ class Photo extends View
     }
 
     /**
-     * getRelated function
+     * getRelated function sets this->context
      *
      * @access public
      * @return array - set of views that contain this photo
@@ -481,13 +486,15 @@ class Photo extends View
     public function getRelated()
     {
         global $_SERVER, $cameralife;
+        $retval = array($this->getFolder());
+        $this->context = $this->getFolder();
+        
+        // Given no better information, best context is this photo's path
+        if (!isset($_SERVER['HTTP_REFERER']))
+            return $retval;
 
-        $retval = array();
-        $this->context = false;
-
-        if (isset($_SERVER['HTTP_REFERER']) &&
-            preg_match("/start=([0-9]*)/", $_SERVER['HTTP_REFERER'], $regs)
-        ) // Find if the referer is an album
+        // Find if the referer is an album
+        if (preg_match("/album/", $_SERVER['HTTP_REFERER'], $regs)) 
         {
             if (isset($_SERVER['HTTP_REFERER']) &&
                 (preg_match("#album.php\?id=([0-9]*)#", $_SERVER['HTTP_REFERER'], $regs) || preg_match(
@@ -509,7 +516,7 @@ class Photo extends View
             "'" . addslashes($this->get('description')) . "' LIKE CONCAT('%',term,'%')"
         );
         while ($albumrecord = $result->fetchAssoc()) {
-            if (($this->context instanceof Album) && $this->context->get('id') == $albumrecord['id']) // PHP5
+            if (($this->context instanceof Album) && $this->context->get('id') == $albumrecord['id'])
             {
                 continue;
             }
@@ -518,9 +525,7 @@ class Photo extends View
         }
 
         // Did they come from a search??
-        if (isset($_SERVER['HTTP_REFERER']) &&
-            preg_match("#q=([^&]*)#", $_SERVER['HTTP_REFERER'], $regs)
-        ) {
+        if (preg_match("#q=([^&]*)#", $_SERVER['HTTP_REFERER'], $regs)) {
             $search = new Search($regs[1]);
             $retval[] = $search;
             $this->context = $search;
@@ -530,14 +535,6 @@ class Photo extends View
             $counts = $search->getCounts();
             if ($counts['photos'] > 1) {
                 $retval[] = $search;
-            }
-        }
-
-        if (strlen($this->get('path')) > 0) {
-            $folder = $this->getFolder();
-            $retval[] = $folder;
-            if (!$this->context) {
-                $this->context = $folder;
             }
         }
 

@@ -263,4 +263,19 @@ class Search extends View
         return $this->myQuery;
     }
 
+    public function getOpenGraph()
+    {
+        global $cameralife;
+        $retval = array();
+        $retval['og:title'] = 'Search for: ' . $this->myQuery;
+        $retval['og:type'] = 'website';
+        //TODO see https://stackoverflow.com/questions/22571355/the-correct-way-to-encode-url-path-parts
+        $retval['og:url'] = $cameralife->baseURL . '/search.php?q=' . str_replace(" ", "%20", $this->myQuery);
+        $retval['og:image'] = $cameralife->iconURL('search');
+        $retval['og:image:type'] = 'image/png';
+        //$retval['og:image:width'] =
+        //$retval['og:image:height'] =
+        return $retval;
+    }
+
 }

@@ -48,6 +48,9 @@ class Folder extends Search
         @$this->mySearchFolderCondition = "path LIKE '" . mysql_real_escape_string(
                 $this->path
             ) . "/%' AND path NOT LIKE '" . mysql_real_escape_string($this->path) . "/%/'";
+        if ($this->path == '/') {
+            @$this->mySearchFolderCondition = "path LIKE '/%' AND path NOT LIKE '/%/%'";
+        }
     }
 
     public function getPrevious()
@@ -473,5 +476,4 @@ class Folder extends Search
         //$retval['og:image:height'] =
         return $retval;
     }
-
 }

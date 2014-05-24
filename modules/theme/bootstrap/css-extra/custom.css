@@ -74,3 +74,24 @@
 .clipbox {
     overflow: hidden;
 }
+
+/* https://stackoverflow.com/questions/13518833/making-all-photos-square-via-css */
+.croph, .cropv {
+        width:80px;     
+        height:80px;    
+        overflow:hidden;    
+        margin: 4px;
+        border-radius: 4px;
+}
+
+.croph img {
+        width:auto;
+        height: 100%;   
+}
+
+.cropv img {
+        width:100%;
+        height: auto;
+}
+
+

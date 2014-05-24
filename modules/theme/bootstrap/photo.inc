@@ -437,6 +437,31 @@ echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px sol
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-12">
+        <h2>Context</h2>
+        <?php
+        $photo->getContext(); /// TODO TEMPORARY HACK
+        $context = $photo->context;
+        $og = $context->getOpenGraph();
+        $hHref = htmlspecialchars($og['og:url']);
+        $hDescription = htmlspecialchars($og['og:title']);
+        echo "<p><a href=\"$hHref\">$hDescription</a></p>";
+//        var_dump($og, $context);
+        ?>
+        <?php
+        foreach ($photo->getContext() as $contextPhoto) {
+            $og = $contextPhoto->getOpenGraph();
+            $class = $og['og:image:width'] > $og['og:image:height'] ? 'croph' : 'cropv';
+            $hHref = htmlspecialchars($og['og:url']);
+            $hSrc = htmlspecialchars($contextPhoto->getMediaURL('thumbnail'));
+            $hDescription = htmlspecialchars($contextPhoto->get('description'));
+            echo "<a href=\"$hHref\" class=\"$class pull-left \"><img src=\"$hSrc\" alt=\"$hDescription\"></a>";
+        }
+        ?>
+    </div>
+</div>
+
 <?php
 # Cache the next image the user is likely to look at
 if ($photoNext) {
