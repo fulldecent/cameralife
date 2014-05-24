@@ -186,7 +186,7 @@ class GDImageProcessingImage extends ImageProcessingImage
         } else {
             $imgDest = imagecreatetruecolor($srcX, $srcY);
         }
-    
+
         if ($angle == 90) {
             for ($x = 0; $x < $srcX; $x++) {
                 for ($y = 0; $y < $srcY; $y++) {
@@ -206,9 +206,9 @@ class GDImageProcessingImage extends ImageProcessingImage
                 }
             }
         }
-    
+
         return ($imgDest);
-    } 
+    }
 }
 
 

@@ -41,7 +41,8 @@ class LocalFileStore extends FileStore
      * We don't not have special URLs to access the photos.
      * The parent class defaults to returning FALSE.
      */
-    public function getURL($bucket, $path){
+    public function getURL($bucket, $path)
+    {
         return false;
     }
 

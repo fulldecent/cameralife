@@ -180,9 +180,9 @@ class Photo extends View
 
         $this->loadImage(); // sets $this->EXIF and $this-record
         if (
-          ($cameralife->getPref('autorotate') == 'yes') && 
-          ($this->record['modified'] == null || $this->record['modified'] == 0) &&
-          isset($this->EXIF['Orientation'])
+            ($cameralife->getPref('autorotate') == 'yes') &&
+            ($this->record['modified'] == null || $this->record['modified'] == 0) &&
+            isset($this->EXIF['Orientation'])
         ) {
             if ($this->EXIF['Orientation'] == 3) {
                 $this->rotate(180);
@@ -487,19 +487,19 @@ class Photo extends View
 
         if (isset($_SERVER['HTTP_REFERER']) &&
             preg_match("/start=([0-9]*)/", $_SERVER['HTTP_REFERER'], $regs)
-        )
-
-        // Find if the referer is an album
-        if (isset($_SERVER['HTTP_REFERER']) &&
-            (preg_match("#album.php\?id=([0-9]*)#", $_SERVER['HTTP_REFERER'], $regs) || preg_match(
-                "#albums/([0-9]+)#",
-                $_SERVER['HTTP_REFERER'],
-                $regs
-            ))
-        ) {
-            $album = new Album($regs[1]);
-            $retval[] = $album;
-            $this->context = $album;
+        ) // Find if the referer is an album
+        {
+            if (isset($_SERVER['HTTP_REFERER']) &&
+                (preg_match("#album.php\?id=([0-9]*)#", $_SERVER['HTTP_REFERER'], $regs) || preg_match(
+                        "#albums/([0-9]+)#",
+                        $_SERVER['HTTP_REFERER'],
+                        $regs
+                    ))
+            ) {
+                $album = new Album($regs[1]);
+                $retval[] = $album;
+                $this->context = $album;
+            }
         }
 
         // Find all albums that contain this photo, this is not 100%

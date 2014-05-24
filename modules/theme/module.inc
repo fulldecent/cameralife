@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The base class for themes
  */

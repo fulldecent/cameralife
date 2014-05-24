@@ -4,7 +4,7 @@
 *
 * Install guide
 *
-* This file will help you install Camera Life, if you are upgrading, read 
+* This file will help you install Camera Life, if you are upgrading, read
 * the file UPGRADE.
 *
 
@@ -21,7 +21,7 @@
 
  C. The hard way - if auto install fails
 
-   Note: If using tablename prefixes: edit setup/install.mysql and add the 
+   Note: If using tablename prefixes: edit setup/install.mysql and add the
    prefix to each table in each INSERT and CREATE statement
 
    Using linux:
@@ -56,6 +56,6 @@
 
  D. Trouble
 
-   We would love to improve the program by hearing your feedback. Mail us 
+   We would love to improve the program by hearing your feedback. Mail us
    at cameralife AT phor.net (start subject with "CAMERALIFE-BUGS:")
 

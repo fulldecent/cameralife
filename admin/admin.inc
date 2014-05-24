@@ -23,7 +23,7 @@ function renderPrefsAsHTML($module)
         echo "<p>(no settings for this module)</p>\n";
         return;
     }
-    
+
     echo "<form class=\"form-horizontal\" method=\"post\" action=\"controller_prefs.php\">\n";
     echo "<input type=\"hidden\" name=\"target\" value=\"" . $_SERVER['PHP_SELF'] . "\" />\n";
     echo "<table>\n";
@@ -38,7 +38,9 @@ function renderPrefsAsHTML($module)
         if ($pref['type'] == 'number') {
             echo "      <input class=\"form-control\" type=\"number\" name=\"$tag\" value=\"$value\" />\n";
         } elseif ($pref['type'] == 'string') {
-            echo "      <input class=\"form-control\" type=\"text\" name=\"$tag\" value=\"".htmlspecialchars($value)."\" />\n";
+            echo "      <input class=\"form-control\" type=\"text\" name=\"$tag\" value=\"" . htmlspecialchars(
+                    $value
+                ) . "\" />\n";
         }
         if ($pref['type'] == 'directory' || $pref['type'] == 'directoryrw') {
             echo "      <input class=\"form-control\" type=\"text\" name=\"$tag\" value=\"$value\" />\n";

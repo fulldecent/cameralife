@@ -5,7 +5,7 @@
  * @access public
  * @copyright Copyright (c) 2001-2009 William Entriken
  */
- 
+
 # $cameralife set by showPage()
 $cameralife->getFeature('security');
 $cameralife->getFeature('fileStore');

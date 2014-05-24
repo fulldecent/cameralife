@@ -34,15 +34,17 @@ function html_select_auth($param_name)
         4 => 'Administrator',
         5 => 'Owner'
     );
-    echo "      <select name=\"$tag\">\n";    
+    echo "      <select name=\"$tag\">\n";
     foreach ($authLevels as $authLevelNum => $authLevelName) {
-        if ($cameralife->security->getPref($param_name) == $authLevelNum)
+        if ($cameralife->security->getPref($param_name) == $authLevelNum) {
             echo "  <option selected value=\"$authLevelNum\">$authLevelName</option>\n";
-        else
+        } else {
             echo "  <option value=\"$authLevelNum\">$authLevelName</option>\n";
+        }
     }
     echo "</select>\n";
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -72,11 +74,11 @@ function html_select_auth($param_name)
     </script>
 </head>
 <body>
-  <div class="navbar navbar-inverse navbar-static-top">
-      <div class="container">
-          <span class="navbar-brand"><a href="../"><?= $cameralife->getPref("sitename") ?></a> / Administration</span>
-      </div>
-  </div>
+<div class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+        <span class="navbar-brand"><a href="../"><?= $cameralife->getPref("sitename") ?></a> / Administration</span>
+    </div>
+</div>
 
 <div class="container">
 
@@ -163,19 +165,20 @@ function html_select_auth($param_name)
                 ?>
         </table>
 
-<?php } elseif ($_GET['page'] == 'policies') { ?>
+        <?php } elseif ($_GET['page'] == 'policies') { ?>
         <form method="post" action="<?= $cameralife->baseURL . '/admin/controller_prefs.php' ?>">
             <input type="hidden" name="target"
                    value="<?=
                    $cameralife->baseURL . '/modules/security/' . $cameralife->getPref(
                        'security'
                    ) . '/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
+
             <p class="lead">Permissions - <i>the minimum user class required to perform certain actions</i></p>
             <table class="table">
                 <tr>
                     <td>Edit photo descriptions</td>
                     <td><?php html_select_auth("auth_photo_rename") ?></td>
-                </td>
+                    </td>
                 <tr>
                     <td>Delete photos (can be easily restored in file manager)</td>
                     <td><?php html_select_auth("auth_photo_delete") ?></td>
@@ -204,7 +207,7 @@ function html_select_auth($param_name)
                     <td><?php html_select_auth("auth_admin_customize") ?></td>
                 </tr>
             </table>
-<?php } ?>
+            <?php } ?>
             <p>
                 <input type="submit" value="Commit Changes" class="btn btn-primary">
                 <a href="users.php" class="btn">Revert to last saved</a>

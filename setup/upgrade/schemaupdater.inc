@@ -1,4 +1,5 @@
 <?php
+
 abstract class SchemaUpdater
 {
     public $scriptInfo;

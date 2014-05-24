@@ -64,7 +64,7 @@
 * Separated filesystem calls and preferences into modules
 * Check for update from the admin interface
 * Moved all theme to its own separate API
-* Automatically updates when the photos directory is changed 
+* Automatically updates when the photos directory is changed
 * Renames and flags can be undone immediately (a la gmail)
 * PNG support
 * Uses mod_rewrite if possible, setup checks for mod_rewrite

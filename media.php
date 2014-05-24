@@ -72,7 +72,7 @@ if ($format == 'photo' || $format == '') {
 list($file, $temp, $mtime) = $cameralife->fileStore->getFile($bucket, $filepath);
 if (!$file) {
     $photo->generateThumbnail();
-    list($file, $temp, $mtime) = $cameralife->fileStore->getFile($bucket, $filepath);    
+    list($file, $temp, $mtime) = $cameralife->fileStore->getFile($bucket, $filepath);
 }
 
 if ($extension == 'jpg' || $extension == 'jpeg') {
@@ -93,8 +93,9 @@ header("Date: " . gmdate("D, d M Y H:i:s", $mtime) . " GMT");
 header("Last-Modified: " . gmdate("D, d M Y H:i:s", $mtime) . " GMT");
 header("Expires: " . gmdate("D, d M Y H:i:s", time() + 2592000) . " GMT"); // One month
 
-if ($file)
+if ($file) {
     readfile($file);
+}
 if ($temp) {
     unlink($file);
 }

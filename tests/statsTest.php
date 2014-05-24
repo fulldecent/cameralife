@@ -6,11 +6,12 @@ class StatsTest extends PHPUnit_Framework_TestCase
 {
     public function testDumbTest()
     {
-        $this->assertEquals(1,1);
+        $this->assertEquals(1, 1);
     }
+
     public function testDumbTest2()
     {
         $stats = new Stats();
-        $this->assertEquals(1,1);
+        $this->assertEquals(1, 1);
     }
 }
