@@ -206,10 +206,6 @@ class BootstrapTheme extends ThemeModule
                             <i class="icon-plus"></i>
                             Upload
                         </a>
-                        <a class="btn btn-default navbar-btn navbar-right" href="#">
-                            <i class="icon-star"></i>
-                            Get email updates
-                        </a>
                 </div>
                 <!-- /.navbar-collapse -->
             </div>

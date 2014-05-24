@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/../modules/core/stats.class.php';
 
-class MoneyTest extends PHPUnit_Framework_TestCase
+class StatsTest extends PHPUnit_Framework_TestCase
 {
     public function testDumbTest()
     {
