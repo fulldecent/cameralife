@@ -23,7 +23,7 @@ function renderPrefsAsHTML($module)
         echo "<p>(no settings for this module)</p>\n";
         return;
     }
-    
+
     echo "<form class=\"form-horizontal\" method=\"post\" action=\"controller_prefs.php\">\n";
     echo "<input type=\"hidden\" name=\"target\" value=\"" . $_SERVER['PHP_SELF'] . "\" />\n";
     echo "<table>\n";

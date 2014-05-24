@@ -72,7 +72,7 @@ if ($format == 'photo' || $format == '') {
 list($file, $temp, $mtime) = $cameralife->fileStore->getFile($bucket, $filepath);
 if (!$file) {
     $photo->generateThumbnail();
-    list($file, $temp, $mtime) = $cameralife->fileStore->getFile($bucket, $filepath);    
+    list($file, $temp, $mtime) = $cameralife->fileStore->getFile($bucket, $filepath);
 }
 
 if ($extension == 'jpg' || $extension == 'jpeg') {

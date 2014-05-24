@@ -31,9 +31,9 @@ $nextUpgraderFile = './' . strtolower($nextUpgraderClass) . '.inc';
             <div class="page-header">
                 <h1>Camera Life Database Updater Utility</h1>
                 <p class="lead">
-                    Your database schema version is <?php echo $installed_version ?>. 
+                    Your database schema version is <?php echo $installed_version ?>.
                     The needed version is <?php echo CAMERALIFE_LATEST_SCHEMA_VERSION ?>.
-                </p>                
+                </p>
             </div>
             <?php
             if ($installed_version >= CAMERALIFE_LATEST_SCHEMA_VERSION) {
@@ -64,6 +64,6 @@ $nextUpgraderFile = './' . strtolower($nextUpgraderClass) . '.inc';
                 }
             }
     ?>
-    </div> 
+    </div>
   </body>
 </html>

@@ -114,7 +114,7 @@ if (file_exists('../.htaccess')) {
     );
 } else {
     $checkPrerequesites[] = array(
-        'desc' => 'Your <code>.htaccess</code> was not unpacked, check your ZIP file', 
+        'desc' => 'Your <code>.htaccess</code> was not unpacked, check your ZIP file',
         'type' => 'success'
     );
     $fixes[] = array(
@@ -131,7 +131,7 @@ if (isset($_SESSION['openid_identity'])) {
     );
 } else {
     $checkPrerequesites[] = array(
-        'desc' => 'You did not log in with OpenID, go back', 
+        'desc' => 'You did not log in with OpenID, go back',
         'type' => 'danger'
     );
 }
@@ -300,8 +300,8 @@ IDENTIFIED BY '<b>pass</b>';</pre>
                 </li>
                 <li>Click SQL along the top, then paste in:
                 <pre class="code">CREATE DATABASE <b>cameralife</b>;
-GRANT ALL ON <b>cameralife</b>.* 
-TO <b>user</b>@<b>localhost</b> 
+GRANT ALL ON <b>cameralife</b>.*
+TO <b>user</b>@<b>localhost</b>
 IDENTIFIED BY '<b>pass</b>';</pre>
                 </li>
             <?php } ?>

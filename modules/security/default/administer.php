@@ -34,7 +34,7 @@ function html_select_auth($param_name)
         4 => 'Administrator',
         5 => 'Owner'
     );
-    echo "      <select name=\"$tag\">\n";    
+    echo "      <select name=\"$tag\">\n";
     foreach ($authLevels as $authLevelNum => $authLevelName) {
         if ($cameralife->security->getPref($param_name) == $authLevelNum)
             echo "  <option selected value=\"$authLevelNum\">$authLevelName</option>\n";

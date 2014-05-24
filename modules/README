@@ -1,7 +1,7 @@
 Camera Life Module API
 
 
-Camera life has FEATURES, and each feature is a folder in the modules/folder. Functionality in a FEATURE is implemented by a MODULE. 
+Camera life has FEATURES, and each feature is a folder in the modules/folder. Functionality in a FEATURE is implemented by a MODULE.
 
 When a page loads, it requests FEATURES like this:
 $features=array('theme','fileStore', 'imageProcessing', 'security');

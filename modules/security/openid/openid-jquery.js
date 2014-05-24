@@ -31,7 +31,7 @@ openid = {
 
 	/**
 	 * Class constructor
-	 * 
+	 *
 	 * @return {Void}
 	 */
 	init : function(input_id) {
@@ -79,7 +79,7 @@ openid = {
 
 	/**
 	 * Provider image click
-	 * 
+	 *
 	 * @return {Void}
 	 */
 	signin : function(box_id, onload) {
@@ -104,7 +104,7 @@ openid = {
 
 	/**
 	 * Sign-in button click
-	 * 
+	 *
 	 * @return {Boolean}
 	 */
 	submit : function() {

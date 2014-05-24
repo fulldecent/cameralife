@@ -1,12 +1,12 @@
 <?php
 /**
  * Carries classes CameraLife, CameraLife Module and View
- * 
+ *
  * Also supports running from the command line with arguments
  *  1. dns for database
  *  2. username for database
  *  3. password for database
- * 
+ *
  * @author William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2013 William Entriken
  * @access public
@@ -28,7 +28,7 @@ class CameraLife extends CameraLifeModule # and View
 
     public function __construct()
     {
-        parent::__construct($this);        
+        parent::__construct($this);
         if (!ini_get('date.timezone')) {
             date_default_timezone_set('GMT');
         }
@@ -40,7 +40,7 @@ class CameraLife extends CameraLifeModule # and View
         } else {
             $this->baseURL = 'http://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/');
         }
-            
+
         $this->version = '2.7.0a1';
 
         $this->preferences[] = array('name' => 'theme', 'type' => 'string', 'default' => 'bootstrap');
@@ -186,7 +186,7 @@ class CameraLife extends CameraLifeModule # and View
         echo "</div>\n";
         exit(1);
     }
-    
+
     public static function cameraLifeWithFeatures($features = array())
     {
         if (php_sapi_name() === 'cli' && is_numeric($_SERVER['argc']) && $_SERVER['argc'] >= 2)
@@ -198,7 +198,7 @@ class CameraLife extends CameraLifeModule # and View
             $db_prefix = isset($_SERVER['argv'][4]) ? $_SERVER['argv'][4] : '';
             $db_schema_version = CAMERALIFE_LATEST_SCHEMA_VERSION;
         }
-    
+
         // Bootstrap /////////////////////
         // Is this the first run?
         if (file_exists(dirname(__FILE__) . '/modules/config.inc')) {
@@ -211,7 +211,7 @@ class CameraLife extends CameraLifeModule # and View
             header("Location: $url");
             die('Redirecting to installer...');
         }
-        
+
         // Is the software newer than the database?
         if (!isset($db_schema_version) || $db_schema_version < CAMERALIFE_LATEST_SCHEMA_VERSION) {
             header(
@@ -222,7 +222,7 @@ class CameraLife extends CameraLifeModule # and View
             );
             die('Redirecting to upgrader...');
         }
-        
+
         // Factory /////////////////////
         $cameralife = new CameraLife();
         $cameralife->getFeature('core');
@@ -233,7 +233,7 @@ class CameraLife extends CameraLifeModule # and View
                 $cameralife->getFeature($feature);
             }
         }
-        
+
         if (isset($_GET['receipt']) && is_numeric($_GET['receipt'])) {
             $receipt = new Receipt($_GET['receipt']);
             if ($receipt->isValid()) {

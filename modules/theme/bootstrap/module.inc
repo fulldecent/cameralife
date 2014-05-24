@@ -387,7 +387,7 @@ class BootstrapTheme extends ThemeModule
                     parse_str(parse_url($url, PHP_URL_QUERY), $query);
                     $query['start'] = $i;
                     $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
-                
+
                     echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">&raquo;</a></li>";
                 } else {
                     echo "<li class=\"disabled\"><span>&raquo;</span></li>";
@@ -396,7 +396,7 @@ class BootstrapTheme extends ThemeModule
             echo "</ul>\n";
         }
     }
-    
+
     public function addParam($url, $var, $val)
     {
       parse_str(parse_url($url, PHP_URL_QUERY), $query);

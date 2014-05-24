@@ -18,14 +18,14 @@ $cameralife->security->authorize('admin_customize', 1); // Require
 $prefs = array();
 
 foreach ($_POST as $key => $val) {
-    if ($key == 'target') { 
+    if ($key == 'target') {
         continue;
     } else {
         $array = explode('|', $key);
         if (count($array) != 2)
           $cameralife->error('Invalid module / key');
         $prefs[] = array('module'=>$array[0], 'param'=>$array[1], 'value'=>$val);
-    }     
+    }
 }
 
 foreach ($prefs as $pref) {

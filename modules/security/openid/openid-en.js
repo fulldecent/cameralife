@@ -38,7 +38,7 @@ var providers_small = {
 		url : 'http://{username}.livejournal.com/'
 	},
 	/* flickr: {
-		name: 'Flickr',        
+		name: 'Flickr',
 		label: 'Enter your Flickr username.',
 		url: 'http://flickr.com/{username}/'
 	}, */

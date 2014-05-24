@@ -1,7 +1,7 @@
 <?php
 /**
  * Manipulates images
- * 
+ *
  * @extends CameraLifeModule
  * @author William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 William Entriken
@@ -29,7 +29,7 @@ abstract class ImageProcessingImage
 
     /**
      * Clean up.
-     * 
+     *
      * @access public
      * @abstract
      * @return void
@@ -38,7 +38,7 @@ abstract class ImageProcessingImage
 
     /**
      * check function.
-     * 
+     *
      * @access public
      * @return bool
      */
@@ -46,7 +46,7 @@ abstract class ImageProcessingImage
 
     /**
      * Resizes this image and saves to this new file
-     * 
+     *
      * @access public
      * @param string $filename
      * @param int $newSize Diagonal of the new image size

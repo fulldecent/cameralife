@@ -399,25 +399,25 @@ echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px sol
             )}px)</a></li>";
 
         if ($cameralife->security->authorize('photo_rename')) {
-            echo "<li><a onClick=\"$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false\" href=\"" . 
+            echo "<li><a onClick=\"$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false\" href=\"" .
                     $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'rename')
                  . "\"><i class=\"icon-font\"></i> Rename photo</a></li>";
         }
 
         if ($cameralife->security->authorize('photo_delete')) {
-            echo "<li><a onClick=\"$('#deleteform').show();return false\" href=\"" . 
+            echo "<li><a onClick=\"$('#deleteform').show();return false\" href=\"" .
                     $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'flag')
                  . "\"><i class=\"icon-flag\"></i> Flag photo</a></li>";
         }
 
         if ($cameralife->security->authorize('photo_modify')) {
-            echo "<li><a onClick=\"$('#modify').show();return false\" href=\"" . 
+            echo "<li><a onClick=\"$('#modify').show();return false\" href=\"" .
                     $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'modify')
                  . "\"><i class=\"icon-wrench\"></i> Modify photo (rotate, revert, ...)</a></li>";
         }
 
         if ($photo->get('status') == 0) {
-            echo "<li><a onClick=\"$('#print').show();return false\" href=\"" . 
+            echo "<li><a onClick=\"$('#print').show();return false\" href=\"" .
                     $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'print')
                  . "\"><i class=\"icon-print\"></i> Order prints</a></li>";
         }

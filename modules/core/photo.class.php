@@ -180,7 +180,7 @@ class Photo extends View
 
         $this->loadImage(); // sets $this->EXIF and $this-record
         if (
-          ($cameralife->getPref('autorotate') == 'yes') && 
+          ($cameralife->getPref('autorotate') == 'yes') &&
           ($this->record['modified'] == null || $this->record['modified'] == 0) &&
           isset($this->EXIF['Orientation'])
         ) {
