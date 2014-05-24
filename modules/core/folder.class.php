@@ -128,63 +128,25 @@ class Folder extends Search
         return $result;
     }
 
-//TODO SHOULD JUST BE FROM SUPERCLASS
+    //TODO: DEPRECATED
     public function getChildren()
     {
-        global $cameralife;
-        switch ($this->mySort) {
-            case 'newest':
-                $sort = 'id desc';
-                break;
-            case 'oldest':
-                $sort = 'id';
-                break;
-            case 'az':
-                $sort = 'path';
-                break;
-            case 'za':
-                $sort = 'path desc';
-                break;
-            case 'popular':
-                $sort = 'hits desc';
-                break;
-            case 'unpopular':
-                $sort = 'hits';
-                break;
-            case 'rand':
-                $sort = 'rand()';
-                break;
-            default:
-                $sort = 'id desc';
-        }
-
-        $selection = "DISTINCT SUBSTR(path," . (strlen($this->path) + 1) . ") AS basename";
-        $condition = "path LIKE '" . addslashes($this->path) . "/%' AND status=0";
-        $extra = "ORDER BY $sort " . $this->myLimit;
-        $family = $cameralife->database->Select('photos', $selection, $condition, $extra);
-
-        $result = array();
-        while ($youngin = $family->fetchAssoc()) {
-            $result[] = new Folder($this->path . $youngin['basename'], false);
-        }
-
-        return $result;
+        return $this->getFolders();
     }
 
-//TODO: NO ENTITIES
     public function path()
     {
-        return htmlentities($this->path);
+        return $this->path;
     }
 
     public function basename()
     {
-        return basename(htmlentities($this->path));
+        return basename($this->path);
     }
 
     public function dirname()
     {
-        return dirname(htmlentities($this->path));
+        return dirname($this->path);
     }
 
     /**
@@ -256,94 +218,6 @@ class Folder extends Search
                 continue;
             }
 
-            /*
-                  // Was photo renamed lcase?
-                  if ($filename != strtolower($filename)) {
-                    $candidatephotopaths = array_keys($filesInStoreNotYetMatchedToDB, strtolower($filename));
-                    foreach ($candidatephotopaths as $candidatephotopath) {
-                      $candidatedirname=dirname($candidatephotopath);
-                      $candidatefilename=dirname($candidatephotopath);
-                      if ($candidatedirname) $candidatedirname .= '/';
-                      if ($candidatedirname == './') $candidatedirname = '';
-                      if ($photo['path'] == $candidatedirname) {
-                        unset ($filesInStoreNotYetMatchedToDB[$candidatephotopath]);
-                        $cameralife->database->Update('photos',array('filename'=>$candidatefilename),'id='.$photo['id']);
-                        continue 2;
-                      }
-                    }
-                  }
-
-                  // Was photo renamed ucase?
-                  if ($filename != strtoupper($filename)) {
-                    $candidatephotopaths = array_keys($filesInStoreNotYetMatchedToDB, strtoupper($filename));
-                    foreach ($candidatephotopaths as $candidatephotopath) {
-                      $candidatedirname=dirname($candidatephotopath);
-                      $candidatefilename=dirname($candidatephotopath);
-                      if ($candidatedirname) $candidatedirname .= '/';
-                      if ($candidatedirname == './') $candidatedirname = '';
-                      if ($photo['path'] == $candidatedirname) {
-                        unset ($filesInStoreNotYetMatchedToDB[$candidatephotopath]);
-                        $cameralife->database->Update('photos',array('filename'=>$candidatefilename),'id='.$photo['id']);
-                        continue 2;
-                      }
-                    }
-                  }
-            */
-
-            /*
-                  // Look for a photo with the same name and filesize anywhere else
-                  $candidatephotopaths = array_keys($filesInStoreNotYetMatchedToDB, $filename);
-                  foreach ($candidatephotopaths as $candidatephotopath) {
-                    $candidatedirname=dirname($candidatephotopath);
-            //TODO AND CHECK FILESIZE
-                    if ($candidatedirname) $candidatedirname .= '/';
-                    if ($candidatedirname == './') $candidatedirname = '';
-
-                    $cameralife->database->Update('photos',array('path'=>$candidatedirname),'id='.$photo['id']);
-                    $retval[] = "$filename moved to $candidatedirname";
-                    unset ($filesInStoreNotYetMatchedToDB[$candidatephotopath]);
-
-                    # keep track of the number 0234 in like DSCN_0234.jpg
-                    $number = preg_replace('/[^\d]/','',$filename);
-                    if ($number > 1000)
-                      $lastmoved = array($number, $candidatedirname);
-                    continue 2;
-                  }
-            */
-
-            /*
-                  // If two photos with consecutive names are moved to another directory
-                  // AND one of them was modified outside of Camera Life
-                  // then this will find it
-                  //
-                  // (otherwise a photo that was moved and changed would be considered lost)
-                  $lastmoved = NULL;
-                  foreach ($candidatephotopaths as $candidatephotopath) {
-                    $number = preg_replace('/[^\d]/','',$candidatephotopath);
-
-                    if ($number > 1000 && abs($number - $lastmoved[0])<5 && $newpath == $lastmoved[1]) {
-                      $candidatedirname=dirname($candidatephotopath).'/';
-                      if ($candidatedirname) $candidatedirname .= '/';
-                      if ($candidatedirname=='./') $candidatedirname = '';
-
-                      $cameralife->database->Update('photos',array('path'=>$candidatedirname),'id='.$photo['id']);
-                      $retval[] = "$photopath probably moved to $candidatedirname";
-                      unset ($filesInStoreNotYetMatchedToDB[$candidatephotopath]);
-                      $lastmoved = array($number, $candidatedirname);
-                      continue 2;
-                    } else {
-                      $str = $photo['path'].$photo['filename']." is missing, and $candidatephotopath was found, ";
-                      $str .= "they are not the same, I don't know what to do... ";
-                      $str .= "If they are the same, move latter to former, update, then move back.";
-                      $str .= "If they are different, move latter out of the photo directory, update and then move back.";
-
-                      $retval[] = $str;
-                      unset ($filesInStoreNotYetMatchedToDB[$photopath]);
-            #          unset ($filesInStoreNotYetMatchedToDB[$candidatephotopath]); # needed?
-                      continue 2;
-                    }
-                  }
-            */
             // Photo not found anywhere
             $retval[] = "$photopath was deleted from filesystem";
             $photoObj = new Photo($photo['id']);

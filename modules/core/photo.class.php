@@ -537,7 +537,6 @@ class Photo extends View
                 $retval[] = $search;
             }
         }
-
         return $retval;
     }
 
