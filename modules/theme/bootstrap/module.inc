@@ -196,16 +196,6 @@ class BootstrapTheme extends ThemeModule
                             </a>
                         <?php } ?>
                     </ul>
-                    <?php if (isset($_GET['path'])) { ?>
-                    <a class="btn btn-default navbar-btn navbar-right"
-                       href="<?= $cameralife->baseURL ?>/upload.php?path=<?= htmlentities($_GET['path']) ?>">
-                        <?php } else { ?>
-                        <a class="btn btn-default navbar-btn navbar-right"
-                           href="<?= $cameralife->baseURL ?>/upload.php">
-                            <?php } ?>
-                            <i class="icon-plus"></i>
-                            Upload
-                        </a>
                 </div>
                 <!-- /.navbar-collapse -->
             </div>
@@ -244,6 +234,15 @@ class BootstrapTheme extends ThemeModule
                 <a href="<?= $cameralife->baseURL ?>/stats.php"><i class="icon-signal"></i> Site stats</a>
                 &nbsp;
                 <a href="http://fulldecent.github.com/cameralife"><i class="icon-globe"></i> Built with Camera Life</a>
+                &nbsp;
+                <?php if (isset($_GET['path'])) { ?>
+                    <a href="<?= $cameralife->baseURL ?>/upload.php?path=<?= htmlentities($_GET['path']) ?>">
+                <?php } else { ?>
+                    <a href="<?= $cameralife->baseURL ?>/upload.php">
+                <?php } ?>
+                    <i class="icon-plus"></i>
+                    Upload
+                </a>
             </p>
         </footer>
 
