@@ -23,8 +23,7 @@ if (strtolower($_POST['action']) == 'login') {
     if (is_string($result)) {
         $cameralife->error($result);
     }
-}
-elseif (strtolower($_POST['action']) == 'register') {
+} elseif (strtolower($_POST['action']) == 'register') {
     $result = $cameralife->security->register($_POST['username'], $_POST);
     if (is_string($result)) {
         $cameralife->error($result);

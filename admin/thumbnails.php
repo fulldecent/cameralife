@@ -54,7 +54,7 @@ $numdone = isset($_GET['numdone']) ? (int)$_GET['numdone'] : 0;
     $todo = $cameralife->database->SelectOne('photos', 'count(*)', "id > $lastdone");
     $timeleft = ceil((time() - $starttime) * $todo / ($numdone + $done / 1000 + 1) / 60);
 
-    echo "<p>Progress: ".number_format($done).' of '.number_format($total)." done";
+    echo "<p>Progress: " . number_format($done) . ' of ' . number_format($total) . " done";
     if ($done != $total) {
         echo " (about $timeleft minutes left)";
     }

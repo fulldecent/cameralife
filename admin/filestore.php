@@ -55,6 +55,7 @@ require 'admin.inc';
                 load any other pages during this process, the consequences could be dire.</p>
 
             <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] . '&#63;page=' . $_GET['page'] ?>"/>
+
             <div class="control-group">
                 <label class="control-label" for="inputTheme">Filestore</label>
 

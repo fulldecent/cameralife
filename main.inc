@@ -189,8 +189,7 @@ class CameraLife extends CameraLifeModule # and View
 
     public static function cameraLifeWithFeatures($features = array())
     {
-        if (php_sapi_name() === 'cli' && is_numeric($_SERVER['argc']) && $_SERVER['argc'] >= 2)
-        {
+        if (php_sapi_name() === 'cli' && is_numeric($_SERVER['argc']) && $_SERVER['argc'] >= 2) {
             // Configure database using argv
             $db_dsn = $_SERVER['argv'][1];
             $db_user = isset($_SERVER['argv'][2]) ? $_SERVER['argv'][2] : '';
@@ -207,7 +206,10 @@ class CameraLife extends CameraLifeModule # and View
             $db_dsn = "mysql:host={$db_host};dbname={$db_name}";
         } elseif (!isset($db_dsn)) {
             $secure = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
-            $url = ($secure?'https://':'http://').$_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/setup/';
+            $url = ($secure ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . rtrim(
+                    dirname($_SERVER['PHP_SELF']),
+                    '/'
+                ) . '/setup/';
             header("Location: $url");
             die('Redirecting to installer...');
         }

@@ -21,7 +21,7 @@ $checkPrerequesites = array(); // each is {desc:HTML,type:warning/danger/success
 $fixes = array(); // each is {ubuntu:HTML,cpanel:HTML}
 
 if (function_exists('phpversion')) {
-    $checkPrerequesites[] = array('desc' => 'Using PHP version '.phpversion(), 'type' => 'success');
+    $checkPrerequesites[] = array('desc' => 'Using PHP version ' . phpversion(), 'type' => 'success');
 }
 
 if (function_exists('mysql_query')) {
@@ -42,9 +42,9 @@ if (function_exists('gd_info')) {
         $checkPrerequesites[] = array('desc' => 'GD needs to support JPEG, but it does not', 'type' => 'danger');
         $fixes[] = array(
             'Ubuntu' => "See http://us4.php.net/manual/en/ref.image.php for more information. Following is configuration about your GD: " . print_r(
-                $info,
-                true
-            ),
+                    $info,
+                    true
+                ),
             'CPanel' => 'Contact your host to configure PHP-GD for JPEG'
         );
     }
@@ -67,7 +67,7 @@ if (get_magic_quotes_gpc() == 0) {
 }
 
 $url = 'http://' . $_SERVER['HTTP_HOST'] . ($_SERVER['SERVER_PORT'] == 80 ? '' : ':' . $_SERVER['SERVER_PORT']);
-$url .= str_replace(basename(__FILE__), '', $_SERVER['PHP_SELF']). 'images/clear-REWRITETEST.gif';
+$url .= str_replace(basename(__FILE__), '', $_SERVER['PHP_SELF']) . 'images/clear-REWRITETEST.gif';
 if (@fopen($url, 'r')) {
     $checkPrerequesites[] = array(
         'desc' => 'Mod rewrite is set up correctly, you can use pretty URLs',
@@ -188,6 +188,7 @@ if (isset($_SESSION['openid_identity'])) {
         <div class="panel-heading">
             <div class="row">
                 <h3 class="col-sm-6">Site setup</h3>
+
                 <div class="btn-group col-sm-6" style="padding-top:20px; padding-bottom:10px">
                     <?php
                     foreach (array('Ubuntu', 'CPanel', 'MAMP') as $aSystem) {

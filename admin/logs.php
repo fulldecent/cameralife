@@ -100,19 +100,19 @@ if ($checkpointDate) {
             <label class="checkbox inline">
                 <input type="checkbox" name="showme" <?php if ($_POST["showme"]) {
                     echo " checked";
-} ?>>
+                } ?>>
                 <i class="icon-user"></i> Me
             </label>
             <label class="checkbox inline">
                 <input type="checkbox" name="showreg" <?php if ($_POST["showreg"]) {
                     echo " checked";
-} ?>>
+                } ?>>
                 <i class="icon-user"></i> registered users
             </label>
             <label class="checkbox inline">
                 <input type="checkbox" name="showunreg" <?php if ($_POST["showunreg"]) {
                     echo " checked";
-} ?>>
+                } ?>>
                 <i class="icon-user"></i> Unregistered users
             </label>
         </div>
@@ -124,26 +124,26 @@ if ($checkpointDate) {
             <label class="checkbox inline">
                 <input type="checkbox" name="showphotos" <?php if ($_POST["showphotos"]) {
                     echo " checked";
-} ?>>
+                } ?>>
                 <img src="<?= $cameralife->iconURL('small-photo') ?>"> Photos
             </label>
             <label class="checkbox inline">
                 <input type="checkbox" name="showalbums" <?php if ($_POST["showalbums"]) {
                     echo " checked";
-} ?>>
+                } ?>>
                 <img src="<?= $cameralife->iconURL('small-album') ?>"> Albums
             </label>
             <label class="checkbox inline">
                 <input type="checkbox" name="showusers" <?php if ($_POST["showusers"]) {
                     echo " checked";
-} ?>>
+                } ?>>
                 <img src="<?= $cameralife->iconURL('small-login') ?>"> Users
             </label>
             <label class="checkbox inline">
                 <input type="checkbox"
                        name="showpreferences" <?php if ($_POST["showpreferences"]) {
                     echo " checked";
-} ?>>
+                } ?>>
                 <img src="<?= $cameralife->iconURL('small-admin') ?>"> Preferences
             </label>
         </div>
@@ -239,12 +239,12 @@ if ($checkpointDate) {
                 echo '<input type="radio" name="' . $record['maxid'] . '" value="' . $chain[0]->Get('id') . '"> ';
                 if ($fromReceipt) {
                     echo htmlentities($oldValue) . ' <span class="label label-info"> ' . $receipt->get(
-                        'value_field'
-                    ) . ' from before checkpoint</span>';
+                            'value_field'
+                        ) . ' from before checkpoint</span>';
                 } else {
                     echo htmlentities($oldValue) . ' <span class="label"> default ' . $receipt->get(
-                        'value_field'
-                    ) . '</span>';
+                            'value_field'
+                        ) . '</span>';
                 }
                 echo '</label>';
                 for ($i = 0; $i < count($chain) - 1; $i++) {
@@ -259,8 +259,8 @@ if ($checkpointDate) {
                 echo '<label class="checkbox">';
                 echo '<input type="radio" name="' . $record['maxid'] . '" checked> ';
                 echo $chain[$i]->Get('value_new') . ' <span class="label label-success">current ' . $chain[$i]->Get(
-                    'value_field'
-                ) . '</span>';
+                        'value_field'
+                    ) . '</span>';
                 echo '</label>';
                 ?>
             </div>

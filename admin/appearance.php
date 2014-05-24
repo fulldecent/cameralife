@@ -43,9 +43,12 @@ require 'admin.inc';
     <h2>Modules</h2>
 
     <form class="form-horizontal well" method="post" action="controller_prefs.php">
-        <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] . '&#63;page=' . htmlspecialchars($_GET['page']) ?>"/>
+        <input type="hidden" name="target"
+               value="<?= $_SERVER['PHP_SELF'] . '&#63;page=' . htmlspecialchars($_GET['page']) ?>"/>
+
         <div class="form-group form-inline">
             <label class="col-md-2 control-label" for="inputTheme">Theme engine</label>
+
             <div class="col-md-10">
                 <select name="CameraLife|theme" id="inputTheme" class="form-control">
                     <?php
@@ -66,6 +69,7 @@ require 'admin.inc';
         </div>
         <div class="form-group form-inline">
             <label class="col-md-2 control-label" for="inputIconset">Iconset</label>
+
             <div class="col-md-10">
                 <select name="CameraLife|iconset" id="inputIconset" class="form-control">
                     <?php
@@ -91,19 +95,25 @@ require 'admin.inc';
     <form method="post" action="controller_prefs.php" class="form-horizontal">
         <div class="form-group form-inline">
             <label class="col-md-2 control-label" for="sitename">Site name</label>
+
             <div class="col-md-10 form-inline">
-                <input type="text" id="sitename" name="CameraLife|sitename" size=30 value="<?= $cameralife->getPref('sitename') ?>" class="form-control">
+                <input type="text" id="sitename" name="CameraLife|sitename" size=30
+                       value="<?= $cameralife->getPref('sitename') ?>" class="form-control">
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label" for="siteabbr">Site abbreviation</label>
+
             <div class="col-md-10 form-inline">
-                <input type="text" id="siteabbr" name="CameraLife|siteabbr" size=30 value="<?= $cameralife->getPref('siteabbr') ?>" class="form-control" style="width:auto; display:inline-block">
+                <input type="text" id="siteabbr" name="CameraLife|siteabbr" size=30
+                       value="<?= $cameralife->getPref('siteabbr') ?>" class="form-control"
+                       style="width:auto; display:inline-block">
                 <span class="text-muted">refers to the main page</span>
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label" for="owner_email">Owner E-mail address</label>
+
             <div class="col-md-10 form-inline">
                 <input type="text" id="owner_email" name="CameraLife|owner_email" size=30
                        value="<?= $cameralife->getPref('owner_email') ?>" class="form-control">
@@ -132,6 +142,7 @@ require 'admin.inc';
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label" for="thumbsize">Size for thumbnails</label>
+
             <div class="col-md-10 form-inline">
                 <input type="number" id="thumbsize" name="CameraLife|thumbsize" size=10
                        value="<?= $cameralife->getPref('thumbsize') ?>" class="form-control">
@@ -149,9 +160,11 @@ require 'admin.inc';
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label" for="optionsizes">Other available sizes</label>
+
             <div class="col-md-10 form-inline">
                 <input type="text" id="optionsizes" name="CameraLife|optionsizes" size=30
-                       value="<?= join(',', preg_split('/[, ]+/', $cameralife->getPref('optionsizes'))) ?>" class="form-control">
+                       value="<?= join(',', preg_split('/[, ]+/', $cameralife->getPref('optionsizes'))) ?>"
+                       class="form-control">
                 <span class="text-muted">comma separated (you can also leave this blank)</span>
             </div>
         </div>

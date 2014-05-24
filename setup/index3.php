@@ -227,7 +227,9 @@ echo "<p>Creating tables...</p>";
 
 session_start();
 $SQL = "INSERT INTO ${prefix}users (username, password, auth, cookie, last_online)
-            VALUES ('".mysql_real_escape_string($_SESSION['openid_email'])."','".mysql_real_escape_string($_SESSION['openid_identity'])."',5,'" . $HTTP_SERVER_VARS['REMOTE_ADDR'] . "',NOW())";
+            VALUES ('" . mysql_real_escape_string($_SESSION['openid_email']) . "','" . mysql_real_escape_string(
+        $_SESSION['openid_identity']
+    ) . "',5,'" . $HTTP_SERVER_VARS['REMOTE_ADDR'] . "',NOW())";
 mysql_query($SQL)
 or die(mysql_error() . ' ' . __LINE__);
 

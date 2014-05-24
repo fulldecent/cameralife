@@ -46,8 +46,8 @@ class Folder extends Search
         @$this->mySearchPhotoCondition = "path='" . mysql_real_escape_string($this->path) . "'";
         $this->mySearchAlbumCondition = "FALSE";
         @$this->mySearchFolderCondition = "path LIKE '" . mysql_real_escape_string(
-            $this->path
-        ) . "/%' AND path NOT LIKE '" . mysql_real_escape_string($this->path) . "/%/'";
+                $this->path
+            ) . "/%' AND path NOT LIKE '" . mysql_real_escape_string($this->path) . "/%/'";
     }
 
     public function getPrevious()

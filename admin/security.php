@@ -40,9 +40,12 @@ require 'admin.inc';
     <h2>Module</h2>
 
     <form class="form-horizontal well" method="post" action="controller_prefs.php">
-        <input type="hidden" name="target" value="<?= $_SERVER['PHP_SELF'] . '&#63;page=' . htmlspecialchars($_GET['page']) ?>"/>
+        <input type="hidden" name="target"
+               value="<?= $_SERVER['PHP_SELF'] . '&#63;page=' . htmlspecialchars($_GET['page']) ?>"/>
+
         <div class="form-group form-inline">
             <label class="col-md-2 control-label" for="module">Security module</label>
+
             <div class="col-md-10">
                 <select name="CameraLife|security" id="module" class="form-control">
                     <?php

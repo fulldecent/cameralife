@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Base class for all modules -- Retrieving of preferences
  * @author William Entriken <cameralife@phor.net>
@@ -23,7 +24,7 @@ abstract class CameraLifeModule
     public $preferences;
     private $cameralife;
 
-    public function __construct($cameralife = NULL)
+    public function __construct($cameralife = null)
     {
         $this->cameralife = $cameralife;
     }
@@ -41,7 +42,7 @@ abstract class CameraLifeModule
         }
 
         $this->cameralife->error('Unable to retrieve preference: ' . get_class($this) . ' ' . $key);
-        return FALSE;
+        return false;
     }
 
     /**

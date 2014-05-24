@@ -142,7 +142,8 @@ class BootstrapTheme extends ThemeModule
             <?= $extrahead ?>
             <!-- Le styles -->
             <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-            <link rel="search" href="opensearch.xml.php" type="application/opensearchdescription+xml" title="Content Search" />
+            <link rel="search" href="opensearch.xml.php" type="application/opensearchdescription+xml"
+                  title="Content Search"/>
             <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
             <link href="<?=
             $cameralife->baseURL . "/modules/theme/" . (basename(
@@ -374,7 +375,9 @@ class BootstrapTheme extends ThemeModule
                         parse_str(parse_url($url, PHP_URL_QUERY), $query);
                         $query['start'] = $i;
                         $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
-                        echo "<li class=\"active\"><a href=\"" . htmlspecialchars($newURL) . "\">" . ($i / $perPage + 1) . "</a></li>";
+                        echo "<li class=\"active\"><a href=\"" . htmlspecialchars(
+                                $newURL
+                            ) . "\">" . ($i / $perPage + 1) . "</a></li>";
                     } else {
                         parse_str(parse_url($url, PHP_URL_QUERY), $query);
                         $query['start'] = $i;
@@ -399,9 +402,9 @@ class BootstrapTheme extends ThemeModule
 
     public function addParam($url, $var, $val)
     {
-      parse_str(parse_url($url, PHP_URL_QUERY), $query);
-      $query[$val] = $val;
-      return preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
+        parse_str(parse_url($url, PHP_URL_QUERY), $query);
+        $query[$val] = $val;
+        return preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
     }
 }
 

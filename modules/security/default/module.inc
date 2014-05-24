@@ -97,7 +97,7 @@ class DefaultSecurity extends SecurityModule
         $password = $post['password'];
         $email = $post['email'];
         $username = strtolower($username);
-        $username = preg_replace('/[^0-9a-z]/i','',$username);
+        $username = preg_replace('/[^0-9a-z]/i', '', $username);
         $result = $cameralife->database->Select('users', '*', "username='$username'");
         $password = crypt($password, $username);
         $cookie = rand(0, 999999);

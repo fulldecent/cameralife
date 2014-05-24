@@ -93,8 +93,9 @@ header("Date: " . gmdate("D, d M Y H:i:s", $mtime) . " GMT");
 header("Last-Modified: " . gmdate("D, d M Y H:i:s", $mtime) . " GMT");
 header("Expires: " . gmdate("D, d M Y H:i:s", time() + 2592000) . " GMT"); // One month
 
-if ($file)
+if ($file) {
     readfile($file);
+}
 if ($temp) {
     unlink($file);
 }

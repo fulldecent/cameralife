@@ -22,7 +22,7 @@ class AuditTrail
     {
         global $_SERVER, $cameralife;
         if ($value_old == $value_new) {
-            return NULL;
+            return null;
         }
         $log['record_type'] = $record_type;
         $log['record_id'] = $record_id;
@@ -89,7 +89,9 @@ class AuditTrail
                     }
                     break;
                 default:
-                    $cameralife->error("I don't know how to undo the parameter " . $receipt['record_type'] . '_' . $receipt['value_field']);
+                    $cameralife->error(
+                        "I don't know how to undo the parameter " . $receipt['record_type'] . '_' . $receipt['value_field']
+                    );
             }
         }
 
@@ -225,13 +227,16 @@ class Receipt
                     $condition = "status=0 and lower(description) like lower('%" . $album->Get['term'] . "%')";
                     $query = $cameralife->database->Select('photos', 'id', $condition);
                     $result = $query->fetchAssoc();
-                    if ($result)
+                    if ($result) {
                         return array('value' => $result['id'], 'fromReceipt' => false);
+                    }
                     $cameralife->error("Cannot find a poster for the album #" . $this->myRecord['record_id']);
                     return false;
                     break;
                 default:
-                    $cameralife->error("I don't know how to undo the parameter " . $this->myRecord['record_type'] . '_' . $this->myRecord['value_field']    );
+                    $cameralife->error(
+                        "I don't know how to undo the parameter " . $this->myRecord['record_type'] . '_' . $this->myRecord['value_field']
+                    );
                     return false;
             }
         }

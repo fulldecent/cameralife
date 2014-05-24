@@ -14,5 +14,5 @@ echo "<?xml version=\"1.0\"?>\n";
     <ShortName><?= $cameralife->getPref('siteabbr') ?> Search</ShortName>
     <Description><?= $cameralife->getPref('sitename') ?> Search</Description>
     <Url type="text/html" template="<?= $cameralife->baseURL ?>/search.php?q={searchTerms}"/>
-    <Query  role="example" searchTerms="cat" />
+    <Query role="example" searchTerms="cat"/>
 </OpenSearchDescription>

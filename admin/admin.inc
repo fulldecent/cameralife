@@ -38,7 +38,9 @@ function renderPrefsAsHTML($module)
         if ($pref['type'] == 'number') {
             echo "      <input class=\"form-control\" type=\"number\" name=\"$tag\" value=\"$value\" />\n";
         } elseif ($pref['type'] == 'string') {
-            echo "      <input class=\"form-control\" type=\"text\" name=\"$tag\" value=\"".htmlspecialchars($value)."\" />\n";
+            echo "      <input class=\"form-control\" type=\"text\" name=\"$tag\" value=\"" . htmlspecialchars(
+                    $value
+                ) . "\" />\n";
         }
         if ($pref['type'] == 'directory' || $pref['type'] == 'directoryrw') {
             echo "      <input class=\"form-control\" type=\"text\" name=\"$tag\" value=\"$value\" />\n";

@@ -33,29 +33,30 @@ $cameralife = CameraLife::cameraLifeWithFeatures($features);
     <h2>Login with OpenID
         <small>using any provider below</small>
     </h2>
-  	<form class="form-inline" action="process.php" method="post" id="openid_form">
-  		<input type="hidden" name="action" value="verify" />
-  		<fieldset>
-  			<div id="openid_choice">
-  				<div id="openid_btns"></div>
-  			</div>
-  			<div id="openid_input_area">
-  				<input id="openid_identifier" name="openid_identifier" type="text" value="http://" />
-  				<input class="btn btn-primary" id="openid_submit" type="submit" value="Sign-In"/>
-  			</div>
-  			<noscript>
-  				<p>OpenID is service that allows you to log-on to many different websites using a single identity.
-  				Find out <a href="http://openid.net/what/">more about OpenID</a> and <a href="http://openid.net/get/">how to get an OpenID enabled account</a>.</p>
-  			</noscript>
-  		</fieldset>
-  	</form>
+    <form class="form-inline" action="process.php" method="post" id="openid_form">
+        <input type="hidden" name="action" value="verify"/>
+        <fieldset>
+            <div id="openid_choice">
+                <div id="openid_btns"></div>
+            </div>
+            <div id="openid_input_area">
+                <input id="openid_identifier" name="openid_identifier" type="text" value="http://"/>
+                <input class="btn btn-primary" id="openid_submit" type="submit" value="Sign-In"/>
+            </div>
+            <noscript>
+                <p>OpenID is service that allows you to log-on to many different websites using a single identity.
+                    Find out <a href="http://openid.net/what/">more about OpenID</a> and <a
+                        href="http://openid.net/get/">how to get an OpenID enabled account</a>.</p>
+            </noscript>
+        </fieldset>
+    </form>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  	<script type="text/javascript" src="openid-jquery.js"></script>
-  	<script type="text/javascript" src="openid-en.js"></script>
-  	<script type="text/javascript">
-  		$(document).ready(function() {
-  			openid.init('openid_identifier');
-  		});
-  	</script>
+    <script type="text/javascript" src="openid-jquery.js"></script>
+    <script type="text/javascript" src="openid-en.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            openid.init('openid_identifier');
+        });
+    </script>
 </body>
 </html>

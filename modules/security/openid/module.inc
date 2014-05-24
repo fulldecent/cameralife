@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Implements OpenID login
  * @author William Entriken <cameralife@phor.net>

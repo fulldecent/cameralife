@@ -111,8 +111,8 @@ foreach ($_POST as $key => $val) {
             echo '<div class="col-sm-2"><div class="thumbnail text-center">';
             echo '<a href="' . htmlspecialchars($photoOpenGraph['og:url']) . '">';
             echo '<img src="' . htmlspecialchars($photoOpenGraph['og:image']) . '"></a><br />' . htmlentities(
-                $photoOpenGraph['og:title']
-            );
+                    $photoOpenGraph['og:title']
+                );
             echo '<select style="width:100%" name="' . $photo->Get('id') . '">' .
                 '<option value="0" ' . ($target_status == 0 ? 'selected' : '') . '>Public</option>' .
                 '<option value="1" ' . ($target_status == 1 ? 'selected' : '') . '>Flagged</option>' .
