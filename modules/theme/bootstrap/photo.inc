@@ -89,6 +89,9 @@ if ($photo->get('status') > 0) {
 <?php
 }
 ?>
+
+<div class="row">
+    <div class="col-md-8">
 <h1>
     <form action="<?= $cameralife->baseURL ?>/photo_controller.php" method=POST name="form" class="pull-left">
         <input type="hidden" name="id" value="<?= $photo->get('id') ?>">
@@ -115,10 +118,54 @@ if ($photo->get('status') > 0) {
            id="showHideRenameForm"
            class="btn btn-sm btn-default"
            style="<?= (isset($_GET['action']) && $_GET['action'] == 'rename') ? 'display:none' : '' ?>"
-           onclick="$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false">edit</a>
+           onclick="$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false">rename</a>
     <?php
     }
     ?>
+    <a href="<?= $photo->getMediaURL('photo') ?>" id="showHideRenameForm" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="<?= $photo->get('width') ?> x <?= $photo->get('height') ?>px">
+        <i class="icon-fullscreen"></i>
+    </a>
+    <?php if ($cameralife->security->authorize('photo_delete')) { ?>
+        <a href="<?= $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'flag') ?>"
+          class="btn btn-sm btn-default" 
+          data-toggle="tooltip" 
+          data-placement="top" 
+          title="Flag photo"
+          onClick="$('#deleteform').show();return false"
+        >
+            <i class="icon-flag"></i>
+        </a>
+    <?php } ?>
+    <?php if ($cameralife->security->authorize('photo_modify')) { ?>
+        <a href="<?= $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'modify') ?>"
+          class="btn btn-sm btn-default" 
+          data-toggle="tooltip" 
+          data-placement="top" 
+          title="Modify photo (rotate, revert, ...)"
+          onClick="$('#modify').show();return false"
+        >
+            <i class="icon-wrench"></i>
+        </a>
+    <?php } ?>
+    <?php if ($photo->get('status') == 0) { ?>
+        <a href="<?= $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'print') ?>"
+          class="btn btn-sm btn-default" 
+          data-toggle="tooltip" 
+          data-placement="top" 
+          title="Order prints"
+          onClick="$('#modify').show();return false"
+        >
+            <i class="icon-print"></i>
+        </a>
+        <a href="http://www.facebook.com/sharer.php?u=<?= rawurlencode(htmlspecialchars($openGraph['og:url'])) ?>"
+          class="btn btn-sm btn-default" 
+          data-toggle="tooltip" 
+          data-placement="top" 
+          title="Share on Facebook"
+        >
+            <i class="icon-star"></i>
+        </a>
+    <?php } ?>    
 </h1>
 <?php
 
@@ -325,7 +372,51 @@ echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px sol
 //  echo "</div>\n";
 ?>
 
+    </div>
+    <div class="col-md-4">
+        <h2>Context</h2>
+        <?php
+        $photo->getContext(); /// TODO TEMPORARY HACK
+        $context = $photo->context;
+        $og = $context->getOpenGraph();
+        $hHref = htmlspecialchars($og['og:url']);
+        $hDescription = htmlspecialchars($og['og:title']);
+        echo "<p><a href=\"$hHref\">$hDescription</a></p>";
+//        var_dump($og, $context);
+        ?>
+        <?php
+        foreach (array_slice($photo->getContext(), 0, 48) as $contextPhoto) {
+            $og = $contextPhoto->getOpenGraph();
+            $class = $og['og:image:width'] > $og['og:image:height'] ? 'croph' : 'cropv';
+            $hHref = htmlspecialchars($og['og:url']);
+            $hSrc = htmlspecialchars($contextPhoto->getMediaURL('thumbnail'));
+            $hDescription = htmlspecialchars($contextPhoto->get('description'));
+            echo "<a href=\"$hHref\" class=\"$class pull-left \"><img src=\"$hSrc\" alt=\"$hDescription\"></a>";
+        }
+        ?>
+    </div>
+</div>
 <div class="row">
+    <div class="col-md-4">
+        <h2>Comments</h2>
+        <?php
+
+        $result = $cameralife->database->Select('comments', '*', 'photo_id=' . $photo->get('id'));
+        while ($comment = $result->fetchAssoc()) {
+            echo "<strong>" . $comment['username'] . "</strong> <em>" . date(
+                    'Y-m-d',
+                    strtotime($comment['date'])
+                ) . "</em><br>" . htmlentities($comment['comment']) . "<hr>";
+        }
+        ?>
+        <form action="<?= $cameralife->baseURL ?>/photo_controller.php" method=POST name="form">
+            <input type="hidden" name="id" value="<?= $photo->get('id') ?>">
+            <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>">
+            <input type="hidden" name="action" value="comment">
+            <input name="param1" class="form-control">
+            <input type="submit" value="Post comment" class="btn">
+        </form>
+    </div>
     <div class="col-md-4">
         <h2>Information</h2>
         <dl class="dl-horizontal">
@@ -349,94 +440,6 @@ echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px sol
             }
             ?>
         </dl>
-    </div>
-    <div class="col-md-4">
-        <h2>Comments</h2>
-        <?php
-
-        $result = $cameralife->database->Select('comments', '*', 'photo_id=' . $photo->get('id'));
-        while ($comment = $result->fetchAssoc()) {
-            echo "<strong>" . $comment['username'] . "</strong> <em>" . date(
-                    'Y-m-d',
-                    strtotime($comment['date'])
-                ) . "</em><br>" . htmlentities($comment['comment']) . "<hr>";
-        }
-        ?>
-        <form action="<?= $cameralife->baseURL ?>/photo_controller.php" method=POST name="form">
-            <input type="hidden" name="id" value="<?= $photo->get('id') ?>">
-            <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>">
-            <input type="hidden" name="action" value="comment">
-            <input name="param1" class="form-control">
-            <input type="submit" value="Post comment" class="btn">
-        </form>
-    </div>
-    <div class="col-md-4">
-        <h2>Actions</h2>
-
-        <?php
-
-        echo "<ul class=\"list-unstyled\">";
-        echo "<li><a href=\"" . $photo->getMediaURL(
-                'photo'
-            ) . "\"><i class=\"icon-fullscreen\"></i> View full-sized ({$photo->get('width')} x {$photo->get(
-                'height'
-            )}px)</a></li>";
-
-        if ($cameralife->security->authorize('photo_rename')) {
-            echo "<li><a onClick=\"$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false\" href=\"" .
-                $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'rename')
-                . "\"><i class=\"icon-font\"></i> Rename photo</a></li>";
-        }
-
-        if ($cameralife->security->authorize('photo_delete')) {
-            echo "<li><a onClick=\"$('#deleteform').show();return false\" href=\"" .
-                $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'flag')
-                . "\"><i class=\"icon-flag\"></i> Flag photo</a></li>";
-        }
-
-        if ($cameralife->security->authorize('photo_modify')) {
-            echo "<li><a onClick=\"$('#modify').show();return false\" href=\"" .
-                $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'modify')
-                . "\"><i class=\"icon-wrench\"></i> Modify photo (rotate, revert, ...)</a></li>";
-        }
-
-        if ($photo->get('status') == 0) {
-            echo "<li><a onClick=\"$('#print').show();return false\" href=\"" .
-                $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'print')
-                . "\"><i class=\"icon-print\"></i> Order prints</a></li>";
-        }
-
-        echo "<li><a href=\"http://www.facebook.com/sharer.php?u='" . rawurlencode(
-                htmlspecialchars($openGraph['og:url'])
-            ) . "\"><i class=\"icon-star\"></i> Share on Facebook</a></li>";
-
-        echo "</ul>";
-        ?>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <h2>Context</h2>
-        <?php
-        $photo->getContext(); /// TODO TEMPORARY HACK
-        $context = $photo->context;
-        $og = $context->getOpenGraph();
-        $hHref = htmlspecialchars($og['og:url']);
-        $hDescription = htmlspecialchars($og['og:title']);
-        echo "<p><a href=\"$hHref\">$hDescription</a></p>";
-//        var_dump($og, $context);
-        ?>
-        <?php
-        foreach ($photo->getContext() as $contextPhoto) {
-            $og = $contextPhoto->getOpenGraph();
-            $class = $og['og:image:width'] > $og['og:image:height'] ? 'croph' : 'cropv';
-            $hHref = htmlspecialchars($og['og:url']);
-            $hSrc = htmlspecialchars($contextPhoto->getMediaURL('thumbnail'));
-            $hDescription = htmlspecialchars($contextPhoto->get('description'));
-            echo "<a href=\"$hHref\" class=\"$class pull-left \"><img src=\"$hSrc\" alt=\"$hDescription\"></a>";
-        }
-        ?>
     </div>
 </div>
 

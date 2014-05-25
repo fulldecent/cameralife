@@ -77,11 +77,11 @@
 
 /* https://stackoverflow.com/questions/13518833/making-all-photos-square-via-css */
 .croph, .cropv {
-        width:80px;     
-        height:80px;    
+        width:50px;     
+        height:50px;    
         overflow:hidden;    
-        margin: 4px;
-        border-radius: 4px;
+        margin: 2px;
+        border-radius: 2px;
 }
 
 .croph img {

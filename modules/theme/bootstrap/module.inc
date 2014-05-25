@@ -255,6 +255,12 @@ class BootstrapTheme extends ThemeModule
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         <!--    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.0/jquery.mobile.min.js"></script> -->
+        <script>  
+        $(function(){
+            $('*[data-toggle=tooltip]').tooltip();
+        });
+        </script> 
+
         <script type="text/javascript"
                 src="<?= $cameralife->baseURL . '/modules/theme/' . $cameralife->getPref('theme') ?>/theme.js"></script>
         <?php
