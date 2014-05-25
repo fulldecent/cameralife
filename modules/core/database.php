@@ -47,7 +47,9 @@ class Database
             $stmt = $this->myDBH->prepare($sql);
             if (count($bind)) {
                 foreach ($bind as $name => $val) {
-                    $stmt->bindValue(':' . $name, $val);
+                    if (stristr($condition, ':' . $name)) {
+                        $stmt->bindValue(':' . $name, $val);
+                    }
                 }
             }
             $stmt->execute();
@@ -80,7 +82,9 @@ class Database
             $stmt = $this->myDBH->prepare($sql);
             if (count($bind)) {
                 foreach ($bind as $name => $val) {
-                    $stmt->bindValue(':' . $name, $val);
+                    if (stristr($condition, ':' . $name)) {
+                        $stmt->bindValue(':' . $name, $val);
+                    }
                 }
             }
             $stmt->execute();

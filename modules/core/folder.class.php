@@ -43,11 +43,11 @@ class Folder extends Search
         }
 
 //todo use bind here, add a bind parameter to Search
-        @$this->mySearchPhotoCondition = "path='" . mysql_real_escape_string($this->path) . "'";
+        @$this->mySearchPhotoCondition = "path=:path1";
         $this->mySearchAlbumCondition = "FALSE";
-        @$this->mySearchFolderCondition = "path LIKE '" . mysql_real_escape_string(
-                $this->path
-            ) . "/%' AND path NOT LIKE '" . mysql_real_escape_string($this->path) . "/%/'";
+        @$this->mySearchFolderCondition = "path LIKE :path1 AND path NOT LIKE :path2";
+        $this->myBinds['path1'] = $this->path;
+        $this->myBinds['path2'] = '/%'.$this->path.'/%/';
         if ($this->path == '/') {
             @$this->mySearchFolderCondition = "path LIKE '/%' AND path NOT LIKE '/%/%'";
         }
@@ -239,8 +239,9 @@ class Folder extends Search
             }
 
             $newpath = dirname($newFile);
-            $condition = "filename LIKE '" . mysql_real_escape_string($newbase) . "'";
-            $result = $cameralife->database->Select('photos', 'id, filename, path', $condition);
+            $condition = "filename LIKE :fn";
+            $binds['fn'] = $newbase;
+            $result = $cameralife->database->Select('photos', 'id, filename, path', $condition, NULL, NULL, $binds);
 
             // Is anything in the fileStore too similar (given available information) to let this photo in?
             if ($photo = $result->fetchAssoc()) {

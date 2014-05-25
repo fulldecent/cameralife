@@ -1,23 +1,23 @@
 <?php
 
 /**
- *Class Search enables you to get and use the search facility
+ * Allows you to search for photos, albums, and folders in the system
  * @author William Entriken <cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright Copyright (c) 2001-2014 William Entriken
  */
 class Search extends View
 {
     public $mySearchPhotoCondition;
     public $mySearchAlbumCondition;
     public $mySearchFolderCondition;
-    public $myLimit;
     public $mySort;
-    public $mySql;
-    public $myQuery;
-    public $myCounts;
     public $myStart;
     public $myLimitCount;
+    public $myBinds;
+    private $myLimit;
+    private $myQuery;
+    private $myCounts;
 
     public function __construct($query = '')
     {
@@ -52,8 +52,6 @@ class Search extends View
             $this->mySort = $_GET['sort'];
         } elseif (isset($_COOKIE['sort'])) {
             $this->mySort = $_COOKIE['sort'];
-        } elseif (get_class($this) == 'Folder') {
-            $this->mySort = 'az';
         } else {
             $this->mySort = 'newest';
         }
@@ -102,17 +100,26 @@ class Search extends View
             $this->myCounts['photos'] = $cameralife->database->SelectOne(
                 'photos',
                 'COUNT(*)',
-                $this->mySearchPhotoCondition . ' AND status=0'
+                $this->mySearchPhotoCondition . ' AND status=0',
+                NULL,
+                NULL,
+                $this->myBinds
             );
             $this->myCounts['albums'] = $cameralife->database->SelectOne(
                 'albums',
                 'COUNT(*)',
-                $this->mySearchAlbumCondition
+                $this->mySearchAlbumCondition,
+                NULL,
+                NULL,
+                $this->myBinds
             );
             $this->myCounts['folders'] = $cameralife->database->SelectOne(
                 'photos',
                 'COUNT(DISTINCT path)',
-                $this->mySearchFolderCondition . ' AND status=0'
+                $this->mySearchFolderCondition . ' AND status=0',
+                NULL,
+                NULL,
+                $this->myBinds
             );
         }
 
@@ -162,7 +169,8 @@ class Search extends View
             'id',
             $condition,
             'ORDER BY ' . $sort . ' ' . $this->myLimit,
-            'LEFT JOIN exif ON photos.id=exif.photoid and exif.tag="Date taken"'
+            'LEFT JOIN exif ON photos.id=exif.photoid and exif.tag="Date taken"',
+            $this->myBinds
         );
         $photos = array();
         while ($row = $query->fetchAssoc()) {
@@ -203,7 +211,14 @@ class Search extends View
         }
 
         $condition = $this->mySearchAlbumCondition;
-        $query = $cameralife->database->Select('albums', 'id', $condition, 'ORDER BY ' . $sort . ' ' . $this->myLimit);
+        $query = $cameralife->database->Select(
+            'albums', 
+            'id', 
+            $condition, 
+            'ORDER BY ' . $sort . ' ' . $this->myLimit, 
+            NULL, 
+            $this->myBinds
+        );
 
         $albums = array();
         while ($row = $query->fetchAssoc()) {
@@ -248,7 +263,9 @@ class Search extends View
             'photos',
             'path, MAX(mtime) as date',
             $condition,
-            'GROUP BY path ORDER BY ' . $sort . ' ' . $this->myLimit
+            'GROUP BY path ORDER BY ' . $sort . ' ' . $this->myLimit, 
+            NULL, 
+            $this->myBinds
         );
         $folders = array();
         while ($row = $query->fetchAssoc()) {

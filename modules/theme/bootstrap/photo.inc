@@ -90,6 +90,23 @@ if ($photo->get('status') > 0) {
 }
 ?>
 <h1>
+    <form action="<?= $cameralife->baseURL ?>/photo_controller.php" method=POST name="form" class="pull-left">
+        <input type="hidden" name="id" value="<?= $photo->get('id') ?>">
+        <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>">
+        <input type="hidden" name="action" value="rate">
+        <?php
+            if ($rating == 5) {
+                echo "<button name=\"param1\" value=\"0\" type=\"submit\" class=\"btn btn-link\" style=\"color:gold\">";
+                echo "<i class=\"icon-star icon-2x\"></i>\n";
+                echo "</button>\n";
+            } else {
+                echo "<button name=\"param1\" value=\"5\" type=\"submit\" class=\"btn btn-link\" style=\"color:gold\">";
+                echo "<i class=\"icon-star-empty icon-2x\"></i>\n";
+                echo "</button>\n";
+            }
+        ?>
+    </form>
+
     <?= htmlentities($photo->get('description'), null, "UTF-8") ?>
     <?php
     if ($cameralife->security->authorize('photo_rename')) {
@@ -334,45 +351,6 @@ echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px sol
         </dl>
     </div>
     <div class="col-md-4">
-        <h2>Feedback</h2>
-
-        <form action="<?= $cameralife->baseURL ?>/photo_controller.php" method=POST name="form">
-            <input type="hidden" name="id" value="<?= $photo->get('id') ?>">
-            <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>">
-            <input type="hidden" name="action" value="rate">
-
-            <dl class="dl-horizontal">
-                <dt>My rating</dt>
-                <dd>
-                    <div class="btn-group">
-
-                        <?php
-                        for ($i = 1; $i <= 5; $i++) {
-                            echo "<button name=\"param1\" value=\"$i\" type=\"submit\" class=\"btn btn-sm btn-default\">";
-                            if ($i <= $rating) {
-                                echo "<i class=\"icon-star\"></i>\n";
-                            } else {
-                                echo "<i class=\"icon-star-empty\"></i>\n";
-                            }
-                            echo "</button>\n";
-                        }
-                        ?>
-                    </div>
-                </dd>
-                <dt>Average rating</dt>
-                <dd>
-                    <?php
-                    for ($i = 1; $i <= 5; $i++) {
-                        if ($i <= $avg) {
-                            echo "<i class=\"icon-star\"></i>\n";
-                        } else {
-                            echo "<i class=\"icon-star-empty\"></i>\n";
-                        }
-                    }
-                    ?>
-                </dd>
-            </dl>
-        </form>
         <h2>Comments</h2>
         <?php
 
@@ -388,7 +366,7 @@ echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px sol
             <input type="hidden" name="id" value="<?= $photo->get('id') ?>">
             <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>">
             <input type="hidden" name="action" value="comment">
-            <input name="param1">
+            <input name="param1" class="form-control">
             <input type="submit" value="Post comment" class="btn">
         </form>
     </div>
