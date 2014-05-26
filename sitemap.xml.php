@@ -15,7 +15,7 @@ $page = $_GET['page'];
 $id = (int)$_GET['id'];
 
 $baseurl = $cameralife->baseURL;
-$stats = new Stats;
+$stats = new Stats($cameralife);
 $counts = $stats->getCounts();
 
 header('Content-type: text/xml');

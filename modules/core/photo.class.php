@@ -166,8 +166,6 @@ class Photo extends View
         }
 
         if (!$onlyWantEXIF) {
-var_dump($cameralife->fileStore->getFile('photo', $fullpath));
-die(print_r($cameralife));
             $this->image = $cameralife->imageProcessing->createImage($file)
             or $cameralife->error("Bad photo load: $file");
             if (!$this->image->Check()) {

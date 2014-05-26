@@ -178,7 +178,7 @@ function html_select_auth($param_name)
                 <tr>
                     <td>Edit photo descriptions</td>
                     <td><?php html_select_auth("auth_photo_rename") ?></td>
-                    </td>
+                </tr>
                 <tr>
                     <td>Delete photos (can be easily restored in file manager)</td>
                     <td><?php html_select_auth("auth_photo_delete") ?></td>

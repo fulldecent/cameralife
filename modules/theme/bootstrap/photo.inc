@@ -265,7 +265,7 @@ if ($cameralife->security->authorize('photo_modify')) {
     ?>
     <div id="modify" class="well"
          style="<?= (isset($_GET['action']) && $_GET['action'] == 'modify') ? '' : 'display:none' ?>">
-        <legend>Modify photo. All modifications can be reverted.</legend>
+        <p>Modify photo. All modifications can be reverted.</p>
 
         <form class="form-horizontal" action="<?= $cameralife->baseURL ?>/photo_controller.php" method="POST">
             <input type="hidden" name="id" value="<?= $photo->get('id') ?>"/>

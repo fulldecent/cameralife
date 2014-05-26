@@ -151,7 +151,7 @@ class DefaultSecurity extends SecurityModule
     }
 
     /* Returns the current user's name or the empty string if not logged in */
-    /**@return the current user's name or the empty string if not logged in
+    /**@return mixed - the current user's name or the empty string if not logged in
      */
     public function getName()
     {

@@ -85,7 +85,7 @@ if ($counts['folders'] > 0) {
 
 if (count($sections) >= 2) {
     $cameralife->theme->multiSection($sections, $openGraph['og:url']);
-} elseif (count($sections == 1)) {
+} elseif (count($sections) == 1) {
     echo "This folder contains " . strtolower($sections[0]['name']);
 } else {
     $cameralife->error('This folder does not exist.');

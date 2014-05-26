@@ -1,4 +1,6 @@
 ﻿<?php
+namespace CameraLife;
+
 require '../../../main.inc';
 $features = array('theme');
 $cameralife = CameraLife::cameraLifeWithFeatures($features);

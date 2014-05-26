@@ -56,7 +56,7 @@ if (!$_GET['theme'] || preg_match('/[/\\]/', $_GET['theme'])) {
         if ($i++ % 2 == 0) {
             echo '<tr><td>&nbsp;<tr>';
         }
-        echo '<td align=left width="50%">';
+        echo '<td width="50%">';
 
         echo "<h3>$image</h3>";
         if ($images[$image]) {

@@ -146,7 +146,7 @@ class LocalFileStore extends FileStore
      * @param $bucket - one of ('photo', 'other')
      * @param $path - the location of the stored file, starts with '/'
      * @param $recursive - whether to list recursively
-     * @return an array of files, in the form 'path'=>basename(path)
+     * @return array - files, in the form 'path'=>basename(path)
      */
     public function listFiles($bucket, $path = '/', $recursive = true)
     {
