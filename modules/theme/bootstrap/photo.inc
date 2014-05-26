@@ -175,8 +175,8 @@ if ($cameralife->security->authorize('photo_rename')) {
     <form action="<?= $cameralife->baseURL ?>/photo_controller.php" method="POST" name="form" id="renameform"
           class="well form-horizontal"
           style="<?= (isset($_GET['action']) && $_GET['action'] == 'rename') ? '' : 'display:none' ?>">
-        <p class="lead">The <strong>Title</strong> shows on this page and thumbnails of this photo elsewhere. <strong>Keywords</strong>
-            are never displayed. Searches and Albums use the <strong>Title</strong> and <strong>Keywords</strong> to
+        <p class="lead">The <strong>Title</strong> shows on this page and thumbnails of this photo elsewhere. <strong>Tags</strong>
+            are never displayed. Searches and Albums use the <strong>Title</strong> and <strong>Tags</strong> to
             find photos.</p>
         <input type="hidden" name="id" value="<?= $photo->get('id') ?>">
         <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>">
@@ -191,10 +191,10 @@ if ($cameralife->security->authorize('photo_rename')) {
             </div>
         </div>
         <div class="form-group">
-            <label for="tags" class="col-sm-2 control-label">Keywords</label>
+            <label for="tags" class="col-sm-2 control-label">Tags</label>
 
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="tags" placeholder="Keywords" name="param2"
+                <input type="text" class="form-control" id="tags" placeholder="Tags" name="param2"
                        value="<?= htmlentities($photo->get('tags'), null, "UTF-8") ?>">
             </div>
         </div>
