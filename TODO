@@ -64,6 +64,7 @@ git push --tags
 phpdoc --directory . --target ../docs/ --title 'Camera Life Developer Manual' --ignore 'lightopenid/'
 
 #GOTO  http://freecode.com/projects/fdcl/releases/new
+#GOTO  https://packagist.org/packages/fulldecent/cameralife
 
 ===================================
 WHEN MAKING CHANGES TO THE DATABASE
