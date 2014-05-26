@@ -36,7 +36,7 @@ edit the first line, save this file, then paste into a terminal...
 edit Changelog
 edit Composer.json
 
-VERSION='2.7.0a2' # <-- EDIT THIS
+VERSION='2.7.0a3' # <-- EDIT THIS
 echo $VERSION > VERSION
 sed -i "/this..version/s/'.*'/'$VERSION'/" main.inc
 grep -lIZr . . | grep -z -v '\.git' | # no binary, no git
