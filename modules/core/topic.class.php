@@ -16,9 +16,10 @@ class Topic extends Search
     {
         parent::__construct();
         $this->name = $name;
-        $this->mySearchAlbumCondition = "topic = '" . mysql_real_escape_string($this->name) . "'";
+        $this->mySearchAlbumCondition = "topic = :name";
         $this->mySearchPhotoCondition = "FALSE";
         $this->mySearchFolderCondition = "FALSE";
+        $this->myBinds['name'] = $this->name;
     }
 
 //TODO DEPRECATED?
