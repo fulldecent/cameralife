@@ -1,11 +1,18 @@
 <?php
 /**
- * Carries classes CameraLife, CameraLife Module and View
+ * The main class for all features in Camera Life. CameraLife needs access to the database
+ * which it can get from one of three ways:
  *
- * Also supports running from the command line with arguments
+ * RUN CAMERA LIFE FROM THE COMMAND LINE WITH THESE ARGUMENTS
  *  1. dns for database
  *  2. username for database
  *  3. password for database
+ *
+ * CONSTRUCT WITH A TEST DSN
+ *  use the cameraLifeWithFeaturesAndTestDSN constructor
+ *
+ * CAMERA LIFE WILL LOOK FOR A CONFIG FILE
+ *  ./modules/config.inc
  *
  * @author William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2013 William Entriken
@@ -229,6 +236,28 @@ class CameraLife extends CameraLifeModule # and View
         $cameralife = new CameraLife();
         $cameralife->getFeature('core');
         $cameralife->database = new Database($cameralife, $db_dsn, $db_user, $db_pass, $db_prefix);
+        $cameralife->loadPreferences();
+        if (isset($features) && count($features)) {
+            foreach ($features as $feature) {
+                $cameralife->getFeature($feature);
+            }
+        }
+
+        if (isset($_GET['receipt']) && is_numeric($_GET['receipt'])) {
+            $receipt = new Receipt($_GET['receipt']);
+            if ($receipt->isValid()) {
+                $cameralife->receipt = $receipt;
+            }
+        }
+        return $cameralife;
+    }
+
+    public static function cameraLifeWithFeaturesAndTestDSN($features = array(), $db_dsn)
+    {
+        // Factory /////////////////////
+        $cameralife = new CameraLife();
+        $cameralife->getFeature('core');
+        $cameralife->database = new Database($cameralife, $db_dsn, '', '', '');
         $cameralife->loadPreferences();
         if (isset($features) && count($features)) {
             foreach ($features as $feature) {

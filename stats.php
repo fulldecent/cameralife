@@ -10,5 +10,5 @@
 require 'main.inc';
 $features = array('theme', 'security');
 $cameralife = CameraLife::cameraLifeWithFeatures($features);
-$stats = new Stats;
+$stats = new Stats($cameralife);
 $cameralife->theme->showPage('stats');

@@ -15,7 +15,7 @@ class Database
     public $myDBH;
     private $cameralife;
 
-    public function __construct($cameralife, $db_dsn, $db_user, $db_pass, $db_prefix)
+    public function __construct($cameralife, $db_dsn, $db_user='', $db_pass='', $db_prefix='')
     {
         $this->cameralife = $cameralife;
         $this->myPrefix = $db_prefix;

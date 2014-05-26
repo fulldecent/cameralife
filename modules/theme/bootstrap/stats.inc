@@ -9,7 +9,7 @@
 # $cameralife and $album are set by showPage()
 $cameralife->getFeature('fileStore');
 
-$stats = new Stats;
+$stats = new Stats($cameralife);
 $counts = $stats->getCounts();
 $popularPhotos = $stats->getPopularPhotos();
 $popularAlbums = $stats->getPopularAlbums();

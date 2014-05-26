@@ -9,17 +9,24 @@
  */
 class Stats
 {
-    public $counts;
+    private $counts;
+    private $cameralife;
 
-    public function __construct()
+    public function __construct($cameralife)
     {
+        $this->cameralife = $cameralife;
         $this->counts = array();
     }
 
+    /**
+     * Returns information about the aggregate of photos on the site
+     * 
+     * @access public
+     * @return array
+     */
     public function getCounts()
     {
-        global $cameralife;
-
+        $cameralife = $this->cameralife;
         $this->counts['albums'] = $cameralife->database->SelectOne('albums', 'COUNT(*)');
         $this->counts['topics'] = $cameralife->database->SelectOne('albums', 'COUNT(DISTINCT topic)');
         $this->counts['photos'] = $cameralife->database->SelectOne('photos', 'COUNT(*)');
@@ -33,10 +40,15 @@ class Stats
         return $this->counts;
     }
 
+    /**
+     * Get an array of the popular photos
+     * 
+     * @access public
+     * @return array
+     */
     public function getPopularPhotos()
     {
-        global $cameralife;
-
+        $cameralife = $this->cameralife;
         $popularPhotos = array();
         $query = $cameralife->database->Select('photos', 'id', null, 'ORDER BY hits DESC limit 5');
         while ($photo = $query->fetchAssoc()) {
@@ -46,10 +58,15 @@ class Stats
         return $popularPhotos;
     }
 
+    /**
+     * Get an array of the popular albums
+     * 
+     * @access public
+     * @return array
+     */
     public function getPopularAlbums()
     {
-        global $cameralife;
-
+        $cameralife = $this->cameralife;
         $popularAlbums = array();
         $query = $cameralife->database->Select('albums', 'id', null, 'ORDER BY hits DESC limit 5');
         while ($album = $query->fetchAssoc()) {
@@ -59,6 +76,12 @@ class Stats
         return $popularAlbums;
     }
 
+    /**
+     * Get an array of fun facts (English text)
+     * 
+     * @access public
+     * @return array 
+     */
     public function getFunFacts()
     {
         if (empty($this->counts)) {

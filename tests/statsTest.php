@@ -1,17 +1,61 @@
 <?php
 
+require_once dirname(__FILE__) . '/../main.inc';
 require_once dirname(__FILE__) . '/../modules/core/stats.class.php';
+
+/**
+* http://blogs.kent.ac.uk/webdev/2011/07/14/phpunit-and-unserialized-pdo-instances/
+* @backupGlobals disabled
+* @backupStaticAttributes disabled
+*/
 
 class StatsTest extends PHPUnit_Framework_TestCase
 {
-    public function testDumbTest()
+    public function testStats()
     {
-        $this->assertEquals(1, 1);
+        $features = array();
+        $dsn = 'sqlite:' . dirname(__FILE__) . '/test.sqlite3';
+        $cameralife = CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
+        $stats = new Stats($cameralife);
     }
 
-    public function testDumbTest2()
+    public function testStatsGetCounts()
     {
-        $stats = new Stats();
-        $this->assertEquals(1, 1);
+        $features = array();
+        $dsn = 'sqlite:' . dirname(__FILE__) . '/test.sqlite3';
+        $cameralife = CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
+        $stats = new Stats($cameralife);
+        $counts = $stats->getCounts();
+        $this->assertEquals(count($counts), 9);
+    }
+
+    public function testStatsGetPopularPhotos()
+    {
+        $features = array();
+        $dsn = 'sqlite:' . dirname(__FILE__) . '/test.sqlite3';
+        $cameralife = CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
+        $stats = new Stats($cameralife);
+        $popular = $stats->getPopularPhotos();
+        $this->assertTrue(is_array($popular));
+    }
+
+    public function testStatsGetPopularAlbums()
+    {
+        $features = array();
+        $dsn = 'sqlite:' . dirname(__FILE__) . '/test.sqlite3';
+        $cameralife = CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
+        $stats = new Stats($cameralife);
+        $popular = $stats->getPopularAlbums();
+        $this->assertTrue(is_array($popular));
+    }
+
+    public function testStatsGetFunFacts()
+    {
+        $features = array();
+        $dsn = 'sqlite:' . dirname(__FILE__) . '/test.sqlite3';
+        $cameralife = CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
+        $stats = new Stats($cameralife);
+        $facts = $stats->getFunFacts();
+        $this->assertTrue(count($facts) > 0);
     }
 }
