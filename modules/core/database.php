@@ -1,9 +1,8 @@
 <?php
 
 /**
- * PDO implementation of the database class.
- * This requires some preferences to be set in $cameralife:
- * db_name db_user db_pass db_host and optionally db_prefix
+ * PDO wrapper implementation of the database class
+ *
  * @author William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2014 William Entriken
  * @access public
@@ -65,7 +64,7 @@ class Database
      */
     public function selectOne($table, $selection, $condition = '1', $extra = '', $joins = '', $bind = array())
     {
-        global $cameralife;
+        $cameralife = $this->cameralife;
         if (!$condition) {
             $condition = '1';
         }
@@ -98,7 +97,7 @@ class Database
 
     public function update($table, $values, $condition = '1', $extra = '')
     {
-        global $cameralife;
+        $cameralife = $this->cameralife;
         $setstring = '';
         foreach ($values as $key => $value) {
             $setstring .= "`$key` = ?, ";
@@ -119,22 +118,24 @@ class Database
         return $stmt->rowCount();
     }
 
+    /**
+     * insert function.
+     * 
+     * @access public
+     * @param string $table
+     * @param array $values
+     * @param string $extra (default: '')
+     * @return integer
+     */
     public function insert($table, $values, $extra = '')
     {
-        global $cameralife;
-        $setstring = '';
-        foreach ($values as $key => $value) {
-            $setstring .= "`$key` = ?, ";
-        }
-        $setstring = substr($setstring, 0, -2); // chop off last ', '
-        $sql = "INSERT INTO " . $this->myPrefix . "$table SET $setstring $extra";
+        $cameralife = $this->cameralife;
+        $columns = '`' . implode('`,`', array_keys($values)) . '`';
+        $value_expr = ':' . implode(array_keys(array_values($values)), ', :');
+        $sql = "INSERT INTO " . $this->myPrefix . "$table ($columns) VALUES ($value_expr)";
         try {
             $stmt = $this->myDBH->prepare($sql);
-            $i = 1;
-            foreach ($values as $val) {
-                $stmt->bindValue($i++, $val);
-            }
-            $stmt->execute();
+            $stmt->execute(array_values($values));
         } catch (Exception $e) {
             $cameralife->error('Database error: ' . htmlentities($e->getMessage()));
         }
@@ -144,7 +145,7 @@ class Database
 
     public function delete($table, $condition = '1', $extra = '', $bind = array())
     {
-        global $cameralife;
+        $cameralife = $this->cameralife;
         $sql = "DELETE FROM " . $this->myPrefix . "$table WHERE $condition $extra";
         try {
             $stmt = $this->myDBH->prepare($sql);
