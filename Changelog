@@ -6,6 +6,7 @@
 * Use CDN for bootstrap
 * Supports OpenGraph
 * Drop Gallery Remote support
+* Support Travis CI and PSR code quality standards
 
 2.6.6  William Entriken <cameralife AT phor.net>
 * Improve install process

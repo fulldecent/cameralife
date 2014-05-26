@@ -1,37 +1,20 @@
 =======================================
 RELEASE PROCESS / AND HACKING PROCESS
 =======================================
-(Now that #65 is fixed, we should implement the regression testing as continuous integration)
 
-
-CHECK ISSUES TRACKED IN GITHUB
-
-BASIC REGRESSION AND VALIDATION TESTING:
+MOVE ALL THIS REGRESSION TESTING TO TRAVIS CONTINUOUS INTEGRATION
   Try to upload a non-image
   OpenSearch: http://feedvalidator.org/check.cgi?url=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Fopensearch.xml.php
   OpenGraph: https://developers.facebook.com/tools/debug/og/object?q=camera.phor.net
   RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/cameralife/rss.php%3Fq%3Dwill
   git grep -i Deprecated # create issues for these
   git grep -i TODO # create issues for these and remove from code?
-
-  phpcs --standard=PSR2 .
-  php phpcpd.phar --verbose .
-  phpmd . text cleancode --exclude lightopenid
-  phpmd . text codesize --exclude lightopenid
-  phpmd . text controversial --exclude lightopenid
-  phpmd . text design --exclude lightopenid
-  phpmd . text naming --exclude lightopenid
-  phpmd . text unusedcode --exclude lightopenid
   static code analysis in PHPStorm
-
   http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2F
   http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Fphotos%2F15608
   http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Ftopics%2FPeople
   http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Falbums%2F168
   http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Ffolders%2F2012%2F2012-06%2520Pool%2520party%2F
-
-
-SECURITY TESTING:
   Remove support for strip slashes / and remove all stripslashes!
   git grep TODO
   git grep GET -- modules/theme/
@@ -53,7 +36,7 @@ edit the first line, save this file, then paste into a terminal...
 edit Changelog
 edit Composer.json
 
-VERSION='2.7.0a1' # <-- EDIT THIS
+VERSION='2.7.0a2' # <-- EDIT THIS
 echo $VERSION > VERSION
 sed -i "/this..version/s/'.*'/'$VERSION'/" main.inc
 grep -lIZr . . | grep -z -v '\.git' | # no binary, no git
