@@ -1,6 +1,4 @@
 <?php
-require_once('./schemaupdater.inc');
-
 class SchemaUpdater1 extends SchemaUpdater
 {
     public function __construct()

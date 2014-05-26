@@ -7,7 +7,7 @@ if (file_exists(dirname(dirname(dirname(__FILE__))) . '/modules/config.inc')) {
 } else {
     die('Cannot find /modules/config.inc. Upgrade is not possible.');
 }
-
+require './schemaupdater.inc';
 define('CAMERALIFE_LATEST_SCHEMA_VERSION', '4');
 $installed_version = isset($db_schema_version) ? $db_schema_version : 0;
 $nextUpgraderVersion = $db_schema_version + 1;

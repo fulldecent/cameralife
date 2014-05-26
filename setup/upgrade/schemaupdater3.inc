@@ -1,6 +1,4 @@
 <?php
-require_once('./schemaupdater.inc');
-
 class SchemaUpdater3 extends SchemaUpdater
 {
     private $link;
