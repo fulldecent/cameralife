@@ -5,6 +5,7 @@
  * @copyright Copyright (c) 2001-2009 William Entriken
  * @access public
  */
+namespace CameraLife;
 
 $continue = true;
 if (file_exists('../modules/config.inc')) {

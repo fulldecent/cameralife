@@ -1,4 +1,6 @@
 <?php
+namespace CameraLife;
+
 class SchemaUpdater1 extends SchemaUpdater
 {
     public function __construct()

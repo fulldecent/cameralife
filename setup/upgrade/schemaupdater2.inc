@@ -1,4 +1,6 @@
 <?php
+namespace CameraLife;
+
 class SchemaUpdater2 extends SchemaUpdater
 {
     private $link;

@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 # Upgrade database schema
 

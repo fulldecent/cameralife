@@ -1,4 +1,6 @@
 <?php
+namespace CameraLife;
+
 abstract class SchemaUpdater
 {
     public $scriptInfo;
