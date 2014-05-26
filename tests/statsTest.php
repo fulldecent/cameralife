@@ -1,5 +1,4 @@
 <?php
-
 require_once dirname(__FILE__) . '/../main.inc';
 require_once dirname(__FILE__) . '/../modules/core/stats.class.php';
 
@@ -15,16 +14,16 @@ class StatsTest extends PHPUnit_Framework_TestCase
     {
         $features = array();
         $dsn = 'sqlite:' . dirname(__FILE__) . '/test.sqlite3';
-        $cameralife = CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
-        $stats = new Stats($cameralife);
+        $cameralife = CameraLife\CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
+        $stats = new CameraLife\Stats($cameralife);
     }
 
     public function testStatsGetCounts()
     {
         $features = array();
         $dsn = 'sqlite:' . dirname(__FILE__) . '/test.sqlite3';
-        $cameralife = CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
-        $stats = new Stats($cameralife);
+        $cameralife = CameraLife\CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
+        $stats = new CameraLife\Stats($cameralife);
         $counts = $stats->getCounts();
         $this->assertEquals(count($counts), 9);
     }
@@ -33,8 +32,8 @@ class StatsTest extends PHPUnit_Framework_TestCase
     {
         $features = array();
         $dsn = 'sqlite:' . dirname(__FILE__) . '/test.sqlite3';
-        $cameralife = CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
-        $stats = new Stats($cameralife);
+        $cameralife = CameraLife\CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
+        $stats = new CameraLife\Stats($cameralife);
         $popular = $stats->getPopularPhotos();
         $this->assertTrue(is_array($popular));
     }
@@ -43,8 +42,8 @@ class StatsTest extends PHPUnit_Framework_TestCase
     {
         $features = array();
         $dsn = 'sqlite:' . dirname(__FILE__) . '/test.sqlite3';
-        $cameralife = CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
-        $stats = new Stats($cameralife);
+        $cameralife = CameraLife\CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
+        $stats = new CameraLife\Stats($cameralife);
         $popular = $stats->getPopularAlbums();
         $this->assertTrue(is_array($popular));
     }
@@ -53,8 +52,8 @@ class StatsTest extends PHPUnit_Framework_TestCase
     {
         $features = array();
         $dsn = 'sqlite:' . dirname(__FILE__) . '/test.sqlite3';
-        $cameralife = CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
-        $stats = new Stats($cameralife);
+        $cameralife = CameraLife\CameraLife::cameraLifeWithFeaturesAndTestDSN($features, $dsn);
+        $stats = new CameraLife\Stats($cameralife);
         $facts = $stats->getFunFacts();
         $this->assertTrue(count($facts) > 0);
     }
