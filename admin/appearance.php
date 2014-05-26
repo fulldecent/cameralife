@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /*
  * Modify the look of your site, configure Themes and Icons
  * @author William Entriken <cameralife@phor.net>

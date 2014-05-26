@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * Displays the folders path file on the page

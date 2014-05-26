@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /*
  * Regenerates thumbnail caches
  * @author William Entriken <cameralife@phor.net>

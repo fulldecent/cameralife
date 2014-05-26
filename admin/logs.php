@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /*
  * Administer comments on the site
  * @author William Entriken <cameralife@phor.net>

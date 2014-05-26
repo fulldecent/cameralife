@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * Implements OpenID login

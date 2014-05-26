@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /** View one topic page
  * NOTE: $cameralife and $topic are set by showPage()
  * @author William Entriken <cameralife@phor.net>

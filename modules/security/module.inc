@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * This "API" is subject to change; specifically the URL part will be altered.

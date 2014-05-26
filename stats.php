@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**Stats provides fun statistics about the number of photos in the system and the most popular photos and albums.
  * @author William Entriken <cameralife@phor.net>

@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * The class for logging and reverting changes to the site

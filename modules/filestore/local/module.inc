@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * An implementation of FileStore that stores photos on your local filesystem

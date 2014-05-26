@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /*
  * Modify user security
  * @author William Entriken <cameralife@phor.net>

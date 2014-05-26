@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /**
  * Handles login POST event from login.php
  *

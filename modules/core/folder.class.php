@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * Folder class.

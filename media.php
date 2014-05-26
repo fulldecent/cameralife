@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /**
  * Retrieve a photo from the FileStore and feed it to the user
  * This file makes asset security possible since the user does not directly access the photos.

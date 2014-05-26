@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * Manipulates images

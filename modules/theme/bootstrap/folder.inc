@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /**
  * Folder view
  * @author William Entriken <cameralife@phor.net>

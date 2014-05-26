@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * Theme name - Bootstrap
@@ -72,6 +73,7 @@ class BootstrapTheme extends ThemeModule
     public function showPage($name, $object = null)
     {
         global $_SERVER, $_GET, $_POST;
+        $name = str_ireplace('CameraLife\\', '', $name);
         $cameralife = $this->cameralife;
         $objectname = strtolower($name);
         $$objectname = $object;

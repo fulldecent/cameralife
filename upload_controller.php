@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /**
  * Handles the POST form action from upload.php
  * Pass the following variables

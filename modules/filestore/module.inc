@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * A fileStore can store and retrieve files, it also makes certain

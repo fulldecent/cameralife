@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * The base class for themes

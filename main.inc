@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /**
  * The main class for all features in Camera Life. CameraLife needs access to the database
  * which it can get from one of three ways:
@@ -107,7 +108,7 @@ class CameraLife extends CameraLifeModule # and View
 //TODO should core even be a "feature?"
             $implementation = $this->getPref($feature);
             $this->relativeInclude('modules/' . strtolower($feature) . "/$implementation/module.inc");
-            $modulename = $implementation . $feature;
+            $modulename = "\CameraLife\\" . $implementation . $feature;
             $this->$feature = new $modulename($this);
         }
         $this->loadedFeatures[$feature] = 'loaded';

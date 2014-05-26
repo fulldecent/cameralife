@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * Displays an album page

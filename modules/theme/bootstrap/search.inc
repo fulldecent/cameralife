@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /**
  * Implements various search options
  * The following variables are set by showPage()

@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * Base class for all modules -- Retrieving of preferences
@@ -31,8 +32,9 @@ abstract class CameraLifeModule
 
     public function getPref($key)
     {
-        if (isset($this->cameralife->userpreferences[get_class($this)][$key])) {
-            return $this->cameralife->userpreferences[get_class($this)][$key];
+        $class = str_replace('CameraLife\\', '', get_class($this));
+        if (isset($this->cameralife->userpreferences[$class][$key])) {
+            return $this->cameralife->userpreferences[$class][$key];
         }
 
         foreach ($this->preferences as $pref) {
@@ -41,7 +43,7 @@ abstract class CameraLifeModule
             }
         }
 
-        $this->cameralife->error('Unable to retrieve preference: ' . get_class($this) . ' ' . $key);
+        $this->cameralife->error("Unable to retrieve preference: $class $key");
         return false;
     }
 

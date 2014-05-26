@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /**Displays a page with the theme 'upload'
  * @author William Entriken <cameralife@phor.net>
  * @access public

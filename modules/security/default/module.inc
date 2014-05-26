@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * Incorporates standard security implementation.

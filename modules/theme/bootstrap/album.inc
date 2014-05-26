@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 # $cameralife and $album are set by showPage()
 /**
  *Editing an album

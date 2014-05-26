@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /**
  * Displays the main admin page
  * Provides a menu to choose administrative options

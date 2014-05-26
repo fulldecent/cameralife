@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * Model class for albums

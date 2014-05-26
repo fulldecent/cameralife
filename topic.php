@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * Displays all albums for a given topic

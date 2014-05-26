@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /*
  * set fileStore module
  * @author William Entriken <cameralife@phor.net>

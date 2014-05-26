@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * Allows you to search for photos, albums, and folders in the system

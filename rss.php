@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /**
  * Creates RSS feed of photos
  *

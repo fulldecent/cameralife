@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /*
  * Administer files on the site
  * BEWARE: BACKUP YOUR DATABASE BEFORE MESSING AROUND HERE!

@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 /** Indexing of photos
  *
  * NOTE: $cameralife set by showPage()

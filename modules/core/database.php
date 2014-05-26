@@ -1,4 +1,5 @@
 <?php
+namespace CameraLife;
 
 /**
  * PDO wrapper implementation of the database class
@@ -19,8 +20,8 @@ class Database
         $this->cameralife = $cameralife;
         $this->myPrefix = $db_prefix;
         try {
-            $this->myDBH = new PDO($db_dsn, $db_user, $db_pass);
-            $this->myDBH->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->myDBH = new \PDO($db_dsn, $db_user, $db_pass);
+            $this->myDBH->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (Exception $e) {
             $this->cameralife->error('Database error: ' . htmlentities($e->getMessage()));
         }
@@ -87,7 +88,7 @@ class Database
                 }
             }
             $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_NUM);
+            $result = $stmt->fetch(\PDO::FETCH_NUM);
         } catch (Exception $e) {
             $cameralife->error('Database error: ' . htmlentities($e->getMessage()));
         }
@@ -169,15 +170,15 @@ class Database
 
 class PDOIterator
 {
-    public $myResult;
+    private $myResult;
 
-    public function PDOIterator($mysqlResult)
+    public function __construct($mysqlResult)
     {
         $this->myResult = $mysqlResult;
     }
 
     public function fetchAssoc()
     {
-        return $this->myResult->fetch(PDO::FETCH_ASSOC);
+        return $this->myResult->fetch(\PDO::FETCH_ASSOC);
     }
 }
