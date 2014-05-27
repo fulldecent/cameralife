@@ -136,7 +136,10 @@ class Database
         $sql = "INSERT INTO " . $this->myPrefix . "$table ($columns) VALUES ($value_expr)";
         try {
             $stmt = $this->myDBH->prepare($sql);
-            $stmt->execute(array_values($values));
+            foreach (array_values($values) as $name => $val) {
+                $stmt->bindValue(':' . $name, $val);
+            }
+            $stmt->execute();
         } catch (Exception $e) {
             $cameralife->error('Database error: ' . htmlentities($e->getMessage()));
         }

@@ -211,8 +211,9 @@ class Receipt
         $prior = $result->fetchAssoc();
         if (is_array($prior) && isset($prior['value_new'])) {
             return array('value' => $prior['value_new'], 'fromReceipt' => true);
-        } else {
-            switch ($this->myRecord['record_type'] . '_' . $this->myRecord['value_field']) {
+        }
+        
+        switch ($this->myRecord['record_type'] . '_' . $this->myRecord['value_field']) {
             case 'photo_description':
                     return array('value' => 'unnamed', 'fromReceipt' => false);
             case 'photo_status':
@@ -239,7 +240,6 @@ class Receipt
                     "I don't know how to undo the parameter " . $this->myRecord['record_type'] . '_' . $this->myRecord['value_field']
                 );
                     return false;
-            }
         }
     }
 }

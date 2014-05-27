@@ -218,7 +218,6 @@ class Photo extends View
             }
         }
 
-        $fullpath = rtrim('/' . ltrim($this->record['path'], '/'), '/') . '/' . $this->record['filename'];
         foreach ($files as $size => $file) {
             $filename = '/' . $this->record['id'] . '_' . $size . '.' . $this->extension;
             $cameralife->fileStore->PutFile('other', $filename, $file, $this->record['status'] != 0);
@@ -271,7 +270,7 @@ class Photo extends View
 
     public function erase()
     {
-        global $cameralife;
+        //global $cameralife;
         $this->set('status', 9);
         /*
         ///TODO

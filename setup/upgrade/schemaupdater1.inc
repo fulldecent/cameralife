@@ -11,12 +11,12 @@ Please follow instructions in UPGRADE to complete this.
 HERE;
     }
 
-    public function canUpgrade($db_host, $db_name, $db_user, $db_pass, $db_prefix)
+    public function canUpgrade($dbHost, $dbName, $dbUser, $dbPass, $dbPrefix)
     {
         return false;
     }
 
-    public function doUpgrade($db_host, $db_name, $db_user, $db_pass, $db_prefix)
+    public function doUpgrade($dbHost, $dbName, $dbUser, $dbPass, $dbPrefix)
     {
         return false;
     }

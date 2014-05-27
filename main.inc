@@ -75,11 +75,10 @@ class CameraLife extends CameraLifeModule # and View
 
     public function relativeInclude($file)
     {
-        if (file_exists($this->baseDir . "/$file")) {
-            require $this->baseDir . "/$file";
-        } else {
+        if (!file_exists($this->baseDir . "/$file")) {
             $this->error("File does not exist: " . $this->baseDir . "/$file");
         }
+        require $this->baseDir . "/$file";
     }
 
     public function getModules($feature)
@@ -199,11 +198,11 @@ class CameraLife extends CameraLifeModule # and View
     {
         if (php_sapi_name() === 'cli' && is_numeric($_SERVER['argc']) && $_SERVER['argc'] >= 2) {
             // Configure database using argv
-            $db_dsn = $_SERVER['argv'][1];
-            $db_user = isset($_SERVER['argv'][2]) ? $_SERVER['argv'][2] : '';
-            $db_pass = isset($_SERVER['argv'][3]) ? $_SERVER['argv'][3] : '';
-            $db_prefix = isset($_SERVER['argv'][4]) ? $_SERVER['argv'][4] : '';
-            $db_schema_version = CAMERALIFE_LATEST_SCHEMA_VERSION;
+            $dbDSN = $_SERVER['argv'][1];
+            $dbUser = isset($_SERVER['argv'][2]) ? $_SERVER['argv'][2] : '';
+            $dbPass = isset($_SERVER['argv'][3]) ? $_SERVER['argv'][3] : '';
+            $dbPrefix = isset($_SERVER['argv'][4]) ? $_SERVER['argv'][4] : '';
+            $dbSchemaVersion = CAMERALIFE_LATEST_SCHEMA_VERSION;
         }
 
         // Bootstrap /////////////////////
@@ -211,8 +210,12 @@ class CameraLife extends CameraLifeModule # and View
         if (file_exists(dirname(__FILE__) . '/modules/config.inc')) {
             require_once dirname(__FILE__) . '/modules/config.inc';
             // Sets $db_host, $db_name, $db_user, $db_pass, $db_prefix, $db_schema_version
-            $db_dsn = "mysql:host={$db_host};dbname={$db_name}";
-        } elseif (!isset($db_dsn)) {
+            $dbDSN = "mysql:host={$db_host};dbname={$db_name}";
+            $dbUser = $db_user;
+            $dbPass = $db_pass;
+            $dbPrefix = $db_prefix;
+            $dbSchemaVersion = $db_schema_version;
+        } elseif (!isset($dbDNS)) {
             $secure = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
             $url = ($secure ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . rtrim(
                     dirname($_SERVER['PHP_SELF']),
@@ -223,7 +226,7 @@ class CameraLife extends CameraLifeModule # and View
         }
 
         // Is the software newer than the database?
-        if (!isset($db_schema_version) || $db_schema_version < CAMERALIFE_LATEST_SCHEMA_VERSION) {
+        if (!isset($dbSchemaVersion) || $dbSchemaVersion < CAMERALIFE_LATEST_SCHEMA_VERSION) {
             header(
                 'Location: http://' . $_SERVER['HTTP_HOST'] . rtrim(
                     dirname($_SERVER['PHP_SELF']),
@@ -236,7 +239,7 @@ class CameraLife extends CameraLifeModule # and View
         // Factory /////////////////////
         $cameralife = new CameraLife();
         $cameralife->getFeature('core');
-        $cameralife->database = new Database($cameralife, $db_dsn, $db_user, $db_pass, $db_prefix);
+        $cameralife->database = new Database($cameralife, $dbDSN, $dbUser, $dbPass, $dbPrefix);
         $cameralife->loadPreferences();
         if (isset($features) && count($features)) {
             foreach ($features as $feature) {

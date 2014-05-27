@@ -56,11 +56,8 @@ function renderPrefsAsHTML($module)
         } elseif (is_array($pref['type'])) { // enumeration
             echo "      <select class=\"form-control\" name=\"$tag\">\n";
             foreach ($pref['type'] as $index => $desc) {
-                if ($index == $value) {
-                    echo "        <option selected value=\"$index\">$desc</option>\n";
-                } else {
-                    echo "        <option value=\"$index\">$desc</option>\n";
-                }
+                $extra = $index == $value ? 'selected' : '';
+                echo "        <option $extra value=\"$index\">$desc</option>\n";
             }
             echo "      </select />\n";
         } elseif ($pref['type'] == 'yesno') {

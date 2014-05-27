@@ -378,17 +378,14 @@ class BootstrapTheme extends ThemeModule
                 }
 
                 for ($i = $first; $i <= $last; $i += $perPage) {
+                    parse_str(parse_url($url, PHP_URL_QUERY), $query);
+                    $query['start'] = $i;
+                    $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
                     if ($i == $start) {
-                        parse_str(parse_url($url, PHP_URL_QUERY), $query);
-                        $query['start'] = $i;
-                        $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
                         echo "<li class=\"active\"><a href=\"" . htmlspecialchars(
                                 $newURL
                             ) . "\">" . ($i / $perPage + 1) . "</a></li>";
                     } else {
-                        parse_str(parse_url($url, PHP_URL_QUERY), $query);
-                        $query['start'] = $i;
-                        $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
                         echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">" . ($i / $perPage + 1) . "</a></li>";
                     }
                 }
