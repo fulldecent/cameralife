@@ -1,4 +1,8 @@
-Camera Life [![Build Status](https://travis-ci.org/fulldecent/cameralife.png?branch=master)](https://travis-ci.org/fulldecent/cameralife)
+[![Build Status](https://travis-ci.org/fulldecent/cameralife.png?branch=master)](https://travis-ci.org/fulldecent/cameralife) 
+[![Latest Stable Version](https://poser.pugx.org/fulldecent/cameralife/v/stable.svg)](https://packagist.org/packages/fulldecent/cameralife)
+[![Latest Unstable Version](https://poser.pugx.org/fulldecent/cameralife/v/unstable.svg)](https://packagist.org/packages/fulldecent/cameralife)
+
+Camera Life
 ===========
 
 Version 2.7
