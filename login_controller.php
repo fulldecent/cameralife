@@ -11,9 +11,9 @@ namespace CameraLife;
  * The current security module will have access to the full POST variables
  * since it is also responsible for the login view.
  *
- * @author William Entriken <cameralife@phor.net>
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2009 William Entriken
- * @access public
+ * @access    public
  */
 
 $features = array('theme', 'security');

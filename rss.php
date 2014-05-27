@@ -3,10 +3,10 @@ namespace CameraLife;
 /**
  * Creates RSS feed of photos
  *
- * @see http://validator.w3.org/feed/check.cgi?url=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Frss.php%3Fq%3D
- * @author William Entriken <cameralife@phor.net>
+ * @see       http://validator.w3.org/feed/check.cgi?url=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Frss.php%3Fq%3D
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2014 William Entriken
- * @access public
+ * @access    public
  */
 
 require 'main.inc';
@@ -53,25 +53,25 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         echo "    <entry>\n";
         echo "      <title>" . htmlentities($photo->Get('description')) . "</title>\n";
         echo "      <link rel=\"alternate\" type=\"text/html\" href=\"" . htmlspecialchars(
-                $photoOpenGraph['og:url']
-            ) . "\" />\n";
+            $photoOpenGraph['og:url']
+        ) . "\" />\n";
         echo "      <id>urn:photo:" . $photo->record['id'] . "</id>\n";
         echo "      <published>" . date('c', $date) . "</published>\n";
         echo "      <updated>" . date('c', $date) . "</updated>\n";
         echo "        <content type=\"html\">&lt;p&gt;&lt;a href=&quot;" . htmlspecialchars(
-                $photoOpenGraph['og:url']
-            ) . "&quot;&gt;" . htmlspecialchars($photoOpenGraph['og:title']) . " &lt;img src=&quot;" . htmlspecialchars(
-                $photoOpenGraph['og:image']
-            ) . "&quot; width=&quot;" . htmlspecialchars(
-                $photoOpenGraph['og:image:width']
-            ) . "&quot; height=&quot;" . htmlspecialchars(
-                $photoOpenGraph['og:image:height']
-            ) . "&quot; alt=&quot;" . htmlentities(
-                $photo->Get('description')
-            ) . "&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</content>\n";
+            $photoOpenGraph['og:url']
+        ) . "&quot;&gt;" . htmlspecialchars($photoOpenGraph['og:title']) . " &lt;img src=&quot;" . htmlspecialchars(
+            $photoOpenGraph['og:image']
+        ) . "&quot; width=&quot;" . htmlspecialchars(
+            $photoOpenGraph['og:image:width']
+        ) . "&quot; height=&quot;" . htmlspecialchars(
+            $photoOpenGraph['og:image:height']
+        ) . "&quot; alt=&quot;" . htmlentities(
+            $photo->Get('description')
+        ) . "&quot; /&gt;&lt;/a&gt;&lt;/p&gt;</content>\n";
         echo "      <link rel=\"enclosure\" type=\"image/jpeg\" href=\"" . htmlspecialchars(
-                $photoOpenGraph['og:image']
-            ) . "\" />\n";
+            $photoOpenGraph['og:image']
+        ) . "\" />\n";
         echo "    </entry>\n\n";
     }
     ?>

@@ -48,6 +48,7 @@ phpdoc --directory . --target ../docs/ --title 'Camera Life Developer Manual' --
 
 #GOTO  http://freecode.com/projects/fdcl/releases/new
 #GOTO  https://packagist.org/packages/fulldecent/cameralife
+#UPDATE SCREENSHOTS ON README.MD
 
 ===================================
 WHEN MAKING CHANGES TO THE DATABASE

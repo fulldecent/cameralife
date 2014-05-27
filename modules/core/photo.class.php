@@ -3,8 +3,8 @@ namespace CameraLife;
 
 /**
  * Class Photo provides a front end to working with photos
- * @author William Entriken <cameralife@phor.net>
- * @access public
+ * @author    William Entriken <cameralife@phor.net>
+ * @access    public
  * @version
  * @copyright Copyright (c) 2001-2009 William Entriken
  */
@@ -15,7 +15,7 @@ class Photo extends View
     /**
      * The file extension, e.g. png
      *
-     * @var String
+     * @var    String
      * @access public
      */
     public $extension;
@@ -24,7 +24,7 @@ class Photo extends View
      * context
      * an Album, Search or Folder of where the user came from to get to this photo
      *
-     * @var mixed
+     * @var    mixed
      * @access private
      */
      ///TODO TEMPORARY
@@ -34,7 +34,7 @@ class Photo extends View
      * contextPhotos
      * An ordered set of photos in the same context as this one
      *
-     * @var mixed
+     * @var    mixed
      * @access private
      */
     private $contextPhotos;
@@ -43,7 +43,7 @@ class Photo extends View
      * contextPrev
      * the previous photo in context
      *
-     * @var mixed
+     * @var    mixed
      * @access private
      */
     private $contextPrev;
@@ -52,7 +52,7 @@ class Photo extends View
      * contextNext
      * the next photo in contex
      *
-     * @var mixed
+     * @var    mixed
      * @access private
      */
     private $contextNext;
@@ -78,9 +78,9 @@ class Photo extends View
         } elseif (is_array($original)) { # A new image, given by an array
             $this->record['description'] = 'unnamed';
 
-//      if (!preg_match('/^dscn/i', $this->record['filename']) &&
-//        !preg_match('/^im/i', $this->record['filename'])) // useless filename
-//        $this->record['description'] = preg_replace('/.[^.]+$/', '', ucwords($photo->get('filename')));
+            //      if (!preg_match('/^dscn/i', $this->record['filename']) &&
+            //        !preg_match('/^im/i', $this->record['filename'])) // useless filename
+            //        $this->record['description'] = preg_replace('/.[^.]+$/', '', ucwords($photo->get('filename')));
 
             $this->record['status'] = '0';
             $this->record['created'] = date('Y-m-d');
@@ -491,18 +491,18 @@ class Photo extends View
         $this->context = $this->getFolder();
         
         // Given no better information, best context is this photo's path
-        if (!isset($_SERVER['HTTP_REFERER']))
-            return $retval;
+        if (!isset($_SERVER['HTTP_REFERER'])) { 
+            return $retval; }
 
         // Find if the referer is an album
         if (preg_match("/album/", $_SERVER['HTTP_REFERER'], $regs)) 
         {
             if (isset($_SERVER['HTTP_REFERER']) &&
                 (preg_match("#album.php\?id=([0-9]*)#", $_SERVER['HTTP_REFERER'], $regs) || preg_match(
-                        "#albums/([0-9]+)#",
-                        $_SERVER['HTTP_REFERER'],
-                        $regs
-                    ))
+                    "#albums/([0-9]+)#",
+                    $_SERVER['HTTP_REFERER'],
+                    $regs
+                ))
             ) {
                 $album = new Album($regs[1]);
                 $retval[] = $album;

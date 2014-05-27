@@ -37,8 +37,8 @@ class Search extends View
             $term = addslashes($term);
             $term = str_replace($special, $specialEscaped, $term);
             $searchPhotoConditions[] = "concat(description,' ',keywords) REGEXP '(^|[[:blank:]])" . addslashes(
-                    preg_quote(stripslashes($term))
-                ) . "'";
+                preg_quote(stripslashes($term))
+            ) . "'";
             $searchAlbumConditions[] = "name LIKE '%$term%'";
             $searchFolderConditions[] = "path LIKE '%$term%'";
         }
@@ -102,24 +102,24 @@ class Search extends View
                 'photos',
                 'COUNT(*)',
                 $this->mySearchPhotoCondition . ' AND status=0',
-                NULL,
-                NULL,
+                null,
+                null,
                 $this->myBinds
             );
             $this->myCounts['albums'] = $cameralife->database->SelectOne(
                 'albums',
                 'COUNT(*)',
                 $this->mySearchAlbumCondition,
-                NULL,
-                NULL,
+                null,
+                null,
                 $this->myBinds
             );
             $this->myCounts['folders'] = $cameralife->database->SelectOne(
                 'photos',
                 'COUNT(DISTINCT path)',
                 $this->mySearchFolderCondition . ' AND status=0',
-                NULL,
-                NULL,
+                null,
+                null,
                 $this->myBinds
             );
         }
@@ -139,29 +139,29 @@ class Search extends View
         global $cameralife;
 
         switch ($this->mySort) {
-            case 'newest':
-                $sort = 'value desc, id desc';
+        case 'newest':
+            $sort = 'value desc, id desc';
                 break;
-            case 'oldest':
-                $sort = 'value, id';
+        case 'oldest':
+            $sort = 'value, id';
                 break;
-            case 'az':
-                $sort = 'description';
+        case 'az':
+            $sort = 'description';
                 break;
-            case 'za':
-                $sort = 'description desc';
+        case 'za':
+            $sort = 'description desc';
                 break;
-            case 'popular':
-                $sort = 'hits desc';
+        case 'popular':
+            $sort = 'hits desc';
                 break;
-            case 'unpopular':
-                $sort = 'hits';
+        case 'unpopular':
+            $sort = 'hits';
                 break;
-            case 'rand':
-                $sort = 'rand()';
+        case 'rand':
+            $sort = 'rand()';
                 break;
-            default:
-                $sort = 'id desc';
+        default:
+            $sort = 'id desc';
         }
 
         $condition = $this->mySearchPhotoCondition . ' AND status=0';
@@ -186,29 +186,29 @@ class Search extends View
         global $cameralife;
 
         switch ($this->mySort) {
-            case 'newest':
-                $sort = 'albums.id desc';
+        case 'newest':
+            $sort = 'albums.id desc';
                 break;
-            case 'oldest':
-                $sort = 'albums.id';
+        case 'oldest':
+            $sort = 'albums.id';
                 break;
-            case 'az':
-                $sort = 'description';
+        case 'az':
+            $sort = 'description';
                 break;
-            case 'za':
-                $sort = 'description desc';
+        case 'za':
+            $sort = 'description desc';
                 break;
-            case 'popular':
-                $sort = 'albums.hits desc';
+        case 'popular':
+            $sort = 'albums.hits desc';
                 break;
-            case 'unpopular':
-                $sort = 'albums.hits';
+        case 'unpopular':
+            $sort = 'albums.hits';
                 break;
-            case 'rand':
-                $sort = 'rand()';
+        case 'rand':
+            $sort = 'rand()';
                 break;
-            default:
-                $sort = 'albums.id desc';
+        default:
+            $sort = 'albums.id desc';
         }
 
         $condition = $this->mySearchAlbumCondition;
@@ -217,7 +217,7 @@ class Search extends View
             'id', 
             $condition, 
             'ORDER BY ' . $sort . ' ' . $this->myLimit, 
-            NULL, 
+            null, 
             $this->myBinds
         );
 
@@ -233,29 +233,29 @@ class Search extends View
     {
         global $cameralife;
         switch ($this->mySort) {
-            case 'newest':
-                $sort = 'id desc';
+        case 'newest':
+            $sort = 'id desc';
                 break;
-            case 'oldest':
-                $sort = 'id';
+        case 'oldest':
+            $sort = 'id';
                 break;
-            case 'az':
-                $sort = 'path';
+        case 'az':
+            $sort = 'path';
                 break;
-            case 'za':
-                $sort = 'path desc';
+        case 'za':
+            $sort = 'path desc';
                 break;
-            case 'popular':
-                $sort = 'hits desc';
+        case 'popular':
+            $sort = 'hits desc';
                 break;
-            case 'unpopular':
-                $sort = 'hits';
+        case 'unpopular':
+            $sort = 'hits';
                 break;
-            case 'rand':
-                $sort = 'rand()';
+        case 'rand':
+            $sort = 'rand()';
                 break;
-            default:
-                $sort = 'id desc';
+        default:
+            $sort = 'id desc';
         }
 
         // Another way to do it "DISTINCT SUBSTRING_INDEX(SUBSTR(path,".(strlen($this->path)+1)."),'/',1) AS basename";
@@ -265,7 +265,7 @@ class Search extends View
             'path, MAX(mtime) as date',
             $condition,
             'GROUP BY path ORDER BY ' . $sort . ' ' . $this->myLimit, 
-            NULL, 
+            null, 
             $this->myBinds
         );
         $folders = array();

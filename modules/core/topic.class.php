@@ -4,10 +4,10 @@ namespace CameraLife;
 /**
  * Topic class.
  *
- * @author William Entriken <WillEntriken @gmail.com>
- * @access public
+ * @author    William Entriken <WillEntriken @gmail.com>
+ * @access    public
  * @copyright Copyright (c) 2001-2009 William Entriken
- * @extends Search
+ * @extends   Search
  */
 class Topic extends Search
 {
@@ -23,7 +23,7 @@ class Topic extends Search
         $this->myBinds['name'] = $this->name;
     }
 
-//TODO DEPRECATED?
+    //TODO DEPRECATED?
     public function getName()
     {
         return htmlentities($this->name);

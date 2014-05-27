@@ -5,10 +5,10 @@ namespace CameraLife;
  * Folder class.
  * Access folders on the file system as objects
  *
- * @author William Entriken <cameralife@phor.net>
- * @access public
+ * @author    William Entriken <cameralife@phor.net>
+ * @access    public
  * @copyright Copyright (c) 2001-2014 William Entriken
- * @extends Search
+ * @extends   Search
  */
 class Folder extends Search
 {
@@ -16,7 +16,7 @@ class Folder extends Search
      * path
      * Like: '/' or '/afolder' or '/parent/child'
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $path;
@@ -28,7 +28,7 @@ class Folder extends Search
      * <b>Optional </b> When is the latest photo in this folder from, unixtime
      */
 
-//TODO REMOVE THE SYNC AND DATE PARAM
+    //TODO REMOVE THE SYNC AND DATE PARAM
     public function __construct($path = '/', $sync = false, $date = null)
     {
         parent::__construct();
@@ -43,7 +43,7 @@ class Folder extends Search
             Folder::update();
         }
 
-//todo use bind here, add a bind parameter to Search
+        //todo use bind here, add a bind parameter to Search
         @$this->mySearchPhotoCondition = "path=:path1";
         $this->mySearchAlbumCondition = "FALSE";
         @$this->mySearchFolderCondition = "path LIKE :path1 AND path NOT LIKE :path2";
@@ -92,29 +92,29 @@ class Folder extends Search
     {
         global $cameralife;
         switch ($this->mySort) {
-            case 'newest':
-                $sort = 'created desc';
+        case 'newest':
+            $sort = 'created desc';
                 break;
-            case 'oldest':
-                $sort = 'created';
+        case 'oldest':
+            $sort = 'created';
                 break;
-            case 'az':
-                $sort = 'path';
+        case 'az':
+            $sort = 'path';
                 break;
-            case 'za':
-                $sort = 'path desc';
+        case 'za':
+            $sort = 'path desc';
                 break;
-            case 'popular':
-                $sort = 'hits desc';
+        case 'popular':
+            $sort = 'hits desc';
                 break;
-            case 'unpopular':
-                $sort = 'hits';
+        case 'unpopular':
+            $sort = 'hits';
                 break;
-            case 'rand':
-                $sort = 'rand()';
+        case 'rand':
+            $sort = 'rand()';
                 break;
-            default:
-                $sort = 'id desc';
+        default:
+            $sort = 'id desc';
         }
 
         $result = array();
@@ -183,7 +183,7 @@ class Folder extends Search
 
         // Verify each photo in the DB
         while ($photo = $result->fetchAssoc()) {
-//TODO FIX DATABASE TO MAKE photos.path like '/a/dir' or '/'
+            //TODO FIX DATABASE TO MAKE photos.path like '/a/dir' or '/'
             $filename = $photo['filename'];
             $photopath = trim($photo['path'], '/') . '/' . $filename;
             $photopath = rtrim('/' . ltrim($photo['path'], '/'), '/') . '/' . $filename;
@@ -242,7 +242,7 @@ class Folder extends Search
             $newpath = dirname($newFile);
             $condition = "filename LIKE :fn";
             $binds['fn'] = $newbase;
-            $result = $cameralife->database->Select('photos', 'id, filename, path', $condition, NULL, NULL, $binds);
+            $result = $cameralife->database->Select('photos', 'id, filename, path', $condition, null, null, $binds);
 
             // Is anything in the fileStore too similar (given available information) to let this photo in?
             if ($photo = $result->fetchAssoc()) {

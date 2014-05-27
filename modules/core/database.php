@@ -4,9 +4,9 @@ namespace CameraLife;
 /**
  * PDO wrapper implementation of the database class
  *
- * @author William Entriken <cameralife@phor.net>
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright Copyright (c) 2001-2014 William Entriken
- * @access public
+ * @access    public
  */
 class Database
 {
@@ -123,9 +123,9 @@ class Database
      * insert function.
      * 
      * @access public
-     * @param string $table
-     * @param array $values
-     * @param string $extra (default: '')
+     * @param  string $table
+     * @param  array  $values
+     * @param  string $extra  (default: '')
      * @return integer
      */
     public function insert($table, $values, $extra = '')

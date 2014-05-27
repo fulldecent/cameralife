@@ -22,11 +22,11 @@ require 'main.inc';
  * Precondition - the images exists at $file
  * Postcondition: image is added to the fileStore at $path$filename
  *
- * @param $path
- * @param $filename
- * @param $file
- * @param string $description
- * @param int $status
+ * @param  $path
+ * @param  $filename
+ * @param  $file
+ * @param  string   $description
+ * @param  int      $status
  * @return int|string Zero or string describing error
  */
 function add_image($path, $filename, $file, $description = 'unnamed', $status = 0)

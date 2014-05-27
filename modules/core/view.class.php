@@ -5,8 +5,8 @@ namespace CameraLife;
  * View class.
  * Every user-facing page is represented by a view class
  *
- * @author William Entriken <cameralife@phor.net>
- * @access public
+ * @author    William Entriken <cameralife@phor.net>
+ * @access    public
  * @copyright Copyright (c) 2001-2009 William Entriken
  */
 class View

@@ -12,11 +12,11 @@ class AuditTrail
     /**
      * Logs information about a user and a change to the database, so this can be undone later
      *
-     * @param string $record_type one of ('photo','album','preference','user')
-     * @param int $record_id id of the record being changed
-     * @param string $value_field field being changed
-     * @param string $value_old old field value
-     * @param string $value_new new field value
+     * @param  string $record_type one of ('photo','album','preference','user')
+     * @param  int    $record_id   id of the record being changed
+     * @param  string $value_field field being changed
+     * @param  string $value_old   old field value
+     * @param  string $value_new   new field value
      * @return Receipt of the action performed
      */
     public static function log($record_type, $record_id, $value_field, $value_old, $value_new)
@@ -63,36 +63,36 @@ class AuditTrail
             $oldvalue = $prior['value_new'];
         } else {
             switch ($receipt['record_type'] . '_' . $receipt['value_field']) {
-                case 'photo_description':
-                    $oldvalue = 'unnamed';
+            case 'photo_description':
+                $oldvalue = 'unnamed';
                     break;
-                case 'photo_status':
-                    $oldvalue = '0';
+            case 'photo_status':
+                $oldvalue = '0';
                     break;
-                case 'photo_keywords':
-                    $oldvalue = '';
+            case 'photo_keywords':
+                $oldvalue = '';
                     break;
-                case 'photo_flag':
-                    $oldvalue = '';
+            case 'photo_flag':
+                $oldvalue = '';
                     break;
-                case 'album_name':
-                    $oldvalue = '';
+            case 'album_name':
+                $oldvalue = '';
                     break;
-                case 'photo_poster_id':
-                    $album = new Album($record['record_id']);
-                    $condition = "status=0 and lower(description) like lower('%" . $album->Get['term'] . "%')";
-                    $query = $cameralife->database->Select('photos', 'id', $condition);
-                    $result = $query->fetchAssoc();
-                    if ($result) {
-                        $oldvalue = $result['id'];
-                    } else {
-                        $cameralife->error("Cannot find a poster for the album #" . $record['record_id']);
-                    }
+            case 'photo_poster_id':
+                $album = new Album($record['record_id']);
+                $condition = "status=0 and lower(description) like lower('%" . $album->Get['term'] . "%')";
+                $query = $cameralife->database->Select('photos', 'id', $condition);
+                $result = $query->fetchAssoc();
+                if ($result) {
+                    $oldvalue = $result['id'];
+                } else {
+                    $cameralife->error("Cannot find a poster for the album #" . $record['record_id']);
+                }
                     break;
-                default:
-                    $cameralife->error(
-                        "I don't know how to undo the parameter " . $receipt['record_type'] . '_' . $receipt['value_field']
-                    );
+            default:
+                $cameralife->error(
+                    "I don't know how to undo the parameter " . $receipt['record_type'] . '_' . $receipt['value_field']
+                );
             }
         }
 
@@ -213,31 +213,31 @@ class Receipt
             return array('value' => $prior['value_new'], 'fromReceipt' => true);
         } else {
             switch ($this->myRecord['record_type'] . '_' . $this->myRecord['value_field']) {
-                case 'photo_description':
+            case 'photo_description':
                     return array('value' => 'unnamed', 'fromReceipt' => false);
-                case 'photo_status':
+            case 'photo_status':
                     return array('value' => 0, 'fromReceipt' => false);
-                case 'photo_keywords':
+            case 'photo_keywords':
                     return array('value' => '', 'fromReceipt' => false);
-                case 'photo_flag':
+            case 'photo_flag':
                     return array('value' => '', 'fromReceipt' => false);
-                case 'album_name':
+            case 'album_name':
                     return array('value' => '', 'fromReceipt' => false);
-                case 'album_poster_id':
-                    $album = new Album($this->myRecord['record_id']);
-                    $condition = "status=0 and lower(description) like lower('%" . $album->Get['term'] . "%')";
-                    $query = $cameralife->database->Select('photos', 'id', $condition);
-                    $result = $query->fetchAssoc();
-                    if ($result) {
-                        return array('value' => $result['id'], 'fromReceipt' => false);
-                    }
-                    $cameralife->error("Cannot find a poster for the album #" . $this->myRecord['record_id']);
+            case 'album_poster_id':
+                $album = new Album($this->myRecord['record_id']);
+                $condition = "status=0 and lower(description) like lower('%" . $album->Get['term'] . "%')";
+                $query = $cameralife->database->Select('photos', 'id', $condition);
+                $result = $query->fetchAssoc();
+                if ($result) {
+                    return array('value' => $result['id'], 'fromReceipt' => false);
+                }
+                $cameralife->error("Cannot find a poster for the album #" . $this->myRecord['record_id']);
                     return false;
                     break;
-                default:
-                    $cameralife->error(
-                        "I don't know how to undo the parameter " . $this->myRecord['record_type'] . '_' . $this->myRecord['value_field']
-                    );
+            default:
+                $cameralife->error(
+                    "I don't know how to undo the parameter " . $this->myRecord['record_type'] . '_' . $this->myRecord['value_field']
+                );
                     return false;
             }
         }
