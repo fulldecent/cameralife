@@ -6,7 +6,7 @@ namespace CameraLife;
  * @author    William Entriken <cameralife@phor.net>
  * @access    public
  * @version
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright 2001-2009 William Entriken
  */
 class Photo extends View
 {

@@ -3,7 +3,7 @@ namespace CameraLife;
 /*
  * Modify the look of your site, configure Themes and Icons
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2013 William Entriken
+ * @copyright 2001-2013 William Entriken
  * @access public
  */
 $features = array('security', 'theme');

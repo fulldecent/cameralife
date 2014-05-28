@@ -6,7 +6,7 @@ namespace CameraLife;
  *
  * @author    William Entriken <WillEntriken @gmail.com>
  * @access    public
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright 2001-2009 William Entriken
  * @extends   Search
  */
 class Topic extends Search

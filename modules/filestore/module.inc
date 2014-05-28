@@ -8,7 +8,7 @@ namespace CameraLife;
  * Generally, you will update the photo object and then call the functions.
  * @author William Entriken <cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2014 William Entriken
+ * @copyright 2014 William Entriken
  */
 abstract class FileStore extends CameraLifeModule
 {

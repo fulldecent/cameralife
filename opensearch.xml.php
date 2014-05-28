@@ -2,7 +2,7 @@
 namespace CameraLife;
 /**xml tool used - OpenSearchDescription
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright 2001-2009 William Entriken
  * @access public
  */
 /**

@@ -7,7 +7,7 @@ namespace CameraLife;
  *
  * @author    William Entriken <cameralife@phor.net>
  * @access    public
- * @copyright Copyright (c) 2001-2014 William Entriken
+ * @copyright 2001-2014 William Entriken
  * @extends   Search
  */
 class Folder extends Search
@@ -43,7 +43,6 @@ class Folder extends Search
             Folder::update();
         }
 
-        //todo use bind here, add a bind parameter to Search
         @$this->mySearchPhotoCondition = "path=:path1";
         $this->mySearchAlbumCondition = "FALSE";
         @$this->mySearchFolderCondition = "path LIKE :path1 AND path NOT LIKE :path2";

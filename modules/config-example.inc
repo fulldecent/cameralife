@@ -3,7 +3,7 @@
  * Basic settings for Camera Life
  *
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2011 William Entriken
+ * @copyright 2001-2011 William Entriken
  * @access public
  */
 $db_host = 'localhost';

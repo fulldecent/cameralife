@@ -3,7 +3,7 @@ namespace CameraLife;
 /** View one topic page
  * NOTE: $cameralife and $topic are set by showPage()
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright 2001-2009 William Entriken
  * @access public
  */
 

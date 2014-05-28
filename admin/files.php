@@ -4,7 +4,7 @@ namespace CameraLife;
  * Administer files on the site
  * BEWARE: BACKUP YOUR DATABASE BEFORE MESSING AROUND HERE!
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2013 William Entriken
+ * @copyright 2001-2013 William Entriken
  * @access public
  */
 $features = array('security', 'fileStore');

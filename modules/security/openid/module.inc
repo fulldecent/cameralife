@@ -4,7 +4,7 @@ namespace CameraLife;
 /**
  * Implements OpenID login
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2011 William Entriken
+ * @copyright 2011 William Entriken
  * @access public
  */
 class OpenIDSecurity extends SecurityModule

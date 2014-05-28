@@ -57,7 +57,7 @@ It scales if you want to offload thumbnailing to separate server(s).
 Installation
 ------------
 
-See the file INSTALL or UPGRADE, as appropriate.
+See the file INSTALL.
 
 
 Maintenance

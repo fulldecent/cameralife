@@ -2,7 +2,7 @@
 /**
  * Displays post installation notifcation messages
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright 2001-2009 William Entriken
  * @access public
  */
 namespace CameraLife;
@@ -92,7 +92,7 @@ $result = mysql_query(
 );
 if (mysql_fetch_array($result)) {
     die ("The database " . $_POST['name'] . " has tables in it. The installer will not change
-            the existing tables! To upgrade, consult the <a href='../UPGRADE'>UPGRADE</a> file");
+            the existing tables!");
 }
 ?>
 

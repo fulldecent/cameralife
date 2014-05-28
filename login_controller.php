@@ -12,7 +12,7 @@ namespace CameraLife;
  * since it is also responsible for the login view.
  *
  * @author    William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright 2001-2009 William Entriken
  * @access    public
  */
 

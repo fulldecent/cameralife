@@ -6,7 +6,7 @@ namespace CameraLife;
  *
  * @extends CameraLifeModule
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright 2001-2009 William Entriken
  * @access public
  */
 abstract class ImageProcessingModule extends CameraLifeModule

@@ -4,7 +4,7 @@ namespace CameraLife;
  * Creates sitemap for search engines
  * Includes a master index and indexs for each 1000 photos
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright 2001-2009 William Entriken
  * @access public
  */
 

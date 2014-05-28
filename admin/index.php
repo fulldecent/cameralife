@@ -4,7 +4,7 @@ namespace CameraLife;
  * Displays the main admin page
  * Provides a menu to choose administrative options
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2013 William Entriken
+ * @copyright 2001-2013 William Entriken
  */
 require '../main.inc';
 $features = array('security', 'fileStore');

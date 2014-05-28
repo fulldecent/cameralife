@@ -3,7 +3,7 @@ namespace CameraLife;
 /*
  * Administer comments on the site
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright 2001-2009 William Entriken
  * @access public
  */
 $features = array('security', 'fileStore');

@@ -10,7 +10,7 @@ namespace CameraLife;
  * <li>target = the exit URL, or 'ajax' for an ajax call</li></ul>
  * @author William Entriken <cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright 2001-2009 William Entriken
  */
 
 @ini_set('max_execution_time', 9000);

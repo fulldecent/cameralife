@@ -5,7 +5,7 @@ namespace CameraLife;
  * Allows you to search for photos, albums, and folders in the system
  * @author William Entriken <cameralife@phor.net>
  * @access public
- * @copyright Copyright (c) 2001-2014 William Entriken
+ * @copyright 2001-2014 William Entriken
  */
 class Search extends View
 {

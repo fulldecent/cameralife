@@ -7,7 +7,7 @@ namespace CameraLife;
  * @uses $_POST['MODULE|PARAM'] REQUIRED sets a new value for MODULE's PARAM
  *
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright 2001-2009 William Entriken
  * @access public
  */
 

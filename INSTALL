@@ -4,8 +4,8 @@
 *
 * Install guide
 *
-* This file will help you install Camera Life, if you are upgrading, read
-* the file UPGRADE.
+* This file will help you install Camera Life
+* if you are upgrading, simply copy modules/config.php to the new release
 *
 
  A. Pre-requesites

@@ -4,7 +4,7 @@ namespace CameraLife;
 /**
  * Displays the main page
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2014 William Entriken
+ * @copyright 2001-2014 William Entriken
  * @access public
  */
 

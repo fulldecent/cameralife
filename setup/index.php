@@ -2,7 +2,7 @@
 /**
  * Displays post installation notifcation messages
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2014 William Entriken
+ * @copyright 2001-2014 William Entriken
  * @access public
  */
 namespace CameraLife;
@@ -106,7 +106,7 @@ try {
                 <h2>Welcome to Camera Life</h2>
 
                 <p class="alert alert-info">You are now installing version <?= trim(file_get_contents('../VERSION')) ?>.
-                    To upgrade instead, read <a href="../UPGRADE">UPGADE</a>.</p>
+                    To upgrade instead, copy in your old modules/config.php.</p>
 
                 <p class="lead">To begin, login with an OpenID provider:</p>
 

@@ -19,7 +19,7 @@ namespace CameraLife;
  *<li>param3 = extra info</li>
  *<li>target = the exit URL, or 'ajax' for an ajax call</li></ul>
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright 2001-2009 William Entriken
  * @access public
  */
 /**

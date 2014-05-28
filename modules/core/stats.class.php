@@ -5,7 +5,7 @@ namespace CameraLife;
  * Stats class.
  * get stat information about the whole photo collection
  * @author William Entriken <cameralife@phor.net>
- * @copyright Copyright (c) 2001-2009 William Entriken
+ * @copyright 2001-2009 William Entriken
  * @access public
  */
 class Stats
