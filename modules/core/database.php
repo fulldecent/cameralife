@@ -15,7 +15,7 @@ class Database
     public $myDBH;
     private $cameralife;
 
-    public function __construct($cameralife, $db_dsn, $db_user='', $db_pass='', $db_prefix='')
+    public function __construct($cameralife, $db_dsn, $db_user = '', $db_pass = '', $db_prefix = '')
     {
         $this->cameralife = $cameralife;
         $this->myPrefix = $db_prefix;
@@ -29,7 +29,7 @@ class Database
 
     /**
      * SELECT $selection FROM $table [WHERE $condition] [$extra]
-     * 
+     *
      * @access public
      * @param mixed $table
      * @param string $selection (default: '*')
@@ -71,7 +71,7 @@ class Database
 
     /**
      * SELECT $selection FROM $table [WHERE $condition] [$extra]
-     * 
+     *
      * @access public
      * @param mixed $table
      * @param mixed $selection
@@ -139,7 +139,7 @@ class Database
 
     /**
      * insert function.
-     * 
+     *
      * @access public
      * @param  string $table
      * @param  array  $values

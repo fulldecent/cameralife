@@ -67,10 +67,10 @@ $cameralife->theme->header($folder, null, $headers);
     foreach ($folder->getAncestors() as $ancestor) {
         $ancestorOpenGraph = $ancestor->GetOpenGraph();
         echo '  <li><a href="' . htmlspecialchars(
-                $ancestorOpenGraph['og:url']
-            ) . '"><img alt="folder" src="' . htmlspecialchars(
-                $cameralife->iconURL('small-folder')
-            ) . '"> ' . htmlentities($ancestorOpenGraph['og:title']) . '</a></li>';
+            $ancestorOpenGraph['og:url']
+        ) . '"><img alt="folder" src="' . htmlspecialchars(
+            $cameralife->iconURL('small-folder')
+        ) . '"> ' . htmlentities($ancestorOpenGraph['og:title']) . '</a></li>';
     }
     echo "        <li><img alt=\"folder\" src=\"" . $cameralife->iconURL('small-folder') . "\"> $folder_name</li>\n";
     ?>
@@ -125,4 +125,3 @@ if ($_GET['page'] == "photos") {
 
 <?php
 $cameralife->theme->footer();
-?>

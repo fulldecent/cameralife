@@ -43,17 +43,17 @@ if (!$search->getPhotoCount()) {
         foreach ($results as $result) {
             $resultOpenGraph = $result->GetOpenGraph();
             echo '<div class="l1" style="-moz-transform:rotate(' . rand(
-                    -10,
-                    10
-                ) . 'deg); -webkit-transform:rotate(' . rand(-10, 10) . 'deg)">';
+                -10,
+                10
+            ) . 'deg); -webkit-transform:rotate(' . rand(-10, 10) . 'deg)">';
             echo '<a href="' . htmlspecialchars($resultOpenGraph['og:url']) . '" class="l2">';
             echo '<img alt="' . htmlspecialchars($resultOpenGraph['og:title']) . '" src="' . htmlspecialchars(
-                    $resultOpenGraph['og:image']
-                ) . '" class="l3">';
+                $resultOpenGraph['og:image']
+            ) . '" class="l3">';
             if (isset($resultOpenGraph['og:image:width']) && isset($resultOpenGraph['og:image:height'])) {
                 echo '<div class="l4" style="width:' . ($resultOpenGraph['og:image:width']) . 'px">' . htmlentities(
-                        $resultOpenGraph['og:title']
-                    ) . '</div>';
+                    $resultOpenGraph['og:title']
+                ) . '</div>';
             } else {
                 echo '<div class="l4">' . htmlentities($resultOpenGraph['og:title']) . '</div>';
             }
@@ -87,21 +87,21 @@ if (!$search->getPhotoCount()) {
                 foreach ($photos as $result) {
                     $photoOpenGraph = $result->GetOpenGraph();
                     echo '<div class="l1" style="-moz-transform:rotate(' . rand(
-                            -10,
-                            10
-                        ) . 'deg); -webkit-transform:rotate(' . rand(-10, 10) . 'deg);">';
+                        -10,
+                        10
+                    ) . 'deg); -webkit-transform:rotate(' . rand(-10, 10) . 'deg);">';
                     echo '<a class="minipolaroid" href="' . htmlspecialchars($photoOpenGraph['og:url']) . '">';
                     echo '<img width="' . intval($photoOpenGraph['og:image:width'] / 2) . '" src="' . htmlspecialchars(
-                            $photoOpenGraph['og:image']
-                        ) . '" alt="' . htmlentities($photoOpenGraph['og:title']) . '" />';
+                        $photoOpenGraph['og:image']
+                    ) . '" alt="' . htmlentities($photoOpenGraph['og:title']) . '" />';
                     echo '</a>';
                     echo '</div>';
                 }
                 echo "</div>\n";
             }
             echo "<tr><td><h3><a href=\"" . htmlspecialchars(
-                    $rootOpenGraph['og:url']
-                ) . "\">... show all folders</a></h3>";
+                $rootOpenGraph['og:url']
+            ) . "\">... show all folders</a></h3>";
             ?>
         </table>
     </div>
@@ -116,8 +116,7 @@ if (!$search->getPhotoCount()) {
                 echo $cameralife->theme->Image('small-topic');
                 echo htmlentities($openGraph['og:title']) . "</a></h3>\n";
 
-                if ($cameralife->theme->getPref('main_topics') == 2) // Link a couple albums
-                {
+                if ($cameralife->theme->getPref('main_topics') == 2) {
                     $topic->sort = 'rand';
                     $topic->SetPage(0, 4);
 
@@ -143,4 +142,3 @@ if (!$search->getPhotoCount()) {
 
 <?php
 $cameralife->theme->footer();
-?>

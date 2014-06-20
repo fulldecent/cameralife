@@ -54,15 +54,13 @@ class OpenIDSecurity extends SecurityModule
         $_COOKIE[$this->getPref('auth_cookie')] = $cookie;
 
         $result = $cameralife->database->Select('users', '*', "password='$id'");
-        if ($user = $result->fetchAssoc()) // User exists already
-        {
+        if ($user = $result->fetchAssoc()) {
             $values['last_online'] = date('Y-m-d');
             $values['last_ip'] = $_SERVER["REMOTE_ADDR"];
             $values['cookie'] = $cookie;
             $cameralife->database->Update('users', $values, "password='$id'");
             return true;
         } else {
-
             $result = $cameralife->database->Select('users', '*', "username='$email'");
 
             if ($user = $result->fetchAssoc()) {
@@ -203,8 +201,8 @@ class OpenIDSecurity extends SecurityModule
             $error = "<span style='font-size:x-large'>You are not authorized to view this page</span>\n";
             $error .= "<p>To view this page, you must have the <strong>$authName</strong> privilege.<br>\n";
             $error .= "This is given to all users of authorization level at least <strong>" . $this->getPref(
-                    $authName
-                ) . "</strong>.</p>\n";
+                $authName
+            ) . "</strong>.</p>\n";
             if ($this->curuser['username']) {
                 $error .= "<p>You are logged in as <strong>" . $this->curuser['username'] . "</strong> with authorization level <strong>" . $this->curuser['auth'] . "</strong>.</p>\n";
                 $error .= "<p>Either ask an administrator to increase your authorization level, or stop trying to hack into the system.</p>\n";

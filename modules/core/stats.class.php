@@ -21,7 +21,7 @@ class Stats
 
     /**
      * Returns information about the aggregate of photos on the site
-     * 
+     *
      * @access public
      * @return array
      */
@@ -43,7 +43,7 @@ class Stats
 
     /**
      * Get an array of the popular photos
-     * 
+     *
      * @access public
      * @return array
      */
@@ -61,7 +61,7 @@ class Stats
 
     /**
      * Get an array of the popular albums
-     * 
+     *
      * @access public
      * @return array
      */
@@ -79,9 +79,9 @@ class Stats
 
     /**
      * Get an array of fun facts (English text)
-     * 
+     *
      * @access public
-     * @return array 
+     * @return array
      */
     public function getFunFacts()
     {

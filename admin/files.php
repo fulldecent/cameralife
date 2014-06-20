@@ -107,25 +107,25 @@ foreach ($_POST as $key => $val) {
         $photos = $search->getPhotos();
         echo '<div class="thumbnails">';
         $i = 0;
-        foreach ($photos as $photo) {
-            $photoOpenGraph = $photo->GetOpenGraph();
-            echo '<div class="col-sm-2"><div class="thumbnail text-center">';
-            echo '<a href="' . htmlspecialchars($photoOpenGraph['og:url']) . '">';
-            echo '<img src="' . htmlspecialchars($photoOpenGraph['og:image']) . '"></a><br />' . htmlentities(
-                    $photoOpenGraph['og:title']
-                );
-            echo '<select style="width:100%" name="' . $photo->Get('id') . '">' .
-                '<option value="0" ' . ($target_status == 0 ? 'selected' : '') . '>Public</option>' .
-                '<option value="1" ' . ($target_status == 1 ? 'selected' : '') . '>Flagged</option>' .
-                '<option value="2" ' . ($target_status == 2 ? 'selected' : '') . '>Private</option>' .
-                '<option value="3" ' . ($target_status == 3 ? 'selected' : '') . '>New Upload</option>' .
-                '<option value="4" ' . ($target_status == 4 ? 'selected' : '') . '>Erased</option></select><br>';
-            echo '</div></div>';
-            if (++$i % 6 == 0) {
-                echo '</div><div class="thumbnails">';
-            }
+    foreach ($photos as $photo) {
+        $photoOpenGraph = $photo->GetOpenGraph();
+        echo '<div class="col-sm-2"><div class="thumbnail text-center">';
+        echo '<a href="' . htmlspecialchars($photoOpenGraph['og:url']) . '">';
+        echo '<img src="' . htmlspecialchars($photoOpenGraph['og:image']) . '"></a><br />' . htmlentities(
+            $photoOpenGraph['og:title']
+        );
+        echo '<select style="width:100%" name="' . $photo->Get('id') . '">' .
+            '<option value="0" ' . ($target_status == 0 ? 'selected' : '') . '>public</option>' .
+            '<option value="1" ' . ($target_status == 1 ? 'selected' : '') . '>Flagged</option>' .
+            '<option value="2" ' . ($target_status == 2 ? 'selected' : '') . '>private</option>' .
+            '<option value="3" ' . ($target_status == 3 ? 'selected' : '') . '>new Upload</option>' .
+            '<option value="4" ' . ($target_status == 4 ? 'selected' : '') . '>Erased</option></select><br>';
+        echo '</div></div>';
+        if (++$i % 6 == 0) {
+            echo '</div><div class="thumbnails">';
         }
-        //$total = $cameralife->database->SelectOne('photos','COUNT(*)',"status=$target_status");
+    }
+        //$total = $cameralife->database->SelectOne('photos COUNT(*)',"status=$target_status");
         echo '</div>';
         ?>
         <p>
@@ -133,7 +133,8 @@ foreach ($_POST as $key => $val) {
             <a href="<?= '?' . $_SERVER['QUERY_STRING'] ?>" class="btn">Undo changes</a>
         </p>
         <?php
-        } else { // Update DB
+        } else {
+// Update DB
             echo "<p>Updating the database to reflect any changes to the FileStore...</p>\n<ol>\n";
             flush();
 

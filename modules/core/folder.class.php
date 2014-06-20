@@ -23,7 +23,7 @@ class Folder extends Search
 
     /**
      * __construct function.
-     * 
+     *
      * @access public
      * @param string $path (default: '/')
      * @return void
@@ -52,7 +52,7 @@ class Folder extends Search
 
     /**
      * Returns photos per QUERY, privacy, and paging restrictions
-     * 
+     *
      * @access public
      * @return Photo[]
      */
@@ -62,29 +62,29 @@ class Folder extends Search
         global $cameralife;
 
         switch ($this->sort) {
-        case 'newest':
-            $sort = 'value desc, id desc';
+            case 'newest':
+                $sort = 'value desc, id desc';
                 break;
-        case 'oldest':
-            $sort = 'value, id';
+            case 'oldest':
+                $sort = 'value, id';
                 break;
-        case 'az':
-            $sort = 'description';
+            case 'az':
+                $sort = 'description';
                 break;
-        case 'za':
-            $sort = 'description desc';
+            case 'za':
+                $sort = 'description desc';
                 break;
-        case 'popular':
-            $sort = 'hits desc';
+            case 'popular':
+                $sort = 'hits desc';
                 break;
-        case 'unpopular':
-            $sort = 'hits';
+            case 'unpopular':
+                $sort = 'hits';
                 break;
-        case 'rand':
-            $sort = 'rand()';
+            case 'rand':
+                $sort = 'rand()';
                 break;
-        default:
-            $sort = 'id desc';
+            default:
+                $sort = 'id desc';
         }
 
         $conditions = array();
@@ -113,7 +113,7 @@ class Folder extends Search
 
     /**
      * Returns folders per QUERY, privacy, and paging restrictions
-     * 
+     *
      * @access public
      * @return Photo[]
      */
@@ -122,29 +122,29 @@ class Folder extends Search
 //TODO: should not use global CAMERALIFE!    
         global $cameralife;
         switch ($this->sort) {
-        case 'newest':
-            $sort = 'id desc';
+            case 'newest':
+                $sort = 'id desc';
                 break;
-        case 'oldest':
-            $sort = 'id';
+            case 'oldest':
+                $sort = 'id';
                 break;
-        case 'az':
-            $sort = 'path';
+            case 'az':
+                $sort = 'path';
                 break;
-        case 'za':
-            $sort = 'path desc';
+            case 'za':
+                $sort = 'path desc';
                 break;
-        case 'popular':
-            $sort = 'hits desc';
+            case 'popular':
+                $sort = 'hits desc';
                 break;
-        case 'unpopular':
-            $sort = 'hits';
+            case 'unpopular':
+                $sort = 'hits';
                 break;
-        case 'rand':
-            $sort = 'rand()';
+            case 'rand':
+                $sort = 'rand()';
                 break;
-        default:
-            $sort = 'id desc';
+            default:
+                $sort = 'id desc';
         }
 
         $conditions = array();
@@ -162,7 +162,7 @@ class Folder extends Search
             'GROUP BY path ORDER BY ' . $sort . ' ' . 'LIMIT ' . $this->offset . ',' . $this->pageSize,
             null,
             $binds
-        );      
+        );
         
         $folders = array();
         while ($row = $query->fetchAssoc()) {
@@ -174,7 +174,7 @@ class Folder extends Search
     
     /**
      * Counts photos per QUERY, and privacy restrictions
-     * 
+     *
      * @access public
      * @return int
      */
@@ -203,7 +203,7 @@ class Folder extends Search
   
     /**
      * Counts folders per QUERY, and privacy restrictions
-     * 
+     *
      * @access public
      * @return int
      */
@@ -228,13 +228,13 @@ class Folder extends Search
             null,
             null,
             $binds
-        );      
+        );
     }
 
 
     /**
      * An array of parent, grandparent... top level folder
-     * 
+     *
      * @access public
      * @return void
      */
@@ -251,7 +251,7 @@ class Folder extends Search
 
     /**
      * Returns descendant folders per QUERY, privacy, and paging restrictions
-     * 
+     *
      * @access public
      * @return Photo[]
      */
@@ -259,29 +259,29 @@ class Folder extends Search
     {
         global $cameralife;
         switch ($this->sort) {
-        case 'newest':
-            $sort = 'created desc';
+            case 'newest':
+                $sort = 'created desc';
                 break;
-        case 'oldest':
-            $sort = 'created';
+            case 'oldest':
+                $sort = 'created';
                 break;
-        case 'az':
-            $sort = 'path';
+            case 'az':
+                $sort = 'path';
                 break;
-        case 'za':
-            $sort = 'path desc';
+            case 'za':
+                $sort = 'path desc';
                 break;
-        case 'popular':
-            $sort = 'hits desc';
+            case 'popular':
+                $sort = 'hits desc';
                 break;
-        case 'unpopular':
-            $sort = 'hits';
+            case 'unpopular':
+                $sort = 'hits';
                 break;
-        case 'rand':
-            $sort = 'rand()';
+            case 'rand':
+                $sort = 'rand()';
                 break;
-        default:
-            $sort = 'id desc';
+            default:
+                $sort = 'id desc';
         }
 
         $conditions = array();
@@ -298,7 +298,7 @@ class Folder extends Search
             'GROUP BY path ORDER BY ' . $sort . ' ' . 'LIMIT ' . $this->offset . ',' . $this->pageSize,
             null,
             $binds
-        );      
+        );
         while ($youngin = $query->fetchAssoc()) {
             $result[] = new Folder($youngin['path']);
         }
@@ -489,7 +489,7 @@ class Folder extends Search
 
     /**
      * getOpenGraph function.
-     * 
+     *
      * @access public
      * @return string[]
      */

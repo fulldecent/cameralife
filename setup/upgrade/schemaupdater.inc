@@ -21,7 +21,7 @@ abstract class SchemaUpdater
 
     /**
      * Execute the upgrade
-     * 
+     *
      * @access public
      * @abstract
      * @param mixed $dbHost

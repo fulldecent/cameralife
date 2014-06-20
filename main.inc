@@ -103,7 +103,8 @@ class CameraLife extends CameraLifeModule # and View
             $this->error("Non-existant feature requested: $feature");
         }
         $this->relativeInclude('modules/' . strtolower($feature) . '/module.inc');
-        if ($feature != 'core') { // Need to load implementation
+        if ($feature != 'core') {
+// Need to load implementation
 //TODO should core even be a "feature?"
             $implementation = $this->getPref($feature);
             $this->relativeInclude('modules/' . strtolower($feature) . "/$implementation/module.inc");
@@ -218,9 +219,9 @@ class CameraLife extends CameraLifeModule # and View
         } elseif (!isset($dbDNS)) {
             $secure = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
             $url = ($secure ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . rtrim(
-                    dirname($_SERVER['PHP_SELF']),
-                    '/'
-                ) . '/setup/';
+                dirname($_SERVER['PHP_SELF']),
+                '/'
+            ) . '/setup/';
             header("Location: $url");
             die('Redirecting to installer...');
         }

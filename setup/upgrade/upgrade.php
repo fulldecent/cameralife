@@ -65,7 +65,6 @@ $nextUpgraderFile = './' . strtolower($nextUpgraderClass) . '.inc';
             echo '<blockquote class="lead">' . $canUpgrade . '</blockquote>';
         }
     }
-    ?>
-</div>
+    </div>
 </body>
 </html>

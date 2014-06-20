@@ -13,7 +13,7 @@ class Album extends Search
 
     /**
      * __construct function.
-     * 
+     *
      * @access public
      * @param int $id
      * @return void
@@ -34,7 +34,7 @@ class Album extends Search
     
     /**
      * Returns photos per QUERY, privacy, and paging restrictions
-     * 
+     *
      * @access public
      * @return Photo[]
      */
@@ -44,29 +44,29 @@ class Album extends Search
         global $cameralife;
 
         switch ($this->sort) {
-        case 'newest':
-            $sort = 'value desc, id desc';
+            case 'newest':
+                $sort = 'value desc, id desc';
                 break;
-        case 'oldest':
-            $sort = 'value, id';
+            case 'oldest':
+                $sort = 'value, id';
                 break;
-        case 'az':
-            $sort = 'description';
+            case 'az':
+                $sort = 'description';
                 break;
-        case 'za':
-            $sort = 'description desc';
+            case 'za':
+                $sort = 'description desc';
                 break;
-        case 'popular':
-            $sort = 'hits desc';
+            case 'popular':
+                $sort = 'hits desc';
                 break;
-        case 'unpopular':
-            $sort = 'hits';
+            case 'unpopular':
+                $sort = 'hits';
                 break;
-        case 'rand':
-            $sort = 'rand()';
+            case 'rand':
+                $sort = 'rand()';
                 break;
-        default:
-            $sort = 'id desc';
+            default:
+                $sort = 'id desc';
         }
 
         $conditions = array();
@@ -98,7 +98,7 @@ class Album extends Search
     
     /**
      * Counts photos per QUERY, and privacy restrictions
-     * 
+     *
      * @access public
      * @return int
      */

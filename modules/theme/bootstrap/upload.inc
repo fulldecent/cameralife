@@ -21,8 +21,8 @@ $folderOpenGraph = $folder->getOpenGraph();
 $folderURL = $folderOpenGraph['og:url'];
 
 $headers = '<script src="' . $cameralife->baseURL . '/modules/theme/' . $cameralife->getPref(
-        'theme'
-    ) . '/dropzone.js"></script>';
+    'theme'
+) . '/dropzone.js"></script>';
 $cameralife->theme->header($cameralife, null, $headers); //TODO THIS IS INACCURATE
 ?>
 <BGSOUND src="<?= $cameralife->baseURL ?>/filedone.wav">
@@ -76,4 +76,4 @@ $cameralife->theme->header($cameralife, null, $headers); //TODO THIS IS INACCURA
     </script>
     <?php
     $cameralife->theme->footer();
-    ?>
+    

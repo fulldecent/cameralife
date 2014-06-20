@@ -35,8 +35,8 @@ $cameralife->theme->header($cameralife);
                         echo "<div style=\"width:50px; clear:left\" class=\"progress\"><div class=\"progress-bar progress-info\" style=\"width: $percent%\"></div></div>";
                         echo "<td>" . number_format($photo->Get('hits'));
                         echo "<td><a href=\"photo.php&#63;id=" . $photo->Get('id') . '">' . $photo->Get(
-                                'description'
-                            ) . "</a>\n";
+                            'description'
+                        ) . "</a>\n";
                     }
                     ?>
                 </table>
@@ -57,8 +57,8 @@ $cameralife->theme->header($cameralife);
                         echo "<div style=\"width:50px; clear:left\" class=\"progress\"><div class=\"progress-bar progress-bar-success\" style=\"width: $percent%\"></div></div>";
                         echo "<td>" . number_format($photo->Get('hits'));
                         echo "<td><a href=\"album.php&#63;id=" . $photo->Get('id') . '">' . $photo->Get(
-                                'name'
-                            ) . "</a>\n";
+                            'name'
+                        ) . "</a>\n";
                     }
                     ?>
                 </table>
@@ -91,4 +91,3 @@ $cameralife->theme->header($cameralife);
 
 <?php
 $cameralife->theme->footer();
-?>

@@ -36,8 +36,7 @@ class GDImageProcessingImage extends ImageProcessingImage
         $pathParts = pathinfo($filename);
         $this->extension = strtolower($pathParts['extension']);
 
-        if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') # going out on a limb here...
-        {
+        if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') {
             $this->originalImage = imagecreatefromjpeg($filename);
         } elseif ($this->extension == 'png') {
             $this->originalImage = imagecreatefrompng($filename);
@@ -121,8 +120,7 @@ class GDImageProcessingImage extends ImageProcessingImage
             $baseHeight
         );
 
-        if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') # wild guess
-        {
+        if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') {
             @imagejpeg($newImage, $filename, $quality)
                 or $cameralife->error("Could not write the file $filename is the directory writable?");
         } elseif ($this->extension == 'png') {
@@ -162,8 +160,7 @@ class GDImageProcessingImage extends ImageProcessingImage
      */
     public function save($filename, $quality = 91)
     {
-        if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') # on a limb...
-        {
+        if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') {
             @imagejpeg($this->originalImage, $filename, $quality)
                 or $cameralife->Error("Could not write the file $filename is the directory writable?");
         } elseif ($this->extension == 'png') {
@@ -211,5 +208,3 @@ class GDImageProcessingImage extends ImageProcessingImage
         return ($imgDest);
     }
 }
-
-

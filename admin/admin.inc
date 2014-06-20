@@ -40,20 +40,21 @@ function renderPrefsAsHTML($module)
             echo "      <input class=\"form-control\" type=\"number\" name=\"$tag\" value=\"$value\" />\n";
         } elseif ($pref['type'] == 'string') {
             echo "      <input class=\"form-control\" type=\"text\" name=\"$tag\" value=\"" . htmlspecialchars(
-                    $value
-                ) . "\" />\n";
+                $value
+            ) . "\" />\n";
         }
         if ($pref['type'] == 'directory' || $pref['type'] == 'directoryrw') {
             echo "      <input class=\"form-control\" type=\"text\" name=\"$tag\" value=\"$value\" />\n";
             if (!is_dir($value) && !is_dir($cameralife->baseDir . "/$value")) {
                 echo '<p class="text-error">This is not a directory</p>';
             } elseif ($pref['type'] == 'directoryrw' && !is_writable($value) && !is_writable(
-                    $cameralife->baseDir . "/$value"
-                )
+                $cameralife->baseDir . "/$value"
+            )
             ) {
                 echo '<p class="text-error">This directory is not writable</p>';
             }
-        } elseif (is_array($pref['type'])) { // enumeration
+        } elseif (is_array($pref['type'])) {
+// enumeration
             echo "      <select class=\"form-control\" name=\"$tag\">\n";
             foreach ($pref['type'] as $index => $desc) {
                 $extra = $index == $value ? 'selected' : '';

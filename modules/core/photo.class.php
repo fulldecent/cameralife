@@ -70,11 +70,13 @@ class Photo extends View
 
         if (is_null($original)) {
             $this->record['id'] = null;
-        } elseif (is_numeric($original)) { # This is an ID
+        } elseif (is_numeric($original)) {
+# This is an ID
             $result = $cameralife->database->Select('photos', '*', "id=$original");
             $this->record = $result->fetchAssoc()
             or $cameralife->error("Photo #$original not found");
-        } elseif (is_array($original)) { # A new image, given by an array
+        } elseif (is_array($original)) {
+# A new image, given by an array
             $this->record['description'] = 'unnamed';
 
             //      if (!preg_match('/^dscn/i', $this->record['filename']) &&
@@ -489,12 +491,12 @@ class Photo extends View
         $this->context = $this->getFolder();
         
         // Given no better information, best context is this photo's path
-        if (!isset($_SERVER['HTTP_REFERER'])) { 
-            return $retval; }
+        if (!isset($_SERVER['HTTP_REFERER'])) {
+            return $retval;
+        }
 
         // Find if the referer is an album
-        if (preg_match("/album/", $_SERVER['HTTP_REFERER'], $regs)) 
-        {
+        if (preg_match("/album/", $_SERVER['HTTP_REFERER'], $regs)) {
             if (isset($_SERVER['HTTP_REFERER']) &&
                 (preg_match("#album.php\?id=([0-9]*)#", $_SERVER['HTTP_REFERER'], $regs) || preg_match(
                     "#albums/([0-9]+)#",
@@ -515,8 +517,7 @@ class Photo extends View
             "'" . addslashes($this->get('description')) . "' LIKE CONCAT('%',term,'%')"
         );
         while ($albumrecord = $result->fetchAssoc()) {
-            if (($this->context instanceof Album) && $this->context->get('id') == $albumrecord['id'])
-            {
+            if (($this->context instanceof Album) && $this->context->get('id') == $albumrecord['id']) {
                 continue;
             }
             $album = new Album($albumrecord['id']);

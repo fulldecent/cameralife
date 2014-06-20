@@ -63,8 +63,7 @@ class DefaultSecurity extends SecurityModule
 
         $result = $cameralife->database->Select('users', '*', "username='$username' AND password='$password'");
 
-        if ($user = $result->fetchAssoc()) // Login legal
-        {
+        if ($user = $result->fetchAssoc()) {
             $cookie = rand(0, 999999);
             $values['cookie'] = $cookie;
             $values['last_online'] = date('Y-m-d');
@@ -188,8 +187,8 @@ class DefaultSecurity extends SecurityModule
             $error = "<span style='font-size:x-large'>You are not authorized to view this page</span>\n";
             $error .= "<p>To view this page, you must have the <strong>$authName</strong> privilege.<br>\n";
             $error .= "This is given to all users of authorization level at least <strong>" . $this->getPref(
-                    $authName
-                ) . "</strong>.</p>\n";
+                $authName
+            ) . "</strong>.</p>\n";
             if ($this->curuser['username']) {
                 $error .= "<p>You are logged in as <strong>" . $this->curuser['username'] . "</strong> with authorization level <strong>" . $this->curuser['auth'] . "</strong>.</p>\n";
                 $error .= "<p>Either ask an administrator to increase your authorization level, or stop trying to hack into the system.</p>\n";

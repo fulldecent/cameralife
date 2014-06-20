@@ -11,9 +11,9 @@ class Search extends View
 {
     /**
      * A search term by which to restrict results
-     * 
+     *
      * (default value: '')
-     * 
+     *
      * @var string
      * @access protected
      */
@@ -21,9 +21,9 @@ class Search extends View
 
     /**
      * The order to return results by, must be an option from `Search::sortOptions()`
-     * 
+     *
      * (default value: 'newest')
-     * 
+     *
      * @var string
      * @access public
      */
@@ -31,9 +31,9 @@ class Search extends View
 
     /**
      * Whether we should show photos that are NOT status=0
-     * 
+     *
      * (default value: false)
-     * 
+     *
      * @var bool
      * @access public
      */
@@ -41,9 +41,9 @@ class Search extends View
     
     /**
      * The index of results to show (zero-based)
-     * 
+     *
      * (default value: 0)
-     * 
+     *
      * @var int
      * @access protected
      */
@@ -51,9 +51,9 @@ class Search extends View
 
     /**
      * The maximum number of results to return
-     * 
+     *
      * (default value: 12)
-     * 
+     *
      * @var int
      * @access protected
      */
@@ -61,19 +61,19 @@ class Search extends View
 
     /**
      * __construct function.
-     * 
+     *
      * @access public
      * @param mixed $query
      * @return void
      */
-    function __construct($query = '') 
+    function __construct($query = '')
     {
         $this->query = $query;
     }
 
     /**
      * Show available sort options
-     * 
+     *
      * @access public
      * @static
      * @return void
@@ -93,7 +93,7 @@ class Search extends View
 
     /**
      * Sets the offset and number of results to return
-     * 
+     *
      * @access public
      * @param mixed $start
      * @param int $pagesize (default: 12)
@@ -107,7 +107,7 @@ class Search extends View
 
     /**
      * Returns photos per QUERY, privacy, and paging restrictions
-     * 
+     *
      * @access public
      * @return Photo[]
      */
@@ -117,29 +117,29 @@ class Search extends View
         global $cameralife;
 
         switch ($this->sort) {
-        case 'newest':
-            $sort = 'value desc, id desc';
+            case 'newest':
+                $sort = 'value desc, id desc';
                 break;
-        case 'oldest':
-            $sort = 'value, id';
+            case 'oldest':
+                $sort = 'value, id';
                 break;
-        case 'az':
-            $sort = 'description';
+            case 'az':
+                $sort = 'description';
                 break;
-        case 'za':
-            $sort = 'description desc';
+            case 'za':
+                $sort = 'description desc';
                 break;
-        case 'popular':
-            $sort = 'hits desc';
+            case 'popular':
+                $sort = 'hits desc';
                 break;
-        case 'unpopular':
-            $sort = 'hits';
+            case 'unpopular':
+                $sort = 'hits';
                 break;
-        case 'rand':
-            $sort = 'rand()';
+            case 'rand':
+                $sort = 'rand()';
                 break;
-        default:
-            $sort = 'id desc';
+            default:
+                $sort = 'id desc';
         }
 
         $conditions = array();
@@ -171,7 +171,7 @@ class Search extends View
 
     /**
      * Returns albums per QUERY, and paging restrictions
-     * 
+     *
      * @access public
      * @return Photo[]
      */
@@ -181,29 +181,29 @@ class Search extends View
         global $cameralife;
 
         switch ($this->sort) {
-        case 'newest':
-            $sort = 'albums.id desc';
+            case 'newest':
+                $sort = 'albums.id desc';
                 break;
-        case 'oldest':
-            $sort = 'albums.id';
+            case 'oldest':
+                $sort = 'albums.id';
                 break;
-        case 'az':
-            $sort = 'description';
+            case 'az':
+                $sort = 'description';
                 break;
-        case 'za':
-            $sort = 'description desc';
+            case 'za':
+                $sort = 'description desc';
                 break;
-        case 'popular':
-            $sort = 'albums.hits desc';
+            case 'popular':
+                $sort = 'albums.hits desc';
                 break;
-        case 'unpopular':
-            $sort = 'albums.hits';
+            case 'unpopular':
+                $sort = 'albums.hits';
                 break;
-        case 'rand':
-            $sort = 'rand()';
+            case 'rand':
+                $sort = 'rand()';
                 break;
-        default:
-            $sort = 'albums.id desc';
+            default:
+                $sort = 'albums.id desc';
         }
 
         $conditions = array();
@@ -215,11 +215,11 @@ class Search extends View
             $i++;
         }
         $query = $cameralife->database->Select(
-            'albums', 
-            'id', 
+            'albums',
+            'id',
             implode(' AND ', $conditions),
             'ORDER BY ' . $sort . ' ' . 'LIMIT ' . $this->offset . ',' . $this->pageSize,
-            null, 
+            null,
             $binds
         );
 
@@ -233,7 +233,7 @@ class Search extends View
 
     /**
      * Returns folders per QUERY, privacy, and paging restrictions
-     * 
+     *
      * @access public
      * @return Photo[]
      */
@@ -242,29 +242,29 @@ class Search extends View
 //TODO: should not use global CAMERALIFE!    
         global $cameralife;
         switch ($this->sort) {
-        case 'newest':
-            $sort = 'id desc';
+            case 'newest':
+                $sort = 'id desc';
                 break;
-        case 'oldest':
-            $sort = 'id';
+            case 'oldest':
+                $sort = 'id';
                 break;
-        case 'az':
-            $sort = 'path';
+            case 'az':
+                $sort = 'path';
                 break;
-        case 'za':
-            $sort = 'path desc';
+            case 'za':
+                $sort = 'path desc';
                 break;
-        case 'popular':
-            $sort = 'hits desc';
+            case 'popular':
+                $sort = 'hits desc';
                 break;
-        case 'unpopular':
-            $sort = 'hits';
+            case 'unpopular':
+                $sort = 'hits';
                 break;
-        case 'rand':
-            $sort = 'rand()';
+            case 'rand':
+                $sort = 'rand()';
                 break;
-        default:
-            $sort = 'id desc';
+            default:
+                $sort = 'id desc';
         }
 
         $conditions = array();
@@ -285,7 +285,7 @@ class Search extends View
             'GROUP BY path ORDER BY ' . $sort . ' ' . 'LIMIT ' . $this->offset . ',' . $this->pageSize,
             null,
             $binds
-        );      
+        );
         
         $folders = array();
         while ($row = $query->fetchAssoc()) {
@@ -297,7 +297,7 @@ class Search extends View
     
     /**
      * Counts photos per QUERY, and privacy restrictions
-     * 
+     *
      * @access public
      * @return int
      */
@@ -330,7 +330,7 @@ class Search extends View
   
     /**
      * Counts albums per QUERY, restrictions
-     * 
+     *
      * @access public
      * @return int
      */
@@ -360,7 +360,7 @@ class Search extends View
     
     /**
      * Counts folders per QUERY, and privacy restrictions
-     * 
+     *
      * @access public
      * @return int
      */
@@ -388,12 +388,12 @@ class Search extends View
             null,
             null,
             $binds
-        );      
+        );
     }
 
     /**
      * Create array of OG data
-     * 
+     *
      * @access public
      * @return string[]
      */
@@ -411,5 +411,4 @@ class Search extends View
         //$retval['og:image:height'] =
         return $retval;
     }
-
 }

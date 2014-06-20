@@ -95,8 +95,7 @@ function html_select_auth($param_name)
 
     <?php
     if ($_GET['page'] == 'users') {
-    ?>
-    <form method="post">
+                    <form method="post">
         <table class="table">
             <tr>
             <th width="16%">User

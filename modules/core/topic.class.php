@@ -13,7 +13,7 @@ class Topic extends Search
 {
     /**
      * Returns albums per QUERY, and paging restrictions
-     * 
+     *
      * @access public
      * @return Photo[]
      */
@@ -23,29 +23,29 @@ class Topic extends Search
         global $cameralife;
 
         switch ($this->sort) {
-        case 'newest':
-            $sort = 'albums.id desc';
+            case 'newest':
+                $sort = 'albums.id desc';
                 break;
-        case 'oldest':
-            $sort = 'albums.id';
+            case 'oldest':
+                $sort = 'albums.id';
                 break;
-        case 'az':
-            $sort = 'description';
+            case 'az':
+                $sort = 'description';
                 break;
-        case 'za':
-            $sort = 'description desc';
+            case 'za':
+                $sort = 'description desc';
                 break;
-        case 'popular':
-            $sort = 'albums.hits desc';
+            case 'popular':
+                $sort = 'albums.hits desc';
                 break;
-        case 'unpopular':
-            $sort = 'albums.hits';
+            case 'unpopular':
+                $sort = 'albums.hits';
                 break;
-        case 'rand':
-            $sort = 'rand()';
+            case 'rand':
+                $sort = 'rand()';
                 break;
-        default:
-            $sort = 'albums.id desc';
+            default:
+                $sort = 'albums.id desc';
         }
 
         $conditions = array();
@@ -57,11 +57,11 @@ class Topic extends Search
             $i++;
         }
         $query = $cameralife->database->Select(
-            'albums', 
-            'id', 
+            'albums',
+            'id',
             'topic = :topic',
             'ORDER BY ' . $sort . ' ' . 'LIMIT ' . $this->offset . ',' . $this->pageSize,
-            null, 
+            null,
             array('topic' => $this->query)
         );
 
@@ -75,7 +75,7 @@ class Topic extends Search
 
     /**
      * Counts albums with the topic named QUERY
-     * 
+     *
      * @access public
      * @return int
      */

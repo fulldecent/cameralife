@@ -20,8 +20,8 @@ $openGraph = $album->getOpenGraph();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 $sort = isset($_GET['sort']) ? $_GET['sort'] : 'rand';
 $extrahead = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of ' . $album->get(
-        'name'
-    ) . '" href="' . $cameralife->baseURL . '/rss.php&#63;q=' . $album->get('term') . '"/>';
+    'name'
+) . '" href="' . $cameralife->baseURL . '/rss.php&#63;q=' . $album->get('term') . '"/>';
 $cameralife->theme->header($album, null, $extrahead);
 
 if (isset($_GET['edit']) && $cameralife->security->authorize('admin_albums')) {
@@ -49,14 +49,14 @@ if (isset($_GET['edit']) && $cameralife->security->authorize('admin_albums')) {
                             <td>
                                 <select name="param2">
                                     <?php
-                                    foreach (Topic::getTopics() as $topic) {
-                                        $thetopic = $topic->name;
-                                        $selected = ($album->get('topic') == $thetopic) ? 'selected' : '';
-                                        if ($album->get('topic') == $topic) {
-                                            $preselect = true;
-                                        }
-                                        echo "<option $selected onclick=\"document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
-                                    }
+    foreach (Topic::getTopics() as $topic) {
+        $thetopic = $topic->name;
+        $selected = ($album->get('topic') == $thetopic) ? 'selected' : '';
+        if ($album->get('topic') == $topic) {
+            $preselect = true;
+        }
+        echo "<option $selected onclick=\"document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
+    }
                                     ?>
                                     <option value="othertopic" <?= $preselect ? '' : 'selected' ?>
                                             onclick="document.form1.topicother.disabled=false">(A new topic)
@@ -73,7 +73,7 @@ if (isset($_GET['edit']) && $cameralife->security->authorize('admin_albums')) {
             </table>
         </form>
     </div>
-<?php
+    <?php
 }
 if (isset($_GET['poster_id'])) {
     $cameralife->security->authorize('admin_albums', 1);
@@ -83,7 +83,7 @@ if (isset($_GET['poster_id'])) {
         The album <b><?= $album->get('name') ?></b> will be represented by this photo
         <img src="<?= htmlspecialchars($album->getPoster()->getMediaURL('thumbnail')) ?>" alt="Poster photo">
     </div>
-<?php
+    <?php
 }
 ?>
 <div id="help" class="administrative"
@@ -115,5 +115,4 @@ $cameralife->theme->pageSelector(($sort == 'rand()') ? -1 : $start, $album->getP
 </form>
 <?php
 $cameralife->theme->footer();
-?>
 

@@ -85,7 +85,7 @@ $numcomments = $cameralife->database->SelectOne(
             echo "<p class=\"alert alert-warning\">There are $numlog logged actions since your last checkpoint</p>";
         } else {
             echo "<p class=\"alert alert-info\">No changes have been made since your last checkpoint</p>";
-                        }
+        }
                         ?>
                         <p><a class="btn btn-default" href="logs.php"><i class="fa fa-backward"></i> View and
                                 rollback site actions &raquo;</a></p>
@@ -103,7 +103,7 @@ $numcomments = $cameralife->database->SelectOne(
             echo "<p class=\"alert alert-warning\">There are $numcomments comments since your last checkpoint</p>";
         } else {
             echo "<p class=\"alert alert-info\">No changes have been made since your last checkpoint</p>";
-                        }
+        }
                         ?>
                         <p><a class="btn btn-default" href="comments.php"><i class="fa fa-user"></i> View and censor site
                                 comments &raquo;</a></p>
@@ -121,10 +121,10 @@ $numcomments = $cameralife->database->SelectOne(
                         <?php
         if ($numdel) {
             echo "<p class=\"alert alert-danger\"><i class=\"fa fa-flag\"></i> $numdel photos have been flagged</p>";
-                        }
+        }
         if ($numupl) {
             echo "<p class=\"alert alert-info\">$numupl photos have been uploaded but not reviewed</p>";
-                        }
+        }
                         ?>
                         <p><a class="btn btn-default" href="files.php"><i class="fa fa-folder-open"></i> Manage
                                 files &raquo;</a></p>
@@ -159,7 +159,7 @@ $numcomments = $cameralife->database->SelectOne(
                         <?php
         if ($numreg) {
             echo "<p class=\"alert alert-info\">$numreg users have registered but not been confirmed</p>\n";
-                        }
+        }
                         ?>
                         <p><a class="btn btn-default" href="security.php"><i class="fa fa-lock"></i> Manage users &amp;
                                 security &raquo;</a></p>
