@@ -52,6 +52,7 @@ $latestLog = $cameralife->database->SelectOne('logs', 'max(id)');
 
     <!-- Le styles -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -77,7 +78,7 @@ if ($checkpointDate) {
         <input type="hidden" name="CameraLife|checkpointlogs" value="0">
         <input class="btn btn-default" type="submit" value="Reset checkpoint">
         <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn btn-default"><i
-                class="icon-info-sign"></i> Learn about checkpoints</a>
+                class="fa fa-info"></i> Learn about checkpoints</a>
     </form>
 <?php
 } else {
@@ -88,7 +89,7 @@ if ($checkpointDate) {
         <input type="hidden" name="CameraLife|checkpointlogs" value="<?= $latestLog ?>">
         <input class="btn btn-default" type="submit" value="Hide logs up to now">
         <a href="https://github.com/fulldecent/cameralife/wiki/Checkpoints" class="btn btn-default"><i
-                class="icon-info-sign"></i> Learn about checkpoints</a>
+                class="fa fa-info"></i> Learn about checkpoints</a>
     </form>
 <?php
 }
@@ -102,19 +103,19 @@ if ($checkpointDate) {
                 <input type="checkbox" name="showme" <?php if ($_POST["showme"]) {
                     echo " checked";
                 } ?>>
-                <i class="icon-user"></i> Me
+                <i class="fa fa-user"></i> Me
             </label>
             <label class="checkbox inline">
                 <input type="checkbox" name="showreg" <?php if ($_POST["showreg"]) {
                     echo " checked";
                 } ?>>
-                <i class="icon-user"></i> registered users
+                <i class="fa fa-user"></i> registered users
             </label>
             <label class="checkbox inline">
                 <input type="checkbox" name="showunreg" <?php if ($_POST["showunreg"]) {
                     echo " checked";
                 } ?>>
-                <i class="icon-user"></i> Unregistered users
+                <i class="fa fa-user"></i> Unregistered users
             </label>
         </div>
     </div>

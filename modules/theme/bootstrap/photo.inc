@@ -101,11 +101,11 @@ if ($photo->get('status') > 0) {
         <?php
             if ($rating == 5) {
                 echo "<button name=\"param1\" value=\"0\" type=\"submit\" class=\"btn btn-link\" style=\"color:gold\">";
-                echo "<i class=\"icon-star icon-2x\"></i>\n";
+                echo "<i class=\"fa fa-star fa-2x\"></i>\n";
                 echo "</button>\n";
             } else {
                 echo "<button name=\"param1\" value=\"5\" type=\"submit\" class=\"btn btn-link\" style=\"color:gold\">";
-                echo "<i class=\"icon-star-empty icon-2x\"></i>\n";
+                echo "<i class=\"fa fa-star-o fa-2x\"></i>\n";
                 echo "</button>\n";
             }
         ?>
@@ -124,7 +124,7 @@ if ($photo->get('status') > 0) {
     }
     ?>
     <a href="<?= $photo->getMediaURL('photo') ?>" id="showHideRenameForm" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="<?= $photo->get('width') ?> x <?= $photo->get('height') ?>px">
-        <i class="icon-fullscreen"></i>
+        <i class="fa fa-arrows-alt"></i>
     </a>
     <?php if ($cameralife->security->authorize('photo_delete')) { ?>
         <a href="<?= $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'flag') ?>"
@@ -134,7 +134,7 @@ if ($photo->get('status') > 0) {
           title="Flag photo"
           onClick="$('#deleteform').show();return false"
         >
-            <i class="icon-flag"></i>
+            <i class="fa fa-flag"></i>
         </a>
     <?php } ?>
     <?php if ($cameralife->security->authorize('photo_modify')) { ?>
@@ -145,7 +145,7 @@ if ($photo->get('status') > 0) {
           title="Modify photo (rotate, revert, ...)"
           onClick="$('#modify').show();return false"
         >
-            <i class="icon-wrench"></i>
+            <i class="fa fa-wrench"></i>
         </a>
     <?php } ?>
     <?php if ($photo->get('status') == 0) { ?>
@@ -156,7 +156,7 @@ if ($photo->get('status') > 0) {
           title="Order prints"
           onClick="$('#modify').show();return false"
         >
-            <i class="icon-print"></i>
+            <i class="fa fa-print"></i>
         </a>
         <a href="http://www.facebook.com/sharer.php?u=<?= rawurlencode(htmlspecialchars($openGraph['og:url'])) ?>"
           class="btn btn-sm btn-default" 
@@ -164,7 +164,7 @@ if ($photo->get('status') > 0) {
           data-placement="top" 
           title="Share on Facebook"
         >
-            <i class="icon-star"></i>
+            <i class="fa fa-star"></i>
         </a>
     <?php } ?>    
 </h1>
@@ -363,14 +363,17 @@ if (isset($cameralife->receipt)) {
     echo '<div id="receipt" class="receipt" style="visibility: hidden"></div>';
 }
 
-// echo "<div class='thumbnail' style=\"text-align: center; margin: 0 auto\">\n";
+echo '<a href="'.htmlspecialchars($prevOpenGraph['og:url']).'"><i class="fa fa-caret-square-o-left fa-4x"></i></a>';
+
 $alt = htmlentities($photo->get('description'));
-echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px solid #DDD; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; margin: 0 auto\" src=\"" . htmlspecialchars(
+echo "<img id=\"curphoto\" class=\"img-thumbnail\" style=\"margin: 0 auto\" src=\"" . htmlspecialchars(
         $photo->getMediaURL(
             'scaled'
         )
     ) . "\" alt=\"$alt\">\n\n";
-//  echo "</div>\n";
+
+echo '<a href="'.htmlspecialchars($nextOpenGraph['og:url']).'"><i class="fa fa-caret-square-o-right fa-4x"></i></a>';
+
 ?>
 
     </div>
@@ -392,7 +395,8 @@ echo "<img id=\"curphoto\" style=\"display: block; padding: 4px; border: 1px sol
             $hHref = htmlspecialchars($og['og:url']);
             $hSrc = htmlspecialchars($contextPhoto->getMediaURL('thumbnail'));
             $hDescription = htmlspecialchars($contextPhoto->get('description'));
-            echo "<a href=\"$hHref\" class=\"$class pull-left \"><img src=\"$hSrc\" alt=\"$hDescription\"></a>";
+            $hStyle = $contextPhoto->get('id') == $photo->get('id') ? 'border:7px solid gray' : '';
+            echo "<a href=\"$hHref\" style=\"$hStyle\" class=\"$class pull-left \"><img src=\"$hSrc\" alt=\"$hDescription\"></a>";
         }
         ?>
     </div>

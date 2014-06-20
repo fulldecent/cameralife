@@ -146,7 +146,7 @@ class BootstrapTheme extends ThemeModule
             <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
             <link rel="search" href="opensearch.xml.php" type="application/opensearchdescription+xml"
                   title="Content Search"/>
-            <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+            <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
             <link href="<?=
             $cameralife->baseURL . "/modules/theme/" . (basename(
                 dirname(__FILE__)
@@ -191,7 +191,7 @@ class BootstrapTheme extends ThemeModule
                         <?php } else { ?>
                             <a class="btn btn-default navbar-btn narbar-right"
                                href="<?= $cameralife->security->LoginURL() ?>">
-                                <i class="icon-user"></i>
+                                <i class="fa fa-user"></i>
                                 <img alt="facebook" src="http://facebook.com/favicon.ico" height=16 width=16>
                                 <img alt="google" src="http://google.com/favicon.ico" height=16 width=16>
                                 <img alt="yahoo" src="http://yahoo.com/favicon.ico" height=16 width=16>
@@ -231,19 +231,19 @@ class BootstrapTheme extends ThemeModule
 
         <footer>
             <p>
-                <a href="mailto:<?= $cameralife->getPref('owner_email') ?>"><i class="icon-envelope"></i> Contact site
+                <a href="mailto:<?= $cameralife->getPref('owner_email') ?>"><i class="fa fa-envelope"></i> Contact site
                     owner</a>
                 &nbsp;
-                <a href="<?= $cameralife->baseURL ?>/stats.php"><i class="icon-signal"></i> Site stats</a>
+                <a href="<?= $cameralife->baseURL ?>/stats.php"><i class="fa fa-signal"></i> Site stats</a>
                 &nbsp;
-                <a href="http://fulldecent.github.com/cameralife"><i class="icon-globe"></i> Built with Camera Life</a>
+                <a href="http://fulldecent.github.com/cameralife"><i class="fa fa-globe"></i> Built with Camera Life</a>
                 &nbsp;
                 <?php if (isset($_GET['path'])) { ?>
                     <a href="<?= $cameralife->baseURL ?>/upload.php?path=<?= htmlentities($_GET['path']) ?>">
                 <?php } else { ?>
                     <a href="<?= $cameralife->baseURL ?>/upload.php">
                 <?php } ?>
-                    <i class="icon-plus"></i>
+                    <i class="fa fa-plus"></i>
                     Upload
                 </a>
             </p>

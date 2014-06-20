@@ -45,7 +45,7 @@ $cameralife->theme->header($cameralife, null, $headers); //TODO THIS IS INACCURA
             <label class="control-label" for="path">Path:</label>
 
             <div class="controls">
-                <span class="input-xlarge uneditable-input"><i class="icon-folder-open"></i> <?= $path ?></span>
+                <span class="input-xlarge uneditable-input"><i class="fa fa-folder-open"></i> <?= $path ?></span>
                 <input name="path" type=hidden value="<?= $path ?>">
             </div>
         </div>

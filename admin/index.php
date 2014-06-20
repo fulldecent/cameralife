@@ -33,7 +33,7 @@ $numcomments = $cameralife->database->SelectOne(
 
     <!-- Le styles -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -87,7 +87,7 @@ $numcomments = $cameralife->database->SelectOne(
             echo "<p class=\"alert alert-info\">No changes have been made since your last checkpoint</p>";
                         }
                         ?>
-                        <p><a class="btn btn-default" href="logs.php"><i class="icon-step-backward"></i> View and
+                        <p><a class="btn btn-default" href="logs.php"><i class="fa fa-backward"></i> View and
                                 rollback site actions &raquo;</a></p>
                     </div>
                 </div>
@@ -105,7 +105,7 @@ $numcomments = $cameralife->database->SelectOne(
             echo "<p class=\"alert alert-info\">No changes have been made since your last checkpoint</p>";
                         }
                         ?>
-                        <p><a class="btn btn-default" href="comments.php"><i class="icon-user"></i> View and censor site
+                        <p><a class="btn btn-default" href="comments.php"><i class="fa fa-user"></i> View and censor site
                                 comments &raquo;</a></p>
                     </div>
                 </div>
@@ -120,13 +120,13 @@ $numcomments = $cameralife->database->SelectOne(
                     <div class="panel-body">
                         <?php
         if ($numdel) {
-            echo "<p class=\"alert alert-danger\"><i class=\"icon-flag\"></i> $numdel photos have been flagged</p>";
+            echo "<p class=\"alert alert-danger\"><i class=\"fa fa-flag\"></i> $numdel photos have been flagged</p>";
                         }
         if ($numupl) {
             echo "<p class=\"alert alert-info\">$numupl photos have been uploaded but not reviewed</p>";
                         }
                         ?>
-                        <p><a class="btn btn-default" href="files.php"><i class="icon-folder-open"></i> Manage
+                        <p><a class="btn btn-default" href="files.php"><i class="fa fa-folder-open"></i> Manage
                                 files &raquo;</a></p>
                     </div>
                 </div>
@@ -145,7 +145,7 @@ $numcomments = $cameralife->database->SelectOne(
                         <h3 class="panel-title">Appearance</h3>
                     </div>
                     <div class="panel-body">
-                        <p><a class="btn btn-default" href="appearance.php"><i class="icon-star-empty"></i> Set theme
+                        <p><a class="btn btn-default" href="appearance.php"><i class="fa fa-star-o"></i> Set theme
                                 and iconset &raquo;</a></p>
                     </div>
                 </div>
@@ -161,7 +161,7 @@ $numcomments = $cameralife->database->SelectOne(
             echo "<p class=\"alert alert-info\">$numreg users have registered but not been confirmed</p>\n";
                         }
                         ?>
-                        <p><a class="btn btn-default" href="security.php"><i class="icon-lock"></i> Manage users &amp;
+                        <p><a class="btn btn-default" href="security.php"><i class="fa fa-lock"></i> Manage users &amp;
                                 security &raquo;</a></p>
                     </div>
                 </div>
@@ -174,7 +174,7 @@ $numcomments = $cameralife->database->SelectOne(
                     <div class="panel-body">
                         <p>Your photos can be stored on your web server, a remote server, Amazon S3, etc.</p>
 
-                        <p><a class="btn btn-default" href="filestore.php"><i class="icon-folder-open"></i> Configure
+                        <p><a class="btn btn-default" href="filestore.php"><i class="fa fa-folder-open"></i> Configure
                                 fileStore &raquo;</a></p>
                     </div>
                 </div>
@@ -189,12 +189,12 @@ $numcomments = $cameralife->database->SelectOne(
 
                         <p>
                             <a class="btn btn-default" href="https://github.com/fulldecent/cameralife/issues"><i
-                                    class="icon-flag"></i> Report an issue &raquo;</a>
+                                    class="fa fa-flag"></i> Report an issue &raquo;</a>
                             <a class="btn btn-default" href="https://github.com/fulldecent/cameralife"><i
-                                    class="icon-star"></i> Get project updates &raquo;</a>
+                                    class="fa fa-star"></i> Get project updates &raquo;</a>
                             <a class="btn btn-default"
                                href="http://www.facebook.com/sharer.php?u=http://fulldecent.github.com/cameralife/"><i
-                                    class="icon-star"></i> Like on Facebook &raquo;</a>
+                                    class="fa fa-star"></i> Like on Facebook &raquo;</a>
                         </p>
                     </div>
                 </div>
