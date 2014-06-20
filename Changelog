@@ -1,6 +1,6 @@
 2.7.0  William Entriken <cameralife AT phor.net>
 * Automatically name files if possible
-* Update PhotoStore API
+* Update PhotoStore, Search API
 * Remove hacks
 * Do not delete photos
 * Use CDN for bootstrap
