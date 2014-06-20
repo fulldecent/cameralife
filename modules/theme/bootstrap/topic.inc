@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+  
 /** View one topic page
  * NOTE: $cameralife and $topic are set by showPage()
  * @author William Entriken <cameralife@phor.net>
@@ -10,7 +11,6 @@ namespace CameraLife;
 $cameralife->getFeature('security');
 $cameralife->getFeature('fileStore');
 $albums = $topic->getAlbums();
-$counts = $topic->getCounts();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 
 $cameralife->theme->header($topic);
@@ -68,7 +68,7 @@ $cameralife->theme->header($topic);
     }
 
     $cameralife->theme->grid($albums);
-    $cameralife->theme->pageSelector($start, $counts['photos'], 12, "name=" . urlencode($_GET["name"]));
+    $cameralife->theme->pageSelector($start, $topic->getPhotoCount(), 12, "name=" . urlencode($_GET["name"]));
     ?>
 </form>
 

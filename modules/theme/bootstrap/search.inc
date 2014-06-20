@@ -17,24 +17,25 @@ namespace CameraLife;
 $cameralife->getFeature('security');
 $cameralife->getFeature('fileStore');
 
-
 $start = isset($_GET['start']) ? $_GET['start'] + 0 : 0;
 $search->setPage($start);
-$counts = $search->getCounts();
-if ((isset($_GET['page']) && $_GET['page'] == 'a') || (!isset($_GET['page']) && $counts['albums'] > 0)) {
-    $_GET['page'] = 'a';
+$numPhotos = $search->getPhotoCount();
+$numAlbums = $search->getAlbumCount();
+$numFolders = $search->getFolderCount();
+if ((isset($_GET['page']) && $_GET['page'] == 'albums') || (!isset($_GET['page']) && $numAlbums > 0)) {
+    $_GET['page'] = 'albums';
     $results = $search->getAlbums();
-} elseif ((isset($_GET['page']) && $_GET['page'] == 'f') || (!isset($_GET['page']) && $counts['folders'] > 0)) {
-    $_GET['page'] = 'f';
+} elseif ((isset($_GET['page']) && $_GET['page'] == 'folders') || (!isset($_GET['page']) && $numFolders > 0)) {
+    $_GET['page'] = 'folders';
     $results = $search->getFolders();
 } else {
-    $_GET['page'] = 'p';
+    $_GET['page'] = 'photos';
     $results = $search->getPhotos();
 }
 
 $header = '  <link rel="alternate" type="application/rss+xml" title="RSS feed of' . htmlentities(
-        $search->getQuery()
-    ) . '" href="' . $cameralife->baseURL . '/rss.php?q=' . urlencode($search->getQuery()) . '" />';
+        $search->query
+    ) . '" href="' . $cameralife->baseURL . '/rss.php?q=' . urlencode($search->query) . '" />';
 
 $sidebar = <<<HTML
     <ul class="nav nav-list">
@@ -42,7 +43,7 @@ $sidebar = <<<HTML
         <li><a href="?q=unnamed">Search for unnamed photos</a></li>
 HTML;
 if ($_GET['page'] == "p" && $cameralife->security->Authorize('admin_albums')) {
-    $queryHTML = urlencode($search->getQuery());
+    $queryHTML = urlencode($search->query);
     $sidebar .= <<<HTMLx
         <li><a href="topic.php&#63;edit=true&amp;term=$queryHTML">Create an Album of these photos</a></li>
 HTMLx;
@@ -73,49 +74,42 @@ if (isset($_GET['albumhelp']) && $_GET['albumhelp']) {
 
     echo "<h1>";
     $cameralife->theme->Image('search');
-    echo "Search for " . htmlentities($search->getQuery()) . "</h1>";
+    echo "Search for " . htmlentities($search->query) . "</h1>";
     echo '<ul class="nav nav-pills">' . PHP_EOL;
-    foreach ($counts as $type => $num) {
-        echo "<li";
-        $class = array();
-        if ($_GET["page"] == $type[0]) {
-            $class[] = "active";
-        }
-        if ($num == 0) {
-            $class[] = "disabled";
-        }
-        if (count($class)) {
-            echo " class=\"" . implode(" ", $class) . "\"";
-        }
-        if ($num == 1 && substr($type, -1) == 's') {
-            $type = substr($type, 0, -1);
-        }
-        $href = "&#63;q=" . urlencode($search->getQuery()) . "&amp;page=" . $type[0];
-        if ($num == 0) {
-            $href = "";
-        }
-        echo "><a href=\"$href\">$num $type</a></li>" . PHP_EOL;
-    }
+    echo '<li class="';
+    if ($_GET["page"] == 'photos') echo 'active ';
+    if (!$numPhotos) echo 'disabled ';
+    $href = "&#63;q=" . urlencode($search->query) . "&amp;page=photos";
+    echo "\"><a href=\"$href\">$numPhotos photos</a></li>" . PHP_EOL;
+    echo '<li class="';
+    if ($_GET["page"] == 'albums') echo 'active ';
+    if (!$numAlbums) echo 'disabled ';
+    $href = "&#63;q=" . urlencode($search->query) . "&amp;page=albums";
+    echo "\"><a href=\"$href\">$numAlbums albums</a></li>" . PHP_EOL;
+    echo '<li class="';
+    if ($_GET["page"] == 'folders') echo 'active ';
+    if (!$numFolders) echo 'disabled ';
+    $href = "&#63;q=" . urlencode($search->query) . "&amp;page=folders";
+    echo "\"><a href=\"$href\">$numFolders folders</a></li>" . PHP_EOL;
     echo "</ul>" . PHP_EOL;
 
     $cameralife->theme->grid($results);
-
     echo "<form>";
-    echo "<input type=hidden name=q value=\"" . htmlentities($search->getQuery()) . "\" />";
+    echo "<input type=hidden name=q value=\"" . htmlentities($search->query) . "\" />";
     echo "<input type=hidden name=page value=\"" . htmlentities($_GET['page']) . "\" />";
     $openGraph = $search->getOpenGraph();
     $href = $cameralife->theme->addParam($openGraph['og:url'], "page", $_GET['page']);
     if ($_GET['page'] == "a") {
-        $cameralife->theme->pageSelector($start, $counts['albums'], 12, $href);
+        $cameralife->theme->pageSelector($start, $numAlbums, 12, $href);
     } else {
         if ($_GET['page'] == "f") {
-            $cameralife->theme->pageSelector($start, $counts['folders'], 12, $href);
+            $cameralife->theme->pageSelector($start, $numFolders, 12, $href);
         } else {
-            $cameralife->theme->pageSelector($start, $counts['photos'], 12, $href);
+            $cameralife->theme->pageSelector($start, $numPhotos, 12, $href);
         }
     }
 
-    echo "<select name=\"sort\">\n";
+    echo "<select class=\"form-control\" style=\"width:200px; display:inline\" name=\"sort\">\n";
     foreach ($search->sortOptions() as $sortOption) {
         list($id, $desc, $selected) = $sortOption;
         echo "<option value=\"$id\" $selected>$desc</option>\n";

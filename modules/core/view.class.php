@@ -7,14 +7,10 @@ namespace CameraLife;
  *
  * @author    William Entriken <cameralife@phor.net>
  * @access    public
- * @copyright 2001-2009 William Entriken
+ * @copyright 2001-2014 William Entriken
  */
-class View
+abstract class View
 {
-    public function __construct()
-    {
-    }
-
     /**
      * getOpenGraph function.
      *
@@ -32,10 +28,7 @@ class View
      *   og:image:width size of thumbnail OPTIONAL
      *   og:image:height size of thumbnail OPTIONAL
      */
-    public function getOpenGraph()
-    {
-
-    }
+    abstract public function getOpenGraph();
 
     /**
      * GetPrevious function.
@@ -46,6 +39,7 @@ class View
      */
     public function getPrevious()
     {
+        return null;
     }
 
     /**
@@ -57,6 +51,7 @@ class View
      */
     public function getNext()
     {
+        return null;
     }
 
     /**

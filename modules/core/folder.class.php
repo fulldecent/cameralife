@@ -22,55 +22,222 @@ class Folder extends Search
     public $path;
 
     /**
-     * This function should be constructed with either of the parameters Photo or Path.
-     * Use 'sync' to compare and verify Folder and disk content
-     *
-     * <b>Optional </b> When is the latest photo in this folder from, unixtime
+     * __construct function.
+     * 
+     * @access public
+     * @param string $path (default: '/')
+     * @return void
      */
-
-    //TODO REMOVE THE SYNC AND DATE PARAM
-    public function __construct($path = '/', $sync = false, $date = null)
+    public function __construct($path = '/')
     {
-        parent::__construct();
-
-        $this->path = $path;
-        if (!strlen($path)) {
-            $this->path = '/';
-        }
-        $this->date = $date;
-
-        if ($sync && !$this->fsck()) {
-            Folder::update();
-        }
-
-        @$this->mySearchPhotoCondition = "path=:path1";
-        $this->mySearchAlbumCondition = "FALSE";
-        @$this->mySearchFolderCondition = "path LIKE :path1 AND path NOT LIKE :path2";
-        $this->myBinds['path1'] = $this->path;
-        $this->myBinds['path2'] = '/%'.$this->path.'/%/';
-        if ($this->path == '/') {
-            @$this->mySearchFolderCondition = "path LIKE '/%' AND path NOT LIKE '/%/%'";
-        }
+        $this->path = '/' . trim($path, '/');
     }
 
     public function getPrevious()
     {
         global $cameralife;
-        if ($this->myStart > 0) {
-            if ($cameralife->getPref('rewrite') == 'yes') {
-                $href = $cameralife->baseURL . '/folders' . str_replace(" ", "%20", $this->path);
-            } else {
-                $href = $cameralife->baseURL . '/folder.php&#63;path=' . str_replace(" ", "%20", $this->path);
-            }
-            parse_str(parse_url($url, PHP_URL_QUERY), $query);
-            $query['start'] = $this->myStart - $this->myLimitCount;
-            $href = preg_replace('/\?.*/', '', $href) . '?' . http_build_query($query);
-            return $href;
+        if (!$this->offset) {
+            return null;
         }
-
-        return null;
+        if ($cameralife->getPref('rewrite') == 'yes') {
+            $href = $cameralife->baseURL . '/folders' . str_replace(" ", "%20", $this->path);
+        } else {
+            $href = $cameralife->baseURL . '/folder.php&#63;path=' . str_replace(" ", "%20", $this->path);
+        }
+        parse_str(parse_url($url, PHP_URL_QUERY), $query);
+        $query['start'] = $this->myStart - $this->myLimitCount;
+        $href = preg_replace('/\?.*/', '', $href) . '?' . http_build_query($query);
+        return $href;
     }
 
+    /**
+     * Returns photos per QUERY, privacy, and paging restrictions
+     * 
+     * @access public
+     * @return Photo[]
+     */
+    public function getPhotos()
+    {
+//TODO: should not use global CAMERALIFE!    
+        global $cameralife;
+
+        switch ($this->sort) {
+        case 'newest':
+            $sort = 'value desc, id desc';
+                break;
+        case 'oldest':
+            $sort = 'value, id';
+                break;
+        case 'az':
+            $sort = 'description';
+                break;
+        case 'za':
+            $sort = 'description desc';
+                break;
+        case 'popular':
+            $sort = 'hits desc';
+                break;
+        case 'unpopular':
+            $sort = 'hits';
+                break;
+        case 'rand':
+            $sort = 'rand()';
+                break;
+        default:
+            $sort = 'id desc';
+        }
+
+        $conditions = array();
+        $binds = array();
+        $conditions[0] = "(path = :1)";
+        $binds[1] = $this->path;
+        if (!$this->showPrivatePhotos) {
+            $conditions[] = 'status = 0';
+        }
+        $query = $cameralife->database->Select(
+            'photos',
+            'id',
+            implode(' AND ', $conditions),
+            'ORDER BY ' . $sort . ' ' . 'LIMIT ' . $this->offset . ',' . $this->pageSize,
+            'LEFT JOIN exif ON photos.id=exif.photoid and exif.tag="Date taken"',
+            $binds
+        );
+        $photos = array();
+        while ($row = $query->fetchAssoc()) {
+            $photos[] = new Photo($row['id']);
+        }
+
+        return $photos;
+    }
+
+
+    /**
+     * Returns folders per QUERY, privacy, and paging restrictions
+     * 
+     * @access public
+     * @return Photo[]
+     */
+    public function getFolders()
+    {
+//TODO: should not use global CAMERALIFE!    
+        global $cameralife;
+        switch ($this->sort) {
+        case 'newest':
+            $sort = 'id desc';
+                break;
+        case 'oldest':
+            $sort = 'id';
+                break;
+        case 'az':
+            $sort = 'path';
+                break;
+        case 'za':
+            $sort = 'path desc';
+                break;
+        case 'popular':
+            $sort = 'hits desc';
+                break;
+        case 'unpopular':
+            $sort = 'hits';
+                break;
+        case 'rand':
+            $sort = 'rand()';
+                break;
+        default:
+            $sort = 'id desc';
+        }
+
+        $conditions = array();
+        $binds = array();
+        $lpath = rtrim($this->path, '/');
+        $conditions[0] = "(path LIKE :1)";
+        $binds[1] = $lpath . '/%';
+        if (!$this->showPrivatePhotos) {
+            $conditions[] = 'status = 0';
+        }
+        $query = $cameralife->database->Select(
+            'photos',
+            'DISTINCT substring_index(substr(path,'.(strlen($lpath)+2)."), '/', 1) as basename",
+            implode(' AND ', $conditions),
+            'GROUP BY path ORDER BY ' . $sort . ' ' . 'LIMIT ' . $this->offset . ',' . $this->pageSize,
+            null,
+            $binds
+        );      
+        
+        $folders = array();
+        while ($row = $query->fetchAssoc()) {
+            $folders[] = new Folder($lpath . '/' . $row['basename']);
+        }
+
+        return $folders;
+    }
+    
+    /**
+     * Counts photos per QUERY, and privacy restrictions
+     * 
+     * @access public
+     * @return int
+     */
+    public function getPhotoCount()
+    {
+//TODO: should not use global CAMERALIFE!    
+        global $cameralife;
+
+        $conditions = array();
+        $binds = array();
+        $conditions[0] = "(path = :1)";
+        $binds[1] = $this->path;
+        if (!$this->showPrivatePhotos) {
+            $conditions[] = 'status = 0';
+        }
+
+        return $cameralife->database->SelectOne(
+            'photos',
+            'COUNT(*)',
+            implode(' AND ', $conditions),
+            null,
+            null,
+            $binds
+        );
+    }
+  
+    /**
+     * Counts folders per QUERY, and privacy restrictions
+     * 
+     * @access public
+     * @return int
+     */
+    public function getFolderCount()
+    {
+//TODO: should not use global CAMERALIFE!    
+        global $cameralife;
+
+        $conditions = array();
+        $binds = array();
+        $conditions[0] = "(path LIKE :1 AND path NOT LIKE :2)";
+        $binds[1] = rtrim($this->path, '/') . '/_%';
+        $binds[2] = rtrim($this->path, '/') . '/_%/%';
+        if (!$this->showPrivatePhotos) {
+            $conditions[] = 'status = 0';
+        }
+
+        return $cameralife->database->SelectOne(
+            'photos',
+            'COUNT(DISTINCT path)',
+            implode(' AND ', $conditions),
+            null,
+            null,
+            $binds
+        );      
+    }
+
+
+    /**
+     * An array of parent, grandparent... top level folder
+     * 
+     * @access public
+     * @return void
+     */
     public function getAncestors()
     {
         $retval = array();
@@ -79,18 +246,19 @@ class Folder extends Search
             $path = dirname($path);
             $retval[] = new Folder($path);
         }
-
         return array_reverse($retval);
     }
 
     /**
-     * @param int $count number of Folders to return, or all if 0
-     * @return array of Folders
+     * Returns descendant folders per QUERY, privacy, and paging restrictions
+     * 
+     * @access public
+     * @return Photo[]
      */
-    public function getDescendants($count = 0)
+    public function getDescendants()
     {
         global $cameralife;
-        switch ($this->mySort) {
+        switch ($this->sort) {
         case 'newest':
             $sort = 'created desc';
                 break;
@@ -116,43 +284,31 @@ class Folder extends Search
             $sort = 'id desc';
         }
 
-        $result = array();
-        $selection = 'DISTINCT path';
-        $condition = "status=0 AND path LIKE '" . $this->path . "_%'"; //TODO THIS IS ACTUALLY WRONG
-        $extra = "ORDER BY $sort LIMIT $count";
-        $family = $cameralife->database->Select('photos', $selection, $condition, $extra);
-        while ($youngin = $family->fetchAssoc()) {
-            $result[] = new Folder($youngin['path'], false);
+        $conditions = array();
+        $binds = array();
+        $conditions[0] = "(path LIKE :1)";
+        $binds[1] = rtrim($this->path, '/') . '/_%';
+        if (!$this->showPrivatePhotos) {
+            $conditions[] = 'status = 0';
         }
-
+        $query = $cameralife->database->Select(
+            'photos',
+            'DISTINCT path, MAX(mtime) as date',
+            implode(' AND ', $conditions),
+            'GROUP BY path ORDER BY ' . $sort . ' ' . 'LIMIT ' . $this->offset . ',' . $this->pageSize,
+            null,
+            $binds
+        );      
+        while ($youngin = $query->fetchAssoc()) {
+            $result[] = new Folder($youngin['path']);
+        }
         return $result;
-    }
-
-    //TODO: DEPRECATED
-    public function getChildren()
-    {
-        return $this->getFolders();
-    }
-
-    public function path()
-    {
-        return $this->path;
-    }
-
-    public function basename()
-    {
-        return basename($this->path);
-    }
-
-    public function dirname()
-    {
-        return dirname($this->path);
     }
 
     /**
      * @access private
      */
-    public function array_isearch($str, $array)
+    private function array_isearch($str, $array)
     {
         foreach ($array as $k => $v) {
             if (strcasecmp($str, $v) == 0) {
@@ -331,6 +487,12 @@ class Folder extends Search
         return (count($fsphotos) + count($fsdirs) == 0);
     }
 
+    /**
+     * getOpenGraph function.
+     * 
+     * @access public
+     * @return string[]
+     */
     public function getOpenGraph()
     {
         global $cameralife;

@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 # $cameralife and $album are set by showPage()
 /**
  *Editing an album
@@ -15,7 +16,6 @@ namespace CameraLife;
 $cameralife->getFeature('security');
 $cameralife->getFeature('fileStore');
 $results = $album->getPhotos();
-$counts = $album->getCounts();
 $openGraph = $album->getOpenGraph();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
 $sort = isset($_GET['sort']) ? $_GET['sort'] : 'rand';
@@ -93,7 +93,7 @@ if (isset($_GET['poster_id'])) {
 </div>
 <?php
 $cameralife->theme->grid($results);
-$cameralife->theme->pageSelector(($sort == 'rand()') ? -1 : $start, $counts['photos'], 12, "id=" . $album->get('id'));
+$cameralife->theme->pageSelector(($sort == 'rand()') ? -1 : $start, $album->getPhotoCount(), 12, "id=" . $album->get('id'));
 ?>
 
 <form method="POST">

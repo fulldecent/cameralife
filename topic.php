@@ -13,8 +13,7 @@ $features = array('theme');
 $cameralife = CameraLife::cameraLifeWithFeatures($features);
 $topic = new Topic($_GET['name']);
 
-$count = array_sum($topic->getCounts());
-if (!isset($_GET['edit']) && $count == 0) {
+if (!isset($_GET['edit']) && $topic->getAlbumCount() == 0) {
     header("HTTP/1.0 404 Not Found");
     $cameralife->error("This folder does not exist.");
 }

@@ -13,13 +13,9 @@ $features = array('theme');
 $cameralife = CameraLife::cameraLifeWithFeatures($features);
 $search = new Search($_GET['q']);
 
-/* Bonus code to log searches
-/$log_handle = fopen ("search.log", "a");
-fwrite($log_handle, $_GET["q"]."\n");
-fclose ($log_handle);
-*/
-
-$counts = $search->getCounts();
+$numPhotos = $search->getPhotoCount();
+$numAlbums = $search->getAlbumCount();
+$numFolders = $search->getFolderCount();
 
 ## You can search by going to http://camera.phor.net/SEARCHTERM
 if (isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == '404') {
@@ -30,7 +26,7 @@ if (isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] == '404') 
 }
 
 ## Sometimes we're sure an album page is relevant - redirect there
-if (!$counts['folders'] && $counts['albums'] == 1) {
+if (!$numFolders && $numAlbums == 1) {
     $count_term = $cameralife->database->SelectOne('albums', 'COUNT(*)', "term LIKE '" . $_GET['q'] . "'");
     if ($count_term == 1) {
         $albumid = $cameralife->database->SelectOne('albums', 'id', "term LIKE '" . $_GET['q'] . "'");
@@ -41,7 +37,7 @@ if (!$counts['folders'] && $counts['albums'] == 1) {
 }
 
 ## Sometimes we're sure a folder page is relevant - redirect there
-if (!$counts['albums'] && !$counts['photos'] && $counts['folders'] == 1) {
+if (!$numAlbums && !$numPhotos && $numFolders == 1) {
     list($folder) = $search->getFolders();
     $folderOpenGraph = $folder->GetOpenGraph();
     header('Location: ' . $folderOpenGraph['op:url']);

@@ -67,7 +67,6 @@ class Photo extends View
     public function __construct($original = null)
     {
         global $cameralife;
-        parent::__construct();
 
         if (is_null($original)) {
             $this->record['id'] = null;
@@ -532,8 +531,7 @@ class Photo extends View
         } else {
             // Find all photos named exactly like this
             $search = new Search($this->get('description'));
-            $counts = $search->getCounts();
-            if ($counts['photos'] > 1) {
+            if ($search->getPhotoCount() > 1) {
                 $retval[] = $search;
             }
         }

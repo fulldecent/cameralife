@@ -11,7 +11,9 @@ namespace CameraLife;
 # Browses a give path for photos
 # Magic vars GET:start, GET/POST:sort are handled in search.class.php
 
-$counts = $folder->getCounts();
+$numPhotos = $folder->getPhotoCount();
+$numAlbums = $folder->getAlbumCount();
+$numFolders = $folder->getFolderCount();
 $openGraph = $folder->getOpenGraph();
 $start = isset($_GET['start']) ? $_GET['start'] : 0;
 
@@ -21,19 +23,19 @@ if (isset($_GET['start']) && is_numeric($_GET['start'])) {
     $folder->setPage(0, 25);
 }
 
-if (isset($_GET['page']) && $_GET['page'] == 'folders' || !$counts['photos']) {
+if (isset($_GET['page']) && $_GET['page'] == 'folders' || !$numPhotos) {
     $_GET['page'] = 'folders';
-    $results = $folder->getChildren();
+    $results = $folder->getFolders();
 } else {
     $_GET['page'] = 'photos';
     $results = $folder->getPhotos();
 }
 
 $menu = array();
-if ($folder->path()) {
+if ($folder->path) {
     $menu[] = array(
-        'name' => 'Search for ' . $folder->basename(),
-        'href' => 'search.php&#63;q=' . $folder->basename(),
+        'name' => 'Search for ' . basename($folder->path),
+        'href' => 'search.php&#63;q=' . basename($folder->path),
         'image' => 'small-search'
     );
 }
@@ -41,12 +43,12 @@ if ($folder->path()) {
 if ($cameralife->security->Authorize('admin_file')) {
     $menu[] = array(
         'name' => 'Upload photo here',
-        'href' => $cameralife->baseURL . '/upload.php&#63;path=' . $folder->path(),
+        'href' => $cameralife->baseURL . '/upload.php&#63;path=' . $folder->path,
         'image' => 'small-main'
     );
 }
 
-$folder_name = $folder->basename()
+$folder_name = basename($folder->path)
 or $folder_name = '(Top Level)';
 
 $headers = '';
@@ -76,11 +78,11 @@ $cameralife->theme->header($folder, null, $headers);
 
 <?php
 
-if ($counts['photos'] > 0) {
-    $sections[] = array('name' => $counts['photos'] . " photos", 'page_name' => 'photos');
+if ($numPhotos > 0) {
+    $sections[] = array('name' => $numPhotos . " photos", 'page_name' => 'photos');
 }
-if ($counts['folders'] > 0) {
-    $sections[] = array('name' => $counts['folders'] . " folders", 'page_name' => 'folders');
+if ($numFolders > 0) {
+    $sections[] = array('name' => $numFolders . " folders", 'page_name' => 'folders');
 }
 
 if (count($sections) >= 2) {
@@ -94,10 +96,10 @@ if (count($sections) >= 2) {
 $cameralife->theme->grid($results);
 
 if ($_GET['page'] == "photos") {
-    $cameralife->theme->pageSelector($start, $counts['photos'], 25, $openGraph['og:url']);
+    $cameralife->theme->pageSelector($start, $numPhotos, 25, $openGraph['og:url']);
 } else // ($_GET['page'] == "folders")
 {
-    $cameralife->theme->pageSelector($start, $counts['folders'], 25, $openGraph['og:url']);
+    $cameralife->theme->pageSelector($start, $numFolders, 25, $openGraph['og:url']);
 }
 
 ?>

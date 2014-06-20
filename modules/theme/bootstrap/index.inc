@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /** Indexing of photos
  *
  * NOTE: $cameralife set by showPage()
@@ -14,10 +15,9 @@ $cameralife->theme->header($cameralife);
 
 $_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 'rand';
 list($sort, $type) = explode('-', $_GET['page'] . '-');
-$search = new Search('');
+$search = new Search();
 $search->setPage(0, 11);
-$search->setSort($sort); # rand, newest, newest-folders, unpopular
-$counts = $search->getCounts();
+$search->sort = $sort; # rand, newest, newest-folders, unpopular
 
 if ($type == 'folders') {
     $results = $search->getFolders();
@@ -25,7 +25,7 @@ if ($type == 'folders') {
     $results = $search->getPhotos();
 }
 
-if ($counts['photos'] == 0) {
+if (!$search->getPhotoCount()) {
     echo '<div class="alert alert-success"><strong>Note!</strong> Camera Life has been successfully installed on this site. There are currently no photos on this site. For more information on setting up this site and adding photos, see <a href="setup/index3.php"><strong>the Setup page</strong></a>.</div>';
 }
 ?>
@@ -72,15 +72,15 @@ if ($counts['photos'] == 0) {
             <?php
             $root = new Folder();
             $rootOpenGraph = $root->getOpenGraph();
-            $root->setSort('newest');
-            $folders = $root->getDescendants($cameralife->theme->getPref('main_folders_n'));
-
+            $root->sort = 'newest';
+            $root->setPage(0, $cameralife->theme->getPref('main_folders_n'));
+            $folders = $root->getDescendants();
             foreach ($folders as $folder) {
                 $folderOpenGraph = $folder->GetOpenGraph();
                 echo "<tr><td><h3><a href=\"" . htmlspecialchars($folderOpenGraph['og:url']) . "\"> ";
                 echo htmlentities($folderOpenGraph['og:title']) . "</a></h3>\n";
 
-                $folder->SetSort('rand');
+                $folder->sort = 'rand';
                 $folder->SetPage(0, 11);
                 $photos = $folder->GetPhotos();
                 echo '<div style="height:80px" class="clipbox">';
@@ -118,7 +118,7 @@ if ($counts['photos'] == 0) {
 
                 if ($cameralife->theme->getPref('main_topics') == 2) // Link a couple albums
                 {
-                    $topic->SetSort('rand');
+                    $topic->sort = 'rand';
                     $topic->SetPage(0, 4);
 
                     echo '<div style=" overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">';

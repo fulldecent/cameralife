@@ -12,40 +12,123 @@ class Album extends Search
     public $record;
 
     /**
-     *<code>is_array($orginal)</code> will be a new album given in parts
-     *<code>is_numeric($original)</code> is an ID
-     *
-     * @param mixed $original A unique ID
+     * __construct function.
+     * 
+     * @access public
+     * @param int $id
+     * @return void
      */
-    public function __construct($original)
+    public function __construct($id)
     {
+//TODO: should not use global CAMERALIFE!    
         global $cameralife;
 
-        if (is_array($original)) { # A new album, given by parts
-            $search = new Search($original['term']);
-            $count = $search->getCounts();
-            if ($count['photos'] == 0) {
-                die ("error making album, no photos with term");
-            }
-            $result = $search->getPhotos();
-
-            $this->record['topic'] = $original['topic'];
-            $this->record['name'] = $original['name'];
-            $this->record['term'] = $original['term'];
-            $this->record['poster_id'] = $result[0]->Get('id');
-            $this->record['id'] = $cameralife->database->Insert('albums', $this->record);
-        } elseif (is_numeric($original)) { # This is an ID
-            $result = $cameralife->database->Select('albums', '*', "id=$original");
-            $this->record = $result->fetchAssoc();
-            if (!$this->record) {
-                header("HTTP/1.0 404 Not Found");
-                $cameralife->error("Album #" . ($original + 0) . " not found.");
-            }
-        } else {
-            $cameralife->error("Invalid album");
+        $result = $cameralife->database->Select('albums', '*', "id=$id");
+        $this->record = $result->fetchAssoc();
+        if (!$this->record) {
+            header("HTTP/1.0 404 Not Found");
+            $cameralife->error("Album #" . ($original + 0) . " not found.");
         }
         parent::__construct($this->record['term']);
     }
+    
+    /**
+     * Returns photos per QUERY, privacy, and paging restrictions
+     * 
+     * @access public
+     * @return Photo[]
+     */
+    public function getPhotos()
+    {
+//TODO: should not use global CAMERALIFE!    
+        global $cameralife;
+
+        switch ($this->sort) {
+        case 'newest':
+            $sort = 'value desc, id desc';
+                break;
+        case 'oldest':
+            $sort = 'value, id';
+                break;
+        case 'az':
+            $sort = 'description';
+                break;
+        case 'za':
+            $sort = 'description desc';
+                break;
+        case 'popular':
+            $sort = 'hits desc';
+                break;
+        case 'unpopular':
+            $sort = 'hits';
+                break;
+        case 'rand':
+            $sort = 'rand()';
+                break;
+        default:
+            $sort = 'id desc';
+        }
+
+        $conditions = array();
+        $binds = array();
+        $i = 0;
+        foreach (preg_split('/\s+/', $this->query) as $queryPart) {
+            $conditions[$i] = "(description LIKE :$i OR keywords LIKE :$i)";
+            $binds[$i] = '%' . $queryPart . '%';
+            $i++;
+        }
+        if (!$this->showPrivatePhotos) {
+            $conditions[] = 'status = 0';
+        }
+        $query = $cameralife->database->Select(
+            'photos',
+            'id',
+            implode(' AND ', $conditions),
+            'ORDER BY ' . $sort . ' ' . 'LIMIT ' . $this->offset . ',' . $this->pageSize,
+            'LEFT JOIN exif ON photos.id=exif.photoid and exif.tag="Date taken"',
+            $binds
+        );
+        $photos = array();
+        while ($row = $query->fetchAssoc()) {
+            $photos[] = new Photo($row['id']);
+        }
+
+        return $photos;
+    }
+    
+    /**
+     * Counts photos per QUERY, and privacy restrictions
+     * 
+     * @access public
+     * @return int
+     */
+    public function getPhotoCount()
+    {
+//TODO: should not use global CAMERALIFE!    
+        global $cameralife;
+
+        $conditions = array();
+        $binds = array();
+        $i = 0;
+        foreach (preg_split('/\s+/', $this->query) as $queryPart) {
+            $conditions[$i] = "(description LIKE :$i OR keywords LIKE :$i)";
+            $binds[$i] = '%' . $queryPart . '%';
+            $i++;
+        }
+        if (!$this->showPrivatePhotos) {
+            $conditions[] = 'status = 0';
+        }
+
+        return $cameralife->database->SelectOne(
+            'photos',
+            'COUNT(*)',
+            implode(' AND ', $conditions),
+            null,
+            null,
+            $binds
+        );
+    }
+    
 
     public function set($key, $value)
     {

@@ -6,33 +6,93 @@ namespace CameraLife;
  *
  * @author    William Entriken <WillEntriken @gmail.com>
  * @access    public
- * @copyright 2001-2009 William Entriken
+ * @copyright 2001-2014 William Entriken
  * @extends   Search
  */
 class Topic extends Search
 {
-    public $name;
-
-    public function __construct($name)
+    /**
+     * Returns albums per QUERY, and paging restrictions
+     * 
+     * @access public
+     * @return Photo[]
+     */
+    public function getAlbums()
     {
-        parent::__construct();
-        $this->name = $name;
-        $this->mySearchAlbumCondition = "topic = :name";
-        $this->mySearchPhotoCondition = "FALSE";
-        $this->mySearchFolderCondition = "FALSE";
-        $this->myBinds['name'] = $this->name;
+//TODO: should not use global CAMERALIFE!    
+        global $cameralife;
+
+        switch ($this->sort) {
+        case 'newest':
+            $sort = 'albums.id desc';
+                break;
+        case 'oldest':
+            $sort = 'albums.id';
+                break;
+        case 'az':
+            $sort = 'description';
+                break;
+        case 'za':
+            $sort = 'description desc';
+                break;
+        case 'popular':
+            $sort = 'albums.hits desc';
+                break;
+        case 'unpopular':
+            $sort = 'albums.hits';
+                break;
+        case 'rand':
+            $sort = 'rand()';
+                break;
+        default:
+            $sort = 'albums.id desc';
+        }
+
+        $conditions = array();
+        $binds = array();
+        $i = 0;
+        foreach (preg_split('/\s+/', $this->query) as $queryPart) {
+            $conditions[$i] = "(name LIKE :$i)";
+            $binds[$i] = '%' . $queryPart . '%';
+            $i++;
+        }
+        $query = $cameralife->database->Select(
+            'albums', 
+            'id', 
+            'topic = :topic',
+            'ORDER BY ' . $sort . ' ' . 'LIMIT ' . $this->offset . ',' . $this->pageSize,
+            null, 
+            array('topic' => $this->query)
+        );
+
+        $albums = array();
+        while ($row = $query->fetchAssoc()) {
+            $albums[] = new Album($row['id']);
+        }
+
+        return $albums;
     }
 
-    //TODO DEPRECATED?
-    public function getName()
+    /**
+     * Counts albums with the topic named QUERY
+     * 
+     * @access public
+     * @return int
+     */
+    public function getAlbumCount()
     {
-        return htmlentities($this->name);
+//TODO: should not use global CAMERALIFE!    
+        global $cameralife;
+        return $cameralife->database->SelectOne(
+            'albums',
+            'COUNT(*)',
+            'topic = :topic',
+            null,
+            null,
+            array('topic' => $this->query)
+        );
     }
 
-    public function get($item)
-    {
-        return $this->$item;
-    }
 
     public static function getTopics()
     {
@@ -42,7 +102,6 @@ class Topic extends Search
         while ($topic = $result->fetchAssoc()) {
             $retval[] = new Topic($topic['topic']);
         }
-
         return $retval;
     }
 
@@ -50,11 +109,11 @@ class Topic extends Search
     {
         global $cameralife;
         $retval = array();
-        $retval['og:title'] = $this->name;
+        $retval['og:title'] = $this->query;
         $retval['og:type'] = 'website';
-        $retval['og:url'] = $cameralife->baseURL . '/topics/' . rawurlencode($this->name);
+        $retval['og:url'] = $cameralife->baseURL . '/topics/' . rawurlencode($this->query);
         if ($cameralife->getPref('rewrite') == 'no') {
-            $retval['og:url'] = $cameralife->baseURL . '/topic.php?name=' . rawurlencode($this->name);
+            $retval['og:url'] = $cameralife->baseURL . '/topic.php?name=' . rawurlencode($this->query);
         }
         $retval['og:image'] = $cameralife->iconURL('topic');
         $retval['og:image:type'] = 'image/png';

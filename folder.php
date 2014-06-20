@@ -11,10 +11,9 @@ namespace CameraLife;
 require 'main.inc';
 $features = array('theme', 'fileStore', 'imageProcessing', 'security');
 $cameralife = CameraLife::cameraLifeWithFeatures($features);
-$folder = new Folder(stripslashes($_GET['path']), true);
+$folder = new Folder($_GET['path']);
 
-$count = array_sum($folder->getCounts());
-if ($count == 0) {
+if ($folder->getPhotoCount() + $folder->getFolderCount() == 0) {
     header("HTTP/1.0 404 Not Found");
     $cameralife->error("This folder does not exist, or it is empty.");
 }

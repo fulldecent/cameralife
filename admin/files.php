@@ -101,9 +101,9 @@ foreach ($_POST as $key => $val) {
             }
         }
 
-        $search = new Search('');
-        $search->mySearchPhotoCondition = "status=$target_status OR 0";
-        $search->setPage(0, 9999);
+        $search = new Search();
+        $search->showPrivatePhotos = true;
+        $search->setPage(0, 999);
         $photos = $search->getPhotos();
         echo '<div class="thumbnails">';
         $i = 0;
