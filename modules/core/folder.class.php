@@ -340,7 +340,7 @@ class Folder extends Search
         }
         foreach ($fileStorePhotosUnmatched as $unmatchedFilePath => $unmatchedFileBase) {
             $normalized = strtolower(preg_replace('/[^a-z0-9]/i', '', $unmatchedFilePath));
-            $normalizedFileStorePaths[$unmatchedFilePath] = $normalized;
+            $normalizedFileStorePaths[utf8_encode($unmatchedFilePath)] = $normalized;
         }
         $result = $cameralife->database->Select('photos', 'id,filename,path,fsize', 'status!=9', 'ORDER BY path,filename');
 
@@ -366,8 +366,8 @@ class Folder extends Search
             $normalizedDBFilePath = strtolower(preg_replace('/[^a-z0-9]/i', '', $dbFilePath));
             $candidates = array_keys($normalizedFileStorePaths, $normalizedDBFilePath);
             if (count($candidates) == 1) {
-                $retval[$dbFilePath] = array('moved', $candidates[0]);
-                unset ($fileStorePhotosUnmatched[$candidates[0]]);
+                $retval[$dbFilePath] = array('moved', utf8_decode($candidates[0]));
+                unset ($fileStorePhotosUnmatched[utf8_decode($candidates[0])]);
                 continue;
             }
             $retval[$dbFilePath] = 'deleted';

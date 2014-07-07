@@ -448,8 +448,8 @@ class Photo extends View
                 }
                 $this->EXIF["Lighting"] = $light;
             }
-            if ($orient = $exif['IFD0']['Orientation']) {
-                $this->EXIF["Orientation"] = $orient;
+            if (isset($exif['IFD0']['Orientation'])) {
+                $this->EXIF["Orientation"] = $exif['IFD0']['Orientation'];
             }
             if (isset($exif['GPS']) && isset($exif['GPS']['GPSLatitude']) && $exif['GPS']['GPSLongitude']) {
                 $lat = 0;

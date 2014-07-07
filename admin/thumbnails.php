@@ -64,7 +64,7 @@ $numdone = isset($_GET['numdone']) ? (int)$_GET['numdone'] : 0;
     echo '<div class="progress-bar" style="width: ' . ($done / $total * 100) . '%;"></div>';
     echo '</div>';
 
-    $next1000 = $cameralife->database->Select('photos', 'id', "id > $lastdone", 'ORDER BY id LIMIT 1000');
+    $next1000 = $cameralife->database->Select('photos', 'id', "id > $lastdone AND status != 9", 'ORDER BY id LIMIT 1000');
     $fixed = 0;
     flush();
     while (($next = $next1000->fetchAssoc()) && ($fixed < 10)) {
@@ -77,6 +77,7 @@ $numdone = isset($_GET['numdone']) ? (int)$_GET['numdone'] : 0;
         list($file, $temp, $mtime) = $cameralife->fileStore->GetFile('other', $filepath);
         $redo |= !$file;
         if ($redo) {
+            echo "<div>Updating #" . $next['id'] . "</div>\n";
             $photo->generateThumbnail();
             echo "<div>Updated #" . $next['id'] . "</div>\n";
             flush();
