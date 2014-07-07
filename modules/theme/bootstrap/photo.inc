@@ -194,7 +194,7 @@ if ($cameralife->security->authorize('photo_rename')) {
             <label for="tags" class="col-sm-2 control-label">Tags</label>
 
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="tags" placeholder="Tags" name="param2"
+                <input type="text" class="form-control" id="tags" placeholder="Tags, comma-separated" name="param2"
                        value="<?= htmlentities($photo->get('tags'), null, "UTF-8") ?>">
             </div>
         </div>
