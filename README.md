@@ -14,9 +14,9 @@ Camera Life is a system for cataloging your photo collection. It gives users
 the ability to search or browse your archive in intuitive ways, with an
 attention to powerful administrative functions.
 
-![Screenshot 1](http://fulldecent.github.com/cameralife/splashAssets/screenshot1.png)
-![Screenshot 2](http://fulldecent.github.com/cameralife/splashAssets/screenshot2.png)
-![Screenshot 3](http://fulldecent.github.com/cameralife/splashAssets/screenshot3.png)
+![Screenshot 1](http://fulldecent.github.com/cameralife/splashAssets/screenshot1.png?20140707)
+![Screenshot 2](http://fulldecent.github.com/cameralife/splashAssets/screenshot2.png?20140707)
+![Screenshot 3](http://fulldecent.github.com/cameralife/splashAssets/screenshot3.png?20140707)
 
 Features
 --------
