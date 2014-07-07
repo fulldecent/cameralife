@@ -44,8 +44,8 @@ class Folder extends Search
         } else {
             $href = $cameralife->baseURL . '/folder.php&#63;path=' . str_replace(" ", "%20", $this->path);
         }
-        parse_str(parse_url($url, PHP_URL_QUERY), $query);
-        $query['start'] = $this->myStart - $this->myLimitCount;
+        parse_str(parse_url($href, PHP_URL_QUERY), $query);
+        $query['start'] = $this->offset - $this->pageSize;
         $href = preg_replace('/\?.*/', '', $href) . '?' . http_build_query($query);
         return $href;
     }
@@ -109,7 +109,6 @@ class Folder extends Search
 
         return $photos;
     }
-
 
     /**
      * Returns folders per QUERY, privacy, and paging restrictions
@@ -231,7 +230,6 @@ class Folder extends Search
         );
     }
 
-
     /**
      * An array of parent, grandparent... top level folder
      *
@@ -315,126 +313,149 @@ class Folder extends Search
                 return $k;
             }
         }
-
         return false;
+    }
+
+    /**
+     * Produces a list of changes from the database representation to the disk
+     * 
+     * @access public
+     * @static
+     * @return array with PATHs as index and value one of:
+     *   'new'
+     *   'modified'
+     *   'deleted'
+     *   'ignored'
+     *   array: ['moved', NEWPATH]
+     *   array: ['went one of two places', ???]
+     */
+    public static function findChangesOnDisk()
+    {
+//TODO: should not use global CAMERALIFE!    
+        global $cameralife;
+        $retval = array();
+        $fileStorePhotosUnmatched = $cameralife->fileStore->ListFiles('photo'); // path->basename format
+        if (!count($fileStorePhotosUnmatched)) {
+            $cameralife->error('No files were found in file store');
+        }
+        foreach ($fileStorePhotosUnmatched as $unmatchedFilePath => $unmatchedFileBase) {
+            $normalized = strtolower(preg_replace('/[^a-z0-9]/i', '', $unmatchedFilePath));
+            $normalizedFileStorePaths[$unmatchedFilePath] = $normalized;
+        }
+        $result = $cameralife->database->Select('photos', 'id,filename,path,fsize', 'status!=9', 'ORDER BY path,filename');
+
+        // Verify each photo in the DB
+        while ($dbPhoto = $result->fetchAssoc()) {
+            $dbFilename = $dbPhoto['filename'];
+            $dbFilePath = rtrim('/' . ltrim($dbPhoto['path'], '/'), '/') . '/' . $dbFilename;
+
+            // DB photo is on disk where expected
+            if (isset($fileStorePhotosUnmatched[$dbFilePath])) {
+                # Bonus code, if this is local, we can do more verification
+                if ($cameralife->getPref('fileStore') == 'local' && $dbPhoto['fsize']) {
+                    $dbFileStorePath = $cameralife->fileStore->photoDir . $dbFilePath;
+                    if ($dbPhoto['fsize'] != filesize($dbFileStorePath)) {
+                        $retval[$photopath] = 'modified';
+                    }
+                }
+                unset ($fileStorePhotosUnmatched[$dbFilePath]);
+                continue;
+            }
+
+            // Look for a photo in the same place, but with the filename capitalization changed
+            $normalizedDBFilePath = strtolower(preg_replace('/[^a-z0-9]/i', '', $dbFilePath));
+            $candidates = array_keys($normalizedFileStorePaths, $normalizedDBFilePath);
+            if (count($candidates) == 1) {
+                $retval[$dbFilePath] = array('moved', $candidates[0]);
+                unset ($fileStorePhotosUnmatched[$candidates[0]]);
+                continue;
+            }
+            $retval[$dbFilePath] = 'deleted';
+        }
+
+        /**
+         * $fileStorePhotosUnmatched now contains a list of existing paths that are not in the database
+         * Maximum effort will be made to match these to other missing files
+         */
+
+        foreach ($fileStorePhotosUnmatched as $newFilePath => $newFileBase) {
+            if (preg_match("/^picasa.ini|digikam3.db$/i", $newFileBase)) {
+                $retval[$newFileBase] = 'ignored';
+                continue;
+            }
+            if (!preg_match("/.jpg$|.jpeg$|.png$|.gif$/i", $newFileBase)) {
+                $retval[$newFileBase] = 'ignored';
+                continue;
+            }
+
+            $condition = "filename LIKE :fn";
+            $binds['fn'] = $newFileBase;
+            if ($cameralife->getPref('fileStore') == 'local') {
+                $fileStorePath = $cameralife->fileStore->photoDir . $newFilePath;
+                $condition .= ' AND fsize=' . filesize($fileStorePath);
+            }            
+            $result = $cameralife->database->Select('photos', 'id, filename, path', $condition, null, null, $binds);
+
+            // Is anything in the fileStore similar?
+            if ($dbPhoto = $result->fetchAssoc()) {
+                $dbFilePath = rtrim('/' . ltrim($dbPhoto['path'], '/'), '/') . '/' . $dbPhoto['filename'];
+            
+                if (isset($retval[$dbFilePath]) && $retval[$dbFilePath] != 'deleted') {
+                    $retval[$dbFilePath] = array('went one of two places', $newFilePath, $retval[$dbFilePath]);
+                    continue;
+                } else {
+                    $retval[$dbFilePath] = array('moved', $newFilePath);
+                    continue;
+                }
+            }
+            $retval[$newFilePath] = 'new';
+        }
+
+        return $retval;
     }
 
     /**
      * Updates the DB to match actual contents of photo bucket from fileStore.
      * Returns an array of errors or warning.
-     * Tries very hard to avoid creating a new record and deleting an old if in fact the
-     * photo was simply moved.
+     * 
+     * @access public
+     * @static
+     * @return string[]
      */
     public static function update()
     {
         global $cameralife;
-
         $retval = array();
-        $filesInStoreNotYetMatchedToDB = $cameralife->fileStore->ListFiles('photo');
-        if (!count($filesInStoreNotYetMatchedToDB)) {
-            return array('Nothing was found in the fileStore.');
+
+        foreach (Folder::findChangesOnDisk() as $filePath => $change) {
+            if ($change == 'new') {
+                $retval[] = "Added $filePath\n";
+                $photoObj = new Photo(array('filename' => basename($filePath), 'path' => dirname($filePath)));
+                $photoObj->destroy();
+            } elseif ($change == 'modified') {
+                $retval[] = "$filePath was changed, flushing cache";
+                $photoObj = Photo::getPhotoWithFilePath($filePath);
+                $photoObj->revert();
+                $photoObj->loadImage(true); // TRUE == onlyWantEXIF
+                $photoObj->revert(); // saves $photo->record
+                $photoObj->destroy();
+            } elseif ($change == 'deleted') {
+                $retval[] = "$filePath was deleted from filesystem";
+                $photoObj = Photo::getPhotoWithFilePath($filePath);
+                $photoObj->erase();
+            } elseif ($change == 'ignored') {
+                $retval[] = "$filePath was skipped as it is not jpg/png";
+            } elseif (is_array($change) && $change[0] == 'moved') {
+                $retval[] = "$filePath was moved to {$change[1]}";
+                $photoObj = Photo::getPhotoWithFilePath($filePath);
+                $filename = basename($change[1]);
+                $path = '/' . trim(substr($change[1], 0, -strlen($filename)), '/');
+                $photoObj->set('path', $path);
+                $photoObj->set('filename', $filename);
+            } else {
+                $retval[] = "Something happened with $filePath / " . print_r($change, true);                
+            }
         }
-        $result = $cameralife->database->Select('photos', 'id,filename,path,fsize', '', 'ORDER BY path,filename');
-
-        // Verify each photo in the DB
-        while ($photo = $result->fetchAssoc()) {
-            //TODO FIX DATABASE TO MAKE photos.path like '/a/dir' or '/'
-            $filename = $photo['filename'];
-            $photopath = trim($photo['path'], '/') . '/' . $filename;
-            $photopath = rtrim('/' . ltrim($photo['path'], '/'), '/') . '/' . $filename;
-
-            // Found in correct location
-            if (isset($filesInStoreNotYetMatchedToDB[$photopath])) {
-                # Bonus code, if this is local, we can do more verification
-                if ($cameralife->getPref('fileStore') == 'local' && $photo['fsize']) {
-                    $photofile = $cameralife->fileStore->photoDir . "/$photopath";
-                    $actualsize = filesize($photofile);
-                    // Found, but changed
-                    if ($actualsize != $photo['fsize']) {
-                        $retval[] = "$photopath was changed, flushing cache";
-                        $photoObj = new Photo($photo['id']);
-                        $photoObj->revert();
-                        $photoObj->loadImage(true); // TRUE == onlyWantEXIF
-                        $photoObj->revert(); // saves $photo->record
-                        $photoObj->destroy();
-                    }
-                }
-                unset ($filesInStoreNotYetMatchedToDB[$photopath]);
-                continue;
-            }
-
-            // Look for a photo in the same place, but with the filename capitalization changed
-            if (isset($filesInStoreNotYetMatchedToDB[strtolower($photopath)])) {
-                unset ($filesInStoreNotYetMatchedToDB[strtolower($photopath)]);
-                continue;
-            }
-
-            if (isset($filesInStoreNotYetMatchedToDB[strtoupper($photopath)])) {
-                unset ($filesInStoreNotYetMatchedToDB[strtoupper($photopath)]);
-                continue;
-            }
-
-            // Photo not found anywhere
-            $retval[] = "$photopath was deleted from filesystem";
-            $photoObj = new Photo($photo['id']);
-            $photoObj->erase();
-        }
-
-        /**
-         * $filesInStoreNotYetMatchedToDB now contains a list of existing files that are not in the database
-         * Maximum effort will be made to not add these new files to the DB
-         */
-
-        foreach ($filesInStoreNotYetMatchedToDB as $newFile => $newbase) {
-            if (preg_match("/^picasa.ini|digikam3.db$/i", $newbase)) {
-                continue;
-            }
-            if (!preg_match("/.jpg$|.jpeg$|.png$|.gif$/i", $newbase)) {
-                $retval[] = "Skipped $newFile because it is not a JPEG or PNG file";
-                continue;
-            }
-
-            $newpath = dirname($newFile);
-            $condition = "filename LIKE :fn";
-            $binds['fn'] = $newbase;
-            $result = $cameralife->database->Select('photos', 'id, filename, path', $condition, null, null, $binds);
-
-            // Is anything in the fileStore too similar (given available information) to let this photo in?
-            if ($photo = $result->fetchAssoc()) {
-                // With the case-insensitive LIKE above, this will handle files renamed only by case
-                if (strcasecmp($photo['path'] . $photo['filename'], $newFile) == 0) {
-                    $retval[] = $photo['path'] . $photo['filename'] . ' was renamed to ' . $newFile;
-                    $cameralife->database->Update('photos', array('filename' => $newbase), 'id=' . $photo['id']);
-                    continue;
-                }
-                $photoFullpath = rtrim('/' . ltrim($photo['path'], '/'), '/') . '/' . $photo['filename'];
-
-                # Bonus code
-                $same = false;
-                if ($cameralife->getPref('fileStore') == 'local') {
-                    $a = file_get_contents($cameralife->fileStore->photoDir . $photoFullpath);
-                    $b = file_get_contents($cameralife->fileStore->photoDir . $newFile);
-                    if ($a == $b) {
-                        $same = true;
-                    }
-                }
-
-                if ($same) {
-                    $error = 'Two photos in your file store are identical, please delete one: ';
-                } else {
-                    $error = 'Two photos in your file store are too similar, please delete one: ';
-                }
-                $error .= "$photoFullpath is in the system, $newFile is not";
-                $retval[] = $error;
-                continue;
-            }
-
-            $retval[] = "Added $newFile\n";
-
-            $photoObj = new Photo(array('filename' => $newbase, 'path' => $newpath));
-            $photoObj->destroy();
-        }
-
         return $retval;
     }
 

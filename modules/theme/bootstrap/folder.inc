@@ -97,8 +97,7 @@ $cameralife->theme->grid($results);
 
 if ($_GET['page'] == "photos") {
     $cameralife->theme->pageSelector($start, $numPhotos, 25, $openGraph['og:url']);
-} else // ($_GET['page'] == "folders")
-{
+} else {
     $cameralife->theme->pageSelector($start, $numFolders, 25, $openGraph['og:url']);
 }
 

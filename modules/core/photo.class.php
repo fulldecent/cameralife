@@ -58,6 +58,28 @@ class Photo extends View
     private $contextNext;
 
     /**
+     * Loads a photo with a given FILEPATH
+     * 
+     * @access public
+     * @static
+     * @param mixed $filePath string like /folder/photo.jpg
+     * @return Photo
+     */
+    public static function getPhotoWithFilePath($filePath)
+    {
+        global $cameralife;    
+        $filename = basename($filePath);
+        $path = '/' . trim(substr($filePath, 0, -strlen($filename)), '/');
+        $bind = array('f'=>$filename, 'p'=>$path);
+        $result = $cameralife->database->Select('photos', '*', "filename=:f AND path=:p", NULL, NULL, $bind);
+        $record = $result->fetchAssoc()
+        or $cameralife->error("Photo #$original not found");
+        $photo = new Photo();
+        $photo->record = $record;
+        return $photo;
+    }
+
+    /**
      * To get an empty Photo pass nothing ie NULL
      * To load a photo pass a photo ID
      * To create a photo pass an array
@@ -124,7 +146,7 @@ class Photo extends View
         global $cameralife;
 
         $receipt = null;
-        if ($key != 'hits') {
+        if ($key != 'hits' && $key != 'filename' && $key != 'path') {
             $receipt = AuditTrail::log('photo', $this->record['id'], $key, $this->record[$key], $value);
         }
         /*

@@ -4,7 +4,7 @@ namespace CameraLife;
  * Administer files on the site
  * BEWARE: BACKUP YOUR DATABASE BEFORE MESSING AROUND HERE!
  * @author William Entriken <cameralife@phor.net>
- * @copyright 2001-2013 William Entriken
+ * @copyright 2001-2014 William Entriken
  * @access public
  */
 $features = array('security', 'fileStore');
@@ -13,7 +13,7 @@ $cameralife = CameraLife::cameraLifeWithFeatures($features);
 chdir($cameralife->baseDir);
 $cameralife->baseURL = dirname($cameralife->baseURL);
 $cameralife->security->authorize('admin_customize', 1); // Require
-$_GET['page'] = isset($_GET['page']) ? $_GET['page'] : 'flagged';
+$page = isset($_GET['page']) ? $_GET['page'] : 'flagged';
 @ini_set('max_execution_time', 9000); // for rescan
 
 // Handle form actions
@@ -40,7 +40,7 @@ foreach ($_POST as $key => $val) {
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -55,25 +55,25 @@ foreach ($_POST as $key => $val) {
 </div>
 <div class="container">
     <ul class="nav nav-tabs">
-        <li<?= ($_GET['page'] == 'flagged') ? ' class="active"' : '' ?>><a href="?page=flagged">Flagged files</a></li>
-        <li<?= ($_GET['page'] == 'private') ? ' class="active"' : '' ?>><a href="?page=private">Private</a></li>
-        <li<?= ($_GET['page'] == 'update') ? ' class="active"' : '' ?>><a href="?page=update">Rescan files</a></li>
+        <li<?= ($page == 'flagged') ? ' class="active"' : '' ?>><a href="?page=flagged">Flagged files</a></li>
+        <li<?= ($page == 'private') ? ' class="active"' : '' ?>><a href="?page=private">Private</a></li>
+        <li<?= ($page == 'update') ? ' class="active"' : '' ?>><a href="?page=update">Rescan files</a></li>
     </ul>
     <?php
 
-    if ($_GET['page'] == 'flagged') {
+    if ($page == 'flagged') {
         $target_status = 1;
     } else {
-        if ($_GET['page'] == 'private') {
+        if ($page == 'private') {
             $target_status = 2;
         } else {
-            if ($_GET['page'] == 'upload') {
+            if ($page == 'upload') {
                 $target_status = 3;
             }
         }
     }
 
-    if ($_GET['page'] !== 'update') { // Show stuff
+    if ($page !== 'update') { // Show stuff
     ?>
     <div class="well well-sm">
         <h2>Quick tools</h2>
@@ -101,30 +101,36 @@ foreach ($_POST as $key => $val) {
             }
         }
 
-        $search = new Search();
-        $search->showPrivatePhotos = true;
-        $search->setPage(0, 999);
-        $photos = $search->getPhotos();
+        $query = $cameralife->database->Select(
+            'photos',
+            'id',
+            'status = '.$target_status
+        );
+        $photos = array();
+        while ($row = $query->fetchAssoc()) {
+            $photos[] = new Photo($row['id']);
+        }
+
         echo '<div class="thumbnails">';
         $i = 0;
-    foreach ($photos as $photo) {
-        $photoOpenGraph = $photo->GetOpenGraph();
-        echo '<div class="col-sm-2"><div class="thumbnail text-center">';
-        echo '<a href="' . htmlspecialchars($photoOpenGraph['og:url']) . '">';
-        echo '<img src="' . htmlspecialchars($photoOpenGraph['og:image']) . '"></a><br />' . htmlentities(
-            $photoOpenGraph['og:title']
-        );
-        echo '<select style="width:100%" name="' . $photo->Get('id') . '">' .
-            '<option value="0" ' . ($target_status == 0 ? 'selected' : '') . '>public</option>' .
-            '<option value="1" ' . ($target_status == 1 ? 'selected' : '') . '>Flagged</option>' .
-            '<option value="2" ' . ($target_status == 2 ? 'selected' : '') . '>private</option>' .
-            '<option value="3" ' . ($target_status == 3 ? 'selected' : '') . '>new Upload</option>' .
-            '<option value="4" ' . ($target_status == 4 ? 'selected' : '') . '>Erased</option></select><br>';
-        echo '</div></div>';
-        if (++$i % 6 == 0) {
-            echo '</div><div class="thumbnails">';
+        foreach ($photos as $photo) {
+            $photoOpenGraph = $photo->GetOpenGraph();
+            echo '<div class="col-sm-2"><div class="thumbnail text-center">';
+            echo '<a href="' . htmlspecialchars($photoOpenGraph['og:url']) . '">';
+            echo '<img src="' . htmlspecialchars($photoOpenGraph['og:image']) . '"></a><br />' . htmlentities(
+                $photoOpenGraph['og:title']
+            );
+            echo '<select style="width:100%" name="' . $photo->Get('id') . '">' .
+                '<option value="0" ' . ($target_status == 0 ? 'selected' : '') . '>public</option>' .
+                '<option value="1" ' . ($target_status == 1 ? 'selected' : '') . '>Flagged</option>' .
+                '<option value="2" ' . ($target_status == 2 ? 'selected' : '') . '>private</option>' .
+                '<option value="3" ' . ($target_status == 3 ? 'selected' : '') . '>new Upload</option>' .
+                '<option value="4" ' . ($target_status == 4 ? 'selected' : '') . '>Erased</option></select><br>';
+            echo '</div></div>';
+            if (++$i % 6 == 0) {
+                echo '</div><div class="thumbnails">';
+            }
         }
-    }
         //$total = $cameralife->database->SelectOne('photos COUNT(*)',"status=$target_status");
         echo '</div>';
         ?>

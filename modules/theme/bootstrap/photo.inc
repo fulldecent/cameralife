@@ -363,7 +363,9 @@ if (isset($cameralife->receipt)) {
     echo '<div id="receipt" class="receipt" style="visibility: hidden"></div>';
 }
 
-echo '<a href="'.htmlspecialchars($prevOpenGraph['og:url']).'"><i class="fa fa-caret-square-o-left fa-4x"></i></a>';
+if (isset($prevOpenGraph['og:url'])) {
+    echo '<a href="'.htmlspecialchars($prevOpenGraph['og:url']).'"><i class="fa fa-caret-square-o-left fa-4x"></i></a>';
+}
 
 $alt = htmlentities($photo->get('description'));
 echo "<img id=\"curphoto\" class=\"img-thumbnail\" style=\"margin: 0 auto\" src=\"" . htmlspecialchars(
@@ -372,7 +374,9 @@ echo "<img id=\"curphoto\" class=\"img-thumbnail\" style=\"margin: 0 auto\" src=
         )
     ) . "\" alt=\"$alt\">\n\n";
 
-echo '<a href="'.htmlspecialchars($nextOpenGraph['og:url']).'"><i class="fa fa-caret-square-o-right fa-4x"></i></a>';
+if (isset($nextOpenGraph['og:url'])) {
+    echo '<a href="'.htmlspecialchars($nextOpenGraph['og:url']).'"><i class="fa fa-caret-square-o-right fa-4x"></i></a>';
+}
 
 ?>
 

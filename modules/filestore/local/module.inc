@@ -163,7 +163,7 @@ class LocalFileStore extends FileStore
         }
 
         #FEATURE // add " NOCL" to the end of a folder to exclude it
-        if (strpos($path, ' NOCL') !== false) {
+        if (stripos($path, ' NOCL') !== false) {
             return array();
         }
 
