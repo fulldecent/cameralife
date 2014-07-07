@@ -32,8 +32,7 @@ descriptions, you can easily revert changes to the site.
 
 3. Easy to install and try
 
-   See the installation flyover at http://youtu.be/aWDdMfyPwwo  (1 minute
-5 second video)
+   See the installation flyover at http://youtu.be/sm-v36GcjXk (50 second video)
 
 4. Easy to get photos in
 
