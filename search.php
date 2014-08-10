@@ -44,4 +44,9 @@ if (!$numAlbums && !$numPhotos && $numFolders == 1) {
     exit(0);
 }
 
+## If there are no results, set the HTTP status code to 404 
+if (!$numAlbums && !$numPhotos && !$numFolders) {
+    header("HTTP/1.0 404 Not Found");
+}
+
 $search->showPage();
