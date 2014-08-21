@@ -42,6 +42,11 @@ if (!$search->getPhotoCount()) {
         <?php
         foreach ($results as $result) {
             $resultOpenGraph = $result->GetOpenGraph();
+            $htmlTitle = '';
+            if ($resultOpenGraph['og:title'] != 'unnamed') {
+                $htmlTitle = htmlentities($resultOpenGraph['og:title']);
+            }
+
             echo '<div class="l1" style="-moz-transform:rotate(' . rand(
                 -10,
                 10
@@ -51,11 +56,9 @@ if (!$search->getPhotoCount()) {
                 $resultOpenGraph['og:image']
             ) . '" class="l3">';
             if (isset($resultOpenGraph['og:image:width']) && isset($resultOpenGraph['og:image:height'])) {
-                echo '<div class="l4" style="width:' . ($resultOpenGraph['og:image:width']) . 'px">' . htmlentities(
-                    $resultOpenGraph['og:title']
-                ) . '</div>';
+                echo '<div class="l4" style="width:' . ($resultOpenGraph['og:image:width']) . 'px">' . $htmlTitle . '</div>';
             } else {
-                echo '<div class="l4">' . htmlentities($resultOpenGraph['og:title']) . '</div>';
+                echo '<div class="l4">' . $htmlTitle . '</div>';
             }
             echo '</a>';
             echo '</div>';
