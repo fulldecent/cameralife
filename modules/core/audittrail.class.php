@@ -162,6 +162,9 @@ class Receipt
 
     public function getObject()
     {
+//TODO: should not use global CAMERALIFE!    
+        global $cameralife;
+    
         if ($this->myRecord['record_type'] == 'photo') {
             return new Photo($this->myRecord['record_id']);
         }
@@ -174,7 +177,7 @@ class Receipt
         if ($this->myRecord['record_type'] == 'user') {
             return die("user receipt type");
         } // wtf do I do here?
-        $cameralife->Error("Invalid receipt type.");
+        $cameralife->Error("Invalid receipt type: " . $this->myRecord['record_type']);
         return false;
     }
 

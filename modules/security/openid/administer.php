@@ -1,13 +1,14 @@
 <?php
+namespace CameraLife;
 /**
  * Administers user access priviliges
  * @author William Entriken <cameralife@phor.net>
  * @copyright 2001-2009 William Entriken
  * @access public
  */
-
-$features = array('security');
 require '../../../main.inc';
+$features = array('security');
+$cameralife = CameraLife::cameraLifeWithFeatures($features);
 $cameralife->baseURL = dirname(dirname(dirname($cameralife->baseURL)));
 $cameralife->security->authorize('admin_customize', 1); //require
 

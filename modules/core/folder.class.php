@@ -334,13 +334,15 @@ class Folder extends Search
 //TODO: should not use global CAMERALIFE!    
         global $cameralife;
         $retval = array();
-        $fileStorePhotosUnmatched = $cameralife->fileStore->ListFiles('photo'); // path->basename format
+        $fileStorePhotosUnmatched = $cameralife->fileStore->listFiles('photo'); // path->basename format
         if (!count($fileStorePhotosUnmatched)) {
             $cameralife->error('No files were found in file store');
         }
         foreach ($fileStorePhotosUnmatched as $unmatchedFilePath => $unmatchedFileBase) {
+//            $unmatchedFilePath = utf8_decode($unmatchedFilePath);
             $normalized = strtolower(preg_replace('/[^a-z0-9]/i', '', $unmatchedFilePath));
-            $normalizedFileStorePaths[utf8_encode($unmatchedFilePath)] = $normalized;
+//            $normalizedFileStorePaths[utf8_encode($unmatchedFilePath)] = $normalized;
+            $normalizedFileStorePaths[$unmatchedFilePath] = $normalized;
         }
         $result = $cameralife->database->Select('photos', 'id,filename,path,fsize', 'status!=9', 'ORDER BY path,filename');
 
@@ -348,7 +350,6 @@ class Folder extends Search
         while ($dbPhoto = $result->fetchAssoc()) {
             $dbFilename = $dbPhoto['filename'];
             $dbFilePath = rtrim('/' . ltrim($dbPhoto['path'], '/'), '/') . '/' . $dbFilename;
-
             // DB photo is on disk where expected
             if (isset($fileStorePhotosUnmatched[$dbFilePath])) {
                 # Bonus code, if this is local, we can do more verification
@@ -366,8 +367,9 @@ class Folder extends Search
             $normalizedDBFilePath = strtolower(preg_replace('/[^a-z0-9]/i', '', $dbFilePath));
             $candidates = array_keys($normalizedFileStorePaths, $normalizedDBFilePath);
             if (count($candidates) == 1) {
-                $retval[$dbFilePath] = array('moved', utf8_decode($candidates[0]));
-                unset ($fileStorePhotosUnmatched[utf8_decode($candidates[0])]);
+//                $candidates[0] = utf8_decode($candidates[0]);
+                $retval[$dbFilePath] = array('moved', $candidates[0]);
+                unset ($fileStorePhotosUnmatched[$candidates[0]]);
                 continue;
             }
             $retval[$dbFilePath] = 'deleted';
@@ -379,6 +381,7 @@ class Folder extends Search
          */
 
         foreach ($fileStorePhotosUnmatched as $newFilePath => $newFileBase) {
+//            $newFilePath = utf8_decode($newFilePath);
             if (preg_match("/^picasa.ini|digikam3.db$/i", $newFileBase)) {
                 $retval[$newFileBase] = 'ignored';
                 continue;
@@ -447,8 +450,11 @@ class Folder extends Search
                 $retval[] = "$filePath was skipped as it is not jpg/png";
             } elseif (is_array($change) && $change[0] == 'moved') {
                 $retval[] = "$filePath was moved to {$change[1]}";
+                // mb_basename = end(explode('/',$file)) // http://php.net/manual/en/function.basename.php
+                // pathinfo is better than basename with unicode utf8
                 $photoObj = Photo::getPhotoWithFilePath($filePath);
                 $filename = basename($change[1]);
+//                $filename = end(explode('/', $change[1]));
                 $path = '/' . trim(substr($change[1], 0, -strlen($filename)), '/');
                 $photoObj->set('path', $path);
                 $photoObj->set('filename', $filename);
