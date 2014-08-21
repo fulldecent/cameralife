@@ -49,7 +49,7 @@ class CameraLife extends CameraLifeModule # and View
             $this->baseURL = 'http://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/');
         }
 
-        $this->version = '2.7.0a5';
+        $this->version = '2.7.0a6';
 
         $this->preferences[] = array('name' => 'theme', 'type' => 'string', 'default' => 'bootstrap');
         $this->preferences[] = array('name' => 'iconset', 'type' => 'string', 'default' => 'cartoonic');
