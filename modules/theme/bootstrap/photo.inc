@@ -154,7 +154,7 @@ if ($photo->get('status') > 0) {
           data-toggle="tooltip" 
           data-placement="top" 
           title="Order prints"
-          onClick="$('#modify').show();return false"
+          onClick="$('#print').show();return false"
         >
             <i class="fa fa-print"></i>
         </a>
@@ -164,7 +164,7 @@ if ($photo->get('status') > 0) {
           data-placement="top" 
           title="Share on Facebook"
         >
-            <i class="fa fa-star"></i>
+            <i class="fa fa-share-alt"></i>
         </a>
     <?php } ?>    
 </h1>
@@ -237,7 +237,9 @@ if ($cameralife->security->authorize('photo_delete')) {
         <input type="hidden" name="action" value="flag"/>
 
         <p class="lead">Thank you for taking the time to report bad content. Please choose the obvious problem with this
-            photo.</p>
+            photo.
+            
+            </p>
 
         <label class="radio">
             <input type="radio" name="param1" value="indecent">
@@ -265,7 +267,7 @@ if ($cameralife->security->authorize('photo_modify')) {
     ?>
     <div id="modify" class="well"
          style="<?= (isset($_GET['action']) && $_GET['action'] == 'modify') ? '' : 'display:none' ?>">
-        <p>Modify photo. All modifications can be reverted.</p>
+        <p class="lead">Modify photo. All modifications can be reverted.</p>
 
         <form class="form-horizontal" action="<?= $cameralife->baseURL ?>/photo_controller.php" method="POST">
             <input type="hidden" name="id" value="<?= $photo->get('id') ?>"/>
@@ -276,8 +278,8 @@ if ($cameralife->security->authorize('photo_modify')) {
                 <label class="control-label" for="tags">rotate</label>
 
                 <div class="controls">
-                    <input class="btn" type="submit" name="param1" value="rotate Counter-Clockwise">
-                    <input class="btn" type="submit" name="param1" value="rotate Clockwise">
+                    <button class="btn btn-default" type="submit" name="param1" value="rotate Counter-Clockwise"><i class="fa fa-rotate-left"></i></button>
+                    <button class="btn btn-default" type="submit" name="param1" value="rotate Clockwise"><i class="fa fa-rotate-right"></i></button>
                 </div>
             </div>
         </form>
@@ -291,7 +293,7 @@ if ($cameralife->security->authorize('photo_modify')) {
                 <label class="control-label" for="tags">Revert</label>
 
                 <div class="controls">
-                    <input class="btn" type="submit" name="param1" value="Revert">
+                    <input class="btn btn-default" type="submit" name="param1" value="Revert">
                 </div>
             </div>
         </form>
@@ -305,7 +307,7 @@ if ($cameralife->security->authorize('photo_modify')) {
                 <label class="control-label" for="tags">Regenerate Thumbnail</label>
 
                 <div class="controls">
-                    <input class="btn" type="submit" name="param1" value="Regenerate Thumbnail">
+                    <input class="btn btn-default" type="submit" name="param1" value="Regenerate Thumbnail">
                 </div>
             </div>
         </form>

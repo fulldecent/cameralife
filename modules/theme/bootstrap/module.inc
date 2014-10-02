@@ -353,55 +353,54 @@ class BootstrapTheme extends ThemeModule
 
     public function pageSelector($start, $total, $perPage, $url)
     {
-        if ($total > $perPage) // Refuse to only show one page
-        {
-            echo '<ul class="pagination">';
+        if ($total <= $perPage)
+            return; // Refuse to only show one page
 
-            if ($start == -1) {
-                echo "<span class='current'>Randomly showing <b>$perPage</b> of <b>$total</b></span> ";
-                echo "<a class='nextprev' href=\"$url\">More &#187;</a>";
+        echo '<ul class="pagination">';
+        if ($start == -1) {
+            echo "<span class='current'>Randomly showing <b>$perPage</b> of <b>$total</b></span> ";
+            echo "<a class='nextprev' href=\"$url\">More &#187;</a>";
+        } else {
+            $first = max($start - 2 * $perPage, 0);
+            $last = min($first + 4 * $perPage, intval(($total - 1) / $perPage) * $perPage);
+            $first = max($last - 4 * $perPage, 0);
+            if ($last == 0) {
+                $last = 1;
+            }
+
+            if ($first != $start) {
+                parse_str(parse_url($url, PHP_URL_QUERY), $query);
+                $query['start'] = $start - $perPage;
+                $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
+                echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">&laquo;</a></li>";
             } else {
-                $first = max($start - 2 * $perPage, 0);
-                $last = min($first + 4 * $perPage, intval(($total - 1) / $perPage) * $perPage);
-                $first = max($last - 4 * $perPage, 0);
-                if ($last == 0) {
-                    $last = 1;
-                }
+                echo "<li class=\"disabled\"><span>&laquo;</span></li>";
+            }
 
-                if ($first != $start) {
-                    parse_str(parse_url($url, PHP_URL_QUERY), $query);
-                    $query['start'] = $start - $perPage;
-                    $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
-                    echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">&laquo;</a></li>";
+            for ($i = $first; $i <= $last; $i += $perPage) {
+                parse_str(parse_url($url, PHP_URL_QUERY), $query);
+                $query['start'] = $i;
+                $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
+                if ($i == $start) {
+                    echo "<li class=\"active\"><a href=\"" . htmlspecialchars(
+                            $newURL
+                        ) . "\">" . ($i / $perPage + 1) . "</a></li>";
                 } else {
-                    echo "<li class=\"disabled\"><span>&laquo;</span></li>";
-                }
-
-                for ($i = $first; $i <= $last; $i += $perPage) {
-                    parse_str(parse_url($url, PHP_URL_QUERY), $query);
-                    $query['start'] = $i;
-                    $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
-                    if ($i == $start) {
-                        echo "<li class=\"active\"><a href=\"" . htmlspecialchars(
-                                $newURL
-                            ) . "\">" . ($i / $perPage + 1) . "</a></li>";
-                    } else {
-                        echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">" . ($i / $perPage + 1) . "</a></li>";
-                    }
-                }
-
-                if ($last != $start) {
-                    parse_str(parse_url($url, PHP_URL_QUERY), $query);
-                    $query['start'] = $i;
-                    $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
-
-                    echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">&raquo;</a></li>";
-                } else {
-                    echo "<li class=\"disabled\"><span>&raquo;</span></li>";
+                    echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">" . ($i / $perPage + 1) . "</a></li>";
                 }
             }
-            echo "</ul>\n";
+
+            if ($last != $start) {
+                parse_str(parse_url($url, PHP_URL_QUERY), $query);
+                $query['start'] = $start + $perPage;
+                $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
+
+                echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">&raquo;</a></li>";
+            } else {
+                echo "<li class=\"disabled\"><span>&raquo;</span></li>";
+            }
         }
+        echo "</ul>\n";
     }
 
     public function addParam($url, $var, $val)
