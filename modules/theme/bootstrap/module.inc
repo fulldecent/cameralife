@@ -143,7 +143,7 @@ class BootstrapTheme extends ThemeModule
             <meta name="author" content="<?= $cameralife->getPref('owner_email') ?>">
             <?= $extrahead ?>
             <!-- Le styles -->
-            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
             <link rel="search" href="opensearch.xml.php" type="application/opensearchdescription+xml"
                   title="Content Search"/>
             <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
