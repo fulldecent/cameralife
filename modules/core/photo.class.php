@@ -577,6 +577,17 @@ class Photo extends View
         return floatval($parts[0]) / floatval($parts[1]);
     }
 
+    public function getLikeCount()
+    {
+        global $cameralife;
+        $ratings = $cameralife->database->SelectOne(
+            'ratings',
+            'COUNT(rating)',
+            'id=' . $this->get('id') . ' AND rating > 0'
+        );
+        return $ratings;
+    }
+
     public function getContext()
     {
         if (!$this->context) {

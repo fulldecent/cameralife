@@ -99,16 +99,16 @@ if ($photo->get('status') > 0) {
         <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>">
         <input type="hidden" name="action" value="rate">
         <?php
-            if ($rating == 5) {
-                echo "<button name=\"param1\" value=\"0\" type=\"submit\" class=\"btn btn-link\" style=\"color:gold\">";
-                echo "<i class=\"fa fa-star fa-2x\"></i>\n";
-                echo "</button>\n";
-            } else {
-                echo "<button name=\"param1\" value=\"5\" type=\"submit\" class=\"btn btn-link\" style=\"color:gold\">";
-                echo "<i class=\"fa fa-star-o fa-2x\"></i>\n";
-                echo "</button>\n";
-            }
-        ?>
+            $count = $photo->getLikeCount();
+            ?>
+        <button name="param1" value="<?= $rating == 5 ? 0 : 5 ?>" type="submit" class="btn btn-link">
+            <div class="stacked-icons">
+                <span class="fa-stack fa-lg">
+                    <i class="fa fa-star<?= $rating == 5 ? '' : '-o' ?> fa-stack-2x" style="color:gold"></i>
+                    <strong class="fa-stack-1x" style="font-size:0.7em;color:black"><?= $count ? $count : '' ?></strong>
+                </span>
+            </div>
+        </button>
     </form>
 
     <?= htmlentities($photo->get('description'), null, "UTF-8") ?>

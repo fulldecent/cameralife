@@ -13,7 +13,7 @@ $cameralife = CameraLife::cameraLifeWithFeatures($features);
 
 if (!Photo::photoExists($_GET['id'])) {
     header("HTTP/1.0 404 Not Found");
-    $cameralife->error("Photo #" . ($original + 1) . " not found.");
+    $cameralife->error("Photo #" . intval($_GET['id']) . " not found.");
 }
 
 $photo = new Photo($_GET['id']);
