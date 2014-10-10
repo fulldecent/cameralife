@@ -135,7 +135,7 @@ if (!$search->getPhotoCount()) {
                 }
                 echo ", ...</div>\n";
             }
-            echo "<tr><td><h3><a href=\"search.php&#63;albumhelp=1&amp;q=\">... create an featured tag</a></h3>";
+            echo "<tr><td><h3><a href=\"search.php&#63;albumhelp=1&amp;q=\">... create a featured tag</a></h3>";
 
             ?>
         </table>
