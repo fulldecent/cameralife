@@ -166,6 +166,10 @@ class LocalFileStore extends FileStore
         if (stripos($path, ' NOCL') !== false) {
             return array();
         }
+        
+        if (is_file($fullpath)) {
+            return array($fullpath => basename($fullpath));
+        }
 
         $retval = array();
         if ($dir = @opendir($fullpath)) {
@@ -188,7 +192,7 @@ class LocalFileStore extends FileStore
                 $retval += $this->listFiles($bucket, $child, true);
             }
         } else {
-            $cameralife->error('Failed to open file directory');
+            return NULL;
         }
         return $retval;
     }

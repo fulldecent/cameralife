@@ -109,14 +109,13 @@ if (!$search->getPhotoCount()) {
         </table>
     </div>
     <div class="col-sm-6">
-        <h2>Photo Albums</h2>
+        <h2>Featured Tags</h2>
         <table class="table">
             <?php
 
             foreach (Topic::getTopics() as $topic) {
                 $openGraph = $topic->GetOpenGraph();
-                echo "<tr><td><h3><a href=\"" . htmlentities($openGraph['og:url']) . "\">";
-                echo $cameralife->theme->Image('small-topic');
+                echo "<tr><td><h3><a href=\"" . htmlentities($openGraph['og:url']) . "\"><i class=\"fa fa-tags\"></i> ";
                 echo htmlentities($openGraph['og:title']) . "</a></h3>\n";
 
                 if ($cameralife->theme->getPref('main_topics') == 2) {
@@ -127,16 +126,16 @@ if (!$search->getPhotoCount()) {
                     $count = 0;
                     foreach ($topic->GetAlbums() as $album) {
                         if ($count++) {
-                            echo ", ";
+                            echo ", \n";
                         }
                         $openGraphAlbum = $album->GetOpenGraph();
-                        echo "<a href=\"" . htmlentities($openGraphAlbum['og:url']) . "\">";
-                        echo htmlentities($openGraphAlbum['og:title']) . "</a>\n";
+                        echo "<a href=\"" . htmlentities($openGraphAlbum['og:url']) . "\"><i class=\"fa fa-tag\"></i> ";
+                        echo htmlentities($openGraphAlbum['og:title']) . "</a>";
                     }
                 }
                 echo ", ...</div>\n";
             }
-            echo "<tr><td><h3><a href=\"search.php&#63;albumhelp=1\">... create an album</a></h3>";
+            echo "<tr><td><h3><a href=\"search.php&#63;albumhelp=1&amp;q=\">... create an featured tag</a></h3>";
 
             ?>
         </table>

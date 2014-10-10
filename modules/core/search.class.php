@@ -133,7 +133,7 @@ class Search extends View
                 $sort = 'hits desc';
                 break;
             case 'unpopular':
-                $sort = 'hits';
+                $sort = 'hits, id';
                 break;
             case 'rand':
                 $sort = 'rand()';

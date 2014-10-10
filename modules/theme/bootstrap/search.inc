@@ -57,17 +57,10 @@ $cameralife->theme->header($search, $sidebar, $header);
 if (isset($_GET['albumhelp']) && $_GET['albumhelp']) {
     ?>
     <div class="alert alert-info alert-block">
-    <button type="button" class="close" data-dismiss="alert">×</button>
-    <h4>How to use Albums</h4>
-    <?php $cameralife->theme->Image('small-album', array('align' => 'middle')) ?>
-    An Album is a collection of photos with a common term in their description. <br>
-    <?php $cameralife->theme->Image('small-topic', array('align' => 'middle')) ?>
-    A Topic is a logical collection of Albums. Ex: People, Places, Events<br>
-    <?php $cameralife->theme->Image('small-search', array('align' => 'middle')) ?>
-    To create an album, perform a search, then choose "Create an album from these photos" on the toolbar.<br>
-
-    <p>Note: In the future, you can simply perform a search, without pulling up these instructions.
-        <a href="https://github.com/fulldecent/cameralife/wiki/Albums">Click here for more information</a></p>
+    <h4>Create a Featured Tag</h4>
+    <i class="fa fa-fw fa-photo fa-2x"></i> Photos have descriptions and tags associated with them<br>
+    <i class="fa fa-fw fa-tags fa-2x"></i> Tags are grouped into topics<br>
+    <i class="fa fa-fw fa-search fa-2x"></i> To feature a tag, perform a search and then choose "Feature this tag" on the toolbar.<br>
     <?php
     exit(0);
 }
