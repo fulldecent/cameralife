@@ -1,7 +1,9 @@
 <?php
+namespace CameraLife;
 
 $features = array('theme', 'security');
 require '../../../main.inc';
+$cameralife = CameraLife::cameraLifeWithFeatures(array('security'));
 $cameralife->baseURL = dirname(dirname(dirname($cameralife->baseURL)));
 
 require 'lightopenid/openid.php';
@@ -10,7 +12,7 @@ try {
     # Mewp told me specifically not to use SERVER_NAME.
     # Change 'localhost' to your domain name.
 
-    $openid = new LightOpenID($_SERVER['SERVER_NAME']);
+    $openid = new \LightOpenID($_SERVER['SERVER_NAME']);
     if (!$openid->mode) {
         if (isset($_POST['openid_identifier'])) {
             $openid->identity = $_POST['openid_identifier'];

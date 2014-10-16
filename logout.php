@@ -1,16 +1,9 @@
 <?php
 namespace CameraLife;
-/**A security feature that enables you log out of CameraLife
- * @author William Entriken <cameralife@phor.net>
- * @copyright 2001-2009 William Entriken
- * @access public
- */
-/**
- */
 
-$features = array('security');
 require 'main.inc';
-
+$features = array('security');
+$cameralife = CameraLife::cameraLifeWithFeatures($features);
 $url = $cameralife->security->Logout();
 
 if (is_string($url)) {
