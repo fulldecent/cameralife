@@ -2,7 +2,7 @@
 namespace CameraLife;
 require_once './schemaupdater.inc';
 
-class SchemaUpdater2 extends SchemaUpdater
+class SchemaUpdater5 extends SchemaUpdater
 {
     private $link;
 
@@ -11,7 +11,7 @@ class SchemaUpdater2 extends SchemaUpdater
         $this->scriptInfo = <<<HERE
 This will make the following changes:
 <ul>
-  <li>Increase length of <code>user.password</code> field to accomodate OpenID login.</li>
+  <li>Update photos.modified to be a VARCHAR field
 </ul>
 HERE;
     }
@@ -47,14 +47,6 @@ HERE;
               upgrade utility, but it looks like you want the installer utility.";
         }
 
-        $sql = "DESC {$dbPrefix}users id";
-        $result = mysql_query($sql, $this->link);
-        $array = mysql_fetch_array($result);
-        if ($array) {
-            return "The database $dbName is already running a db schema version at or greater than 2.
-              Please check that modules/config.inc includes \$db_schema_version = XXX, where XXX is your current schema version.";
-        }
-
         return true;
     }
 
@@ -65,13 +57,13 @@ HERE;
             return $can;
         }
 
-        $sql = "ALTER TABLE ${db_prefit}users MODIFY COLUMN password varchar(255) NOT NULL;";
+        $sql = "ALTER TABLE ${dbPrefix}photos CHANGE modified modified VARCHAR(255);";
         $result = mysql_query($sql, $this->link);
         if (!$result) {
             return "Update script failed: " . mysql_error();
         }
 
-        $sql = "ALTER TABLE ${db_prefit}users ADD COLUMN id INT(10) NOT NULL AUTO_INCREMENT UNIQUE FIRST;";
+        $sql = "UPDATE ${dbPrefix}photos SET modified = NULL where modified = 0;";
         $result = mysql_query($sql, $this->link);
         if (!$result) {
             return "Update script failed: " . mysql_error();

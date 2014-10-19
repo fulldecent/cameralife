@@ -8,12 +8,11 @@ if (file_exists(dirname(dirname(dirname(__FILE__))) . '/modules/config.inc')) {
 } else {
     die('Cannot find /modules/config.inc. Upgrade is not possible.');
 }
-require './schemaupdater.inc';
-define('CAMERALIFE_LATEST_SCHEMA_VERSION', '4');
-$installed_version = isset($db_schema_version) ? $db_schema_version : 0;
+define('CAMERALIFE_LATEST_SCHEMA_VERSION', '5');
+$installed_version = isset($db_schema_version) ? intval($db_schema_version) : 0;
 $nextUpgraderVersion = $db_schema_version + 1;
-$nextUpgraderClass = "SchemaUpdater$nextUpgraderVersion";
-$nextUpgraderFile = './' . strtolower($nextUpgraderClass) . '.inc';
+$nextUpgraderClass = 'CameraLife\SchemaUpdater' . $nextUpgraderVersion;
+$nextUpgraderFile = './' . strtolower('SchemaUpdater' . $nextUpgraderVersion) . '.inc';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,6 +64,7 @@ $nextUpgraderFile = './' . strtolower($nextUpgraderClass) . '.inc';
             echo '<blockquote class="lead">' . $canUpgrade . '</blockquote>';
         }
     }
+    ?>
     </div>
 </body>
 </html>

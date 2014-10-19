@@ -136,7 +136,7 @@ class GDImageProcessingImage extends ImageProcessingImage
         return array($newWidth, $newHeight);
     }
 
-    /**rotate the image a 90, 180 or 270 degrees
+    /**rotate the image a 90, 180 or 270 degrees clockwise
      */
     public function rotate($degrees)
     {

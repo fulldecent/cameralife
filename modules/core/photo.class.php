@@ -86,6 +86,7 @@ class Photo extends View
      * <b>Required fields <var>filename</var>, <var>path</var>, <var>username</var></b>
      * Optional fields <var>status</var>, <var>description</var>, <var>fsize</var>, <var>created</var>
      */
+///TODO NEED SEPARATE STATIC CONTSRUCTORS     
     public function __construct($original = null)
     {
         global $cameralife;
@@ -173,7 +174,8 @@ class Photo extends View
     }
 
     /// Initialize <var>$this->image</var> variable and collect fsize and $this->loadEXIF if possible
-    public function loadImage($onlyWantEXIF = false)
+    /// Loads the original image, not the modified
+    public function loadImage()
     {
         global $cameralife;
 
@@ -182,19 +184,16 @@ class Photo extends View
         }
         $fullpath = rtrim('/' . ltrim($this->record['path'], '/'), '/') . '/' . $this->record['filename'];
         list ($file, $temp, $this->record['mtime']) = $cameralife->fileStore->GetFile('photo', $fullpath);
-        if (is_null($this->record['modified']) || $this->record['modified'] == 0 || $this->record['modified'] == '') {
-            $this->record['fsize'] = filesize($file);
-            $this->record['created'] = date('Y-m-d', $this->record['mtime']);
-            $this->loadEXIF($file);
+        $this->record['fsize'] = filesize($file);
+        $this->record['created'] = date('Y-m-d', $this->record['mtime']);
+        $this->loadEXIF($file);
+
+        $this->image = $cameralife->imageProcessing->createImage($file)
+        or $cameralife->error("Bad photo load: $file");
+        if (!$this->image->Check()) {
+            $cameralife->error("Bad photo processing: $file");
         }
 
-        if (!$onlyWantEXIF) {
-            $this->image = $cameralife->imageProcessing->createImage($file)
-            or $cameralife->error("Bad photo load: $file");
-            if (!$this->image->Check()) {
-                $cameralife->error("Bad photo processing: $file");
-            }
-        }
         if ($temp) {
             unlink($file);
         }
@@ -207,88 +206,104 @@ class Photo extends View
         global $cameralife;
 
         $this->loadImage(); // sets $this->EXIF and $this-record
-        if (
-            ($cameralife->getPref('autorotate') == 'yes') &&
-            ($this->record['modified'] == null || $this->record['modified'] == 0) &&
-            isset($this->EXIF['Orientation'])
-        ) {
-            if ($this->EXIF['Orientation'] == 3) {
-                $this->rotate(180);
-            } elseif ($this->EXIF['Orientation'] == 6) {
-                $this->rotate(90);
-            } elseif ($this->EXIF['Orientation'] == 8) {
-                $this->rotate(270);
-            }
+        if (($cameralife->getPref('autorotate') == 'yes')
+            && (!$this->record['modified'] || $this->record['modified'] == '1')) {
+            $this->rotateEXIF();
         }
-        $imagesize = $this->image->GetSize();
-
-        preg_match_all('/[0-9]+/', $cameralife->getPref('optionsizes'), $sizes);
-        $sizes = $sizes[0];
-        if ($sizes == "") {
-            $sizes = array();
+        
+        $activeImage = $this->image;
+        
+        // Apply all modifications
+        if ($this->record['modified']) {
+            $modArray = json_decode($this->record['modified'], true);
+            $rotation = isset($modArray['rotate']) ? $modArray['rotate'] : 0;
+            $activeImage->rotate($rotation);
+            
+            $tempfile = tempnam($cameralife->getPref('tempdir'), 'cameralife_mod');
+            $activeImage->save($tempfile);
+            $filename = '/' . $this->record['id'] . '_mod.' . $this->extension;
+            $cameralife->fileStore->PutFile('other', $filename, $tempfile, $this->record['status'] != 0);
         }
-        $sizes[] = $cameralife->getPref('thumbsize');
-        $sizes[] = $cameralife->getPref('scaledsize');
-        $files = array();
+                
+        $imagesize = $activeImage->GetSize();
+        $this->record['width'] = $imagesize[0];
+        $this->record['height'] = $imagesize[1];
+        
+        $sizes = array($cameralife->getPref('thumbsize'), $cameralife->getPref('scaledsize'));
+        preg_match_all('/[0-9]+/', $cameralife->getPref('optionsizes'), $matches);
+        $sizes = array_merge($sizes, $matches[0]);
         rsort($sizes);
+        $files = array();
 
         foreach ($sizes as $cursize) {
             $tempfile = tempnam($cameralife->getPref('tempdir'), 'cameralife_' . $cursize);
-            $dims = $this->image->Resize($tempfile, $cursize);
-            $files[$cursize] = $tempfile;
+            $dims = $activeImage->Resize($tempfile, $cursize);
+            $filename = '/' . $this->record['id'] . '_' . $cursize . '.' . $this->extension;
+            $cameralife->fileStore->PutFile('other', $filename, $tempfile, $this->record['status'] != 0);
+            @unlink($file);
             if ($cursize == $cameralife->getPref('thumbsize')) {
-                $thumbsize = $dims;
+                $this->record['tn_width'] = $dims[0];
+                $this->record['tn_height'] = $dims[1];
             }
         }
 
-        foreach ($files as $size => $file) {
-            $filename = '/' . $this->record['id'] . '_' . $size . '.' . $this->extension;
-            $cameralife->fileStore->PutFile('other', $filename, $file, $this->record['status'] != 0);
-            @unlink($file);
-        }
-
-        $this->record['width'] = $imagesize[0];
-        $this->record['height'] = $imagesize[1];
-        $this->record['tn_width'] = $thumbsize[0];
-        $this->record['tn_height'] = $thumbsize[1];
-
         $cameralife->database->Update('photos', $this->record, 'id=' . $this->record['id']);
+    }
+
+    private function deleteThumbnails()
+    {
+        global $cameralife;
+        $cameralife->fileStore->EraseFile('other', '/' . $this->record['id'] . '_mod.' . $this->extension);
+        $cameralife->fileStore->EraseFile(
+            'other',
+            '/' . $this->record['id'] . '_' . $cameralife->getPref('scaledsize') . '.' . $this->extension
+        );
+        $cameralife->fileStore->EraseFile(
+            'other',
+            '/' . $this->record['id'] . '_' . $cameralife->getPref('thumbsize') . '.' . $this->extension
+        );
+    }
+    
+    // Remove all modifications from the photo
+    public function revert()
+    {
+        global $cameralife;
+        if (!$this->record['modified'])
+            return;
+        $this->record['modified'] = NULL;
+        $cameralife->database->Update('photos', $this->record, 'id=' . $this->record['id']);
+        $this->deleteThumbnails();
     }
 
     public function rotate($angle)
     {
         global $cameralife;
-
-        $this->loadImage();
-        $this->image->rotate($angle);
-
-        $temp = tempnam($cameralife->getPref('tempdir'), 'cameralife_');
-        $this->image->Save($temp);
-        ///TODO: unlink old thumbnails
-        $this->record['mtime'] = time();
-
-        $this->record['modified'] = 1;
+        $modifications = json_decode($this->record['modified'], true);
+        if (!is_array($modifications)) {
+            $modifications = array();
+        }
+        $rotation = isset($modifications['rotate']) ? $modifications['rotate'] : 0;
+        $rotation = ($rotation + $angle) % 360;
+        $modifications['rotate'] = $rotation;
+        $this->record['modified'] = json_encode($modifications);
         $cameralife->database->Update('photos', $this->record, 'id=' . $this->record['id']);
+        $this->deleteThumbnails();
     }
 
-    public function revert()
+    public function rotateEXIF()
     {
         global $cameralife;
-
-        if ($this->record['modified']) {
-            $this->record['modified'] = 0;
-            $cameralife->fileStore->EraseFile('other', '/' . $this->record['id'] . '_mod.' . $this->extension);
-            $cameralife->fileStore->EraseFile(
-                'other',
-                '/' . $this->record['id'] . '_' . $cameralife->getPref('scaledsize') . '.' . $this->extension
-            );
-            $cameralife->fileStore->EraseFile(
-                'other',
-                '/' . $this->record['id'] . '_' . $cameralife->getPref('scaledsize') . '.' . $this->extension
-            );
-            $this->record['mtime'] = 0;
+        $this->loadImage(); // sets $this->EXIF and $this-record
+        if (!isset($this->EXIF['Orientation'])) {
+            return;
         }
-        $cameralife->database->Update('photos', $this->record, 'id=' . $this->record['id']);
+        if ($this->EXIF['Orientation'] == 3) {
+            $this->rotate(180);
+        } elseif ($this->EXIF['Orientation'] == 6) {
+            $this->rotate(90);
+        } elseif ($this->EXIF['Orientation'] == 8) {
+            $this->rotate(270);
+        }
     }
 
     public function erase()

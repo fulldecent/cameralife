@@ -21,7 +21,7 @@ namespace CameraLife;
  */
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-define('CAMERALIFE_LATEST_SCHEMA_VERSION', '4');
+define('CAMERALIFE_LATEST_SCHEMA_VERSION', '5');
 
 require_once dirname(__FILE__) . '/modules/module.inc';
 

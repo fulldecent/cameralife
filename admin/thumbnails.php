@@ -70,6 +70,9 @@ $numdone = isset($_GET['numdone']) ? (int)$_GET['numdone'] : 0;
     while (($next = $next1000->fetchAssoc()) && ($fixed < 10)) {
         $photo = new Photo($next['id']);
         $redo = false;
+        if ($photo->get('modified') == 1) { //legacy before 2.7
+          $redo = true;
+        }
         $filepath = '/' . $photo->get('id') . '_' . $cameralife->getPref('scaledsize') . '.' . $photo->extension;
         list($file, $temp, $mtime) = $cameralife->fileStore->GetFile('other', $filepath);
         $redo |= !$file;

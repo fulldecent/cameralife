@@ -439,9 +439,6 @@ class Folder extends Search
                 $retval[] = "$filePath was changed, flushing cache";
                 $photoObj = Photo::getPhotoWithFilePath($filePath);
                 $photoObj->revert();
-                $photoObj->loadImage(true); // TRUE == onlyWantEXIF
-                $photoObj->revert(); // saves $photo->record
-                $photoObj->destroy();
             } elseif ($change == 'deleted') {
                 $retval[] = "$filePath was deleted from filesystem";
                 $photoObj = Photo::getPhotoWithFilePath($filePath);
