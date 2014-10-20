@@ -52,9 +52,7 @@ if ($cameralife->security->getName()) {
 }
 
 ## Extra header...
-$headers = '<link rel="stylesheet" type="text/css" href="' . $cameralife->baseURL . '/modules/theme/' . $cameralife->getPref(
-        'theme'
-    ) . '/delicious.css" />' . PHP_EOL;
+$headers = '';
 
 if ($photoPrev) {
     $prevOpenGraph = $photoPrev->GetOpenGraph();

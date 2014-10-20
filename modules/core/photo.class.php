@@ -253,12 +253,12 @@ class Photo extends View
     private function deleteThumbnails()
     {
         global $cameralife;
-        $cameralife->fileStore->EraseFile('other', '/' . $this->record['id'] . '_mod.' . $this->extension);
-        $cameralife->fileStore->EraseFile(
+        @$cameralife->fileStore->EraseFile('other', '/' . $this->record['id'] . '_mod.' . $this->extension);
+        @$cameralife->fileStore->EraseFile(
             'other',
             '/' . $this->record['id'] . '_' . $cameralife->getPref('scaledsize') . '.' . $this->extension
         );
-        $cameralife->fileStore->EraseFile(
+        @$cameralife->fileStore->EraseFile(
             'other',
             '/' . $this->record['id'] . '_' . $cameralife->getPref('thumbsize') . '.' . $this->extension
         );

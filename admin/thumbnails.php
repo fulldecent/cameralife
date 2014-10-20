@@ -45,9 +45,7 @@ $numdone = isset($_GET['numdone']) ? (int)$_GET['numdone'] : 0;
 </div>
 
 <div class="container">
-    <h2>Update thumbnails</h2>
-
-    <p>We are now caching thumbnails. This avoids a delay when a photo is viewed for the first time.</p>
+    <h2>Caching thumbnails <small>To avoid a delay when viewing photos for the first time</small></h2>
 
     <?php
     $total = $cameralife->database->SelectOne('photos', 'count(*)');

@@ -82,10 +82,6 @@ class GDImageProcessingImage extends ImageProcessingImage
      */
     public function resize($filename, $newSize, $quality = 91)
     {
-        /* If we have already resized this image to something larger than we want
-        ** now, we can scale from it. This is much faster than
-        ** scaling the original, larger, image again.
-        */
         global $cameralife;
 
         $baseImage = $this->originalImage;
@@ -101,7 +97,6 @@ class GDImageProcessingImage extends ImageProcessingImage
         }
         $baseWidth = $this->width * $baseSize / $this->size;
         $baseHeight = $this->height * $baseSize / $this->size;
-
         $newWidth = $this->width * $newSize / $this->size;
         $newHeight = $this->height * $newSize / $this->size;
         $newImage = imagecreatetruecolor($newWidth, $newHeight)
