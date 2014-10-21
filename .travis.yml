@@ -21,7 +21,6 @@ before_script:
 
 script:
   ## PHP_CodeSniffer
-  - phpcs --report=emacs --standard=PSR1 . --ignore=modules/security/openid/lightopenid/*
   - phpcs --report=emacs --standard=PSR2 . --ignore=modules/security/openid/lightopenid/* 
   ## PHP Copy/Paste Detector
   - php phpcpd.phar --verbose .

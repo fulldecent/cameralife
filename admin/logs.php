@@ -29,7 +29,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'Commit changes') {
         if (!isset($var) || !is_numeric($val)) {
             continue;
         }
-        AuditTrail::undo($val);
+        $trail = AuditTrail::getAuditTrailWithID($val);
+        $trail->revertChange();
     }
 }
 $numcomments = $cameralife->database->SelectOne(
@@ -215,7 +216,7 @@ if ($checkpointDate) {
         $extra
     );
     while ($record = $result->fetchAssoc()) {
-        $receipt = new Receipt($record['maxid']);
+        $receipt = AuditTrail::getAuditTrailWithID($record['maxid']);
         $object = $receipt->getObject();
         $openGraph = $object->GetOpenGraph();
         $max = max($openGraph['og:image:width'], $openGraph['og:image:height']);
@@ -234,21 +235,13 @@ if ($checkpointDate) {
                 <h4 class="media-heading"><?= htmlentities($openGraph['og:title']) ?> (<?= $record['record_type'] ?>
                     )</h4>
                 <?php
-                $chain = $receipt->getChain();
-                $arr = $chain[0]->GetOld();
-                $oldValue = $arr['value'];
-                $fromReceipt = $arr['fromReceipt'];
+                $chain = $receipt->getTrailsBackToCheckpoint();
+                $oldValue = $chain[0]->previousValue();
                 echo '<label class="checkbox">';
-                echo '<input type="radio" name="' . $record['maxid'] . '" value="' . $chain[0]->Get('id') . '"> ';
-                if ($fromReceipt) {
-                    echo htmlentities($oldValue) . ' <span class="label label-info"> ' . $receipt->get(
-                        'value_field'
-                    ) . ' from before checkpoint</span>';
-                } else {
-                    echo htmlentities($oldValue) . ' <span class="label"> default ' . $receipt->get(
-                        'value_field'
-                    ) . '</span>';
-                }
+                echo '<input type="radio" name="' . $record['maxid'] . '" value="' . $chain[0]->get('id') . '"> ';
+                echo htmlentities($oldValue) . ' <span class="label"> default ' . $receipt->get(
+                    'value_field'
+                ) . '</span>';
                 echo '</label>';
                 for ($i = 0; $i < count($chain) - 1; $i++) {
                     ?>

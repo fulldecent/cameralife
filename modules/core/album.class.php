@@ -136,7 +136,7 @@ class Album extends Search
 
         $receipt = null;
         if ($key != 'hits') {
-            $receipt = AuditTrail::log('album', $this->record['id'], $key, $this->record[$key], $value);
+            $receipt = AuditTrail::createAuditTrailForChange('album', $this->record['id'], $key, $this->record[$key], $value);
         }
         $this->record[$key] = $value;
         $cameralife->database->Update('albums', array($key => $value), 'id=' . $this->record['id']);

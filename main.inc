@@ -250,7 +250,7 @@ class CameraLife extends CameraLifeModule # and View
         }
 
         if (isset($_GET['receipt']) && is_numeric($_GET['receipt'])) {
-            $receipt = new Receipt($_GET['receipt']);
+            $receipt = AuditTrail::getAuditTrailWithID($_GET['receipt']);
             if ($receipt->isValid()) {
                 $cameralife->receipt = $receipt;
             }

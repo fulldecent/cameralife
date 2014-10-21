@@ -4,7 +4,7 @@ namespace CameraLife;
 /*
  * PDO implementation of the iterator class
  */
-class PDOIterator
+class DatabaseIterator
 {
     private $myResult;
 

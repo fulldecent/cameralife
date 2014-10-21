@@ -178,7 +178,7 @@ class Photo extends View
 
         $receipt = null;
         if ($key != 'hits' && $key != 'filename' && $key != 'path') {
-            $receipt = AuditTrail::log('photo', $this->record['id'], $key, $this->record[$key], $value);
+            $receipt = AuditTrail::createAuditTrailForChange('photo', $this->record['id'], $key, $this->record[$key], $value);
         }
         /*
         ///TODO: if status is changed, update permissions in file store

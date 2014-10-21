@@ -66,7 +66,7 @@ class Database
             $this->cameralife->error('Database error: ' . htmlentities($e->getMessage()));
         }
 
-        return new PDOIterator($stmt);
+        return new DatabaseIterator($stmt);
     }
 
     /**
