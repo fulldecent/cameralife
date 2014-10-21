@@ -107,106 +107,108 @@ function html_select_auth($param_name)
             <th width="10%">Options
                 <?php
                 $result = $cameralife->database->Select('users', '*', null, 'ORDER BY auth desc');
-                while ($curuser = $result->fetchAssoc()) {
-                    $count_actions = $cameralife->database->SelectOne(
-                        'logs',
-                        'COUNT(*)',
-                        "user_name='" . $curuser["username"] . "'"
-                    );
-                    $count_photos = $cameralife->database->SelectOne(
-                        'photos',
-                        'COUNT(*)',
-                        "username='" . $curuser["username"] . "'"
-                    );
+        while ($curuser = $result->fetchAssoc()) {
+            $count_actions = $cameralife->database->SelectOne(
+                'logs',
+                'COUNT(*)',
+                "user_name='" . $curuser["username"] . "'"
+            );
+            $count_photos = $cameralife->database->SelectOne(
+                'photos',
+                'COUNT(*)',
+                "username='" . $curuser["username"] . "'"
+            );
 
-                    echo "<tr><td>\n";
-                    echo '<img src="' . $cameralife->iconURL('small-login') . '">';
-                    echo $curuser["username"] . "\n";
-                    echo "  <td><select name=\"" . $curuser["id"] . "\">\n";
-                    if ($curuser["auth"] == 1) {
-                        echo "      <option selected value=\"1\">1 - Unconfirmed</option>\n";
-                    } else {
-                        echo "      <option value=\"1\">1 - Unconfirmed</option>\n";
-                    }
-                    if ($curuser["auth"] == 2) {
-                        echo "      <option selected value=\"2\">2 - Confirmed</option>\n";
-                    } else {
-                        echo "      <option value=\"2\">2 - Confirmed</option>\n";
-                    }
-                    if ($curuser["auth"] == 3) {
-                        echo "      <option selected value=\"3\">3 - Privileged</option>\n";
-                    } else {
-                        echo "      <option value=\"3\">3 - Privileged</option>\n";
-                    }
-                    if ($curuser["auth"] == 4) {
-                        echo "      <option selected value=\"4\">4 - Administrator</option>\n";
-                    } else {
-                        echo "      <option value=\"4\">4 - Administrator</option>\n";
-                    }
-                    if ($curuser["auth"] >= 5) {
-                        echo "      <option selected value=\"5\">5 - Owner</option>\n";
-                    } else {
-                        echo "      <option value=\"5\">5 - Owner</option>\n";
-                    }
+            echo "<tr><td>\n";
+            echo '<img src="' . $cameralife->iconURL('small-login') . '">';
+            echo $curuser["username"] . "\n";
+            echo "  <td><select name=\"" . $curuser["id"] . "\">\n";
+            if ($curuser["auth"] == 1) {
+                echo "      <option selected value=\"1\">1 - Unconfirmed</option>\n";
+            } else {
+                echo "      <option value=\"1\">1 - Unconfirmed</option>\n";
+            }
+            if ($curuser["auth"] == 2) {
+                echo "      <option selected value=\"2\">2 - Confirmed</option>\n";
+            } else {
+                echo "      <option value=\"2\">2 - Confirmed</option>\n";
+            }
+            if ($curuser["auth"] == 3) {
+                echo "      <option selected value=\"3\">3 - Privileged</option>\n";
+            } else {
+                echo "      <option value=\"3\">3 - Privileged</option>\n";
+            }
+            if ($curuser["auth"] == 4) {
+                echo "      <option selected value=\"4\">4 - Administrator</option>\n";
+            } else {
+                echo "      <option value=\"4\">4 - Administrator</option>\n";
+            }
+            if ($curuser["auth"] >= 5) {
+                echo "      <option selected value=\"5\">5 - Owner</option>\n";
+            } else {
+                echo "      <option value=\"5\">5 - Owner</option>\n";
+            }
                     echo "    </select>\n";
                     echo "  <td>" . $curuser["last_online"] . "\n";
                     echo "  <td>" . $curuser["last_ip"] . "\n";
                     echo "  <td>" . $count_actions . "\n";
                     echo "  <td>" . $count_photos . "\n";
                     echo "  <td align=middle>\n";
-                    if ($curuser["auth"] >= 5) {
-                        echo "    <input type=checkbox disabled name=\"" . $curuser["id"] . "\" value=\"delete\">\n";
-                    } else {
-                        echo "    <input type=checkbox name=\"" . $curuser["id"] . "\" value=\"delete\">";
-                    }
+            if ($curuser["auth"] >= 5) {
+                echo "    <input type=checkbox disabled name=\"" . $curuser["id"] . "\" value=\"delete\">\n";
+            } else {
+                echo "    <input type=checkbox name=\"" . $curuser["id"] . "\" value=\"delete\">";
+            }
                     echo "&nbsp;Delete\n";
-                }
+        }
                 ?>
         </table>
 
-        <?php } elseif ($_GET['page'] == 'policies') { ?>
-        <form method="post" action="<?= $cameralife->baseURL . '/admin/controller_prefs.php' ?>">
-            <input type="hidden" name="target"
-                   value="<?=
-                   $cameralife->baseURL . '/modules/security/' . $cameralife->getPref(
-                       'security'
-                   ) . '/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
+        <?php 
+    } elseif ($_GET['page'] == 'policies') { ?>
+            <form method="post" action="<?= $cameralife->baseURL . '/admin/controller_prefs.php' ?>">
+                <input type="hidden" name="target"
+                       value="<?=
+                        $cameralife->baseURL . '/modules/security/' . $cameralife->getPref(
+                            'security'
+                        ) . '/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
 
-            <p class="lead">Permissions - <i>the minimum user class required to perform certain actions</i></p>
-            <table class="table">
-                <tr>
-                    <td>Edit photo descriptions</td>
-                    <td><?php html_select_auth("auth_photo_rename") ?></td>
-                    </td>
-                <tr>
-                    <td>Delete photos (can be easily restored in file manager)</td>
-                    <td><?php html_select_auth("auth_photo_delete") ?></td>
-                </tr>
-                <tr>
-                    <td>Upload photos</td>
-                    <td><?php html_select_auth("auth_photo_upload") ?></td>
-                </tr>
-                <tr>
-                    <td>Modify photos (rotate, crop, resize...)</td>
-                    <td><?php html_select_auth("auth_photo_modify") ?></td>
-                </tr>
-                <tr>
-                    <td>Change and add albums and topics</td>
-                    <td><?php html_select_auth("auth_admin_albums") ?></td>
-                </tr>
-                <tr>
-                    <td>Administer file manager</td>
-                    <td><?php html_select_auth("auth_admin_file") ?></td>
-                <tr>
-                    <td>Administer theme manager (effects entire site)</td>
-                    <td><?php html_select_auth("auth_admin_theme") ?></td>
-                </tr>
-                <tr>
-                    <td>Upper administation (users, customize, register...)</td>
-                    <td><?php html_select_auth("auth_admin_customize") ?></td>
-                </tr>
-            </table>
-            <?php } ?>
+                <p class="lead">Permissions - <i>the minimum user class required to perform certain actions</i></p>
+                <table class="table">
+                    <tr>
+                        <td>Edit photo descriptions</td>
+                        <td><?php html_select_auth("auth_photo_rename") ?></td>
+                        </td>
+                    <tr>
+                        <td>Delete photos (can be easily restored in file manager)</td>
+                        <td><?php html_select_auth("auth_photo_delete") ?></td>
+                    </tr>
+                    <tr>
+                        <td>Upload photos</td>
+                        <td><?php html_select_auth("auth_photo_upload") ?></td>
+                    </tr>
+                    <tr>
+                        <td>Modify photos (rotate, crop, resize...)</td>
+                        <td><?php html_select_auth("auth_photo_modify") ?></td>
+                    </tr>
+                    <tr>
+                        <td>Change and add albums and topics</td>
+                        <td><?php html_select_auth("auth_admin_albums") ?></td>
+                    </tr>
+                    <tr>
+                        <td>Administer file manager</td>
+                        <td><?php html_select_auth("auth_admin_file") ?></td>
+                    <tr>
+                        <td>Administer theme manager (effects entire site)</td>
+                        <td><?php html_select_auth("auth_admin_theme") ?></td>
+                    </tr>
+                    <tr>
+                        <td>Upper administation (users, customize, register...)</td>
+                        <td><?php html_select_auth("auth_admin_customize") ?></td>
+                    </tr>
+                </table>
+                <?php 
+    } ?>
             <p>
                 <input type="submit" value="Commit Changes" class="btn btn-primary">
                 <a href="users.php" class="btn">Revert to last saved</a>

@@ -69,7 +69,7 @@ $numdone = isset($_GET['numdone']) ? (int)$_GET['numdone'] : 0;
         $photo = new Photo($next['id']);
         $redo = false;
         if ($photo->get('modified') == 1) { //legacy before 2.7
-          $redo = true;
+            $redo = true;
         }
         $filepath = '/' . $photo->get('id') . '_' . $cameralife->getPref('scaledsize') . '.' . $photo->extension;
         list($file, $temp, $mtime) = $cameralife->fileStore->GetFile('other', $filepath);

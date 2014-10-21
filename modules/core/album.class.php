@@ -15,12 +15,12 @@ class Album extends Search
      * __construct function.
      *
      * @access public
-     * @param int $id
+     * @param  int $id
      * @return void
      */
     public function __construct($id)
     {
-//TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!    
         global $cameralife;
 
         $result = $cameralife->database->Select('albums', '*', "id=$id");
@@ -40,33 +40,33 @@ class Album extends Search
      */
     public function getPhotos()
     {
-//TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!    
         global $cameralife;
 
         switch ($this->sort) {
-            case 'newest':
-                $sort = 'value desc, id desc';
-                break;
-            case 'oldest':
-                $sort = 'value, id';
-                break;
-            case 'az':
-                $sort = 'description';
-                break;
-            case 'za':
-                $sort = 'description desc';
-                break;
-            case 'popular':
-                $sort = 'hits desc';
-                break;
-            case 'unpopular':
-                $sort = 'hits';
-                break;
-            case 'rand':
-                $sort = 'rand()';
-                break;
-            default:
-                $sort = 'id desc';
+        case 'newest':
+            $sort = 'value desc, id desc';
+            break;
+        case 'oldest':
+            $sort = 'value, id';
+            break;
+        case 'az':
+            $sort = 'description';
+            break;
+        case 'za':
+            $sort = 'description desc';
+            break;
+        case 'popular':
+            $sort = 'hits desc';
+            break;
+        case 'unpopular':
+            $sort = 'hits';
+            break;
+        case 'rand':
+            $sort = 'rand()';
+            break;
+        default:
+            $sort = 'id desc';
         }
 
         $conditions = array();
@@ -104,7 +104,7 @@ class Album extends Search
      */
     public function getPhotoCount()
     {
-//TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!    
         global $cameralife;
 
         $conditions = array();

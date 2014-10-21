@@ -25,7 +25,7 @@ class Folder extends Search
      * __construct function.
      *
      * @access public
-     * @param string $path (default: '/')
+     * @param  string $path (default: '/')
      * @return void
      */
     public function __construct($path = '/')
@@ -58,33 +58,33 @@ class Folder extends Search
      */
     public function getPhotos()
     {
-//TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!    
         global $cameralife;
 
         switch ($this->sort) {
-            case 'newest':
-                $sort = 'value desc, id desc';
-                break;
-            case 'oldest':
-                $sort = 'value, id';
-                break;
-            case 'az':
-                $sort = 'description';
-                break;
-            case 'za':
-                $sort = 'description desc';
-                break;
-            case 'popular':
-                $sort = 'hits desc';
-                break;
-            case 'unpopular':
-                $sort = 'hits';
-                break;
-            case 'rand':
-                $sort = 'rand()';
-                break;
-            default:
-                $sort = 'id desc';
+        case 'newest':
+            $sort = 'value desc, id desc';
+            break;
+        case 'oldest':
+            $sort = 'value, id';
+            break;
+        case 'az':
+            $sort = 'description';
+            break;
+        case 'za':
+            $sort = 'description desc';
+            break;
+        case 'popular':
+            $sort = 'hits desc';
+            break;
+        case 'unpopular':
+            $sort = 'hits';
+            break;
+        case 'rand':
+            $sort = 'rand()';
+            break;
+        default:
+            $sort = 'id desc';
         }
 
         $conditions = array();
@@ -118,32 +118,32 @@ class Folder extends Search
      */
     public function getFolders()
     {
-//TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!    
         global $cameralife;
         switch ($this->sort) {
-            case 'newest':
-                $sort = 'id desc';
-                break;
-            case 'oldest':
-                $sort = 'id';
-                break;
-            case 'az':
-                $sort = 'path';
-                break;
-            case 'za':
-                $sort = 'path desc';
-                break;
-            case 'popular':
-                $sort = 'hits desc';
-                break;
-            case 'unpopular':
-                $sort = 'hits';
-                break;
-            case 'rand':
-                $sort = 'rand()';
-                break;
-            default:
-                $sort = 'id desc';
+        case 'newest':
+            $sort = 'id desc';
+            break;
+        case 'oldest':
+            $sort = 'id';
+            break;
+        case 'az':
+            $sort = 'path';
+            break;
+        case 'za':
+            $sort = 'path desc';
+            break;
+        case 'popular':
+            $sort = 'hits desc';
+            break;
+        case 'unpopular':
+            $sort = 'hits';
+            break;
+        case 'rand':
+            $sort = 'rand()';
+            break;
+        default:
+            $sort = 'id desc';
         }
 
         $conditions = array();
@@ -179,7 +179,7 @@ class Folder extends Search
      */
     public function getPhotoCount()
     {
-//TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!    
         global $cameralife;
 
         $conditions = array();
@@ -208,7 +208,7 @@ class Folder extends Search
      */
     public function getFolderCount()
     {
-//TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!    
         global $cameralife;
 
         $conditions = array();
@@ -257,29 +257,29 @@ class Folder extends Search
     {
         global $cameralife;
         switch ($this->sort) {
-            case 'newest':
-                $sort = 'created desc';
+        case 'newest':
+            $sort = 'created desc';
                 break;
-            case 'oldest':
-                $sort = 'created';
+        case 'oldest':
+            $sort = 'created';
                 break;
-            case 'az':
-                $sort = 'path';
+        case 'az':
+            $sort = 'path';
                 break;
-            case 'za':
-                $sort = 'path desc';
+        case 'za':
+            $sort = 'path desc';
                 break;
-            case 'popular':
-                $sort = 'hits desc';
+        case 'popular':
+            $sort = 'hits desc';
                 break;
-            case 'unpopular':
-                $sort = 'hits';
+        case 'unpopular':
+            $sort = 'hits';
                 break;
-            case 'rand':
-                $sort = 'rand()';
+        case 'rand':
+            $sort = 'rand()';
                 break;
-            default:
-                $sort = 'id desc';
+        default:
+            $sort = 'id desc';
         }
 
         $conditions = array();
@@ -331,7 +331,7 @@ class Folder extends Search
      */
     public static function findChangesOnDisk()
     {
-//TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!    
         global $cameralife;
         $retval = array();
         $fileStorePhotosUnmatched = $cameralife->fileStore->listFiles('photo'); // path->basename format
@@ -339,9 +339,9 @@ class Folder extends Search
             $cameralife->error('No files were found in file store');
         }
         foreach ($fileStorePhotosUnmatched as $unmatchedFilePath => $unmatchedFileBase) {
-//            $unmatchedFilePath = utf8_decode($unmatchedFilePath);
+            //            $unmatchedFilePath = utf8_decode($unmatchedFilePath);
             $normalized = strtolower(preg_replace('/[^a-z0-9]/i', '', $unmatchedFilePath));
-//            $normalizedFileStorePaths[utf8_encode($unmatchedFilePath)] = $normalized;
+            //            $normalizedFileStorePaths[utf8_encode($unmatchedFilePath)] = $normalized;
             $normalizedFileStorePaths[$unmatchedFilePath] = $normalized;
         }
         $result = $cameralife->database->Select('photos', 'id,filename,path,fsize', 'status!=9', 'ORDER BY path,filename');
@@ -367,7 +367,7 @@ class Folder extends Search
             $normalizedDBFilePath = strtolower(preg_replace('/[^a-z0-9]/i', '', $dbFilePath));
             $candidates = array_keys($normalizedFileStorePaths, $normalizedDBFilePath);
             if (count($candidates) == 1) {
-//                $candidates[0] = utf8_decode($candidates[0]);
+                //                $candidates[0] = utf8_decode($candidates[0]);
                 $retval[$dbFilePath] = array('moved', $candidates[0]);
                 unset ($fileStorePhotosUnmatched[$candidates[0]]);
                 continue;
@@ -381,7 +381,7 @@ class Folder extends Search
          */
 
         foreach ($fileStorePhotosUnmatched as $newFilePath => $newFileBase) {
-//            $newFilePath = utf8_decode($newFilePath);
+            //            $newFilePath = utf8_decode($newFilePath);
             if (preg_match("/^picasa.ini|digikam3.db$/i", $newFileBase)) {
                 $retval[$newFileBase] = 'ignored';
                 continue;
@@ -451,7 +451,7 @@ class Folder extends Search
                 // pathinfo is better than basename with unicode utf8
                 $photoObj = Photo::getPhotoWithFilePath($filePath);
                 $filename = basename($change[1]);
-//                $filename = end(explode('/', $change[1]));
+                //                $filename = end(explode('/', $change[1]));
                 $path = '/' . trim(substr($change[1], 0, -strlen($filename)), '/');
                 $photoObj->set('path', $path);
                 $photoObj->set('filename', $filename);

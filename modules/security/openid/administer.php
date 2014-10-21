@@ -166,49 +166,51 @@ function html_select_auth($param_name)
                 ?>
         </table>
 
-        <?php } elseif ($_GET['page'] == 'policies') { ?>
-        <form method="post" action="<?= $cameralife->baseURL . '/admin/controller_prefs.php' ?>">
-            <input type="hidden" name="target"
-                   value="<?=
-                   $cameralife->baseURL . '/modules/security/' . $cameralife->getPref(
-                       'security'
-                   ) . '/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
+        <?php 
+    } elseif ($_GET['page'] == 'policies') { ?>
+            <form method="post" action="<?= $cameralife->baseURL . '/admin/controller_prefs.php' ?>">
+                <input type="hidden" name="target"
+                       value="<?=
+                        $cameralife->baseURL . '/modules/security/' . $cameralife->getPref(
+                            'security'
+                        ) . '/administer.php' ?>&#63;page=<?= $_GET['page'] ?>">
 
-            <p class="lead">Permissions - <i>the minimum user class required to perform certain actions</i></p>
-            <table class="table">
-                <tr>
-                    <td>Edit photo descriptions</td>
-                    <td><?php html_select_auth("auth_photo_rename") ?></td>
-                </tr>
-                <tr>
-                    <td>Delete photos (can be easily restored in file manager)</td>
-                    <td><?php html_select_auth("auth_photo_delete") ?></td>
-                </tr>
-                <tr>
-                    <td>Upload photos</td>
-                    <td><?php html_select_auth("auth_photo_upload") ?></td>
-                </tr>
-                <tr>
-                    <td>Modify photos (rotate, crop, resize...)</td>
-                    <td><?php html_select_auth("auth_photo_modify") ?></td>
-                </tr>
-                <tr>
-                    <td>Change and add albums and topics</td>
-                    <td><?php html_select_auth("auth_admin_albums") ?></td>
-                </tr>
-                <tr>
-                    <td>Administer file manager</td>
-                    <td><?php html_select_auth("auth_admin_file") ?></td>
-                <tr>
-                    <td>Administer theme manager (effects entire site)</td>
-                    <td><?php html_select_auth("auth_admin_theme") ?></td>
-                </tr>
-                <tr>
-                    <td>Upper administation (users, customize, register...)</td>
-                    <td><?php html_select_auth("auth_admin_customize") ?></td>
-                </tr>
-            </table>
-            <?php } ?>
+                <p class="lead">Permissions - <i>the minimum user class required to perform certain actions</i></p>
+                <table class="table">
+                    <tr>
+                        <td>Edit photo descriptions</td>
+                        <td><?php html_select_auth("auth_photo_rename") ?></td>
+                    </tr>
+                    <tr>
+                        <td>Delete photos (can be easily restored in file manager)</td>
+                        <td><?php html_select_auth("auth_photo_delete") ?></td>
+                    </tr>
+                    <tr>
+                        <td>Upload photos</td>
+                        <td><?php html_select_auth("auth_photo_upload") ?></td>
+                    </tr>
+                    <tr>
+                        <td>Modify photos (rotate, crop, resize...)</td>
+                        <td><?php html_select_auth("auth_photo_modify") ?></td>
+                    </tr>
+                    <tr>
+                        <td>Change and add albums and topics</td>
+                        <td><?php html_select_auth("auth_admin_albums") ?></td>
+                    </tr>
+                    <tr>
+                        <td>Administer file manager</td>
+                        <td><?php html_select_auth("auth_admin_file") ?></td>
+                    <tr>
+                        <td>Administer theme manager (effects entire site)</td>
+                        <td><?php html_select_auth("auth_admin_theme") ?></td>
+                    </tr>
+                    <tr>
+                        <td>Upper administation (users, customize, register...)</td>
+                        <td><?php html_select_auth("auth_admin_customize") ?></td>
+                    </tr>
+                </table>
+                <?php 
+    } ?>
             <p>
                 <input type="submit" value="Commit Changes" class="btn btn-primary">
                 <a href="users.php" class="btn">Revert to last saved</a>

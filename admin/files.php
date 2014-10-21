@@ -139,21 +139,21 @@ foreach ($_POST as $key => $val) {
             <a href="<?= '?' . $_SERVER['QUERY_STRING'] ?>" class="btn">Undo changes</a>
         </p>
         <?php
-        } else {
-// Update DB
-            echo "<p>Updating the database to reflect any changes to the FileStore...</p>\n<ol>\n";
-            flush();
+    } else {
+        // Update DB
+        echo "<p>Updating the database to reflect any changes to the FileStore...</p>\n<ol>\n";
+        flush();
 
-            $output = Folder::update();
-            foreach ($output as $line) {
-                echo "<li>$line</li>\n";
-            }
-
-            echo "</ol>\n<p>Updating complete :-) Now you can:<ul>\n";
-            echo "<li><a href=\"../search.php?q=unnamed\">Name your new files</a></li>\n";
-            echo "<li><a href='thumbnails.php'>Optimize thumbnails</a></li>\n";
-            echo "</ul>\n";
+        $output = Folder::update();
+        foreach ($output as $line) {
+            echo "<li>$line</li>\n";
         }
+
+        echo "</ol>\n<p>Updating complete :-) Now you can:<ul>\n";
+        echo "<li><a href=\"../search.php?q=unnamed\">Name your new files</a></li>\n";
+        echo "<li><a href='thumbnails.php'>Optimize thumbnails</a></li>\n";
+        echo "</ul>\n";
+    }
         ?>
     </form>
 </div>

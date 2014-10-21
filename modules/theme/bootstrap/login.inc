@@ -20,7 +20,7 @@ $_GET['page'] or $_GET['page'] = 'login';
     <title><?= $cameralife->getPref('sitename') ?></title>
     <?php if ($location) {
         echo "<meta http-equiv='refresh' content='1;url=$location'>";
-    } ?>
+} ?>
     <meta http-equiv="Content-Type" content="text/html; charset= ISO-8859-1">
 </head>
 <body>

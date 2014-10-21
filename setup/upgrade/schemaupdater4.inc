@@ -21,11 +21,11 @@ HERE;
      * Side effect: sets up $this->link
      *
      * @access public
-     * @param mixed $dbHost
-     * @param mixed $dbName
-     * @param mixed $dbUser
-     * @param mixed $dbPass
-     * @param mixed $dbPrefix
+     * @param  mixed $dbHost
+     * @param  mixed $dbName
+     * @param  mixed $dbUser
+     * @param  mixed $dbPass
+     * @param  mixed $dbPrefix
      * @return mixed true for succes, string for failure
      */
     public function canUpgrade($dbHost, $dbName, $dbUser, $dbPass, $dbPrefix)

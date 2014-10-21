@@ -56,8 +56,8 @@
 <div class="jumbotron">
     <div class="container">
         <h2 class="text-success"><i class="glyphicon glyphicon-ok"></i> You are running Camera Life <?php readfile(
-                '../VERSION'
-            ) ?></h2>
+        '../VERSION'
+        ) ?></h2>
 
         <p><a class="btn btn-default btn-large" target="_blank" href="https://github.com/fulldecent/cameralife"><i
                     class="glyphicon glyphicon-star"></i> Star us on GitHub</a> to get important security updates</p>

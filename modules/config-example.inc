@@ -2,9 +2,9 @@
 /**
  * Basic settings for Camera Life
  *
- * @author William Entriken <cameralife@phor.net>
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright 2001-2011 William Entriken
- * @access public
+ * @access    public
  */
 $db_host = 'localhost';
 $db_name = 'fdcl';

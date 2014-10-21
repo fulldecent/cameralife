@@ -4,7 +4,7 @@ namespace CameraLife;
 # Upgrade database schema
 
 if (file_exists(dirname(dirname(dirname(__FILE__))) . '/modules/config.inc')) {
-    require(dirname(dirname(dirname(__FILE__))) . '/modules/config.inc');
+    require(dirname(dirname(dirname(__FILE__)))) . '/modules/config.inc';
 } else {
     die('Cannot find /modules/config.inc. Upgrade is not possible.');
 }
@@ -42,7 +42,7 @@ $nextUpgraderFile = './' . strtolower('SchemaUpdater' . $nextUpgraderVersion) . 
     } elseif (!file_exists($nextUpgraderFile)) {
         echo '<p class="lead text-danger">No upgrade script is available.</p>';
     } else {
-        require_once($nextUpgraderFile);
+        include_once$nextUpgraderFile;
         $upgrader = new $nextUpgraderClass;
         echo '<p class="lead">Upgrade to version ' . $nextUpgraderVersion . '</p>';
         echo '<blockquote class="lead">' . $upgrader->scriptInfo . '</blockquote>';

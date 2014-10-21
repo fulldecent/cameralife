@@ -19,33 +19,33 @@ class Topic extends Search
      */
     public function getAlbums()
     {
-//TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!    
         global $cameralife;
 
         switch ($this->sort) {
-            case 'newest':
-                $sort = 'albums.id desc';
-                break;
-            case 'oldest':
-                $sort = 'albums.id';
-                break;
-            case 'az':
-                $sort = 'description';
-                break;
-            case 'za':
-                $sort = 'description desc';
-                break;
-            case 'popular':
-                $sort = 'albums.hits desc';
-                break;
-            case 'unpopular':
-                $sort = 'albums.hits';
-                break;
-            case 'rand':
-                $sort = 'rand()';
-                break;
-            default:
-                $sort = 'albums.id desc';
+        case 'newest':
+            $sort = 'albums.id desc';
+            break;
+        case 'oldest':
+            $sort = 'albums.id';
+            break;
+        case 'az':
+            $sort = 'description';
+            break;
+        case 'za':
+            $sort = 'description desc';
+            break;
+        case 'popular':
+            $sort = 'albums.hits desc';
+            break;
+        case 'unpopular':
+            $sort = 'albums.hits';
+            break;
+        case 'rand':
+            $sort = 'rand()';
+            break;
+        default:
+            $sort = 'albums.id desc';
         }
 
         $conditions = array();
@@ -81,7 +81,7 @@ class Topic extends Search
      */
     public function getAlbumCount()
     {
-//TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!    
         global $cameralife;
         return $cameralife->database->SelectOne(
             'albums',

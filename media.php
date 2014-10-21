@@ -13,6 +13,7 @@ namespace CameraLife;
  *  <li>scale - ('photo', 'thumbnail', or 'scaled')</li>
  *  <li>ver (mtime)</li>
  * </ul>
+ *
  * @author    William Entriken <cameralife@phor.net>
  * @copyright 2001-2014 William Entriken
  * @access    public

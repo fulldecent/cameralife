@@ -21,8 +21,8 @@
     require.modules = {};
     require.aliases = {};
     require.resolve = function (path) {
-        if (path.charAt(0) === '/')
-            path = path.slice(1);
+        if (path.charAt(0) === '/') { 
+            path = path.slice(1); }
         var paths = [
                 path,
                 path + '.js',
@@ -32,16 +32,16 @@
             ];
         for (var i = 0; i < paths.length; i++) {
             var path = paths[i];
-            if (require.modules.hasOwnProperty(path))
-                return path;
-            if (require.aliases.hasOwnProperty(path))
-                return require.aliases[path];
+            if (require.modules.hasOwnProperty(path)) { 
+                return path; }
+            if (require.aliases.hasOwnProperty(path)) { 
+                return require.aliases[path]; }
         }
     };
     require.normalize = function (curr, path) {
         var segs = [];
-        if ('.' != path.charAt(0))
-            return path;
+        if ('.' != path.charAt(0)) { 
+            return path; }
         curr = curr.split('/');
         path = path.split('/');
         for (var i = 0; i < path.length; ++i) {
@@ -67,8 +67,8 @@
         function lastIndexOf(arr, obj) {
             var i = arr.length;
             while (i--) {
-                if (arr[i] === obj)
-                    return i;
+                if (arr[i] === obj) { 
+                    return i; }
             }
             return -1;
         }
@@ -78,14 +78,14 @@
         }
         localRequire.resolve = function (path) {
             var c = path.charAt(0);
-            if ('/' == c)
-                return path.slice(1);
-            if ('.' == c)
-                return require.normalize(p, path);
+            if ('/' == c) { 
+                return path.slice(1); }
+            if ('.' == c) { 
+                return require.normalize(p, path); }
             var segs = parent.split('/');
             var i = lastIndexOf(segs, 'deps') + 1;
-            if (!i)
-                i = 0;
+            if (!i) { 
+                i = 0; }
             path = segs.slice(0, i + 1).join('/') + '/deps/' + path;
             return path;
         };
@@ -97,8 +97,8 @@
     require.register('component-emitter/index.js', function (exports, require, module) {
         module.exports = Emitter;
         function Emitter(obj) {
-            if (obj)
-                return mixin(obj);
+            if (obj) { 
+                return mixin(obj); }
         }
         function mixin(obj) {
             for (var key in Emitter.prototype) {
@@ -125,15 +125,15 @@
         Emitter.prototype.off = Emitter.prototype.removeListener = Emitter.prototype.removeAllListeners = function (event, fn) {
             this._callbacks = this._callbacks || {};
             var callbacks = this._callbacks[event];
-            if (!callbacks)
-                return this;
+            if (!callbacks) { 
+                return this; }
             if (1 == arguments.length) {
                 delete this._callbacks[event];
                 return this;
             }
             var i = callbacks.indexOf(fn._off || fn);
-            if (~i)
-                callbacks.splice(i, 1);
+            if (~i) { 
+                callbacks.splice(i, 1); }
             return this;
         };
         Emitter.prototype.emit = function (event) {
@@ -162,8 +162,8 @@
         (function () {
             var Dropzone, Em, camelize, contentLoaded, noop, without, __hasProp = {}.hasOwnProperty, __extends = function (child, parent) {
                     for (var key in parent) {
-                        if (__hasProp.call(parent, key))
-                            child[key] = parent[key];
+                        if (__hasProp.call(parent, key)) { 
+                            child[key] = parent[key]; }
                     }
                     function ctor() {
                         this.constructor = child;

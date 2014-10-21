@@ -74,11 +74,11 @@ if ($photoNext) {
 }
 
 $headers .= '<script type="text/javascript" src="' . $cameralife->baseURL . '/modules/theme/' . $cameralife->getPref(
-        'theme'
-    ) . '/photo.js"></script>';
+    'theme'
+) . '/photo.js"></script>';
 $headers .= '<script type="text/javascript" src="' . $cameralife->baseURL . '/modules/theme/' . $cameralife->getPref(
-        'theme'
-    ) . '/ajax.js"></script>';
+    'theme'
+) . '/ajax.js"></script>';
 
 $cameralife->theme->header($photo, null, $headers);
 
@@ -134,7 +134,8 @@ if ($photo->get('status') > 0) {
         >
             <i class="fa fa-flag"></i>
         </a>
-    <?php } ?>
+    <?php 
+} ?>
     <?php if ($cameralife->security->authorize('photo_modify')) { ?>
         <a href="<?= $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'modify') ?>"
           class="btn btn-sm btn-default" 
@@ -145,7 +146,8 @@ if ($photo->get('status') > 0) {
         >
             <i class="fa fa-wrench"></i>
         </a>
-    <?php } ?>
+    <?php 
+} ?>
     <?php if ($photo->get('status') == 0) { ?>
         <a href="<?= $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'print') ?>"
           class="btn btn-sm btn-default" 
@@ -164,7 +166,8 @@ if ($photo->get('status') > 0) {
         >
             <i class="fa fa-share-alt"></i>
         </a>
-    <?php } ?>    
+    <?php 
+} ?>    
 </h1>
 <?php
 
@@ -324,18 +327,18 @@ if ($cameralife->security->authorize('photo_modify')) {
 }
 if ($photo->get('status') == 0) {
     $json = '{"request":{"merchant":{"merchant-api-key":"","merchant-button-key":"13658928432161657"},"order":{"product":{"thumbnail":{"src":"' . htmlspecialchars(
-            $photo->getMediaURL(
-                'thumbnail'
-            )
-        ) . '","width":"0","height":"0"},"source":{"file":{"dimensions":{"width":"' . $photo->get(
-            'width'
-        ) . '","height":"' . $photo->get(
-            'height'
-        ) . '","bleed":"0.3"},"usage":"full-product","filetype":"image","src":"' . htmlspecialchars(
-            $photo->getMediaURL(
-                'photo'
-            )
-        ) . '","publicationId":"","pages":"1"}},"target":{"offering":{"id":"0"}},"title":""},"reference":""},"redirect":{"cancellation":{"href":""},"error":{"href":""},"thankyou":{"href":"' . $cameralife->baseURL . '"}},"quantity":"1","currency":"USD","locale":"en_EN","filterCategory":"","filterSize":"","filterColour":"","filterOfferingId":"0"}}';
+        $photo->getMediaURL(
+            'thumbnail'
+        )
+    ) . '","width":"0","height":"0"},"source":{"file":{"dimensions":{"width":"' . $photo->get(
+        'width'
+    ) . '","height":"' . $photo->get(
+        'height'
+    ) . '","bleed":"0.3"},"usage":"full-product","filetype":"image","src":"' . htmlspecialchars(
+        $photo->getMediaURL(
+            'photo'
+        )
+    ) . '","publicationId":"","pages":"1"}},"target":{"offering":{"id":"0"}},"title":""},"reference":""},"redirect":{"cancellation":{"href":""},"error":{"href":""},"thankyou":{"href":"' . $cameralife->baseURL . '"}},"quantity":"1","currency":"USD","locale":"en_EN","filterCategory":"","filterSize":"","filterColour":"","filterOfferingId":"0"}}';
     ?>
     <div id="print" class="well"
          style="<?= (isset($_GET['action']) && $_GET['action'] == 'print') ? '' : 'display:none' ?>">
@@ -369,10 +372,10 @@ if (isset($prevOpenGraph['og:url'])) {
 
 $alt = htmlentities($photo->get('description'));
 echo "<img id=\"curphoto\" class=\"img-thumbnail\" style=\"margin: 0 auto\" src=\"" . htmlspecialchars(
-        $photo->getMediaURL(
-            'scaled'
-        )
-    ) . "\" alt=\"$alt\">\n\n";
+    $photo->getMediaURL(
+        'scaled'
+    )
+) . "\" alt=\"$alt\">\n\n";
 
 if (isset($nextOpenGraph['og:url'])) {
     echo '<a href="'.htmlspecialchars($nextOpenGraph['og:url']).'"><i class="fa fa-caret-square-o-right fa-4x"></i></a>';
@@ -390,7 +393,7 @@ if (isset($nextOpenGraph['og:url'])) {
         $hHref = htmlspecialchars($og['og:url']);
         $hDescription = htmlspecialchars($og['og:title']);
         echo "<p><a href=\"$hHref\">$hDescription</a></p>";
-//        var_dump($og, $context);
+        //        var_dump($og, $context);
         ?>
         <?php
         foreach (array_slice($photo->getContext(), 0, 48) as $contextPhoto) {
@@ -413,9 +416,9 @@ if (isset($nextOpenGraph['og:url'])) {
         $result = $cameralife->database->Select('comments', '*', 'photo_id=' . $photo->get('id'));
         while ($comment = $result->fetchAssoc()) {
             echo "<strong>" . $comment['username'] . "</strong> <em>" . date(
-                    'Y-m-d',
-                    strtotime($comment['date'])
-                ) . "</em><br>" . htmlentities($comment['comment']) . "<hr>";
+                'Y-m-d',
+                strtotime($comment['date'])
+            ) . "</em><br>" . htmlentities($comment['comment']) . "<hr>";
         }
         ?>
         <form action="<?= $cameralife->baseURL ?>/photo_controller.php" method=POST name="form">
@@ -456,8 +459,8 @@ if (isset($nextOpenGraph['og:url'])) {
 # Cache the next image the user is likely to look at
 if ($photoNext) {
     echo '<img style="display:none" src="' . htmlspecialchars(
-            $photoNext->getMediaURL('scaled')
-        ) . '" alt="hidden photo">';
+        $photoNext->getMediaURL('scaled')
+    ) . '" alt="hidden photo">';
 }
 
 $cameralife->theme->footer();

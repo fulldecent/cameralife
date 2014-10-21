@@ -15,9 +15,9 @@ namespace CameraLife;
  * CAMERA LIFE WILL LOOK FOR A CONFIG FILE
  *  ./modules/config.inc
  *
- * @author William Entriken <cameralife@phor.net>
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright 2001-2013 William Entriken
- * @access public
+ * @access    public
  */
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
@@ -78,7 +78,7 @@ class CameraLife extends CameraLifeModule # and View
         if (!file_exists($this->baseDir . "/$file")) {
             $this->error("File does not exist: " . $this->baseDir . "/$file");
         }
-        require $this->baseDir . "/$file";
+        include $this->baseDir . "/$file";
     }
 
     public function getModules($feature)
@@ -104,8 +104,8 @@ class CameraLife extends CameraLifeModule # and View
         }
         $this->relativeInclude('modules/' . strtolower($feature) . '/module.inc');
         if ($feature != 'core') {
-// Need to load implementation
-//TODO should core even be a "feature?"
+            // Need to load implementation
+            //TODO should core even be a "feature?"
             $implementation = $this->getPref($feature);
             $this->relativeInclude('modules/' . strtolower($feature) . "/$implementation/module.inc");
             $modulename = "\CameraLife\\" . $implementation . $feature;
@@ -128,7 +128,7 @@ class CameraLife extends CameraLifeModule # and View
             if (is_array($moduleprefs)) {
                 foreach ($moduleprefs as $key => $value) {
                     $values = array('prefmodule' => $module, 'prefkey' => $key, 'prefvalue' => $value);
-# use cooler SQL here
+                    # use cooler SQL here
                     $condition = "prefmodule='$module' AND prefkey='$key'";
 
                     $query = $this->database->Select('preferences', '1', $condition);
@@ -160,7 +160,7 @@ class CameraLife extends CameraLifeModule # and View
 
     public function error($message)
     {
-//        global $cameralife;
+        //        global $cameralife;
         echo "<link rel=\"stylesheet\" href=\"//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css\">";
         echo "<div class=\"alert\">\n";
         echo "  <h2>Camera Life has encountered an error!</h2>\n";
@@ -184,9 +184,9 @@ class CameraLife extends CameraLifeModule # and View
                     }
                 }
                 echo "</ul></dd>\n";
-#       echo '<dd><p>For object details view source...</p><!--<pre>';
-#       var_dump($call['object']);
-#       echo '--></pre></dd>';
+                #       echo '<dd><p>For object details view source...</p><!--<pre>';
+                #       var_dump($call['object']);
+                #       echo '--></pre></dd>';
             }
             echo "  </dl>\n";
         }
@@ -209,7 +209,7 @@ class CameraLife extends CameraLifeModule # and View
         // Bootstrap /////////////////////
         // Is this the first run?
         if (file_exists(dirname(__FILE__) . '/modules/config.inc')) {
-            require_once dirname(__FILE__) . '/modules/config.inc';
+            include_once dirname(__FILE__) . '/modules/config.inc';
             // Sets $db_host, $db_name, $db_user, $db_pass, $db_prefix, $db_schema_version
             $dbDSN = "mysql:host={$db_host};dbname={$db_name}";
             $dbUser = $db_user;

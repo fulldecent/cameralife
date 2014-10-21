@@ -6,9 +6,10 @@ namespace CameraLife;
  *Editing an album
  *
  *<b>Note</b>  $cameralife and $album are set by showPage()
- * @author William Entriken <cameralife@phor.net>
+ *
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright 2001-2009 William Entriken
- * @access public
+ * @access    public
  */
 /**
  */
@@ -49,14 +50,14 @@ if (isset($_GET['edit']) && $cameralife->security->authorize('admin_albums')) {
                             <td>
                                 <select name="param2">
                                     <?php
-    foreach (Topic::getTopics() as $topic) {
-        $thetopic = $topic->name;
-        $selected = ($album->get('topic') == $thetopic) ? 'selected' : '';
-        if ($album->get('topic') == $topic) {
-            $preselect = true;
-        }
-        echo "<option $selected onclick=\"document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
-    }
+                                    foreach (Topic::getTopics() as $topic) {
+                                        $thetopic = $topic->name;
+                                        $selected = ($album->get('topic') == $thetopic) ? 'selected' : '';
+                                        if ($album->get('topic') == $topic) {
+                                            $preselect = true;
+                                        }
+                                        echo "<option $selected onclick=\"document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
+                                    }
                                     ?>
                                     <option value="othertopic" <?= $preselect ? '' : 'selected' ?>
                                             onclick="document.form1.topicother.disabled=false">(A new topic)

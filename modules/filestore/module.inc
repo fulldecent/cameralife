@@ -6,8 +6,9 @@ namespace CameraLife;
  * files accessible for download via a URL
  *
  * Generally, you will update the photo object and then call the functions.
- * @author William Entriken <cameralife@phor.net>
- * @access public
+ *
+ * @author    William Entriken <cameralife@phor.net>
+ * @access    public
  * @copyright 2014 William Entriken
  */
 abstract class FileStore extends CameraLifeModule
@@ -20,8 +21,8 @@ abstract class FileStore extends CameraLifeModule
      * (Implementation note: make sure non-public photos do not have
      * publicly accessible urls)
      *
-     * @param $bucket - one of ('photo', 'other')
-     * @param $path - the location of the stored file, starts with '/'
+     * @param  $bucket - one of ('photo', 'other')
+     * @param  $path - the location of the stored file, starts with '/'
      * @return mixed URL or FALSE
      */
     abstract public function getURL($bucket, $path);
@@ -29,8 +30,8 @@ abstract class FileStore extends CameraLifeModule
     /**
      * Gets a local filename for the requested resource. It is downloaded if necessary.
      *
-     * @param $bucket - one of ('photo', 'other')
-     * @param $path - the location of the stored file, starts with '/'
+     * @param  $bucket - one of ('photo', 'other')
+     * @param  $path - the location of the stored file, starts with '/'
      * @return mixed
      *   array with these elements:
      *     filename - string - the local file you requested
@@ -70,9 +71,9 @@ abstract class FileStore extends CameraLifeModule
     /**
      * Returns a list of all files in the fileStore
      *
-     * @param $bucket - one of ('photo', 'other')
-     * @param $path - the location of the stored file, starts with '/'
-     * @param $recursive - whether to list recursively
+     * @param  $bucket - one of ('photo', 'other')
+     * @param  $path - the location of the stored file, starts with '/'
+     * @param  $recursive - whether to list recursively
      * @return array of files, in the form 'path'=>basename(path)
      */
     abstract public function listFiles($bucket, $path = '', $recursive = true);

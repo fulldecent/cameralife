@@ -3,6 +3,7 @@ namespace CameraLife;
 
 /**
  * Class Photo provides a front end to working with photos
+ *
  * @author    William Entriken <cameralife@phor.net>
  * @access    public
  * @version
@@ -62,7 +63,7 @@ class Photo extends View
      * 
      * @access public
      * @static
-     * @param mixed $filePath string like /folder/photo.jpg
+     * @param  mixed $filePath string like /folder/photo.jpg
      * @return Photo
      */
     public static function getPhotoWithFilePath($filePath)
@@ -71,7 +72,7 @@ class Photo extends View
         $filename = basename($filePath);
         $path = '/' . trim(substr($filePath, 0, -strlen($filename)), '/');
         $bind = array('f'=>$filename, 'p'=>$path);
-        $result = $cameralife->database->Select('photos', '*', "filename=:f AND path=:p", NULL, NULL, $bind);
+        $result = $cameralife->database->Select('photos', '*', "filename=:f AND path=:p", null, null, $bind);
         $record = $result->fetchAssoc()
         or $cameralife->error("Photo #$original not found");
         $photo = new Photo();
@@ -86,7 +87,7 @@ class Photo extends View
      * <b>Required fields <var>filename</var>, <var>path</var>, <var>username</var></b>
      * Optional fields <var>status</var>, <var>description</var>, <var>fsize</var>, <var>created</var>
      */
-///TODO NEED SEPARATE STATIC CONTSRUCTORS     
+    ///TODO NEED SEPARATE STATIC CONTSRUCTORS     
     public function __construct($original = null)
     {
         global $cameralife;
@@ -94,12 +95,12 @@ class Photo extends View
         if (is_null($original)) {
             $this->record['id'] = null;
         } elseif (is_numeric($original)) {
-# This is an ID
+            # This is an ID
             $result = $cameralife->database->Select('photos', '*', "id=$original");
             $this->record = $result->fetchAssoc()
             or $cameralife->error("Photo #$original not found");
         } elseif (is_array($original)) {
-# A new image, given by an array
+            # A new image, given by an array
             $this->record['description'] = 'unnamed';
 
             //      if (!preg_match('/^dscn/i', $this->record['filename']) &&
@@ -207,7 +208,8 @@ class Photo extends View
 
         $this->loadImage(); // sets $this->EXIF and $this-record
         if (($cameralife->getPref('autorotate') == 'yes')
-            && (!$this->record['modified'] || $this->record['modified'] == '1')) {
+            && (!$this->record['modified'] || $this->record['modified'] == '1')
+) {
             $this->rotateEXIF();
         }
         
@@ -268,9 +270,10 @@ class Photo extends View
     public function revert()
     {
         global $cameralife;
-        if (!$this->record['modified'])
-            return;
-        $this->record['modified'] = NULL;
+        if (!$this->record['modified']) { 
+            return; 
+        }
+        $this->record['modified'] = null;
         $cameralife->database->Update('photos', $this->record, 'id=' . $this->record['id']);
         $this->deleteThumbnails();
     }
@@ -409,10 +412,12 @@ class Photo extends View
             if (isset($exif['EXIF']['DateTimeOriginal'])) {
                 $this->EXIF["Date taken"] = $exif['EXIF']['DateTimeOriginal'];
                 $exifPieces = explode(" ", $this->EXIF["Date taken"]);
-                $this->record['created'] = date(
-                    "Y-m-d",
-                    strtotime(str_replace(":", "-", $exifPieces[0]) . " " . $exifPieces[1])
-                );
+                if (count($exifPieces) == 2) {
+                    $this->record['created'] = date(
+                        "Y-m-d",
+                        strtotime(str_replace(":", "-", $exifPieces[0]) . " " . $exifPieces[1])
+                    );
+                }
             }
             if (isset($exif['IFD0']['Model'])) {
                 $this->EXIF["Camera Model"] = $exif['IFD0']['Model'];
@@ -534,8 +539,8 @@ class Photo extends View
 
         // Find if the referer is an album
         if (preg_match("/album/", $_SERVER['HTTP_REFERER'], $regs)) {
-            if (isset($_SERVER['HTTP_REFERER']) &&
-                (preg_match("#album.php\?id=([0-9]*)#", $_SERVER['HTTP_REFERER'], $regs) || preg_match(
+            if (isset($_SERVER['HTTP_REFERER']) 
+                && (preg_match("#album.php\?id=([0-9]*)#", $_SERVER['HTTP_REFERER'], $regs) || preg_match(
                     "#albums/([0-9]+)#",
                     $_SERVER['HTTP_REFERER'],
                     $regs

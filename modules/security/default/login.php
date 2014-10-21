@@ -1,5 +1,6 @@
 <?php
-/** Enables login to your EXISTING system
+/**
+ * Enables login to your EXISTING system
  *
  * Use this as a starting point to integrate with your existing CMS.
  */
@@ -45,10 +46,12 @@ if (isset($_GET['register'])) {
                 <input type="email" class="form-control" id="param3" name="param3" placeholder="Enter Email">
             </div>
             <button type="submit" class="btn btn-default">register</button>
-        <?php } else { ?>
+        <?php 
+} else { ?>
             <button type="submit" class="btn btn-default">Login</button>
             <a href="?register">Or create an account</a>
-        <?php } ?>
+        <?php 
+} ?>
     </form>
 </body>
 </html>

@@ -6,9 +6,9 @@ namespace CameraLife;
  * @uses $_POST['target'] REQUIRED "ajax" or a URL for the next view to load
  * @uses $_POST['MODULE|PARAM'] REQUIRED sets a new value for MODULE's PARAM
  *
- * @author William Entriken <cameralife@phor.net>
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright 2001-2009 William Entriken
- * @access public
+ * @access    public
  */
 
 $features = array('security');

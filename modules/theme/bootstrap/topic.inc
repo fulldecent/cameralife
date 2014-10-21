@@ -1,7 +1,8 @@
 <?php
 namespace CameraLife;
   
-/** View one topic page
+/**
+ * View one topic page
  * NOTE: $cameralife and $topic are set by showPage()
  * @author William Entriken <cameralife@phor.net>
  * @copyright 2001-2009 William Entriken
@@ -41,14 +42,14 @@ $cameralife->theme->header($topic);
                             <td>This album and others like it are:
                             <td><select name="param1">
                                     <?php
-        foreach (Topic::getTopics() as $topic) {
-            $thetopic = $topic->name;
-            $selected = ($album['topic'] == $thetopic) ? 'selected' : '';
-            if ($album['topic'] == $thetopic) {
-                $preselect = true;
-            }
-            echo "<option $selected onclick=\"document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
-        }
+                                    foreach (Topic::getTopics() as $topic) {
+                                        $thetopic = $topic->name;
+                                        $selected = ($album['topic'] == $thetopic) ? 'selected' : '';
+                                        if ($album['topic'] == $thetopic) {
+                                            $preselect = true;
+                                        }
+                                        echo "<option $selected onclick=\"document.form1.topicother.disabled=true\" value=\"$thetopic\">$thetopic</option>\n";
+                                    }
                                     ?>
                                     <option value="othertopic" <?= $preselect ? '' : 'selected' ?>
                                             onclick="document.form1.topicother.disabled=false">(A new topic)

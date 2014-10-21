@@ -31,12 +31,12 @@ class Database
      * SELECT $selection FROM $table [WHERE $condition] [$extra]
      *
      * @access public
-     * @param mixed $table
-     * @param string $selection (default: '*')
-     * @param string $condition (default: '1')
-     * @param string $extra (default: '')
-     * @param string $joins (default: '')
-     * @param array $bind (default: array())
+     * @param  mixed  $table
+     * @param  string $selection (default: '*')
+     * @param  string $condition (default: '1')
+     * @param  string $extra     (default: '')
+     * @param  string $joins     (default: '')
+     * @param  array  $bind      (default: array())
      * @return void
      */
     public function select($table, $selection = '*', $condition = '1', $extra = '', $joins = '', $bind = array())
@@ -73,12 +73,12 @@ class Database
      * SELECT $selection FROM $table [WHERE $condition] [$extra]
      *
      * @access public
-     * @param mixed $table
-     * @param mixed $selection
-     * @param string $condition (default: '1')
-     * @param string $extra (default: '')
-     * @param string $joins (default: '')
-     * @param array $bind (default: array())
+     * @param  mixed  $table
+     * @param  mixed  $selection
+     * @param  string $condition (default: '1')
+     * @param  string $extra     (default: '')
+     * @param  string $joins     (default: '')
+     * @param  array  $bind      (default: array())
      * @return void
      */
     public function selectOne($table, $selection, $condition = '1', $extra = '', $joins = '', $bind = array())

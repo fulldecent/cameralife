@@ -43,9 +43,9 @@ if (function_exists('gd_info')) {
         $checkPrerequesites[] = array('desc' => 'GD needs to support JPEG, but it does not', 'type' => 'danger');
         $fixes[] = array(
             'Ubuntu' => "See http://us4.php.net/manual/en/ref.image.php for more information. Following is configuration about your GD: " . print_r(
-                    $info,
-                    true
-                ),
+                $info,
+                true
+            ),
             'CPanel' => 'Contact your host to configure PHP-GD for JPEG'
         );
     }
@@ -204,7 +204,7 @@ if (isset($_SESSION['openid_identity'])) {
             <div class="col-sm-6">
                 <?php
                 function cmp($a, $b)
-                {
+                    {
                     if ($a['type'] == 'success' || $b['type'] == 'danger') {
                         return -1;
                     }
@@ -257,7 +257,7 @@ if (isset($_SESSION['openid_identity'])) {
 </html>
 <?php
 exit(0);
-}
+            }
 ?>
 </div>
 </div>
@@ -283,7 +283,8 @@ GRANT ALL ON <b>cameralife</b>.*
 TO <b>user</b>@<b>localhost</b>
 IDENTIFIED BY '<b>pass</b>';</pre>
                 </table>
-            <?php } elseif ($system == 'CPanel') { ?>
+            <?php 
+} elseif ($system == 'CPanel') { ?>
                 <ul>
                     <li><a target="_new" href="http://phor.net/cpanel">Login to cPanel</a></li>
                     <li>Click <a target="_new" href="http://phor.net:2082/frontend/x3/sql/index.html">MySQL
@@ -296,7 +297,8 @@ IDENTIFIED BY '<b>pass</b>';</pre>
                         your database name will be mycpanelname_cameralife
                     </li>
                 </ul>
-            <?php } elseif ($system == 'MAMP') { ?>
+            <?php 
+} elseif ($system == 'MAMP') { ?>
                 <li>Open MAMP Preferences | Ports | Set MySQL to 3306 standard</li>
                 <li>Login to phpMyAdmin (<a href="http://localhost/phpMyAdminForPHP5/">link for MAMP on localhost</a>)
                 </li>
@@ -306,7 +308,8 @@ GRANT ALL ON <b>cameralife</b>.*
 TO <b>user</b>@<b>localhost</b>
 IDENTIFIED BY '<b>pass</b>';</pre>
                 </li>
-            <?php } ?>
+            <?php 
+} ?>
         </div>
         <form class="form form-horizontal col-sm-6" method="post" action="index3.php">
             <h4>Then fill in these details</h4>

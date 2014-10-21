@@ -1,12 +1,14 @@
 <?php
 namespace CameraLife;
 
-/** Indexing of photos
+/**
+ * Indexing of photos
  *
  * NOTE: $cameralife set by showPage()
- * @author William Entriken <cameralife@phor.net>
+ *
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright 2001-2009 William Entriken
- * @access public
+ * @access    public
  */
 
 $cameralife->getFeature('security');

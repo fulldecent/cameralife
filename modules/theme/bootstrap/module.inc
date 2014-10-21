@@ -77,10 +77,10 @@ class BootstrapTheme extends ThemeModule
         $cameralife = $this->cameralife;
         $objectname = strtolower($name);
         $$objectname = $object;
-        require dirname(__FILE__) . '/' . strtolower($name) . '.inc';
+        include dirname(__FILE__) . '/' . strtolower($name) . '.inc';
     }
 
-//TODO: GET RID OF THIS, BECAUSE ALT CAN BE SET BETTER BY THE CALLER?
+    //TODO: GET RID OF THIS, BECAUSE ALT CAN BE SET BETTER BY THE CALLER?
     public function Image($name, $extra = array())
     {
         global $cameralife;
@@ -112,10 +112,10 @@ class BootstrapTheme extends ThemeModule
 
     /**
      * @access public
-     * @param view $view VIEW being displayed
-     * @param string $menu Block of HTML to show on side of page in a well
+     * @param view   $view      VIEW being displayed
+     * @param string $menu      Block of HTML to show on side of page in a well
      * @param string $extrahead (default: '')
-     * @param string $onload (default: '')
+     * @param string $onload    (default: '')
      * @return void
      */
     public function header($view, $menu = '', $extrahead = '', $onload = '')
@@ -188,7 +188,8 @@ class BootstrapTheme extends ThemeModule
                                     <li><a href="<?= $cameralife->baseURL . '/logout.php' ?>">Sign Out</a></li>
                                 </ul>
                             </li>
-                        <?php } else { ?>
+                        <?php 
+                        } else { ?>
                             <a class="btn btn-default navbar-btn narbar-right"
                                href="<?= $cameralife->security->LoginURL() ?>">
                                 <i class="fa fa-user"></i>
@@ -197,7 +198,8 @@ class BootstrapTheme extends ThemeModule
                                 <img alt="yahoo" src="http://yahoo.com/favicon.ico" height=16 width=16>
                                 Login / Free account
                             </a>
-                        <?php } ?>
+                        <?php 
+                        } ?>
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->
@@ -209,7 +211,7 @@ class BootstrapTheme extends ThemeModule
         <div class="row">
         <div class="col-md-9">
     <?php
-    }
+}
     }
 
     public function footer()
@@ -240,9 +242,11 @@ class BootstrapTheme extends ThemeModule
                 &nbsp;
                 <?php if (isset($_GET['path'])) { ?>
                     <a href="<?= $cameralife->baseURL ?>/upload.php?path=<?= htmlentities($_GET['path']) ?>">
-                <?php } else { ?>
+                <?php 
+} else { ?>
                     <a href="<?= $cameralife->baseURL ?>/upload.php">
-                <?php } ?>
+                <?php 
+} ?>
                     <i class="fa fa-plus"></i>
                     Upload
                 </a>
@@ -353,9 +357,9 @@ class BootstrapTheme extends ThemeModule
 
     public function pageSelector($start, $total, $perPage, $url)
     {
-        if ($total <= $perPage)
+        if ($total <= $perPage) { 
             return; // Refuse to only show one page
-
+        }
         echo '<ul class="pagination">';
         if ($start == -1) {
             echo "<span class='current'>Randomly showing <b>$perPage</b> of <b>$total</b></span> ";
@@ -383,8 +387,8 @@ class BootstrapTheme extends ThemeModule
                 $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
                 if ($i == $start) {
                     echo "<li class=\"active\"><a href=\"" . htmlspecialchars(
-                            $newURL
-                        ) . "\">" . ($i / $perPage + 1) . "</a></li>";
+                        $newURL
+                    ) . "\">" . ($i / $perPage + 1) . "</a></li>";
                 } else {
                     echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">" . ($i / $perPage + 1) . "</a></li>";
                 }

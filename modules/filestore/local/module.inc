@@ -4,11 +4,12 @@ namespace CameraLife;
 /**
  * An implementation of FileStore that stores photos on your local filesystem
  * An example path is: '/folder/file.png', all paths start with '/'
+ *
  * @see FileStore
  *
- * @author William Entriken <cameralife@phor.net>
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright 2001-2014 William Entriken
- * @access public
+ * @access    public
  */
 class LocalFileStore extends FileStore
 {
@@ -50,8 +51,8 @@ class LocalFileStore extends FileStore
     /**
      * Gets a local filename for the requested resource. It is downloaded if necessary.
      *
-     * @param $bucket - one of ('photo', 'other')
-     * @param $path - the location of the stored file, starts with '/'
+     * @param  $bucket - one of ('photo', 'other')
+     * @param  $path - the location of the stored file, starts with '/'
      * @return mixed
      *   array with these elements:
      *     filename - string - the local file you requested
@@ -107,7 +108,7 @@ class LocalFileStore extends FileStore
 
     /**
      * @param string $bucket one of ('photo', 'other')
-     * @param string $path the location of the stored file
+     * @param string $path   the location of the stored file
      * @param string $secure if secure, ensure this file will not be publicly accessible
      */
     public function setPrivacy($bucket, $path, $secure)
@@ -143,9 +144,9 @@ class LocalFileStore extends FileStore
     /**
      * Returns a list of all files in the fileStore
      *
-     * @param $bucket - one of ('photo', 'other')
-     * @param $path - the location of the stored file, starts with '/'
-     * @param $recursive - whether to list recursively
+     * @param  $bucket - one of ('photo', 'other')
+     * @param  $path - the location of the stored file, starts with '/'
+     * @param  $recursive - whether to list recursively
      * @return array - files, in the form 'path'=>basename(path)
      */
     public function listFiles($bucket, $path = '/', $recursive = true)
@@ -192,7 +193,7 @@ class LocalFileStore extends FileStore
                 $retval += $this->listFiles($bucket, $child, true);
             }
         } else {
-            return NULL;
+            return null;
         }
         return $retval;
     }

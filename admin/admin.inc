@@ -54,7 +54,7 @@ function renderPrefsAsHTML($module)
                 echo '<p class="text-error">This directory is not writable</p>';
             }
         } elseif (is_array($pref['type'])) {
-// enumeration
+            // enumeration
             echo "      <select class=\"form-control\" name=\"$tag\">\n";
             foreach ($pref['type'] as $index => $desc) {
                 $extra = $index == $value ? 'selected' : '';

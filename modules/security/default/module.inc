@@ -4,9 +4,9 @@ namespace CameraLife;
 /**
  * Incorporates standard security implementation.
  *
- * @author William Entriken <cameralife@phor.net>
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright 2001-2009 William Entriken
- * @access public
+ * @access    public
  *
  *<ul>
  *<li>A password to authenticate</li>
@@ -140,9 +140,9 @@ class DefaultSecurity extends SecurityModule
     public function administerURL()
     {
         global $cameralife;
-        if ($this->authorize('admin_file') ||
-            $this->authorize('admin_theme') ||
-            $this->authorize('admin_customize')
+        if ($this->authorize('admin_file') 
+            || $this->authorize('admin_theme') 
+            || $this->authorize('admin_customize')
         ) {
             return $cameralife->baseURL . "/modules/security/default/administer.php";
         }

@@ -29,10 +29,10 @@ function makeRequest(url, formid, callme) {
     var children = document.getElementById(formid).getElementsByTagName('input');
     for (var j = 0, child; child = children[j]; j++) {
         if (child.name && child.value) {
-            if (child.name == 'target')
-                posts.push('target=ajax');
-            else
-                posts.push(child.name + '=' + encodeURI(child.value));
+            if (child.name == 'target') { 
+                posts.push('target=ajax'); }
+            else { 
+                posts.push(child.name + '=' + encodeURI(child.value)); }
         }
     }
     http_request.onreadystatechange = alertContents;

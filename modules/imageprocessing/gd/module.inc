@@ -75,9 +75,9 @@ class GDImageProcessingImage extends ImageProcessingImage
      * If you have already resized the image to something larger than you want
      * you can rescale it. This is much faster than scaling the original, larger, image again.
      *
-     * @param string $filename
-     * @param int $newSize diagonal size
-     * @param int $quality
+     * @param  string $filename
+     * @param  int    $newSize  diagonal size
+     * @param  int    $quality
      * @return array|void dimensions new width and height
      */
     public function resize($filename, $newSize, $quality = 91)
