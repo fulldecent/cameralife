@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /**
  * Loads all core classes
  */
@@ -12,3 +13,4 @@ require_once dirname(__FILE__) . '/topic.class.php';
 require_once dirname(__FILE__) . '/stats.class.php';
 require_once dirname(__FILE__) . '/audittrail.class.php';
 require_once dirname(__FILE__) . '/database.php';
+require_once dirname(__FILE__) . '/databaseiterator.php';

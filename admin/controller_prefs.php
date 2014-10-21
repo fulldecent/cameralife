@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /**
  * Handles various POST actions from admin views
  *

@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /**
  * Photo view
  * @author William Entriken <cameralife@phor.net>
@@ -117,14 +118,22 @@ if ($photo->get('status') > 0) {
            id="showHideRenameForm"
            class="btn btn-sm btn-default"
            style="<?= (isset($_GET['action']) && $_GET['action'] == 'rename') ? 'display:none' : '' ?>"
-           onclick="$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false">rename</a>
+           onclick="$('#showHideRenameForm').hide();$('#renameform').show();$('#formtitle').focus();return false">
+            rename
+        </a>
     <?php
     }
     ?>
-    <a href="<?= $photo->getMediaURL('photo') ?>" id="showHideRenameForm" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="<?= $photo->get('width') ?> x <?= $photo->get('height') ?>px">
+    <a href="<?= $photo->getMediaURL('photo') ?>" 
+        id="showHideRenameForm"
+        class="btn btn-sm btn-default"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="<?= $photo->get('width') ?> x <?= $photo->get('height') ?>px">
         <i class="fa fa-arrows-alt"></i>
     </a>
-    <?php if ($cameralife->security->authorize('photo_delete')) { ?>
+    <?php if ($cameralife->security->authorize('photo_delete')) {
+?>
         <a href="<?= $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'flag') ?>"
           class="btn btn-sm btn-default" 
           data-toggle="tooltip" 
@@ -134,9 +143,10 @@ if ($photo->get('status') > 0) {
         >
             <i class="fa fa-flag"></i>
         </a>
-    <?php 
+    <?php
 } ?>
-    <?php if ($cameralife->security->authorize('photo_modify')) { ?>
+    <?php if ($cameralife->security->authorize('photo_modify')) {
+?>
         <a href="<?= $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'modify') ?>"
           class="btn btn-sm btn-default" 
           data-toggle="tooltip" 
@@ -146,9 +156,10 @@ if ($photo->get('status') > 0) {
         >
             <i class="fa fa-wrench"></i>
         </a>
-    <?php 
+    <?php
 } ?>
-    <?php if ($photo->get('status') == 0) { ?>
+    <?php if ($photo->get('status') == 0) {
+?>
         <a href="<?= $cameralife->theme->addParam($_SERVER['REQUEST_URI'], 'action', 'print') ?>"
           class="btn btn-sm btn-default" 
           data-toggle="tooltip" 
@@ -166,7 +177,7 @@ if ($photo->get('status') > 0) {
         >
             <i class="fa fa-share-alt"></i>
         </a>
-    <?php 
+    <?php
 } ?>    
 </h1>
 <?php
@@ -464,4 +475,3 @@ if ($photoNext) {
 }
 
 $cameralife->theme->footer();
-?>

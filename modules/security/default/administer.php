@@ -164,8 +164,9 @@ function html_select_auth($param_name)
                 ?>
         </table>
 
-        <?php 
-    } elseif ($_GET['page'] == 'policies') { ?>
+        <?php
+    } elseif ($_GET['page'] == 'policies') {
+?>
             <form method="post" action="<?= $cameralife->baseURL . '/admin/controller_prefs.php' ?>">
                 <input type="hidden" name="target"
                        value="<?=
@@ -207,7 +208,7 @@ function html_select_auth($param_name)
                         <td><?php html_select_auth("auth_admin_customize") ?></td>
                     </tr>
                 </table>
-                <?php 
+                <?php
     } ?>
             <p>
                 <input type="submit" value="Commit Changes" class="btn btn-primary">

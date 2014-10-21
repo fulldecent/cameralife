@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /**
  * Handles the POST form action from upload.php
  * Pass the following variables
@@ -64,7 +65,7 @@ function add_image($path, $filename, $file, $description = 'unnamed', $status = 
     $upload['username'] = $cameralife->security->getName();
     $upload['status'] = $status;
 
-    $photo = new Photo($upload);
+    $photo = Photo::createPhotoWithRecord($upload);
     $filepath = rtrim('/' . ltrim($upload['path'], '/'), '/') . '/' . $upload['filename'];
     $cameralife->fileStore->PutFile('photo', $filepath, $file);
     @unlink($file);

@@ -81,16 +81,14 @@ class BootstrapTheme extends ThemeModule
     }
 
     //TODO: GET RID OF THIS, BECAUSE ALT CAN BE SET BETTER BY THE CALLER?
-    public function Image($name, $extra = array())
+    public function image($name, $extra = array())
     {
         global $cameralife;
-        if (preg_match('/src="([^"]*)"/i', $name)) # HTML IMG
-        {
+        if (preg_match('/src="([^"]*)"/i', $name)) {
             $image['src'] = $regs[1];
             $image['alt'] = basename($image['src']);
         } else {
-            if (preg_match('#\.|/#', $name)) # Image URL
-            {
+            if (preg_match('#\.|/#', $name)) {
                 $image['src'] = $name;
                 $image['alt'] = basename($image['src']);
             } else # Named asset, like 'small-album'
@@ -188,8 +186,9 @@ class BootstrapTheme extends ThemeModule
                                     <li><a href="<?= $cameralife->baseURL . '/logout.php' ?>">Sign Out</a></li>
                                 </ul>
                             </li>
-                        <?php 
-                        } else { ?>
+                        <?php
+                        } else {
+?>
                             <a class="btn btn-default navbar-btn narbar-right"
                                href="<?= $cameralife->security->LoginURL() ?>">
                                 <i class="fa fa-user"></i>
@@ -198,7 +197,7 @@ class BootstrapTheme extends ThemeModule
                                 <img alt="yahoo" src="http://yahoo.com/favicon.ico" height=16 width=16>
                                 Login / Free account
                             </a>
-                        <?php 
+                        <?php
                         } ?>
                     </ul>
                 </div>
@@ -207,7 +206,8 @@ class BootstrapTheme extends ThemeModule
         </nav>
 
         <div class="container">
-        <?php if ($this->menu) { ?>
+        <?php if ($this->menu) {
+?>
         <div class="row">
         <div class="col-md-9">
     <?php
@@ -240,12 +240,14 @@ class BootstrapTheme extends ThemeModule
                 &nbsp;
                 <a href="http://fulldecent.github.com/cameralife"><i class="fa fa-globe"></i> Built with Camera Life</a>
                 &nbsp;
-                <?php if (isset($_GET['path'])) { ?>
+                <?php if (isset($_GET['path'])) {
+?>
                     <a href="<?= $cameralife->baseURL ?>/upload.php?path=<?= htmlentities($_GET['path']) ?>">
-                <?php 
-} else { ?>
+                <?php
+} else {
+?>
                     <a href="<?= $cameralife->baseURL ?>/upload.php">
-                <?php 
+                <?php
 } ?>
                     <i class="fa fa-plus"></i>
                     Upload
@@ -357,7 +359,7 @@ class BootstrapTheme extends ThemeModule
 
     public function pageSelector($start, $total, $perPage, $url)
     {
-        if ($total <= $perPage) { 
+        if ($total <= $perPage) {
             return; // Refuse to only show one page
         }
         echo '<ul class="pagination">';
@@ -415,4 +417,3 @@ class BootstrapTheme extends ThemeModule
     }
 }
 
-?>

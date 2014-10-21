@@ -113,33 +113,33 @@ class Search extends View
      */
     public function getPhotos()
     {
-        //TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!
         global $cameralife;
 
         switch ($this->sort) {
-        case 'newest':
-            $sort = 'value desc, id desc';
-            break;
-        case 'oldest':
-            $sort = 'value, id';
-            break;
-        case 'az':
-            $sort = 'description';
-            break;
-        case 'za':
-            $sort = 'description desc';
-            break;
-        case 'popular':
-            $sort = 'hits desc';
-            break;
-        case 'unpopular':
-            $sort = 'hits, id';
-            break;
-        case 'rand':
-            $sort = 'rand()';
-            break;
-        default:
-            $sort = 'id desc';
+            case 'newest':
+                $sort = 'value desc, id desc';
+                break;
+            case 'oldest':
+                $sort = 'value, id';
+                break;
+            case 'az':
+                $sort = 'description';
+                break;
+            case 'za':
+                $sort = 'description desc';
+                break;
+            case 'popular':
+                $sort = 'hits desc';
+                break;
+            case 'unpopular':
+                $sort = 'hits, id';
+                break;
+            case 'rand':
+                $sort = 'rand()';
+                break;
+            default:
+                $sort = 'id desc';
         }
 
         $conditions = array();
@@ -163,7 +163,7 @@ class Search extends View
         );
         $photos = array();
         while ($row = $query->fetchAssoc()) {
-            $photos[] = new Photo($row['id']);
+            $photos[] = Photo::getPhotoWithID($row['id']);
         }
 
         return $photos;
@@ -177,33 +177,33 @@ class Search extends View
      */
     public function getAlbums()
     {
-        //TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!
         global $cameralife;
 
         switch ($this->sort) {
-        case 'newest':
-            $sort = 'albums.id desc';
-            break;
-        case 'oldest':
-            $sort = 'albums.id';
-            break;
-        case 'az':
-            $sort = 'description';
-            break;
-        case 'za':
-            $sort = 'description desc';
-            break;
-        case 'popular':
-            $sort = 'albums.hits desc';
-            break;
-        case 'unpopular':
-            $sort = 'albums.hits';
-            break;
-        case 'rand':
-            $sort = 'rand()';
-            break;
-        default:
-            $sort = 'albums.id desc';
+            case 'newest':
+                $sort = 'albums.id desc';
+                break;
+            case 'oldest':
+                $sort = 'albums.id';
+                break;
+            case 'az':
+                $sort = 'description';
+                break;
+            case 'za':
+                $sort = 'description desc';
+                break;
+            case 'popular':
+                $sort = 'albums.hits desc';
+                break;
+            case 'unpopular':
+                $sort = 'albums.hits';
+                break;
+            case 'rand':
+                $sort = 'rand()';
+                break;
+            default:
+                $sort = 'albums.id desc';
         }
 
         $conditions = array();
@@ -239,32 +239,32 @@ class Search extends View
      */
     public function getFolders()
     {
-        //TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!
         global $cameralife;
         switch ($this->sort) {
-        case 'newest':
-            $sort = 'id desc';
-            break;
-        case 'oldest':
-            $sort = 'id';
-            break;
-        case 'az':
-            $sort = 'path';
-            break;
-        case 'za':
-            $sort = 'path desc';
-            break;
-        case 'popular':
-            $sort = 'hits desc';
-            break;
-        case 'unpopular':
-            $sort = 'hits';
-            break;
-        case 'rand':
-            $sort = 'rand()';
-            break;
-        default:
-            $sort = 'id desc';
+            case 'newest':
+                $sort = 'id desc';
+                break;
+            case 'oldest':
+                $sort = 'id';
+                break;
+            case 'az':
+                $sort = 'path';
+                break;
+            case 'za':
+                $sort = 'path desc';
+                break;
+            case 'popular':
+                $sort = 'hits desc';
+                break;
+            case 'unpopular':
+                $sort = 'hits';
+                break;
+            case 'rand':
+                $sort = 'rand()';
+                break;
+            default:
+                $sort = 'id desc';
         }
 
         $conditions = array();
@@ -303,7 +303,7 @@ class Search extends View
      */
     public function getPhotoCount()
     {
-        //TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!
         global $cameralife;
 
         $conditions = array();
@@ -336,7 +336,7 @@ class Search extends View
      */
     public function getAlbumCount()
     {
-        //TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!
         global $cameralife;
 
         $conditions = array();
@@ -366,7 +366,7 @@ class Search extends View
      */
     public function getFolderCount()
     {
-        //TODO: should not use global CAMERALIFE!    
+        //TODO: should not use global CAMERALIFE!
         global $cameralife;
 
         $conditions = array();

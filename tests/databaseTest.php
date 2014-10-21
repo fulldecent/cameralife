@@ -1,20 +1,14 @@
 <?php
+namespace CameraLife;
+
 require_once dirname(__FILE__) . '/../modules/core/database.php';
+require_once dirname(__FILE__) . '/../modules/core/stubCameraLife.php';
 
 /**
 * http://blogs.kent.ac.uk/webdev/2011/07/14/phpunit-and-unserialized-pdo-instances/
 * @backupGlobals disabled
 * @backupStaticAttributes disabled
 */
-
-// stub implementation
-class StubCameraLife
-{
-    function error($message)
-    {
-        die('CAMERA LIFE ERROR: ' . $message);
-    }
-}
 
 class DatabaseTest extends PHPUnit_Framework_TestCase
 {

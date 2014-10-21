@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /**
  * Implements various search options
  * The following variables are set by showPage()
@@ -60,7 +61,7 @@ if (isset($_GET['albumhelp']) && $_GET['albumhelp']) {
     <h4>Create a Featured Tag</h4>
     <i class="fa fa-fw fa-photo fa-2x"></i> Photos have descriptions and tags associated with them<br>
     <i class="fa fa-fw fa-tags fa-2x"></i> Tags are grouped into topics<br>
-    <i class="fa fa-fw fa-search fa-2x"></i> To feature a tag, perform a search and then choose "Feature this tag" on the toolbar.<br>
+    <i class="fa fa-fw fa-search fa-2x"></i> To feature a tag, perform a search and then choose "Feature this tag".<br>
     <?php
     exit(0);
 }

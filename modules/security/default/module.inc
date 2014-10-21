@@ -140,8 +140,8 @@ class DefaultSecurity extends SecurityModule
     public function administerURL()
     {
         global $cameralife;
-        if ($this->authorize('admin_file') 
-            || $this->authorize('admin_theme') 
+        if ($this->authorize('admin_file')
+            || $this->authorize('admin_theme')
             || $this->authorize('admin_customize')
         ) {
             return $cameralife->baseURL . "/modules/security/default/administer.php";

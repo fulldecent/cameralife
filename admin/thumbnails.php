@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /*
  * Regenerates thumbnail caches
  * @author William Entriken <cameralife@phor.net>
@@ -66,9 +67,10 @@ $numdone = isset($_GET['numdone']) ? (int)$_GET['numdone'] : 0;
     $fixed = 0;
     flush();
     while (($next = $next1000->fetchAssoc()) && ($fixed < 10)) {
-        $photo = new Photo($next['id']);
+        $photo = Photo::getPhotoWithID($next['id']);
         $redo = false;
-        if ($photo->get('modified') == 1) { //legacy before 2.7
+        if ($photo->get('modified') == 1) {
+//legacy before 2.7
             $redo = true;
         }
         $filepath = '/' . $photo->get('id') . '_' . $cameralife->getPref('scaledsize') . '.' . $photo->extension;

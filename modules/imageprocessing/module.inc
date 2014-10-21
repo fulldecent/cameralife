@@ -1,6 +1,8 @@
 <?php
 namespace CameraLife;
 
+//TODO: monolithic class with static constructors
+
 /**
  * Manipulates images
  *

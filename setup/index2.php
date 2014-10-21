@@ -42,7 +42,7 @@ if (function_exists('gd_info')) {
     } else {
         $checkPrerequesites[] = array('desc' => 'GD needs to support JPEG, but it does not', 'type' => 'danger');
         $fixes[] = array(
-            'Ubuntu' => "See http://us4.php.net/manual/en/ref.image.php for more information. Following is configuration about your GD: " . print_r(
+            'Ubuntu' => "See http://us4.php.net/manual/en/ref.image.php for more information about your GD: " . print_r(
                 $info,
                 true
             ),
@@ -62,7 +62,7 @@ if (get_magic_quotes_gpc() == 0) {
 } else {
     $checkPrerequesites[] = array('desc' => 'Magic quotes is enabled, you want to turn this off', 'type' => 'warning');
     $fixes[] = array(
-        'Ubuntu' => 'Disable magic quotes, see <a href="http://php.net/manual/en/security.magicquotes.php" target="_blank">http://php.net/manual/en/security.magicquotes.php</a>',
+        'Ubuntu' => 'Disable magic quotes, see http://php.net/manual/en/security.magicquotes.php',
         'CPanel' => 'Contact your host to disable magic quotes'
     );
 }
@@ -80,7 +80,7 @@ if (@fopen($url, 'r')) {
         'type' => 'warning'
     );
     $fixes[] = array(
-        'Ubuntu' => 'set up MOD REWRITE to get pretty URLs, see <a href="http://stackoverflow.com/q/869092" target="_blank">http://stackoverflow.com/q/869092</a>',
+        'Ubuntu' => 'set up MOD REWRITE to get pretty URLs, see http://stackoverflow.com/q/869092',
         'CPanel' => 'Contact your host to set up MOD REWRITE for pretty URLs'
     );
 }
@@ -155,7 +155,7 @@ if (isset($_SESSION['openid_identity'])) {
             var ga = document.createElement('script');
             ga.type = 'text/javascript';
             ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            ga.src = ('https://ssl.google-analytics.com/ga.js';
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
@@ -203,16 +203,6 @@ if (isset($_SESSION['openid_identity'])) {
         <div class="panel-body row">
             <div class="col-sm-6">
                 <?php
-                function cmp($a, $b)
-                    {
-                    if ($a['type'] == 'success' || $b['type'] == 'danger') {
-                        return -1;
-                    }
-                    return 1;
-                }
-
-                usort($checkPrerequesites, "cmp");
-
                 $icons = array(
                     'warning' => 'glyphicon glyphicon-question-sign',
                     'danger' => 'glyphicon glyphicon-remove-sign',
@@ -220,7 +210,8 @@ if (isset($_SESSION['openid_identity'])) {
                 );
                 foreach ($checkPrerequesites as $prequesiteResult) {
                     $icon = $icons[$prequesiteResult['type']];
-                    echo "<p class=\"text-{$prequesiteResult['type']}\"><i class=\"$icon\"></i> {$prequesiteResult['desc']}</p>\n";
+                    $class = 'text-' . $prequesiteResult['type'];
+                    echo "<p class=\"$class\"><i class=\"$icon\"></i> {$prequesiteResult['desc']}</p>\n";
                 }
 
                 ?>
@@ -269,7 +260,8 @@ exit(0);
     <div class="panel-body row">
         <div class="col-sm-6">
             <h4>Use these instructions for <?= $system ?></h4>
-            <?php if ($system == 'Ubuntu') { ?>
+            <?php if ($system == 'Ubuntu') {
+?>
                 <table>
                     <tr>
                         <td><pre>$
@@ -283,8 +275,9 @@ GRANT ALL ON <b>cameralife</b>.*
 TO <b>user</b>@<b>localhost</b>
 IDENTIFIED BY '<b>pass</b>';</pre>
                 </table>
-            <?php 
-} elseif ($system == 'CPanel') { ?>
+            <?php
+} elseif ($system == 'CPanel') {
+?>
                 <ul>
                     <li><a target="_new" href="http://phor.net/cpanel">Login to cPanel</a></li>
                     <li>Click <a target="_new" href="http://phor.net:2082/frontend/x3/sql/index.html">MySQL
@@ -297,8 +290,9 @@ IDENTIFIED BY '<b>pass</b>';</pre>
                         your database name will be mycpanelname_cameralife
                     </li>
                 </ul>
-            <?php 
-} elseif ($system == 'MAMP') { ?>
+            <?php
+} elseif ($system == 'MAMP') {
+?>
                 <li>Open MAMP Preferences | Ports | Set MySQL to 3306 standard</li>
                 <li>Login to phpMyAdmin (<a href="http://localhost/phpMyAdminForPHP5/">link for MAMP on localhost</a>)
                 </li>
@@ -308,7 +302,7 @@ GRANT ALL ON <b>cameralife</b>.*
 TO <b>user</b>@<b>localhost</b>
 IDENTIFIED BY '<b>pass</b>';</pre>
                 </li>
-            <?php 
+            <?php
 } ?>
         </div>
         <form class="form form-horizontal col-sm-6" method="post" action="index3.php">

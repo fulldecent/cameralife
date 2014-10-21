@@ -1,6 +1,5 @@
 <?php
 namespace CameraLife;
-require_once './schemaupdater.inc';
 
 class SchemaUpdater2 extends SchemaUpdater
 {
@@ -51,8 +50,8 @@ HERE;
         $result = mysql_query($sql, $this->link);
         $array = mysql_fetch_array($result);
         if ($array) {
-            return "The database $dbName is already running a db schema version at or greater than 2.
-              Please check that modules/config.inc includes \$db_schema_version = XXX, where XXX is your current schema version.";
+            return "The database $dbName is already running a db schema version at or greater than 2. Please check that
+              modules/config.inc includes \$db_schema_version = XXX, where XXX is your current schema version.";
         }
 
         return true;

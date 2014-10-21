@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /*
  * Administer comments on the site
  * @author William Entriken <cameralife@phor.net>
@@ -155,7 +156,7 @@ $latestComment = $cameralife->database->SelectOne('comments', 'max(id)');
         while ($record = $result->fetchAssoc()) {
             //var_dump($record);
 
-            $photo = new Photo($record['photo_id']);
+            $photo = Photo::getPhotoWithID($record['photo_id']);
             $photoOpenGraph = $photo->getOpenGraph();
             $max = max($photoOpenGraph['og:image:width'], $photoOpenGraph['og:image:height']);
             $width64 = $photoOpenGraph['og:image:width'] / $max * 64;

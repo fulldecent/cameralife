@@ -23,7 +23,7 @@
             var ga = document.createElement('script');
             ga.type = 'text/javascript';
             ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            ga.src = ('https://ssl.google-analytics.com/ga.js';
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
@@ -55,9 +55,10 @@
 
 <div class="jumbotron">
     <div class="container">
-        <h2 class="text-success"><i class="glyphicon glyphicon-ok"></i> You are running Camera Life <?php readfile(
-        '../VERSION'
-        ) ?></h2>
+        <h2 class="text-success">
+            <i class="glyphicon glyphicon-ok"></i> 
+            You are running Camera Life <?php readfile('../VERSION') ?>
+        </h2>
 
         <p><a class="btn btn-default btn-large" target="_blank" href="https://github.com/fulldecent/cameralife"><i
                     class="glyphicon glyphicon-star"></i> Star us on GitHub</a> to get important security updates</p>

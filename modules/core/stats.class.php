@@ -53,7 +53,7 @@ class Stats
         $popularPhotos = array();
         $query = $cameralife->database->Select('photos', 'id', null, 'ORDER BY hits DESC limit 5');
         while ($photo = $query->fetchAssoc()) {
-            $popularPhotos[] = new Photo($photo['id']);
+            $popularPhotos[] = Photo::getPhotoWithID($photo['id']);
         }
 
         return $popularPhotos;

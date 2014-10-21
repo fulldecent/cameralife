@@ -1,4 +1,6 @@
 <?php
+namespace CameraLife;
+
 require_once dirname(__FILE__) . '/../main.inc';
 require_once dirname(__FILE__) . '/../modules/core/stats.class.php';
 

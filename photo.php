@@ -16,7 +16,7 @@ if (!Photo::photoExists($_GET['id'])) {
     $cameralife->error("Photo #" . intval($_GET['id']) . " not found.");
 }
 
-$photo = new Photo($_GET['id']);
+$photo = Photo::getPhotoWithID($_GET['id']);
 if ($photo->get('status') != 0) {
     $cameralife->security->authorize('admin_file', 'This file has been flagged or marked private');
 }

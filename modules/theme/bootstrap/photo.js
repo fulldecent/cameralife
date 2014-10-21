@@ -13,7 +13,7 @@ function overstar(num) {
     for (var i = 0, j = buttons.length; i < j; i++) {
         var x = buttons[i].src;
         x = x.replace(/unlit$/, 'lit');
-        if (i >= num) { 
+        if (i >= num) {
             x = x.replace(/lit$/, 'unlit'); }
         buttons[i].src = x;
     }
@@ -24,7 +24,7 @@ function nostar() {
     for (var i = 0, j = buttons.length; i < j; i++) {
         var x = buttons[i].src;
         x = x.replace(/unlit$/, 'lit');
-        if (i >= rating) { 
+        if (i >= rating) {
             x = x.replace(/lit$/, 'unlit'); }
         buttons[i].src = x;
     }

@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /**
  * Enables log in
  * @author William Entriken <cameralife@phor.net>

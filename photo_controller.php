@@ -20,7 +20,7 @@ $features = array('imageProcessing', 'security', 'fileStore');
 $cameralife = CameraLife::cameraLifeWithFeatures($features);
 
 is_numeric($_POST['id'])
-and $photo = new Photo($_POST['id'])
+and $photo = Photo::getPhotoWithID($_POST['id'])
 or $cameralife->error('this photo does not exist');
 if ($photo->get('status') != 0) {
     $cameralife->security->authorize('admin_file', 'This file has been flagged or marked private');

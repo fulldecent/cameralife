@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /**
  * The main class for all features in Camera Life. CameraLife needs access to the database
  * which it can get from one of three ways:

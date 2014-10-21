@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /**
  * Retrieve a photo from the FileStore and feed it to the user
  * This file makes asset security possible since the user does not directly access the photos.
@@ -23,7 +24,7 @@ require 'main.inc';
 $features = array('security', 'imageProcessing', 'fileStore');
 $cameralife = CameraLife::cameraLifeWithFeatures($features);
 
-$photo = new Photo(intval($_GET['id']));
+$photo = Photo::getPhotoWithID($_GET['id']);
 $format = isset($_GET['scale']) ? $_GET['scale'] : (isset($_GET['size']) ? $_GET['size'] : 'NOSIZE');
 if (!is_numeric($_GET['ver'])) {
     $cameralife->error('Required number ver missing! Query string: ' . htmlentities($_SERVER['QUERY_STRING']));

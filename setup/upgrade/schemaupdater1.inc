@@ -1,6 +1,5 @@
 <?php
 namespace CameraLife;
-require_once './schemaupdater.inc';
 
 class SchemaUpdater1 extends SchemaUpdater
 {

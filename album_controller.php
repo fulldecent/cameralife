@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 # Handle all POST form actions from album.php
 #
 # Pass me variables:

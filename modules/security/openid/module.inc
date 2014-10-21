@@ -43,7 +43,7 @@ class OpenIDSecurity extends SecurityModule
     /**
  * Logs a user in after they have been authenticated with ID and EMAIL
      */
-    public function Login($id, $post)
+    public function login($id, $post)
     {
         global $cameralife;
         $email = $post['email'];
@@ -148,8 +148,8 @@ class OpenIDSecurity extends SecurityModule
     public function administerURL()
     {
         global $cameralife;
-        if ($this->authorize('admin_file') 
-            || $this->authorize('admin_theme') 
+        if ($this->authorize('admin_file')
+            || $this->authorize('admin_theme')
             || $this->authorize('admin_customize')
         ) {
             return $cameralife->baseURL . "/modules/security/openid/administer.php";

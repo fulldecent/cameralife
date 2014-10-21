@@ -60,7 +60,50 @@ class Photo extends View
 
     /**
      * Loads a photo with a given FILEPATH
-     * 
+     *
+     * @access public
+     * @static
+     * @param  array photo record from the database
+     * @return Photo
+     */
+    private static function getPhotoWithRecord($record)
+    {
+        global $cameralife;
+        $retval = new Photo();
+        $retval->record = $record;
+        if (isset($retval->record['filename'])) {
+            $pathParts = pathinfo($retval->record['filename']);
+        }
+        if (isset($pathParts['extension'])) {
+            $retval->extension = strtolower($pathParts['extension']);
+        }
+        return $retval;
+    }    
+
+    /**
+     * Creates a photo with given record
+     *
+     * @access public
+     * @static
+     * @param  array $record
+     * @return Photo
+     */
+    public static function createPhotoWithRecord($record)
+    {
+        global $cameralife;
+        $defaults['description'] = 'unnamed';
+        $defaults['status'] = '0';
+        $defaults['created'] = date('Y-m-d');
+        $defaults['modified'] = '0';
+        $defaults['mtime'] = '0';
+        $retval = Photo::getPhotoWithRecord(array_merge($defaults, $record));
+        $retval->record['id'] = $cameralife->database->Insert('photos', $retval->record);
+        return $retval;
+    }
+    
+    /**
+     * Loads a photo with a given FILEPATH
+     *
      * @access public
      * @static
      * @param  mixed $filePath string like /folder/photo.jpg
@@ -68,16 +111,32 @@ class Photo extends View
      */
     public static function getPhotoWithFilePath($filePath)
     {
-        global $cameralife;    
+        global $cameralife;
         $filename = basename($filePath);
         $path = '/' . trim(substr($filePath, 0, -strlen($filename)), '/');
         $bind = array('f'=>$filename, 'p'=>$path);
         $result = $cameralife->database->Select('photos', '*', "filename=:f AND path=:p", null, null, $bind);
         $record = $result->fetchAssoc()
-        or $cameralife->error("Photo #$original not found");
-        $photo = new Photo();
-        $photo->record = $record;
-        return $photo;
+        or $cameralife->error("Photo not found at path");
+        return Photo::getPhotoWithRecord($record);
+    }
+
+    /**
+     * Loads a photo with a given id
+     *
+     * @access public
+     * @static
+     * @param  integer
+     * @return Photo
+     */
+    public static function getPhotoWithID($id)
+    {
+        global $cameralife;
+        $bind = array('i'=>$id);
+        $result = $cameralife->database->Select('photos', '*', "id=:i", null, null, $bind);
+        $record = $result->fetchAssoc()
+        or $cameralife->error("Photo #$id not found");
+        return Photo::getPhotoWithRecord($record);
     }
 
     /**
@@ -87,47 +146,17 @@ class Photo extends View
      * <b>Required fields <var>filename</var>, <var>path</var>, <var>username</var></b>
      * Optional fields <var>status</var>, <var>description</var>, <var>fsize</var>, <var>created</var>
      */
-    ///TODO NEED SEPARATE STATIC CONTSRUCTORS     
-    public function __construct($original = null)
+    private function __construct($original = null)
     {
         global $cameralife;
-
-        if (is_null($original)) {
-            $this->record['id'] = null;
-        } elseif (is_numeric($original)) {
-            # This is an ID
-            $result = $cameralife->database->Select('photos', '*', "id=$original");
-            $this->record = $result->fetchAssoc()
-            or $cameralife->error("Photo #$original not found");
-        } elseif (is_array($original)) {
-            # A new image, given by an array
-            $this->record['description'] = 'unnamed';
-
-            //      if (!preg_match('/^dscn/i', $this->record['filename']) &&
-            //        !preg_match('/^im/i', $this->record['filename'])) // useless filename
-            //        $this->record['description'] = preg_replace('/.[^.]+$/', '', ucwords($photo->get('filename')));
-
-            $this->record['status'] = '0';
-            $this->record['created'] = date('Y-m-d');
-            $this->record['modified'] = '0';
-            $this->record['mtime'] = '0';
-            $this->record = array_merge($this->record, $original);
-
-            $this->record['id'] = $cameralife->database->Insert('photos', $this->record);
-        }
         $this->context = false;
         $this->contextPrev = false;
         $this->contextNext = false;
         $this->contextPhotos = array();
         $this->EXIF = array();
-
-        if (isset($this->record['filename'])) {
-            $pathParts = pathinfo($this->record['filename']);
-        }
-        if (isset($pathParts['extension'])) {
-            $this->extension = strtolower($pathParts['extension']);
-        }
     }
+    
+    //////////////////////////////////////////////////////////
 
     public static function photoExists($original)
     {
@@ -270,8 +299,8 @@ class Photo extends View
     public function revert()
     {
         global $cameralife;
-        if (!$this->record['modified']) { 
-            return; 
+        if (!$this->record['modified']) {
+            return;
         }
         $this->record['modified'] = null;
         $cameralife->database->Update('photos', $this->record, 'id=' . $this->record['id']);
@@ -539,7 +568,7 @@ class Photo extends View
 
         // Find if the referer is an album
         if (preg_match("/album/", $_SERVER['HTTP_REFERER'], $regs)) {
-            if (isset($_SERVER['HTTP_REFERER']) 
+            if (isset($_SERVER['HTTP_REFERER'])
                 && (preg_match("#album.php\?id=([0-9]*)#", $_SERVER['HTTP_REFERER'], $regs) || preg_match(
                     "#albums/([0-9]+)#",
                     $_SERVER['HTTP_REFERER'],
@@ -618,7 +647,7 @@ class Photo extends View
             $this->context->SetPage(0, 99);
 
             $this->contextPhotos = $this->context->GetPhotos(); /* Using the base class, how hot is that? */
-            $last = new Photo();
+            $last = null;
             foreach ($this->contextPhotos as $cur) {
                 if ($cur->Get('id') == $this->get('id') && $last->get('id')) {
                     $this->contextPrev = $last;

@@ -8,7 +8,7 @@ if (file_exists(dirname(dirname(dirname(__FILE__))) . '/modules/config.inc')) {
 } else {
     die('Cannot find /modules/config.inc. Upgrade is not possible.');
 }
-define('CAMERALIFE_LATEST_SCHEMA_VERSION', '5');
+require_once('../../main.inc'); // Gets CAMERALIFE_LATEST_SCHEMA_VERSION
 $installed_version = isset($db_schema_version) ? intval($db_schema_version) : 0;
 $nextUpgraderVersion = $db_schema_version + 1;
 $nextUpgraderClass = 'CameraLife\SchemaUpdater' . $nextUpgraderVersion;
@@ -42,7 +42,8 @@ $nextUpgraderFile = './' . strtolower('SchemaUpdater' . $nextUpgraderVersion) . 
     } elseif (!file_exists($nextUpgraderFile)) {
         echo '<p class="lead text-danger">No upgrade script is available.</p>';
     } else {
-        include_once$nextUpgraderFile;
+        require_once('./schemaupdater.inc');
+        require_once($nextUpgraderFile);
         $upgrader = new $nextUpgraderClass;
         echo '<p class="lead">Upgrade to version ' . $nextUpgraderVersion . '</p>';
         echo '<blockquote class="lead">' . $upgrader->scriptInfo . '</blockquote>';

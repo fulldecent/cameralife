@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /**
  * Common features in the admin/ directory
  * @author William Entriken <cameralife@phor.net>

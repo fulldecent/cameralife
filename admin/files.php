@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /*
  * Administer files on the site
  * BEWARE: BACKUP YOUR DATABASE BEFORE MESSING AROUND HERE!
@@ -21,7 +22,7 @@ foreach ($_POST as $key => $val) {
     if (!is_int($key)) {
         continue;
     }
-    $curphoto = new Photo($key);
+    $curphoto = Photo::getPhotoWithID($key);
     if ($val >= 0 && $val <= 3) {
         $curphoto->set('status', $val);
     } else // Erased file
@@ -73,7 +74,8 @@ foreach ($_POST as $key => $val) {
         }
     }
 
-    if ($page !== 'update') { // Show stuff
+    if ($page !== 'update') {
+// Show stuff
     ?>
     <div class="well well-sm">
         <h2>Quick tools</h2>
@@ -108,7 +110,7 @@ foreach ($_POST as $key => $val) {
         );
         $photos = array();
         while ($row = $query->fetchAssoc()) {
-            $photos[] = new Photo($row['id']);
+            $photos[] = Photo::getPhotoWithID($row['id']);
         }
 
         echo '<div class="thumbnails">';

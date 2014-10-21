@@ -1,9 +1,10 @@
 <?php
 namespace CameraLife;
+
 /**
  * Creates RSS feed of folders
  *
- * @see       http://validator.w3.org/feed/check.cgi?url=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Frss-folders.php%3Fq%3D
+ * @see       http://validator.w3.org/feed/check.cgi?url=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Frss-folders.php
  * @author    William Entriken <cameralife@phor.net>
  * @copyright 2001-2014 William Entriken
  * @access    public
@@ -16,7 +17,7 @@ $cameralife = CameraLife::cameraLifeWithFeatures($features);
 $query = isset($_GET['q']) ? $_GET['q'] : '';
 $search = new Search($query);
 $openGraph = $search->getOpenGraph();
-$search->setSort('newest');
+$search->sort = 'newest';
 $views = $search->getFolders();
 
 header('Content-type: text/xml');

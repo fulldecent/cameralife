@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /**
  * View for logging in or registering
  * @author William Entriken<cameralife@phor.net>
@@ -46,7 +47,8 @@ $_GET['page'] or $_GET['page'] = 'login';
             <td><input type="password" name="password" value="">
                 <?php
                 if ($_GET['page'] == 'register') {
-                    echo '<tr><td>E-Mail (optional):<td><input type="text" name="email" value="' . $_POST["email"] . '">';
+                    $mail = htmlspecialchars($_POST['email']);
+                    echo '<tr><td>E-Mail (optional):<td><input type="email" name="email" value="' . $mail . '">';
                 }
                 ?>
     </table>

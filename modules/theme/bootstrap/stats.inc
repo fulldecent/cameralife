@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife;
+
 /**
  * Displays popular photos and albums,and fun facts such as the amount of time a site has been online
  * @author William Entriken <cameralife@phor.net>
