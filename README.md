@@ -53,6 +53,8 @@ to load it on a cell phone made in the 90's.
 Photos store on your server, Amazon S3, a remote FTP/SFTP server, and rsync.net.
 It scales if you want to offload thumbnailing to separate server(s).
 
+7. Supports PHP 5.4+ and MySQL
+
 
 Installation
 ------------
@@ -77,7 +79,7 @@ start a search and click 'Create an album with these results'
 Support
 -------
 
-Please file issues at https://github.com/fulldecent/cameralife
+Please file issues at https://github.com/fulldecent/cameralife/issues
 
 Lead developer is available to consult on custom integration of Camera Life.
 

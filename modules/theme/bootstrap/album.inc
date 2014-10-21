@@ -16,6 +16,9 @@ namespace CameraLife;
 
 $cameralife->getFeature('security');
 $cameralife->getFeature('fileStore');
+$topic = $album->getTopic();
+$topicOpenGraph = $topic->getOpenGraph();
+$openGraph = $album->getOpenGraph();
 $results = $album->getPhotos();
 $openGraph = $album->getOpenGraph();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
@@ -90,8 +93,12 @@ if (isset($_GET['poster_id'])) {
 <div id="help" class="administrative"
      style="display:<?php echo isset($_GET['help']) ? 'block' : 'none' ?>; text-align:center">
     To add photos to this album, edit any photo on the site and add "<b><?= $album->get('term') ?></b>" to its
-    description.
+    tags.
 </div>
+<ul class="breadcrumb">
+  <li><a href="<?= htmlspecialchars($topicOpenGraph['og:url']) ?>"><i class="fa fa-tags"></i> <?= htmlspecialchars($topicOpenGraph['og:title']) ?></a></li>
+  <li class="active"><i class="fa fa-tags"></i> <?= htmlspecialchars($openGraph['og:title']) ?></li>
+</ul>
 <?php
 $cameralife->theme->grid($results);
 $cameralife->theme->pageSelector(($sort == 'rand()') ? -1 : $start, $album->getPhotoCount(), 12, "id=" . $album->get('id'));

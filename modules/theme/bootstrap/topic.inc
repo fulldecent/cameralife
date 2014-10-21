@@ -13,9 +13,13 @@ $cameralife->getFeature('security');
 $cameralife->getFeature('fileStore');
 $albums = $topic->getAlbums();
 $start = isset($_GET['start']) ? intval($_GET['start']) : 0;
+$openGraph = $topic->getOpenGraph();
 
 $cameralife->theme->header($topic);
 ?>
+<ul class="breadcrumb">
+  <li><i class="fa fa-tags"></i> <?= htmlspecialchars($openGraph['og:title']) ?></li>
+</ul>
 <form name="form1" method=post action="album_controller.php">
     <?php
 
@@ -87,7 +91,7 @@ $cameralife->theme->header($topic);
             }
             ?>
         </select>
-        <input type=submit value="Sort">
+        <input type=submit value="Sort" class="btn btn-default btn-sm">
     </p>
 </form>
 <?php

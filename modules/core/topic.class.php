@@ -48,14 +48,6 @@ class Topic extends Search
             $sort = 'albums.id desc';
         }
 
-        $conditions = array();
-        $binds = array();
-        $i = 0;
-        foreach (preg_split('/\s+/', $this->query) as $queryPart) {
-            $conditions[$i] = "(name LIKE :$i)";
-            $binds[$i] = '%' . $queryPart . '%';
-            $i++;
-        }
         $query = $cameralife->database->Select(
             'albums',
             'id',
