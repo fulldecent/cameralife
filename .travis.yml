@@ -35,6 +35,8 @@ script:
   - php phploc.phar .
   ## PHPUNIT
   - phpunit .
+  ## LINT
+  - find ./ -type f -name \*.php -exec php -l {} \;
 
 notifications:
   email:

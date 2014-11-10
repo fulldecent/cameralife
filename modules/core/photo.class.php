@@ -645,14 +645,13 @@ class Photo extends View
 
         if (!count($this->contextPhotos)) {
             $this->context->SetPage(0, 99);
-
-            $this->contextPhotos = $this->context->GetPhotos(); /* Using the base class, how hot is that? */
+            $this->contextPhotos = $this->context->getPhotos(); /* Using the base class, how hot is that? */
             $last = null;
             foreach ($this->contextPhotos as $cur) {
-                if ($cur->Get('id') == $this->get('id') && $last->get('id')) {
+                if ($cur->get('id') == $this->get('id') && $last) {
                     $this->contextPrev = $last;
                 }
-                if ($last->get('id') == $this->get('id')) {
+                if ($last && $last->get('id') == $this->get('id')) {
                     $this->contextNext = $cur;
                 }
                 $last = $cur;

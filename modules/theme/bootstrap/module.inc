@@ -80,34 +80,6 @@ class BootstrapTheme extends ThemeModule
         include dirname(__FILE__) . '/' . strtolower($name) . '.inc';
     }
 
-    //TODO: GET RID OF THIS, BECAUSE ALT CAN BE SET BETTER BY THE CALLER?
-    public function image($name, $extra = array())
-    {
-        global $cameralife;
-        if (preg_match('/src="([^"]*)"/i', $name)) {
-            $image['src'] = $regs[1];
-            $image['alt'] = basename($image['src']);
-        } else {
-            if (preg_match('#\.|/#', $name)) {
-                $image['src'] = $name;
-                $image['alt'] = basename($image['src']);
-            } else # Named asset, like 'small-album'
-            {
-                $image['src'] = $cameralife->iconURL($name);
-                $image['alt'] = $name;
-            }
-        }
-
-        $image = array_merge($image, $extra);
-        echo "<img";
-        foreach ($image as $attr => $val) {
-            if ($val) {
-                echo " $attr=\"$val\"";
-            }
-        }
-        echo " />\n";
-    }
-
     /**
      * @access public
      * @param view   $view      VIEW being displayed
@@ -317,7 +289,15 @@ class BootstrapTheme extends ThemeModule
             } else {
                 $imageattrs = array('alt' => $openGraph['og:title'], 'class' => 'l3');
             }
-            $this->Image($openGraph['og:image'], $imageattrs);
+            
+            echo '<img src="' . $openGraph['og:image'] . '"';
+            foreach ($imageattrs as $attr => $val) {
+                if ($val) {
+                    echo " $attr=\"$val\"";
+                }
+            }
+            echo '">';
+            
             if (isset($openGraph['og:image:width']) && isset($openGraph['og:image:height'])) {
                 echo '<div class="l4" style="width:' . $openGraph['og:image:width'] . 'px">';
             } else {

@@ -123,7 +123,7 @@ function html_select_auth($param_name)
                     );
 
                     echo "<tr><td>\n";
-                    echo '<img src="' . $cameralife->iconURL('small-login') . '">';
+                    echo "<tr><td><i class=\"fa fa-user\"></i> \n";
                     echo $curuser["username"] . "\n";
                     echo "  <td><select name=\"" . $curuser["id"] . "\">\n";
                     if ($curuser["auth"] == 1) {

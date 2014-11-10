@@ -69,11 +69,9 @@ $cameralife->theme->header($folder, null, $headers);
         $ancestorOpenGraph = $ancestor->GetOpenGraph();
         echo '  <li><a href="' . htmlspecialchars(
             $ancestorOpenGraph['og:url']
-        ) . '"><img alt="folder" src="' . htmlspecialchars(
-            $cameralife->iconURL('small-folder')
-        ) . '"> ' . htmlentities($ancestorOpenGraph['og:title']) . '</a></li>';
+        ) . '"><i class="fa fa-folder"></i> ' . htmlentities($ancestorOpenGraph['og:title']) . '</a></li>';
     }
-    echo "        <li><img alt=\"folder\" src=\"" . $cameralife->iconURL('small-folder') . "\"> $folder_name</li>\n";
+    echo "        <li><i class=\"fa fa-folder\"></i> $folder_name</li>\n";
     ?>
 </ul>
 

@@ -129,26 +129,26 @@ if ($checkpointDate) {
                 <input type="checkbox" name="showphotos" <?php if ($_POST["showphotos"]) {
                     echo " checked";
 } ?>>
-                <img src="<?= $cameralife->iconURL('small-photo') ?>"> Photos
+                <i class="fa fa-picture-o"></i>
             </label>
             <label class="checkbox inline">
                 <input type="checkbox" name="showalbums" <?php if ($_POST["showalbums"]) {
                     echo " checked";
 } ?>>
-                <img src="<?= $cameralife->iconURL('small-album') ?>"> Albums
+                <i class="fa fa-tag"></i>
             </label>
             <label class="checkbox inline">
                 <input type="checkbox" name="showusers" <?php if ($_POST["showusers"]) {
                     echo " checked";
 } ?>>
-                <img src="<?= $cameralife->iconURL('small-login') ?>"> Users
+                <i class="fa fa-user"></i>
             </label>
             <label class="checkbox inline">
                 <input type="checkbox"
                        name="showpreferences" <?php if ($_POST["showpreferences"]) {
                             echo " checked";
 } ?>>
-                <img src="<?= $cameralife->iconURL('small-admin') ?>"> Preferences
+                <i class="fa fa-gear"></i>
             </label>
         </div>
     </div>

@@ -9,25 +9,9 @@
 $required_images =
     array(
         'main',
-        'small-main',
         'topic',
-        'small-topic',
-        'album',
-        'small-album',
-        'photo',
-        'small-photo',
         'folder',
-        'small-folder',
-        'login',
-        'small-login',
-        'admin',
-        'small-admin',
-        'stats',
-        'small-stats',
-        'admin-item',
         'search',
-        'small-search',
-        'icon-folder'
     );
 
 if (!$_GET['theme'] || preg_match('/[/\\]/', $_GET['theme'])) {

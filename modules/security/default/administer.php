@@ -95,6 +95,7 @@ function html_select_auth($param_name)
 
     <?php
     if ($_GET['page'] == 'users') {
+        ?>
                     <form method="post">
         <table class="table">
             <tr>
@@ -119,8 +120,7 @@ function html_select_auth($param_name)
                 "username='" . $curuser["username"] . "'"
             );
 
-            echo "<tr><td>\n";
-            echo '<img src="' . $cameralife->iconURL('small-login') . '">';
+            echo "<tr><td><i class=\"fa fa-user\"></i> \n";
             echo $curuser["username"] . "\n";
             echo "  <td><select name=\"" . $curuser["id"] . "\">\n";
             if ($curuser["auth"] == 1) {

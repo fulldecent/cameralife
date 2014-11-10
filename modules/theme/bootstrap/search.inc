@@ -66,9 +66,8 @@ if (isset($_GET['albumhelp']) && $_GET['albumhelp']) {
     exit(0);
 }
 
-    echo "<h1>";
-    $cameralife->theme->Image('search');
-    echo "Search for " . htmlentities($search->query) . "</h1>";
+    echo '<h1>';
+    echo "Search for <code>" . htmlentities($search->query) . "</code></h1>";
     echo '<ul class="nav nav-pills">' . PHP_EOL;
     echo '<li class="';
 if ($_GET["page"] == 'photos') {
