@@ -1,9 +1,0 @@
-{
-    "name": "Default Security",
-    "author": "William Entriken",
-    "email": "cameralife@phor.net",
-    "version": "1.0.3",
-    "date": "2014-03-20",
-    "url": "http://fdcl.sourceforge.net",
-    "desc": "Implements on-site security based on access lists"
-}

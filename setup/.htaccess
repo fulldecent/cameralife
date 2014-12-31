@@ -1,7 +1,0 @@
-DirectoryIndex index.php
-Options -Indexes +MultiViews +FollowSymLinks
-
-<IfModule mod_rewrite.c>
-RewriteEngine on
-RewriteRule clear-REWRITETEST.gif images/clear.gif
-</IfModule>

@@ -1,3 +1,0 @@
-[submodule "modules/security/openid/lightopenid"]
-	path = modules/security/openid/lightopenid
-	url = git://gitorious.org/lightopenid/lightopenid.git

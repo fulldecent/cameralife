@@ -1,59 +1,39 @@
-=======================================
-RELEASE PROCESS / AND HACKING PROCESS
-=======================================
+##
+##
+## TODO BEFORE NEW ALPHA RELEASE
+##
+##
 
-MOVE ALL THIS REGRESSION TESTING TO TRAVIS CONTINUOUS INTEGRATION
-  Try to upload a non-image
-  OpenSearch: http://feedvalidator.org/check.cgi?url=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Fopensearch.xml.php
-  OpenGraph: https://developers.facebook.com/tools/debug/og/object?q=camera.phor.net
-  RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/cameralife/rss.php%3Fq%3Dwill
-  git grep -i Deprecated # create issues for these
-  git grep -i TODO # create issues for these and remove from code?
-  static code analysis in PHPStorm
-  http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2F
-  http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Fphotos%2F15608
-  http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Ftopics%2FPeople
-  http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Falbums%2F168
-  http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Ffolders%2F2012%2F2012-06%2520Pool%2520party%2F
-  Remove support for strip slashes / and remove all stripslashes!
-  git grep TODO
-  git grep GET -- modules/theme/
-  git grep PHP_SELF -- modules/theme/
-  git grep Database -- modules/theme
-  grep '\./' */*php | grep -v requ
-  check for inputs as arrays!
-  Login via OpenID / Facebook / Google / ...
-  XSSme SQLinjectme wapiti
-  zaproxy
+ - Make one test case, and get it working in Travis
+ - git grep
+      global
+      //TODO
+      //DEBUG
+      $this->cameralife
+      constant()
 
-Make a new flyover install video
+##
+## TODO BEFORE NEW BETA RELEASE
+##
 
--------------------
-AUTOMATED RELEASE
-edit the first line, save this file, then paste into a terminal...
--------------------
-
-edit Changelog
-edit composer.json
-
-VERSION='2.7.0a6' # <-- EDIT THIS
-echo $VERSION > VERSION
-sed -i "/this..version/s/'.*'/'$VERSION'/" main.inc
-grep -lIZr . . | grep -z -v '\.git' | # no binary, no git
-xargs -0 sed "1,10 s/@\(\W*\)version\W*[0-9.a-z]\+/@\1version $VERSION/" -i
-git commit -am "Releasing version $VERSION"
-git tag -a "v$VERSION" -m "Version $VERSION"
-git push --tags
-phpdoc --directory . --target ../docs/ --title 'Camera Life Developer Manual' --ignore 'lightopenid/'
-
-#GOTO  http://freecode.com/projects/fdcl/releases/new
-#GOTO  https://packagist.org/packages/fulldecent/cameralife
-#UPDATE SCREENSHOTS ON README.MD
-
-===================================
-WHEN MAKING CHANGES TO THE DATABASE
-===================================
- * Increment version number in module-config.inc, main.inc, and setup/upgrade/upgrade.php
- * Update db schema at setup/index2.php
- * Update install.mysql
- * Write an upgrader in setup/upgrade
+ - Get previous / get next and accelerator
+ - AuditTrail should not track Photo : path changes and deleting photos because they were not found
+ - Update feature list on README and homepage
+ - SearchController - if logged in as admin, allow to create new tag, and link from MainPageView
+ - Choose plugin idea from:
+     https://stackoverflow.com/questions/4471183/php-event-listener-best-practice-implementation/4471363#4471363
+     http://blog.ircmaxell.com/2012/03/handling-plugins-in-php.html
+     https://stackoverflow.com/questions/42/best-way-to-allow-plugins-for-a-php-application
+ - uploading photos
+ - Make a test case for installing
+ - Statistics page: show most favorited photos:
+      select 
+      ratings.id, 
+      count(*) as X 
+      from ratings, photos
+      where rating>0 AND ratings.id = photos.id
+      group by id order by X desc
+ - Allow admin to view private photos / status != 0
+ - Allow "undo rename" in photo.php
+ - AdWords campaign
+ - http://camera.phor.net/docs/reports/errors.html

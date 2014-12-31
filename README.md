@@ -6,14 +6,9 @@
 Camera Life
 ===========
 
-Version 2.7
-Copyright (C) 2001-2014 William Entriken
-https://github.com/fulldecent/cameralife
-cameralife@phor.net
-
-Camera Life is a system for cataloging your photo collection. It gives users
-the ability to search or browse your archive in intuitive ways, with an
-attention to powerful administrative functions.
+Run your own photo website. Camera Life is a system for cataloging your photo
+collection. It gives users the ability to search or browse your archive in 
+intuitive ways, with an attention to powerful administrative functions.
 
 ![Screenshot 1](http://fulldecent.github.com/cameralife/splashAssets/screenshot1.png?20140707)
 ![Screenshot 2](http://fulldecent.github.com/cameralife/splashAssets/screenshot2.png?20140707)
@@ -23,35 +18,28 @@ Features
 --------
 1. Great photo organization
 
-   Photos are sorted in folders and also by albums/topics with automatic
-categorization by keywords.
+   Photos are searchable, and browsable with folders and tags
 
 2. Full audit trail
 
-   If you have open access and someone adds lame comments or photo
-descriptions, you can easily revert changes to the site.
+   Any change to the site can be undone, individually or in bulk
 
-3. Easy to install and try
+3. Installs in one step
 
-   See the installation flyover at http://youtu.be/sm-v36GcjXk (50 second video)
+   Yup
 
 4. Easy to get photos in
 
-  Users can upload photos via the web, FTP access, iPhoto, iPhone,
-Mac/Windows/Linux software, Digikam, or any other product that supports
-FTP.
+   Upload photos using an iOS or Android app, or direct from your SLR camera
 
 5. Responsive
 
-  Supports OpenSearch, OpenGraph and RSS. Is built using JQuery/AJAX for modernbrowsers,
-but gracefully degrades without Javascript for accessibility... or if you want
-to load it on a cell phone made in the 90's.
+   Supports RSS, OpenGraph, OpenSearch and devices from Netscape 1.0 to iOS 8
 
 6. Integrates well with your site
 
-  Code is documented and integrates with your database and security model.
-Photos store on your server, Amazon S3, a remote FTP/SFTP server, and rsync.net.
-It scales if you want to offload thumbnailing to separate server(s).
+   Uses OpenID for login/registration and integrates easily with existing login
+   and can serve images off of Amazon S3, Dropbox, remote HTTP, and other CDNs
 
 7. Supports PHP 5.4+ and MySQL
 
@@ -59,21 +47,17 @@ It scales if you want to offload thumbnailing to separate server(s).
 Installation
 ------------
 
-See the file INSTALL.
+    git clone https://github.com/fulldecent/cameralife.git
+    
+Then open your browser for one-step install. Also see our 50-second install
+flyover video at https://fulldecent.github.io/cameralife/
 
 
 Maintenance
 -----------
 
-1. Administration
-
-  Regularly login as admin and click Administer at the top of the main page.
-Items that require your attention will show in red.
-
-2. Add albums
-
-  To create new Albums, login and choose Create Album from the front page. Or
-start a search and click 'Create an album with these results'
+Login as administrator to see comments, flagged photos and other changes since
+your last review. Anything that needs your attention is in red.
 
 
 Support
@@ -84,3 +68,8 @@ Please file issues at https://github.com/fulldecent/cameralife/issues
 Lead developer is available to consult on custom integration of Camera Life.
 
 Thank you for choosing Camera Life for your photo displaying needs!
+
+Version 2.7
+Copyright (C) 2001-2014 William Entriken
+https://github.com/fulldecent/cameralife
+cameralife@phor.net

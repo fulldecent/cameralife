@@ -1,0 +1,31 @@
+[
+    {
+        "name": "lightopenid/lightopenid",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://git.gitorious.org/lightopenid/lightopenid.git",
+            "reference": "9d42dc24e4dd34121c98a6491bc3ef7933a68a19"
+        },
+        "require": {
+            "php": ">=5.2.3"
+        },
+        "time": "2013-10-27 16:25:49",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "./"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "homepage": "http://code.google.com/p/lightopenid/",
+        "keywords": [
+            "OpenId"
+        ]
+    }
+]

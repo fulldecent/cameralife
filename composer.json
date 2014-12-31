@@ -13,8 +13,9 @@
         }
     ],
     "require": {
-        "php": ">=5.2.0",
-        "ext-xml": "*"
+        "php": ">=5.4.0",
+        "ext-xml": "*",
+        "lightopenid/lightopenid": "dev-master"
     },
     "recommend": {
         "ext-zip": "*",
