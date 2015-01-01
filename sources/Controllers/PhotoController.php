@@ -19,7 +19,7 @@ class PhotoController extends HtmlController
 
         if (!Models\Photo::photoExists(intval($id))) {
             header("HTTP/1.0 404 Not Found");
-            $cameralife->error("Photo #" . intval($_GET['id']) . " not found.");
+            throw new \Exception('Photo #' . intval($id) . ' not found.');
         }
 
         $this->model = Models\Photo::getPhotoWithID($id);
@@ -52,7 +52,8 @@ class PhotoController extends HtmlController
         $this->htmlHeader($cookies);
 
         if ($this->model->get('status') != 0) {
-            $cameralife->security->authorize('admin_file', 'This file has been flagged or marked private');
+//todo check privs
+            throw new \Exception('This file has been flagged or marked private');
         }
         $this->model->set('hits', $this->model->get('hits') + 1);
 

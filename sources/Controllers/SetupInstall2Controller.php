@@ -355,7 +355,7 @@ EOF;
         Models\Database::setupTables();
         Models\Preferences::setFactoryDefaults();
         
-        $user = Models\User::userWithOpenId($_SESSION['openid_identity'], $_SESSION['openid_email']);
+        Models\User::userWithOpenId($_SESSION['openid_identity'], $_SESSION['openid_email']);
         Models\Database::update('users', ['auth'=>5], 'email="'.$_SESSION['openid_email'].'"'); //todo security
         header('Location: ' . MainPageController::getUrl());
 //todo URL / url http://www.teamten.com/lawrence/writings/capitalization_of_initialisms.html        

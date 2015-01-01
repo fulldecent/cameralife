@@ -186,7 +186,7 @@ class Image
         } elseif ($angle == 180) {
             for ($x = 0; $x < $srcX; $x++) {
                 for ($y = 0; $y < $srcY; $y++) {
-                    imagecopy($imgDest, $imgSrc, $srcX - $x - 1, $srcy - $y - 1, $x, $y, 1, 1);
+                        imagecopy($imgDest, $imgSrc, $srcX - $x - 1, $srcY - $y - 1, $x, $y, 1, 1);
                 }
             }
         }

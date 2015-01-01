@@ -262,7 +262,7 @@ class Database
     {
         empty(self::$pdoConnection) && self::connect();
         $setstring = '';
-        foreach ($values as $key => $value) {
+        foreach (array_keys($values) as $key) {
             $setstring .= "`$key` = ?, ";
         }
         $setstring = substr($setstring, 0, -2); // chop off last ', '
@@ -285,7 +285,7 @@ class Database
      * @param  string $extra  (default: '')
      * @return integer
      */
-    public static function insert($table, $values, $extra = '')
+    public static function insert($table, $values)
     {
         empty(self::$pdoConnection) && self::connect();
         $columns = '`' . implode('`,`', array_keys($values)) . '`';

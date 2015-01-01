@@ -52,7 +52,7 @@ class Search extends IndexedModel
     /**
      * The maximum number of results to return
      *
-     * (default value: 12)
+     * (default value: 20)
      *
      * @var    int
      * @access protected
@@ -221,6 +221,7 @@ class Search extends IndexedModel
 
         $tags = array();
         while ($row = $query->fetchAssoc()) {
+// todo want a public tagWithRecord function to avoid extra DB call here            
             $tags[] = new Tag($row['id']);
         }
 

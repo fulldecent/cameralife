@@ -13,7 +13,7 @@ class FooterView extends View
 {
     public $ownerEmail;
     public $statsUrl;
-    public $analyticsID;
+    public $analyticsId;
 
     public function render()
     {
@@ -39,12 +39,12 @@ class FooterView extends View
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
         <?php
-        if (!empty($this->analyticsID)) {
+        if (!empty($this->analyticsId)) {
             ?>
             <!--TRACKING CODE-->
             <script type="text/javascript">
                 var _gaq = _gaq || [];
-                _gaq.push(['_setAccount', '<?= $analyticsID ?>']);
+                _gaq.push(['_setAccount', '<?= $this->analyticsId ?>']);
                 _gaq.push(['_trackPageview']);
 
                 (function () {

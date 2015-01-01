@@ -60,7 +60,7 @@ class AdminCommentsController extends HtmlController
         );
         $commentRecords = array();
         while ($record = $query->fetchAssoc()) {
-            $auditTrails[] = $record;
+            $commentRecords[] = $record;
         }
         $view->commentRecords = $commentRecords;
 

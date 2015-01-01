@@ -47,7 +47,7 @@ class LoginController extends HtmlController
                         session_start();
                         $_SESSION['openid_identity'] = $openid->identity;
                         $_SESSION['openid_email'] = $attr['contact/email'];
-                        $user = Models\User::userWithOpenId($_SESSION['openid_identity'], $_SESSION['openid_email']);
+                        Models\User::userWithOpenId($_SESSION['openid_identity'], $_SESSION['openid_email']);
                         header('Location: ' . MainPageController::getUrl());
                         return;
                     } else {

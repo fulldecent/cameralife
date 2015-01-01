@@ -459,6 +459,7 @@ class Folder extends Search
      */
     public function fsck()
     {
+//todo update, and is this used?        
         global $cameralife;
         $files = $cameralife->fileStore->ListFiles('photo', $this->path, false);
         if (!is_array($files)) {

@@ -102,9 +102,6 @@ class Tag extends Search
      */
     public function getPhotoCount()
     {
-        //TODO: should not use global CAMERALIFE!
-        global $cameralife;
-
         $conditions = array();
         $binds = array();
         $i = 0;
@@ -129,8 +126,6 @@ class Tag extends Search
 
     public function set($key, $value)
     {
-        global $cameralife;
-
         $receipt = null;
         if ($key != 'hits') {
             $receipt = AuditTrail::createAuditTrailForChange('album', $this->record['id'], $key, $this->record[$key], $value);
@@ -160,10 +155,8 @@ class Tag extends Search
 
     public function setPoster($poster)
     {
-        global $cameralife;
-
         if (!is_numeric($poster)) {
-            $cameralife->error("Failed to set poster for tags");
+            throw new \Exception("Failed to set poster for tags");
         }
 
         $cameralife->database->SelectOne('photos', 'COUNT(*)', 'status=1 AND id=' . $_GET['poster_id'])

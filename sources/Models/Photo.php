@@ -164,18 +164,10 @@ class Photo extends IndexedModel
 
     //////////////////////////////////////////////////////////
 
-    public static function photoExists($original)
+    public static function photoExists($id)
     {
-        global $cameralife;
-
-        if (!is_numeric($original)) {
-            $cameralife->error("Input needs to be a number");
-        }
-
-        $result = Database::select('photos', '*', "id=$original");
-        $a = $result->fetchAssoc();
-
-        return $a != 0;
+        $numMatchingPhotos = Database::selectOne('photos', 'COUNT(*)', 'id=:id', null, null, ['id'=>$id]);
+        return $numMatchingPhotos > 0;
     }
 
     public function set($key, $value)
@@ -239,8 +231,6 @@ class Photo extends IndexedModel
     /// also update fsize if this is unmodified.
     public function generateThumbnail()
     {
-        global $cameralife;
-
         $this->loadImage(); // sets $this->EXIF and $this-record
         if (Preferences::valueForModuleWithKey('CameraLife', 'autorotate')  == 'yes'
             && (!$this->record['modified'] || $this->record['modified'] == '1')) {
@@ -254,11 +244,12 @@ class Photo extends IndexedModel
             $modArray = json_decode($this->record['modified'], true);
             $rotation = isset($modArray['rotate']) ? $modArray['rotate'] : 0;
             $activeImage->rotate($rotation);
-
-            $tempfile = tempnam($cameralife->getPref('tempdir'), 'cameralife_mod');
+            $tempfile = tempnam(sys_get_temp_dir(), 'cameralife_mod');
             $activeImage->save($tempfile);
             $filename = '/' . $this->record['id'] . '_mod.' . $this->extension;
-            $cameralife->fileStore->PutFile('other', $filename, $tempfile, $this->record['status'] != 0);
+            $store = FileStore::fileStoreWithName('other');
+            $store->putFile($filename, $tempfile, $this->record['status'] != 0);
+//todo warning secure!            
         }
 
         $imagesize = $activeImage->getSize();
@@ -292,13 +283,13 @@ class Photo extends IndexedModel
 
     private function deleteThumbnails()
     {
-        global $cameralife;
-        @$cameralife->fileStore->EraseFile('other', '/' . $this->record['id'] . '_mod.' . $this->extension);
-        @$cameralife->fileStore->EraseFile(
+//todo update        
+        $cameralife->fileStore->EraseFile('other', '/' . $this->record['id'] . '_mod.' . $this->extension);
+        $cameralife->fileStore->EraseFile(
             'other',
             '/' . $this->record['id'] . '_' . $cameralife->getPref('scaledsize') . '.' . $this->extension
         );
-        @$cameralife->fileStore->EraseFile(
+        $cameralife->fileStore->EraseFile(
             'other',
             '/' . $this->record['id'] . '_' . $cameralife->getPref('thumbsize') . '.' . $this->extension
         );
@@ -371,44 +362,37 @@ class Photo extends IndexedModel
 
     public function getMediaURL($format = 'thumbnail')
     {
-        $url = null;
         if ($format == 'photo' || $format == '') {
             if ($this->get('modified')) {
                 $path = "/{$this->record['id']}_mod.{$this->extension}";
-                $store = FileStore::fileStoreWithName('other');
-                $url = $store->getUrl($path);
+                $store = 'other';
             } else {
                 $path = "/{$this->record['path']}{$this->record['filename']}";
-                $store = FileStore::fileStoreWithName('photos');
-                $url = $store->getUrl($path);
+                $store = 'photos';
             }
         } elseif ($format == 'scaled') {
             $thumbSize = Preferences::valueForModuleWithKey('CameraLife', 'scaledsize');
             $path = "/{$this->record['id']}_{$thumbSize}.{$this->extension}";
-            $store = FileStore::fileStoreWithName('other');
-            $url = $store->getUrl($path);
+            $store = 'other';
         } elseif ($format == 'thumbnail') {
             $thumbSize = Preferences::valueForModuleWithKey('CameraLife', 'thumbsize');
             $path = "/{$this->record['id']}_{$thumbSize}.{$this->extension}";
-            $store = FileStore::fileStoreWithName('other');
-            $url = $store->getUrl($path);
+            $store = 'other';
         } elseif (is_numeric($format)) {
             $valid = preg_split('/[, ]+/', Preferences::valueForModuleWithKey('CameraLife', 'optionsizes'));
-            if (in_array($format, $valid)) {
-                $path = "/{$this->record['id']}_{$format}.{$this->extension}";
-                $store = FileStore::fileStoreWithName('other');
-                $url = $store->getUrl($path);
-            } else {
-                $cameralife->error('This image size has not been allowed');
+            if (!in_array($format, $valid)) {
+                throw new \Exception('This image size has not been allowed');
             }
+            $path = "/{$this->record['id']}_{$format}.{$this->extension}";
+            $store = 'other';
         } else {
-            $cameralife->error('Bad format parameter');
+            throw new \Exception('Bad format parameter');
         }
-
+        $fileStore = FileStore::fileStoreWithName($store);
+        $url = $fileStore->getUrl($path);
         if ($url) {
             return $url;
         }
-
         $url = constant('BASE_URL') . "/media/{$this->record['id']}.{$this->extension}?scale={$format}&ver={$this->record['mtime']}";
         if (Preferences::valueForModuleWithKey('CameraLife', 'rewrite') == 'no') {
             $url = constant('BASE_URL') . "/index.php?page=Media&id={$this->record['id']}&scale={$format}&ver={$this->record['mtime']}";
@@ -437,13 +421,6 @@ class Photo extends IndexedModel
                 return true;
             }
         }
-        if ($this->record['modified']) {
-            $filename = '/' . $this->record['id'] . '_mod.' . $this->extension;
-            $stat = $cacheBucket->listFiles($filename);
-            if (!count($stat)) {
-                return true;
-            }
-        }
         $sizes = array();
         $sizes[] = Preferences::valueForModuleWithKey('CameraLife', 'thumbsize');
         $sizes[] = Preferences::valueForModuleWithKey('CameraLife', 'scaledsize');
@@ -463,7 +440,7 @@ class Photo extends IndexedModel
 
     public function getFolder()
     {
-        return new Folder($this->record['path'], false);
+        return new Folder($this->record['path']);
     }
 
     public function getEXIF()
@@ -485,109 +462,97 @@ class Photo extends IndexedModel
 
     private function loadEXIF($file)
     {
-        global $cameralife;
-
-        $exif = @exif_read_data($file, 'IFD0', true);
-        $this->EXIF = array();
+        $exif = exif_read_data($file, 'IFD0', true);
         if ($exif === false) {
             return;
-        } else {
-            $focallength = $exposuretime = null;
-            if (isset($exif['EXIF']['DateTimeOriginal'])) {
-                $this->EXIF["Date taken"] = $exif['EXIF']['DateTimeOriginal'];
-                $exifPieces = explode(" ", $this->EXIF["Date taken"]);
-                if (count($exifPieces) == 2) {
-                    $this->record['created'] = date(
-                        "Y-m-d",
-                        strtotime(str_replace(":", "-", $exifPieces[0]) . " " . $exifPieces[1])
-                    );
-                }
+        }
+        $this->EXIF = array();
+        $focallength = $exposuretime = null;
+        if (isset($exif['EXIF']['DateTimeOriginal'])) {
+            $this->EXIF["Date taken"] = $exif['EXIF']['DateTimeOriginal'];
+            $exifPieces = explode(" ", $this->EXIF["Date taken"]);
+            if (count($exifPieces) == 2) {
+                $this->record['created'] = date(
+                    "Y-m-d",
+                    strtotime(str_replace(":", "-", $exifPieces[0]) . " " . $exifPieces[1])
+                );
             }
-            if (isset($exif['IFD0']['Model'])) {
-                $this->EXIF["Camera Model"] = $exif['IFD0']['Model'];
+        }
+        if (isset($exif['IFD0']['Model'])) {
+            $this->EXIF["Camera Model"] = $exif['IFD0']['Model'];
+        }
+        if (isset($exif['COMPUTED']['ApertureFNumber'])) {
+            $this->EXIF["Aperture"] = $exif['COMPUTED']['ApertureFNumber'];
+        }
+        if (isset($exif['EXIF']['ExposureTime'])) {
+            $this->EXIF["Speed"] = $exif['EXIF']['ExposureTime'];
+        }
+        if (isset($exif['EXIF']['ISOSpeedRatings'])) {
+            $this->EXIF["ISO"] = $exif['EXIF']['ISOSpeedRatings'];
+        }
+        if (isset($exif['EXIF']['FocalLength'])) {
+            if (preg_match('#([0-9]+)/([0-9]+)#', $exif['EXIF']['FocalLength'], $regs)) {
+                $focallength = $regs[1] / $regs[2];
             }
-            if (isset($exif['COMPUTED']['ApertureFNumber'])) {
-                $this->EXIF["Aperture"] = $exif['COMPUTED']['ApertureFNumber'];
+            $this->EXIF["Focal distance"] = "${focallength}mm";
+        }
+        if (isset($exif['EXIF']['FocalLength'])) {
+            $ccd = 35;
+            if (isset($exif['COMPUTED']['CCDWidth'])) {
+                $ccd = str_replace('mm', '', $exif['COMPUTED']['CCDWidth']);
             }
-            if (isset($exif['EXIF']['ExposureTime'])) {
-                $this->EXIF["Speed"] = $exif['EXIF']['ExposureTime'];
-            }
-            if (isset($exif['EXIF']['ISOSpeedRatings'])) {
-                $this->EXIF["ISO"] = $exif['EXIF']['ISOSpeedRatings'];
-            }
-            if (isset($exif['EXIF']['FocalLength'])) {
-                if (preg_match('#([0-9]+)/([0-9]+)#', $exif['EXIF']['FocalLength'], $regs)) {
-                    $focallength = $regs[1] / $regs[2];
-                }
-                $this->EXIF["Focal distance"] = "${focallength}mm";
-            }
-            if (isset($exif['EXIF']['FocalLength'])) {
-                $ccd = 35;
-                if (isset($exif['COMPUTED']['CCDWidth'])) {
-                    $ccd = str_replace('mm', '', $exif['COMPUTED']['CCDWidth']);
-                }
-                $fov = round(2 * rad2deg(atan($ccd / 2 / $focallength)), 2);
-                //@link http://www.rags-int-inc.com/PhotoTechStuff/Lens101/
+            $fov = round(2 * rad2deg(atan($ccd / 2 / $focallength)), 2);
+            //@link http://www.rags-int-inc.com/PhotoTechStuff/Lens101/
+            $this->EXIF["Field of view"] = "${fov}&deg; horizontal";
+        }
+        if ($focallength && $exposuretime) {
+            $iso = isset($this->EXIF["ISO"]) ? $this->EXIF["ISO"] : 100;
+            if ($exif['EXIF']['Flash'] % 2 == 1) {
+                $light = 'Flash';
+            } else {
+                preg_match('#([0-9]+)/([0-9]+)#', $exposuretime, $regs);
+                $exposuretime = $regs[1] / $regs[2];
 
-                $this->EXIF["Field of view"] = "${fov}&deg; horizontal";
+                $electronVolts = pow(str_replace('f/', '', $fnumber), 2) / $iso?:100 / $exposuretime;
+                $light = $electronVolts > 10 ? 'Probably outdoors' : 'Probably indoors';
             }
-            if ($focallength && $exposuretime) {
-                if (!$iso) {
-                    $iso = 100;
-                }
-                if ($exif['EXIF']['Flash'] % 2 == 1) {
-                    $light = 'Flash';
-                } else {
-                    if (preg_match('#([0-9]+)/([0-9]+)#', $exposuretime, $regs)) {
-                        ;
-                    }
-                    $exposuretime = $regs[1] / $regs[2];
-
-                    $ev = pow(str_replace('f/', '', $fnumber), 2) / $iso / $exposuretime;
-                    if ($ev > 10) {
-                        $light = 'Probably outdoors';
-                    } else {
-                        $light = 'Probably indoors';
-                    }
-                }
-                $this->EXIF["Lighting"] = $light;
+            $this->EXIF["Lighting"] = $light;
+        }
+        if (isset($exif['IFD0']['Orientation'])) {
+            $this->EXIF["Orientation"] = $exif['IFD0']['Orientation'];
+        }
+        if (isset($exif['GPS']) && isset($exif['GPS']['GPSLatitude']) && isset($exif['GPS']['GPSLongitude'])) {
+            $lat = 0;
+            if (count($exif['GPS']['GPSLatitude']) > 0) {
+                $lat += $this->gpsToNumber($exif['GPS']['GPSLatitude'][0]);
             }
-            if (isset($exif['IFD0']['Orientation'])) {
-                $this->EXIF["Orientation"] = $exif['IFD0']['Orientation'];
+            if (count($exif['GPS']['GPSLatitude']) > 1) {
+                $lat += $this->gpsToNumber($exif['GPS']['GPSLatitude'][1]) / 60;
             }
-            if (isset($exif['GPS']) && isset($exif['GPS']['GPSLatitude']) && $exif['GPS']['GPSLongitude']) {
-                $lat = 0;
-                if (count($exif['GPS']['GPSLatitude']) > 0) {
-                    $lat += $this->gpsToNumber($exif['GPS']['GPSLatitude'][0]);
-                }
-                if (count($exif['GPS']['GPSLatitude']) > 1) {
-                    $lat += $this->gpsToNumber($exif['GPS']['GPSLatitude'][1]) / 60;
-                }
-                if (count($exif['GPS']['GPSLatitude']) > 2) {
-                    $lat += $this->gpsToNumber($exif['GPS']['GPSLatitude'][2]) / 3600;
-                }
+            if (count($exif['GPS']['GPSLatitude']) > 2) {
+                $lat += $this->gpsToNumber($exif['GPS']['GPSLatitude'][2]) / 3600;
+            }
 
-                $lon = 0;
-                if (count($exif['GPS']['GPSLongitude']) > 0) {
-                    $lon += $this->gpsToNumber($exif['GPS']['GPSLongitude'][0]);
-                }
-                if (count($exif['GPS']['GPSLongitude']) > 1) {
-                    $lon += $this->gpsToNumber($exif['GPS']['GPSLongitude'][1]) / 60;
-                }
-                if (count($exif['GPS']['GPSLongitude']) > 2) {
-                    $lon += $this->gpsToNumber($exif['GPS']['GPSLongitude'][2]) / 3600;
-                }
+            $lon = 0;
+            if (count($exif['GPS']['GPSLongitude']) > 0) {
+                $lon += $this->gpsToNumber($exif['GPS']['GPSLongitude'][0]);
+            }
+            if (count($exif['GPS']['GPSLongitude']) > 1) {
+                $lon += $this->gpsToNumber($exif['GPS']['GPSLongitude'][1]) / 60;
+            }
+            if (count($exif['GPS']['GPSLongitude']) > 2) {
+                $lon += $this->gpsToNumber($exif['GPS']['GPSLongitude'][2]) / 3600;
+            }
 
-                if ($exif['GPS']['GPSLatitudeRef'] == 'S') {
-                    $lat *= -1;
-                }
-                if ($exif['GPS']['GPSLongitudeRef'] == 'W') {
-                    $lon *= -1;
-                }
+            if ($exif['GPS']['GPSLatitudeRef'] == 'S') {
+                $lat *= -1;
+            }
+            if ($exif['GPS']['GPSLongitudeRef'] == 'W') {
+                $lon *= -1;
+            }
 
-                if ($lat != 0 && $lon != 0) {
-                    $this->EXIF["Location"] = sprintf("%.6f, %.6f", $lat, $lon);
-                }
+            if ($lat != 0 && $lon != 0) {
+                $this->EXIF["Location"] = sprintf("%.6f, %.6f", $lat, $lon);
             }
         }
 
@@ -612,7 +577,8 @@ class Photo extends IndexedModel
      */
     public function getRelated()
     {
-        global $_SERVER, $cameralife;
+//todo pass in referrer
+        global $_SERVER;
         $retval = array($this->getFolder());
         $this->context = $this->getFolder();
 

@@ -36,7 +36,7 @@ abstract class HtmlController extends Controller
     {
         $view = new Views\FooterView;
         $view->statsUrl = StatisticsController::getUrl();
-        $view->analyticsID = Models\Preferences::valueForModuleWithKey('BootstrapTheme', 'analytics');
+        $view->analyticsId = Models\Preferences::valueForModuleWithKey('BootstrapTheme', 'analytics');
         $view->ownerEmail = Models\Preferences::valueForModuleWithKey('CameraLife', 'owner_email');
         $view->render();
     }

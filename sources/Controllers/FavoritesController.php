@@ -26,10 +26,8 @@ class FavoritesController extends HtmlController
         $this->model = Models\Favorites::favoritesForCurrentUser($cookies);
 
         $start = isset($get['start']) ? $get['start'] : 0;
-        $section = isset($get['section']) ? $get['section'] : NULL;
         $this->model->setPage($start);
         $photoCount = $this->model->getPhotoCount();
-        $folderCount = $this->model->getFolderCount();
         $gridObjects = $this->model->getPhotos();
 
         /* Set up common page parts */

@@ -21,18 +21,18 @@ before_script:
 
 script:
   ## PHP_CodeSniffer
-  - phpcs --report=emacs --standard=PSR2 . --ignore=modules/security/openid/lightopenid/* 
+  - phpcs --report=emacs --standard=PSR2 . --ignore=vendor/*
   ## PHP Copy/Paste Detector
   - php phpcpd.phar --verbose .
   ## PHP Mess Detector
-  - phpmd . text cleancode --exclude modules/security/openid/lightopenid
-  - phpmd . text codesize --exclude modules/security/openid/lightopenid
-  - phpmd . text controversial --exclude modules/security/openid/lightopenid
-  - phpmd . text design --exclude modules/security/openid/lightopenid
-  - phpmd . text naming --exclude modules/security/openid/lightopenid
-  - phpmd . text unusedcode --exclude modules/security/openid/lightopenid
+  - phpmd . text cleancode --exclude vendor
+  - phpmd . text codesize --exclude vendor
+  - phpmd . text controversial --exclude vendor
+  - phpmd . text design --exclude vendor
+  - phpmd . text naming --exclude vendor
+  - phpmd . text unusedcode --exclude vendor
   ## PHPLOC
-  - php phploc.phar .
+  - php phploc.phar . --exclude vendor
   ## PHPUNIT
   - phpunit .
   ## LINT

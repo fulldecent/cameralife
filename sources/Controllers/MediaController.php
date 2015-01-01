@@ -84,6 +84,7 @@ class MediaController extends Controller
 
         if (!$file) {
             $photo->generateThumbnail();
+//todo fix
             list($file, $temp, $mtime) = $cameralife->fileStore->getFile($bucket, $filepath);
         }
 
