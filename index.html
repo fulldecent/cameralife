@@ -6,47 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A PHP/MYSQL program for creating your own photo website">
     <meta name="author" content="https://plus.google.com/117913021365449347166">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
     <link href="splashAssets/splash.css" rel="stylesheet">
-    <script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-52764-12']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-  
-  function trackOutboundLink(link, category, action) { 
-    try { 
-      _gaq.push(['_trackEvent', category , action]); 
-    } catch(err){}
-    setTimeout(function() {
-      document.location.href = link.href;
-    }, 100);
-  }
-</script>
   </head>
   <body>
     <div class="navbar navbar-default navbar-static-top">
       <div class="container">
-        <a class="navbar-brand" href="http://phor.net">a William Entriken production</a>
-        <div class="pull-right">
-        
-<div id="google_translate_element" style="margin-top:8px"></div>
-<script type="text/javascript">
-function googleTranslateElementInit() {
-new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true, gaId: 'UA-52764-14'}, 'google_translate_element');
-}
-</script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-                          
-        </div>        
+        <a class="navbar-brand" href="http://phor.net" onclick="ga('send','event','outbound','phor.net')">a William Entriken production</a>
       </div>
     </div>
 
@@ -64,13 +32,13 @@ new google.translate.TranslateElement({pageLanguage: 'en', layout: google.transl
         <div class="col-sm-4">
           <h1>Camera Life</h1>    
           <h2>Run your own photo website</h2>
-          <a class="btn btn-large btn-primary" href="https://github.com/fulldecent/cameralife/zipball/master"><i class="icon-download"></i> Get .zip</a>
+          <a class="btn btn-large btn-primary" href="https://github.com/fulldecent/cameralife/zipball/master" onclick="ga('send','event','outbound','github zipball')"><i class="icon-download"></i> Get .zip</a>
           <hr>
-		  <p class="text-muted">git clone <span style="white-space:nowrap">https://github.com/fulldecent/cameralife.git</span></p>
+		  <p id="clone" class="text-muted" onclick="ga('send','event','click','clone')">git clone <span style="white-space:nowrap">https://github.com/fulldecent/cameralife.git</span></p>
           <hr>
-          <a class="btn btn-default btn-large" href="https://github.com/fulldecent/cameralife"><i class="icon-wrench"></i> Go to GitHub</a>
-          <a class="btn btn-default btn-large" href="https://github.com/fulldecent/cameralife/issues"><i class="icon-wrench"></i> See issues</a>
-          <a class="btn btn-default btn-large" href="view-source:https://github.com/fulldecent/cameralife/commits/master.atom"><i class="icon-rss"></i> RSS</a>
+          <a class="btn btn-default btn-large" href="https://github.com/fulldecent/cameralife" onclick="ga('send','event','outbound','github project')"><i class="icon-wrench"></i> Go to GitHub</a>
+          <a class="btn btn-default btn-large" href="https://github.com/fulldecent/cameralife/issues" onclick="ga('send','event','outbound','github issues')"><i class="icon-wrench"></i> See issues</a>
+          <a class="btn btn-default btn-large" href="view-source:https://github.com/fulldecent/cameralife/commits/master.atom"  onclick="ga('send','event','outbound','github rss')"><i class="icon-rss"></i> RSS</a>
         </div>
       </div>
     </div> <!-- /container -->
@@ -80,30 +48,31 @@ new google.translate.TranslateElement({pageLanguage: 'en', layout: google.transl
       <div class="row">
         <div class="col-sm-4">
           <h3><i class="icon-folder-open"></i> Great photo organization</h3>
-          <p>Photos are sorted in folders and also by <a href="https://github.com/fulldecent/cameralife/wiki/Albums">albums/topics</a> with automatic categorization by keywords.</p>
+          <p>Photos are searchable, and browsable with folders and tags.</p>
         </div>
         <div class="col-sm-4">
           <h3><i class="icon-list-ul"></i> Full audit trail</h3>
-          <p>If you have open access and someone adds lame comments or photo descriptions, you can easily revert changes to the site.</p>
+          <p>Any change to the site can be undone, individually or in bulk.</p>
         </div>
         <div class="col-sm-4">
           <h3><i class="icon-time"></i> Easy to install</h3>
-          <p style="float:right"><a href="https://www.youtube.com/watch?v=sm-v36GcjXk"><img src="http://cloudfront-assets.shivtr.com/assets/graphics/videoplaybtn-5332e695b5f0a5a1ce9fbd26032b6969.png" width="120" height="90" border="0" style="background:URL(https://img.youtube.com/vi/sm-v36GcjXk/0.jpg)" /></a>
-          <p>Install Camera Life on a fresh Ubuntu desktop (50 second flyover).</p>
+          <p style="float:right">
+              <a href="https://www.youtube.com/watch?v=sm-v36GcjXk" onclick="ga('send','event','outbound','youtube')"><img src="https://img.youtube.com/vi/sm-v36GcjXk/0.jpg" width="120" height="90"></a>
+          <p>Install in one step. See this 50-second install flyover (on a fresh Ubuntu server)</p>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-4">
           <h3><i class="icon-upload"></i> Easy to get photos in</h3>
-          <p>Users can upload photos via the web, FTP access, <a href="http://zwily.com/iphoto/">iPhoto</a>, <a href="http://itunes.apple.com/us/app/igallery/id341048146?mt=8">iPhone</a>, <a href="http://gallery.menalto.com/wiki/Gallery_Remote">Mac/Windows/Linux</a> software, <a href="http://www.digikam.org/drupal/node/397">Digikam</a>, or any other product that supports the Gallery Remote protocol.</p>
+          <p>Upload photos using an iOS or Android app, or direct from your SLR camera.</p>
         </div>
         <div class="col-sm-4">
           <h3><i class="icon-magic"></i> Responsive</h3>
-          <p>Supports OpenSearch and RSS. Is built using JQuery/AJAX for browsers, a custom theme for iPhone, but gracefully degrades without Javascript for accessibility... or if you want to load it on a cell phone made in the 90's</p>
+          <p>Supports RSS, OpenGraph, OpenSearch and devices from Netscape 1.0 to iOS 8.</p>
         </div>
         <div class="col-sm-4">
           <h3><i class="icon-random"></i> Integrates well with your site</h3>
-          <p>Code is <a href="http://camera.phor.net/docs/">documented</a> and integrates with <a href="http://camera.phor.net/docs/default/DatabaseModule.html">your database</a> and <a href="http://camera.phor.net/docs/default/SecurityModule.html">security model</a>. Photos store on your server, Amazon S3, a <a href="https://github.com/fulldecent/cameralife/wiki/Remote-server">remote FTP/SFTP server</a>, and rsync.net. It scales if you want to <a href="https://github.com/fulldecent/cameralife/wiki/Thumbnail-Server">offload thumbnailing</a> to separate server(s).</p>
+          <p>Uses OpenID for login/registration and integrates easily with existing login and can serve images off of Amazon S3, Dropbox, remote HTTP, and other CDNs.</p>
         </div>
       </div>
     </div>
@@ -117,57 +86,24 @@ new google.translate.TranslateElement({pageLanguage: 'en', layout: google.transl
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-    <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         $('#ss2').animate({
-          'margin-left':'-60px', opacity:1.0,
-          'margin-top':'80px', opacity:1.0
+            'margin-left':'-60px', opacity:1.0,
+            'margin-top':'80px', opacity:1.0
         });
         $('#ss3').animate({
-          'margin-left':'-60px', opacity:1.0,
-          'margin-top':'120px', opacity:1.0
+            'margin-left':'-60px', opacity:1.0,
+            'margin-top':'120px', opacity:1.0
         });
-
-// Outbound Link Tracking with Google Analytics
-// Requires jQuery 1.7 or higher (use .live if using a lower version)
-$(function() {
-    $("a").on('click',function(e){
-        var url = $(this).attr("href");
-        // Console logs shows the domain name of the link being clicked and the current window
-        // console.log('e.currentTarget.host: ' + e.currentTarget.host);
-        // console.log('window.location.host: ' + window.location.host);
-        // If the domains names are different, it assumes it is an external link
-        // Be careful with this if you use subdomains
-        if (e.currentTarget.host != window.location.host) {
-            // console.log('external link click');
-            // Outbound link! Fires the Google tracker code.
-            //_gat._getTrackerByName()._trackEvent("Outbound Links", e.currentTarget.host, url, 0);
-            _gat._getTrackerByName()._trackEvent("Outbound Links", e.currentTarget.host.replace(':80',''), url, 0);
-
-            // Checks to see if the ctrl or command key is held down
-            // which could indicate the link is being opened in a new tab
-            if (e.metaKey || e.ctrlKey) {
-                // console.log('ctrl or meta key pressed');
-                var newtab = true;
-            }
-            // If it is not a new tab, we need to delay the loading
-            // of the new link for a just a second in order to give the
-            // Google track event time to fully fire
-            if (!newtab) {
-                // console.log('default prevented');
-                e.preventDefault();
-                // console.log('loading link after brief timeout');
-                setTimeout('document.location = "' + url + '"', 100);
-            }
-        }
-        /*
-        else {
-            console.log('internal link click');
-        }
-        */
-    });
-});
+        
+        // GOOGLE ANALYTICS
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');        
+        ga('create', 'UA-52764-12', 'auto');
+        ga('send', 'pageview');
     </script>
-
   </body>
 </html>
