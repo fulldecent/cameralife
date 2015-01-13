@@ -7,6 +7,7 @@
     <meta name="description" content="A PHP/MYSQL program for creating your own photo website">
     <meta name="author" content="https://plus.google.com/117913021365449347166">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
     <link href="splashAssets/splash.css" rel="stylesheet">
@@ -103,7 +104,14 @@
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');        
         ga('create', 'UA-52764-12', 'auto');
-        ga('send', 'pageview');
+	ga('send', 'pageview');
+
+	setTimeout("ga('send','event','engagement','read time','1 sec')",1000);
+	setTimeout("ga('send','event','engagement','read time','2 sec')",2000);
+	setTimeout("ga('send','event','engagement','read time','5 sec')",5000);
+	setTimeout("ga('send','event','engagement','read time','10 sec')",10000);
+	setTimeout("ga('send','event','engagement','read time','20 sec')",20000);
+
     </script>
   </body>
 </html>
