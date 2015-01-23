@@ -17,7 +17,7 @@ class FolderController extends HtmlController
     {
         parent::__construct();
         $this->model = new Models\Folder($id);
-        $this->title = $this->model->path;
+        $this->title = basename($this->model->path);
         $this->icon = 'folder';
         $this->url = self::getUrlForID($this->model->path);
         $this->image = constant('BASE_URL') . '/assets/folder.png';
