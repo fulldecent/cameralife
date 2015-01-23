@@ -5,6 +5,8 @@ php_value post_max_size 20971520
 php_value upload_max_filesize 20971520
 php_value memory_limit 128M
 
+RedirectMatch 403 /caches
+
 <IfModule mod_rewrite.c>
     # Tell PHP that the mod_rewrite module is ENABLED.
     SetEnv HTTP_MOD_REWRITE On
@@ -23,3 +25,4 @@ php_value memory_limit 128M
     # Catch all for like http://camera.phor.net/cameralife/search+term
     RewriteRule ^(.*)$ index.php?page=search&id=$1&%{QUERY_STRING} [L]
 </IfModule>
+
