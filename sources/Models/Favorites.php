@@ -34,32 +34,7 @@ class Favorites extends Search
      */
     public function getPhotos()
     {
-        switch ($this->sort) {
-            case 'newest':
-                $sort = 'value desc, photos.id desc';
-                break;
-            case 'oldest':
-                $sort = 'value, photos.id';
-                break;
-            case 'az':
-                $sort = 'description';
-                break;
-            case 'za':
-                $sort = 'description desc';
-                break;
-            case 'popular':
-                $sort = 'hits desc';
-                break;
-            case 'unpopular':
-                $sort = 'hits, photos.id';
-                break;
-            case 'rand':
-                $sort = 'rand()';
-                break;
-            default:
-                $sort = 'photos.id desc';
-        }
-
+        $sort = $this->photoSortSqlForOption($this->sort);
         $condition = $this->whereRestriction;
         if (!$this->showPrivatePhotos) {
             $condition .= ' AND status = 0';

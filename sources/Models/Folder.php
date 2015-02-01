@@ -65,32 +65,7 @@ class Folder extends Search
      */
     public function getPhotos()
     {
-        switch ($this->sort) {
-            case 'newest':
-                $sort = 'value desc, id desc';
-                break;
-            case 'oldest':
-                $sort = 'value, id';
-                break;
-            case 'az':
-                $sort = 'description';
-                break;
-            case 'za':
-                $sort = 'description desc';
-                break;
-            case 'popular':
-                $sort = 'hits desc';
-                break;
-            case 'unpopular':
-                $sort = 'hits';
-                break;
-            case 'rand':
-                $sort = 'rand()';
-                break;
-            default:
-                $sort = 'id desc';
-        }
-
+        $sort = $this->photoSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
         $conditions[0] = "(path = :1)";
@@ -122,32 +97,7 @@ class Folder extends Search
      */
     public function getFolders()
     {
-        switch ($this->sort) {
-            case 'newest':
-                $sort = 'id desc';
-                break;
-            case 'oldest':
-                $sort = 'id';
-                break;
-            case 'az':
-                $sort = 'path';
-                break;
-            case 'za':
-                $sort = 'path desc';
-                break;
-            case 'popular':
-                $sort = 'hits desc';
-                break;
-            case 'unpopular':
-                $sort = 'hits';
-                break;
-            case 'rand':
-                $sort = 'rand()';
-                break;
-            default:
-                $sort = 'id desc';
-        }
-
+        $sort = $this->folderSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
         $lpath = rtrim($this->path, '/');
@@ -250,32 +200,7 @@ class Folder extends Search
      */
     public function getDescendants()
     {
-        switch ($this->sort) {
-            case 'newest':
-                $sort = 'created desc';
-                break;
-            case 'oldest':
-                $sort = 'created';
-                break;
-            case 'az':
-                $sort = 'path';
-                break;
-            case 'za':
-                $sort = 'path desc';
-                break;
-            case 'popular':
-                $sort = 'hits desc';
-                break;
-            case 'unpopular':
-                $sort = 'hits';
-                break;
-            case 'rand':
-                $sort = 'rand()';
-                break;
-            default:
-                $sort = 'id desc';
-        }
-
+        $sort = $this->folderSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
         $conditions[0] = "(path LIKE :1)";

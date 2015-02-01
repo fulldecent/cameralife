@@ -92,6 +92,66 @@ class Search extends IndexedModel
         return $retval;
     }
 
+    protected function photoSortSqlForOption($option)
+    {
+        if ($option == 'newest') {
+            return 'value desc, photos.id desc';
+        } else if ($option == 'oldest') {
+            return 'value, photos.id';
+        } else if ($option == 'az') {
+            return 'description';
+        } else if ($option == 'za') {
+            return 'description desc';
+        } else if ($option == 'popular') {
+            return 'hits desc';
+        } else if ($option == 'unpopular') {
+            return 'hits, photos.id';
+        } else if ($option == 'rand') {
+            return 'rand()';
+        }
+        return 'photos.id desc';
+    }
+
+    protected function tagSortSqlForOption($option)
+    {
+        if ($option == 'newest') {
+            return 'albums.id desc';
+        } else if ($option == 'oldest') {
+            return 'albums.id';
+        } else if ($option == 'az') {
+            return 'description';
+        } else if ($option == 'za') {
+            return 'description desc';
+        } else if ($option == 'popular') {
+            return 'albums.hits desc';
+        } else if ($option == 'unpopular') {
+            return 'albums.hits';
+        } else if ($option == 'rand') {
+            return 'rand()';
+        }
+        return 'albums.id desc';
+    }
+    
+    protected function folderSortSqlForOption($option)
+    {
+        if ($option == 'newest') {
+            return 'id desc';
+        } else if ($option == 'oldest') {
+            return 'id';
+        } else if ($option == 'az') {
+            return 'path';
+        } else if ($option == 'za') {
+            return 'path desc';
+        } else if ($option == 'popular') {
+            return 'hits desc';
+        } else if ($option == 'unpopular') {
+            return 'hits';
+        } else if ($option == 'rand') {
+            return 'rand()';
+        }
+        return 'id desc';
+    }    
+
     /**
      * Sets the offset and number of results to return
      *
@@ -114,32 +174,7 @@ class Search extends IndexedModel
      */
     public function getPhotos()
     {
-        switch ($this->sort) {
-            case 'newest':
-                $sort = 'value desc, id desc';
-                break;
-            case 'oldest':
-                $sort = 'value, id';
-                break;
-            case 'az':
-                $sort = 'description';
-                break;
-            case 'za':
-                $sort = 'description desc';
-                break;
-            case 'popular':
-                $sort = 'hits desc';
-                break;
-            case 'unpopular':
-                $sort = 'hits, id';
-                break;
-            case 'rand':
-                $sort = 'rand()';
-                break;
-            default:
-                $sort = 'id desc';
-        }
-
+        $sort = $this->photoSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
         $i = 0;
@@ -176,32 +211,7 @@ class Search extends IndexedModel
      */
     public function getTags()
     {
-        switch ($this->sort) {
-            case 'newest':
-                $sort = 'albums.id desc';
-                break;
-            case 'oldest':
-                $sort = 'albums.id';
-                break;
-            case 'az':
-                $sort = 'description';
-                break;
-            case 'za':
-                $sort = 'description desc';
-                break;
-            case 'popular':
-                $sort = 'albums.hits desc';
-                break;
-            case 'unpopular':
-                $sort = 'albums.hits';
-                break;
-            case 'rand':
-                $sort = 'rand()';
-                break;
-            default:
-                $sort = 'albums.id desc';
-        }
-
+        $sort = $this->tagSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
         $i = 0;
@@ -236,32 +246,7 @@ class Search extends IndexedModel
      */
     public function getFolders()
     {
-        switch ($this->sort) {
-            case 'newest':
-                $sort = 'id desc';
-                break;
-            case 'oldest':
-                $sort = 'id';
-                break;
-            case 'az':
-                $sort = 'path';
-                break;
-            case 'za':
-                $sort = 'path desc';
-                break;
-            case 'popular':
-                $sort = 'hits desc';
-                break;
-            case 'unpopular':
-                $sort = 'hits';
-                break;
-            case 'rand':
-                $sort = 'rand()';
-                break;
-            default:
-                $sort = 'id desc';
-        }
-
+        $sort = $this->folderSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
         $i = 0;

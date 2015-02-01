@@ -24,35 +24,7 @@ class TagCollection extends Search
      */
     public function getTags()
     {
-        //TODO: should not use global CAMERALIFE!
-        global $cameralife;
-
-        switch ($this->sort) {
-            case 'newest':
-                $sort = 'albums.id desc';
-                break;
-            case 'oldest':
-                $sort = 'albums.id';
-                break;
-            case 'az':
-                $sort = 'description';
-                break;
-            case 'za':
-                $sort = 'description desc';
-                break;
-            case 'popular':
-                $sort = 'albums.hits desc';
-                break;
-            case 'unpopular':
-                $sort = 'albums.hits';
-                break;
-            case 'rand':
-                $sort = 'rand()';
-                break;
-            default:
-                $sort = 'albums.id desc';
-        }
-
+        $sort = $this->tagSortSqlForOption($this->sort);
         $query = Database::select(
             'albums',
             'id',
