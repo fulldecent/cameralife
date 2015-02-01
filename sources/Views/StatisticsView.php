@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Views;
+
 use CameraLife\Models as Models;
 
 /**
@@ -43,7 +44,7 @@ class StatisticsView extends View
                 <table class="table table-condensed">
                     <?php
                     foreach ($popularPhotos as $photo) {
-                        // fix links                      
+                        // fix links
                         $percent = $photo->Get('hits') * 100 / $popularPhotos[0]->Get('hits');
                         echo "<tr><td>";
                         echo "<div style=\"width:50px; clear:left\" class=\"progress\"><div class=\"progress-bar progress-info\" style=\"width: $percent%\"></div></div>";

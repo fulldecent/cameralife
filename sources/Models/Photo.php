@@ -11,7 +11,9 @@ namespace CameraLife\Models;
  */
 class Photo extends IndexedModel
 {
-    public $record, $image;
+    public $record;
+
+    public $image;
 
     /**
      * The file extension, e.g. png
@@ -148,7 +150,7 @@ class Photo extends IndexedModel
 
     /**
      * __construct function.
-     * 
+     *
      * @access protected
      * @param  mixed $original (default: null)
      * @return void
@@ -239,7 +241,7 @@ class Photo extends IndexedModel
             $filename = '/' . $this->record['id'] . '_mod.' . $this->extension;
             $store = FileStore::fileStoreWithName('other');
             $store->putFile($filename, $tempfile, $this->record['status'] != 0);
-            //todo warning secure!            
+            //todo warning secure!
         }
 
         $imagesize = $activeImage->getSize();
@@ -273,7 +275,7 @@ class Photo extends IndexedModel
 
     private function deleteThumbnails()
     {
-        //todo update        
+        //todo update
         $cameralife->fileStore->EraseFile('other', '/' . $this->record['id'] . '_mod.' . $this->extension);
         $cameralife->fileStore->EraseFile(
             'other',
@@ -718,6 +720,4 @@ class Photo extends IndexedModel
         }
         Database::delete('ratings', $condition);
     }
-
-
 }

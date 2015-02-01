@@ -15,8 +15,6 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 }
 
 // Set up environment
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
 define('CAMERALIFE_VERSION', '2.7.0a6');
 define('BASE_URL', rtrim(dirname($_SERVER['PHP_SELF']), '/'));
 define('BASE_DIR', dirname(__FILE__));

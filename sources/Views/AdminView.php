@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Views;
+
 use CameraLife\Models as Models;
 
 /**
@@ -136,8 +137,6 @@ EOL;
         if ($this->cameraLifeLatestVersion == $this->cameraLifeRunningVersion) {
             echo "<p class=\"alert alert-success\">You are running Camera Life {$this->cameraLifeRunningVersion}, the latest version</p>\n";
         } else {
-            
-            
             echo "<p class=\"alert alert-danger\">You are running Camera Life {$this->cameraLifeRunningVersion}, a newer version, {$this->cameraLifeLatestVersion}, is available. Please run <code>git pull</code> or visit the <a href=\"http://fulldecent.github.io/cameralife/\">Camera Life homepage</a>.</p>\n";
         }
 

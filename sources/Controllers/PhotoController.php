@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Controllers;
+
 use CameraLife\Views as Views;
 use CameraLife\Models as Models;
 
@@ -44,7 +45,7 @@ class PhotoController extends HtmlController
 
         if (isset($get['referrer'])) {
             $view->referrer = $get['referrer'];
-        } else if (isset($_SERVER['HTTP_REFERER'])) {
+        } elseif (isset($_SERVER['HTTP_REFERER'])) {
             $view->referrer = $_SERVER['HTTP_REFERER'];
         }
 
@@ -68,12 +69,12 @@ class PhotoController extends HtmlController
         $currentUser = Models\User::currentUser($cookies);
 
         switch ($post['action']) {
-        case 'favorite':
-            $this->model->favoriteByUser($currentUser);
-            break;
-        case 'unfavorite':
-            $this->model->unfavoriteByUser($currentUser);
-            break;
+            case 'favorite':
+                $this->model->favoriteByUser($currentUser);
+                break;
+            case 'unfavorite':
+                $this->model->unfavoriteByUser($currentUser);
+                break;
         }
 
         parent::handlePost($get, $post, $files, $cookies);

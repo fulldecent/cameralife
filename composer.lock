@@ -41,6 +41,7 @@
         "lightopenid/lightopenid": 20
     },
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.4.0",
         "ext-xml": "*"

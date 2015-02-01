@@ -66,7 +66,7 @@ class Search extends IndexedModel
      * @param  mixed $query
      * @return void
      */
-    function __construct($query = '')
+    public function __construct($query = '')
     {
         //TODO this can actually just run from the parent class
         $this->query = $query;
@@ -96,17 +96,17 @@ class Search extends IndexedModel
     {
         if ($option == 'newest') {
             return 'value desc, photos.id desc';
-        } else if ($option == 'oldest') {
+        } elseif ($option == 'oldest') {
             return 'value, photos.id';
-        } else if ($option == 'az') {
+        } elseif ($option == 'az') {
             return 'description';
-        } else if ($option == 'za') {
+        } elseif ($option == 'za') {
             return 'description desc';
-        } else if ($option == 'popular') {
+        } elseif ($option == 'popular') {
             return 'hits desc';
-        } else if ($option == 'unpopular') {
+        } elseif ($option == 'unpopular') {
             return 'hits, photos.id';
-        } else if ($option == 'rand') {
+        } elseif ($option == 'rand') {
             return 'rand()';
         }
         return 'photos.id desc';
@@ -116,17 +116,17 @@ class Search extends IndexedModel
     {
         if ($option == 'newest') {
             return 'albums.id desc';
-        } else if ($option == 'oldest') {
+        } elseif ($option == 'oldest') {
             return 'albums.id';
-        } else if ($option == 'az') {
+        } elseif ($option == 'az') {
             return 'description';
-        } else if ($option == 'za') {
+        } elseif ($option == 'za') {
             return 'description desc';
-        } else if ($option == 'popular') {
+        } elseif ($option == 'popular') {
             return 'albums.hits desc';
-        } else if ($option == 'unpopular') {
+        } elseif ($option == 'unpopular') {
             return 'albums.hits';
-        } else if ($option == 'rand') {
+        } elseif ($option == 'rand') {
             return 'rand()';
         }
         return 'albums.id desc';
@@ -136,21 +136,21 @@ class Search extends IndexedModel
     {
         if ($option == 'newest') {
             return 'id desc';
-        } else if ($option == 'oldest') {
+        } elseif ($option == 'oldest') {
             return 'id';
-        } else if ($option == 'az') {
+        } elseif ($option == 'az') {
             return 'path';
-        } else if ($option == 'za') {
+        } elseif ($option == 'za') {
             return 'path desc';
-        } else if ($option == 'popular') {
+        } elseif ($option == 'popular') {
             return 'hits desc';
-        } else if ($option == 'unpopular') {
+        } elseif ($option == 'unpopular') {
             return 'hits';
-        } else if ($option == 'rand') {
+        } elseif ($option == 'rand') {
             return 'rand()';
         }
         return 'id desc';
-    }    
+    }
 
     /**
      * Sets the offset and number of results to return

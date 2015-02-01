@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Views;
+
 use CameraLife\Models as Models;
 
 /**
@@ -65,4 +66,3 @@ class FooterView extends View
     <?php
     }
 }
-

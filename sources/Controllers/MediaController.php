@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Controllers;
+
 use CameraLife\Models as Models;
 
 /**

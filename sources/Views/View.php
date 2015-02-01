@@ -1,8 +1,7 @@
 <?php
 namespace CameraLife\Views;
-use CameraLife\Models as Models;
 
-///TODO: what happens if the view cannot render due to bad inputs????
+use CameraLife\Models as Models;
 
 /**
  * Base class for all View objects, each View writes a complete or partial document
@@ -22,5 +21,5 @@ abstract class View
      * @access public
      * @return void
      */
-    public abstract function render();
+    abstract public function render();
 }

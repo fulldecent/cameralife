@@ -202,34 +202,34 @@ class AuditTrail extends IndexedModel
     private static function getDefaultForRecordTypeAndValueField($recordType, $valueField)
     {
         switch ($recordType . '_' . $valueField) {
-        case 'photo_description':
-            $oldvalue = 'unnamed';
-            break;
-        case 'photo_status':
-            $oldvalue = '0';
-            break;
-        case 'photo_keywords':
-            $oldvalue = '';
-            break;
-        case 'photo_flag':
-            $oldvalue = '';
-            break;
-        case 'album_name':
-            $oldvalue = '';
-            break;
-        case 'photo_poster_id':
-            $album = new Album($record['record_id']);
-            $condition = "status=0 and lower(description) like lower('%" . $album->Get['term'] . "%')";
-            $query = Database::select('photos', 'id', $condition);
-            $result = $query->fetchAssoc();
-            if ($result) {
-                $oldvalue = $result['id'];
-            } else {
-                $cameralife->error("Cannot find a poster for the album #" . $record['record_id']);
-            }
-            break;
-        default:
-            throw new \Exception("I don't know default value for -$recordType- -$valueField-");
+            case 'photo_description':
+                $oldvalue = 'unnamed';
+                break;
+            case 'photo_status':
+                $oldvalue = '0';
+                break;
+            case 'photo_keywords':
+                $oldvalue = '';
+                break;
+            case 'photo_flag':
+                $oldvalue = '';
+                break;
+            case 'album_name':
+                $oldvalue = '';
+                break;
+            case 'photo_poster_id':
+                $album = new Album($record['record_id']);
+                $condition = "status=0 and lower(description) like lower('%" . $album->Get['term'] . "%')";
+                $query = Database::select('photos', 'id', $condition);
+                $result = $query->fetchAssoc();
+                if ($result) {
+                    $oldvalue = $result['id'];
+                } else {
+                    $cameralife->error("Cannot find a poster for the album #" . $record['record_id']);
+                }
+                break;
+            default:
+                throw new \Exception("I don't know default value for -$recordType- -$valueField-");
         }
         return $oldvalue;
     }

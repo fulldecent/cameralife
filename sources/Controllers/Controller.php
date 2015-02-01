@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Controllers;
+
 use CameraLife\Models as Models;
 use CameraLife\Views as Views;
 
@@ -250,7 +251,7 @@ abstract class Controller
      * @param  array $files
      * @return void
      */
-    public abstract function handleGet($get, $post, $files, $cookies);
+    abstract public function handleGet($get, $post, $files, $cookies);
 
     /**
      * Default implementation redirects to same page for get

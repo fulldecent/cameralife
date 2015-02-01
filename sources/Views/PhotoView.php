@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Views;
+
 use CameraLife\Models as Models;
 
 /**

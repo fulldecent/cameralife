@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Controllers;
+
 use CameraLife\Views as Views;
 use CameraLife\Models as Models;
 
@@ -251,8 +252,8 @@ EOF;
                               <!-- Nav tabs -->
                               <ul class="nav nav-tabs">
                                 <?php
-                                    $x = 0;
-                                foreach ($this->remedies as $system=>$systemRemedies) {
+                                $x = 0;
+                                foreach ($this->remedies as $system => $systemRemedies) {
                                     echo '<li class="'.($x++?'':'active').'"><a href="#'.$system.'" data-toggle="tab">'.$system.'</a></li>';
                                 }
                                 ?>
@@ -261,8 +262,8 @@ EOF;
                               <!-- Tab panes -->
                               <div class="tab-content">
                                 <?php
-                                    $x = 0;
-                                foreach ($this->remedies as $system=>$systemRemedies) {
+                                $x = 0;
+                                foreach ($this->remedies as $system => $systemRemedies) {
                                     echo '<div class="tab-pane '.($x++?'':'active').'" id="'.$system.'">';
                                     foreach ($systemRemedies as $remedy) {
                                         echo "<p>$remedy</p>";
@@ -344,7 +345,7 @@ EOF;
         }
         if (!isset($post['prefix'])) {
             throw new \Exception('PREFIX is missing');
-        }                
+        }
         if (!isset($_SESSION['openid_identity'])) {
             throw new \Exception('OpenID login is missing');
         }
@@ -358,6 +359,6 @@ EOF;
         Models\User::userWithOpenId($_SESSION['openid_identity'], $_SESSION['openid_email']);
         Models\Database::update('users', ['auth'=>5], 'email="'.$_SESSION['openid_email'].'"'); //todo security
         header('Location: ' . MainPageController::getUrl());
-        //todo URL / url http://www.teamten.com/lawrence/writings/capitalization_of_initialisms.html        
+        //todo URL / url http://www.teamten.com/lawrence/writings/capitalization_of_initialisms.html
     }
 }

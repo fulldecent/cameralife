@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Controllers;
+
 use CameraLife\Views as Views;
 use CameraLife\Models as Models;
 
@@ -33,11 +34,11 @@ class FolderController extends HtmlController
         $folderCount = $this->model->getFolderCount();
         $gridObjects = array();
         if (!$photoCount || $section == 'folders') {
-            foreach($this->model->getFolders() as $folder) {
+            foreach ($this->model->getFolders() as $folder) {
                 $gridObjects[] = new FolderController($folder->id);
             }
         } else {
-            foreach($this->model->getPhotos() as $photo) {
+            foreach ($this->model->getPhotos() as $photo) {
                 $gridObjects[] = new PhotoController($photo->id);
             }
         }
@@ -47,7 +48,7 @@ class FolderController extends HtmlController
 
         /* Set up breadcrumbs */
         $breadcrumbs = new Views\BreadcrumbView;
-        foreach($this->model->getAncestors() as $ancestor) {
+        foreach ($this->model->getAncestors() as $ancestor) {
             $openGraph = new FolderController($ancestor->path);
             $openGraph->title = basename($openGraph->title);
             $breadcrumbs->openGraphObjects[] = $openGraph;

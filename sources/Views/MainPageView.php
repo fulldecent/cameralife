@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Views;
+
 use CameraLife\Models as Models;
 use CameraLife\Controllers as Controllers;
 
@@ -30,7 +31,7 @@ class MainPageView extends View
 
     /**
      * folderAndPhotoOpenGraphs
-     * 
+     *
      * @var    mixed
      * @access public
      */
@@ -165,7 +166,7 @@ class MainPageView extends View
                         }
                         echo ", ...</div>\n";
                     }
-                    //todo fix url                    
+                    //todo fix url
                     echo "<tr><td><h3><a href=\"search.php&#63;albumhelp=1&amp;q=\">... create a featured tag</a></h3>";
 
                     ?>

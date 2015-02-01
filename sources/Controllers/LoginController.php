@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Controllers;
+
 use CameraLife\Views as Views;
 use CameraLife\Models as Models;
 
@@ -132,6 +133,5 @@ class LoginController extends HtmlController
         } catch (\ErrorException $e) {
             echo $e->getMessage();
         }
-    }    
-    
+    }
 }

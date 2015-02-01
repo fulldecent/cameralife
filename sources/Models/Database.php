@@ -22,7 +22,7 @@ class Database
     
     private static $pdoConnection;
     
-    const requiredSchemaVersion = 5;
+    const REQUIRED_SCHEMA_VERSION = 5;
 
     /**
      * Creates static database connection using configuration from CONSTANTS
@@ -43,7 +43,7 @@ class Database
     
     public static function installedSchemaIsCorrectVersion()
     {
-        return self::$installedSchemaVersion == self::requiredSchemaVersion;
+        return self::$installedSchemaVersion == self::REQUIRED_SCHEMA_VERSION;
     }
 
     public static function connectionParametersAreSet()
@@ -315,7 +315,7 @@ class Database
 
     /**
      * Run an arbitrary SQL statement against the database, all tables must be prefixed already
-     * 
+     *
      * @access public
      * @static
      * @param  string $sql

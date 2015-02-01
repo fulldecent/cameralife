@@ -48,7 +48,7 @@ class FileStore
 
         if ($name == 'photo') {
             $path = Preferences::valueForModuleWithKey('LocalFileStore', 'photo_dir');
-        } else if ($name = 'other') {
+        } elseif ($name = 'other') {
             $path = Preferences::valueForModuleWithKey('LocalFileStore', 'cache_dir');
         } else {
             throw new \Exception('Bad FileStore name');

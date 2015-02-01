@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Controllers;
+
 use CameraLife\Views as Views;
 use CameraLife\Models as Models;
 
@@ -71,7 +72,7 @@ class SearchController extends HtmlController
         /* Set up grid */
         $start = isset($get['start']) ? $get['start'] : 0;
         $objects = array();
-        foreach($this->model->getPhotos() as $photo) {
+        foreach ($this->model->getPhotos() as $photo) {
             $objects[] = new PhotoController($photo->id);
         }
 

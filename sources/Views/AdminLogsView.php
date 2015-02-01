@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Views;
+
 use CameraLife\Models as Models;
 
 /**
@@ -119,7 +120,8 @@ class AdminLogsView extends View
         } else {
             echo "Checkpoint is set to $this->checkpointDate, showing changes since then.";
         }
-        echo " <a target=\"_blank\" href=\"https://github.com/fulldecent/cameralife/wiki/Checkpoints\"><i class=\"fa fa-info\"></i> Learn about checkpoints</a>";
+        echo " <a target=\"_blank\" href=\"https://github.com/fulldecent/cameralife/wiki/Checkpoints\">";
+        echo "<i class=\"fa fa-info\"></i> Learn about checkpoints</a>";
         echo "</p>";
 
         echo "<h3>View settings</h3>";

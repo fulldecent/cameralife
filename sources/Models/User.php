@@ -106,13 +106,13 @@ class User extends IndexedModel
             
             Database::update('users', ['cookie'=>$cookie], 'id=' . $retval->id);
             setcookie('cameralifeauth', $cookie, time() + 30000000, '/');
-            $_COOKIE['cameralifeauth'] = $cookie;                
+            $_COOKIE['cameralifeauth'] = $cookie;
             return $retval;
         }
         
-        //TODO: breaks MVC        
+        //TODO: breaks MVC
         setcookie('cameralifeauth', $cookie, time() + 30000000, '/');
-        $_COOKIE['cameralifeauth'] = $cookie;                
+        $_COOKIE['cameralifeauth'] = $cookie;
         $values['username'] = $email;
         $values['password'] = $identity;
         $values['auth'] = 1;

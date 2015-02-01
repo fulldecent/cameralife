@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Controllers;
+
 use CameraLife\Views as Views;
 use CameraLife\Models as Models;
 
@@ -38,7 +39,7 @@ class AdminThumbnailController extends HtmlController
         /* Rescan */
         if (!isset($get['lastdone'])) {
             $updateResults = Models\Folder::update();
-        }        
+        }
 
         /* Set up the page view */
         $this->htmlHeader($cookies);

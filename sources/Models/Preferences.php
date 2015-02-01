@@ -63,5 +63,4 @@ class Preferences
         self::setValueForModuleWithKey('photos', 'LocalFileStore', 'photo_dir');
         self::setValueForModuleWithKey('caches', 'LocalFileStore', 'cache_dir');
     }
-    
 }

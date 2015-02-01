@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Views;
+
 use CameraLife\Models as Models;
 use CameraLife\Controllers as Controllers;
 
@@ -175,4 +176,3 @@ class HeaderView extends View
     <?php
     }
 }
-

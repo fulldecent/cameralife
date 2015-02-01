@@ -1,5 +1,6 @@
 <?php
 namespace CameraLife\Controllers;
+
 use CameraLife\Views as Views;
 use CameraLife\Models as Models;
 
@@ -29,7 +30,7 @@ class FavoritesController extends HtmlController
         $this->model->setPage($start);
         $photoCount = $this->model->getPhotoCount();
         
-        foreach($this->model->getPhotos() as $photo) {
+        foreach ($this->model->getPhotos() as $photo) {
             $gridObjects[] = new PhotoController($photo->id);
         }
 
