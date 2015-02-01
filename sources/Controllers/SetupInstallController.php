@@ -58,10 +58,10 @@ class SetupInstallController extends HtmlController
                         $_SESSION['openid_email'] = $attr['contact/email'];
                         header('Location: ' . SetupInstall2Controller::getUrl());
                     } else {
-                        die ('Enough detail (email address) was not provided to process your login.');
+                        throw new \Exception('Enough detail (email address) was not provided to process your login.');
                     }
                 } else {
-                    die ('Provider did not validate your login');
+                    throw new \Exception('Provider did not validate your login');
                 }
             }
         } catch (\ErrorException $e) {
@@ -69,7 +69,7 @@ class SetupInstallController extends HtmlController
         }
 
         if (file_exists('../../config.php')) {
-            die("Camera Life already appears to be set up, because modules/config.inc exists.");
+            throw new \Exception("Camera Life already appears to be set up, because modules/config.inc exists.");
         }
 
         ?>
@@ -180,10 +180,10 @@ class SetupInstallController extends HtmlController
                         $_SESSION['openid_email'] = $attr['contact/email'];
                         header('Location: http://indexn2.php');
                     } else {
-                        die ('Enough detail (email address) was not provided to process your login.');
+                        throw new \Exception('Enough detail (email address) was not provided to process your login.');
                     }
                 } else {
-                    die ('Provider did not validate your login');
+                    throw new \Exception('Provider did not validate your login');
                 }
             }
         } catch (\ErrorException $e) {

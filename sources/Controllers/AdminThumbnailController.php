@@ -38,7 +38,6 @@ class AdminThumbnailController extends HtmlController
         /* Rescan */
         if (!isset($get['lastdone'])) {
             $updateResults = Models\Folder::update();
-            var_dump($updateResults);
         }        
 
         /* Set up the page view */

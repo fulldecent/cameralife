@@ -53,7 +53,7 @@ class Image
 
     public function check()
     {
-        return ($this->originalImage == true);
+        return !empty($this->originalImage);
     }
 
     public function getSize()
@@ -91,7 +91,7 @@ class Image
         $newWidth = $this->width * $newSize / $this->size;
         $newHeight = $this->height * $newSize / $this->size;
         $newImage = imagecreatetruecolor($newWidth, $newHeight)
-        or die("Can't make new image");
+        or throw new \Exception("Can't make new image");
 
         imagecopyresampled(
             $newImage,

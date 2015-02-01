@@ -179,7 +179,7 @@ EOF;
     public function handleGet($get, $post, $files, $cookies)
     {
         if (file_exists('../../config.php')) {
-            die("Camera Life already appears to be set up, because modules/config.inc exists.");
+            throw new \Exception("Camera Life already appears to be set up, because modules/config.inc exists.");
         }
 
         $prerequesitesAreMet = $this->checkPrerequesites();

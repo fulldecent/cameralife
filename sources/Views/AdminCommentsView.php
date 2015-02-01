@@ -113,7 +113,6 @@ class AdminCommentsView extends View
         echo "<h3>Results</h3>";
 
         foreach ($this->commentRecords as $commentRecord) {
-var_dump($commentRecord);
             $object = new Models\Photo($commentRecord['id']);
             $openGraphObject = null;
             if (get_class($object) == 'CameraLife\Models\Photo') {

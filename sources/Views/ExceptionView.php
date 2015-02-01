@@ -27,7 +27,7 @@ class ExceptionView extends View
         echo "<footer>" . get_class($this->exception) . "</footer>";
         echo "</blockquote>\n";
 
-        if ($this->showDebuggingInformation == false) {
+        if (!$this->showDebuggingInformation) {
             echo "</div>\n";
             return;
         }
@@ -58,9 +58,6 @@ class ExceptionView extends View
                 }
             }
             echo "</ul></dd>\n";
-            #       echo '<dd><p>For object details view source...</p><!--<pre>';
-            #       var_dump($call['object']);
-            #       echo '--></pre></dd>';
         }
         echo "  </dl>\n";
         echo "<p><a href=\"https://github.com/fulldecent/cameralife/issues/new\" class=\"btn btn-primary\">Report to Camera Life Project</a></p>";

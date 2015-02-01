@@ -51,10 +51,10 @@ class LoginController extends HtmlController
                         header('Location: ' . MainPageController::getUrl());
                         return;
                     } else {
-                        die ('Enough detail (email address) was not provided to process your login.');
+                        throw new \Exception('Enough detail (email address) was not provided to process your login.');
                     }
                 } else {
-                    die ('Provider did not validate your login');
+                    throw new \Exception('Provider did not validate your login');
                 }
             }
         } catch (\ErrorException $e) {
@@ -62,7 +62,7 @@ class LoginController extends HtmlController
         }
 
         if (file_exists('../../config.php')) {
-            die("Camera Life already appears to be set up, because modules/config.inc exists.");
+            throw new \Exception("Camera Life already appears to be set up, because modules/config.inc exists.");
         }
 
         ?>
@@ -123,10 +123,10 @@ class LoginController extends HtmlController
                         $_SESSION['openid_email'] = $attr['contact/email'];
                         header('Location: http://indexn2.php');
                     } else {
-                        die ('Enough detail (email address) was not provided to process your login.');
+                        throw new \Exception('Enough detail (email address) was not provided to process your login.');
                     }
                 } else {
-                    die ('Provider did not validate your login');
+                    throw new \Exception('Provider did not validate your login');
                 }
             }
         } catch (\ErrorException $e) {

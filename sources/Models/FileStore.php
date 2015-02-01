@@ -111,8 +111,6 @@ class FileStore
     {
         $fullpath = $this->baseDir . $path;
         if (!is_dir(dirname($fullpath))) {
-#todo            
-            var_dump('creating dir' , $fullpath, dirname($fullpath), realpath(dirname($fullpath)));
             mkdir(dirname($fullpath), 0777, true);
         }
         rename($file, $fullpath);
