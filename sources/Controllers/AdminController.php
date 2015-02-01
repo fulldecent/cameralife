@@ -29,13 +29,13 @@ class AdminController extends HtmlController
         $context  = stream_context_create($options);
         $response = file_get_contents($url, false, $context);
         if ($response === false) {
-            return NULL;
+            return null;
         }
         $json = json_decode($response);
         if (isset($json[0]->tag_name)) {
             return $json[0]->tag_name;
         }
-        return NULL;
+        return null;
     }
 
     public function handleGet($get, $post, $files, $cookies)

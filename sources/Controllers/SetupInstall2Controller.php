@@ -15,7 +15,7 @@ class SetupInstall2Controller extends HtmlController
     /**
      * prerequesites
      *
-     * @var array of arrays [description=>TEXT, class=>success/warning/danger]
+     * @var    array of arrays [description=>TEXT, class=>success/warning/danger]
      * @access private
      */
     private $status;
@@ -23,7 +23,7 @@ class SetupInstall2Controller extends HtmlController
     /**
      * remedies
      *
-     * @var array of arrays [cPanel=>['remedy1', ...], MAMP=>['remedy1', ...]]
+     * @var    array of arrays [cPanel=>['remedy1', ...], MAMP=>['remedy1', ...]]
      * @access private
      */
     private $remedies;
@@ -31,12 +31,12 @@ class SetupInstall2Controller extends HtmlController
     public static function getUrl()
     {
 
-// todo not necessary with update to controller.php
+        // todo not necessary with update to controller.php
         return constant('BASE_URL') . '/index.php?page=setupInstall2';
     }
 
     // cannot use parent because database is not accessible
-    public function __construct($id = NULL)
+    public function __construct($id = null)
     {
         $this->siteName = null;
         $this->title = $this->siteName;
@@ -235,10 +235,10 @@ EOF;
             <div class="container">
                 <?php
                     $icons = ['success'=>'check-circle', 'warning'=>'info-circle', 'danger'=>'times-circle'];
-                    foreach ($this->status as $status) {
-                        $iconHtml = "<i class='fa fa-{$icons[$status['class']]}'></i>";
-                        echo "<p class=\"lead text-{$status['class']}\">$iconHtml {$status['description']}</p>\n";
-                    }
+                foreach ($this->status as $status) {
+                    $iconHtml = "<i class='fa fa-{$icons[$status['class']]}'></i>";
+                    echo "<p class=\"lead text-{$status['class']}\">$iconHtml {$status['description']}</p>\n";
+                }
                 ?>
                 <form method="post">
                 <div class="panel panel-default">
@@ -252,9 +252,9 @@ EOF;
                               <ul class="nav nav-tabs">
                                 <?php
                                     $x = 0;
-                                    foreach ($this->remedies as $system=>$systemRemedies) {
-                                        echo '<li class="'.($x++?'':'active').'"><a href="#'.$system.'" data-toggle="tab">'.$system.'</a></li>';
-                                    }
+                                foreach ($this->remedies as $system=>$systemRemedies) {
+                                    echo '<li class="'.($x++?'':'active').'"><a href="#'.$system.'" data-toggle="tab">'.$system.'</a></li>';
+                                }
                                 ?>
                               </ul>
 
@@ -262,13 +262,13 @@ EOF;
                               <div class="tab-content">
                                 <?php
                                     $x = 0;
-                                    foreach ($this->remedies as $system=>$systemRemedies) {
-                                        echo '<div class="tab-pane '.($x++?'':'active').'" id="'.$system.'">';
-                                        foreach ($systemRemedies as $remedy) {
-                                            echo "<p>$remedy</p>";
-                                        }
-                                        echo '</div>';
+                                foreach ($this->remedies as $system=>$systemRemedies) {
+                                    echo '<div class="tab-pane '.($x++?'':'active').'" id="'.$system.'">';
+                                    foreach ($systemRemedies as $remedy) {
+                                        echo "<p>$remedy</p>";
                                     }
+                                    echo '</div>';
+                                }
                                 ?>
                               </div>
                             </div>
@@ -358,6 +358,6 @@ EOF;
         Models\User::userWithOpenId($_SESSION['openid_identity'], $_SESSION['openid_email']);
         Models\Database::update('users', ['auth'=>5], 'email="'.$_SESSION['openid_email'].'"'); //todo security
         header('Location: ' . MainPageController::getUrl());
-//todo URL / url http://www.teamten.com/lawrence/writings/capitalization_of_initialisms.html        
+        //todo URL / url http://www.teamten.com/lawrence/writings/capitalization_of_initialisms.html        
     }
 }

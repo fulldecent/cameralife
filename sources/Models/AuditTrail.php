@@ -45,7 +45,7 @@ class AuditTrail extends IndexedModel
      *
      * @access public
      * @static
-     * @param mixed $id
+     * @param  mixed $id
      * @return void
      */
     public static function getAuditTrailWithID($id)
@@ -123,7 +123,7 @@ class AuditTrail extends IndexedModel
      * Getter for elements in my record
      *
      * @access public
-     * @param mixed $item
+     * @param  mixed $item
      * @return mixed
      */
     public function get($item)
@@ -173,7 +173,7 @@ class AuditTrail extends IndexedModel
      * Returns all receipts from this back to the beginning
      *
      * @access public
-     * @param float $checkpoint (default: -1)
+     * @param  float $checkpoint (default: -1)
      * @return void
      */
     public function getTrailsBackToCheckpoint($checkpoint = -1)
@@ -195,41 +195,41 @@ class AuditTrail extends IndexedModel
      *
      * @access public
      * @static
-     * @param mixed $recordType
-     * @param mixed $valueField
+     * @param  mixed $recordType
+     * @param  mixed $valueField
      * @return mixed
      */
     private static function getDefaultForRecordTypeAndValueField($recordType, $valueField)
     {
         switch ($recordType . '_' . $valueField) {
-            case 'photo_description':
-                $oldvalue = 'unnamed';
-                break;
-            case 'photo_status':
-                $oldvalue = '0';
-                break;
-            case 'photo_keywords':
-                $oldvalue = '';
-                break;
-            case 'photo_flag':
-                $oldvalue = '';
-                break;
-            case 'album_name':
-                $oldvalue = '';
-                break;
-            case 'photo_poster_id':
-                $album = new Album($record['record_id']);
-                $condition = "status=0 and lower(description) like lower('%" . $album->Get['term'] . "%')";
-                $query = Database::select('photos', 'id', $condition);
-                $result = $query->fetchAssoc();
-                if ($result) {
-                    $oldvalue = $result['id'];
-                } else {
-                    $cameralife->error("Cannot find a poster for the album #" . $record['record_id']);
-                }
-                break;
-            default:
-                throw new \Exception("I don't know default value for -$recordType- -$valueField-");
+        case 'photo_description':
+            $oldvalue = 'unnamed';
+            break;
+        case 'photo_status':
+            $oldvalue = '0';
+            break;
+        case 'photo_keywords':
+            $oldvalue = '';
+            break;
+        case 'photo_flag':
+            $oldvalue = '';
+            break;
+        case 'album_name':
+            $oldvalue = '';
+            break;
+        case 'photo_poster_id':
+            $album = new Album($record['record_id']);
+            $condition = "status=0 and lower(description) like lower('%" . $album->Get['term'] . "%')";
+            $query = Database::select('photos', 'id', $condition);
+            $result = $query->fetchAssoc();
+            if ($result) {
+                $oldvalue = $result['id'];
+            } else {
+                $cameralife->error("Cannot find a poster for the album #" . $record['record_id']);
+            }
+            break;
+        default:
+            throw new \Exception("I don't know default value for -$recordType- -$valueField-");
         }
         return $oldvalue;
     }

@@ -4,8 +4,8 @@ namespace CameraLife\Views;
 /**
  * Breadcrumbs view
  *
- * @author William Entriken<cameralife@phor.net>
- * @access public
+ * @author    William Entriken<cameralife@phor.net>
+ * @access    public
  * @copyright 2014 William Entriken
  */
 class BreadcrumbView extends View
@@ -13,7 +13,7 @@ class BreadcrumbView extends View
     /**
      * The objects to base this view on
      *
-     * @var CameraLife\Controllers\Controller[]
+     * @var    CameraLife\Controllers\Controller[]
      * @access public
      */
     public $openGraphObjects;

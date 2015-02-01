@@ -28,27 +28,27 @@ class SearchController extends HtmlController
         $folderCount = $this->model->getFolderCount();
         $albumCount = $this->model->getTagCount();
 
-        ## Sometimes we're sure an album page is relevant - redirect there
+        // Sometimes we're sure an album page is relevant - redirect there
         if (!$folderCount && $albumCount == 1) {
-/* TODO
-          $count_term = $cameralife->database->SelectOne('albums', 'COUNT(*)', "term LIKE '" . $get['q'] . "'");
-          if ($count_term == 1) {
+            /* TODO
+            $count_term = $cameralife->database->SelectOne('albums', 'COUNT(*)', "term LIKE '" . $get['q'] . "'");
+            if ($count_term == 1) {
               $albumid = $cameralife->database->SelectOne('albums', 'id', "term LIKE '" . $get['q'] . "'");
               header('Location: ' . $cameralife->baseURL . '/album.php?id=' . $albumid);
               echo 'redirecting... ' . $cameralife->baseURL . '/album.php?id=' . $albumid;
               exit(0);
-          }
-*/
+            }
+            */
         }
 
-        ## Sometimes we're sure a folder page is relevant - redirect there
+        // Sometimes we're sure a folder page is relevant - redirect there
         if (!$albumCount && !$photoCount && $folderCount == 1) {
-/* TODO
-          list($folder) = $search->getFolders();
-          $folderOpenGraph = $folder->GetOpenGraph();
-          header('Location: ' . $folderOpenGraph['op:url']);
-          exit(0);
-*/
+            /* TODO
+            list($folder) = $search->getFolders();
+            $folderOpenGraph = $folder->GetOpenGraph();
+            header('Location: ' . $folderOpenGraph['op:url']);
+            exit(0);
+            */
         }
 
 

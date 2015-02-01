@@ -36,7 +36,7 @@ class FavoritesController extends HtmlController
         /* Set up common page parts */
         $this->htmlHeader($cookies);
 
-//TODO: breaks MVC
+        //TODO: breaks MVC
         echo '<h2>My favorite photos</h2>';
 
         /* Set up grid */

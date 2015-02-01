@@ -4,8 +4,8 @@ namespace CameraLife\Views;
 /**
  * Grid view
  *
- * @author William Entriken<cameralife@phor.net>
- * @access public
+ * @author    William Entriken<cameralife@phor.net>
+ * @access    public
  * @copyright 2014 William Entriken
  */
 class GridView extends View
@@ -13,7 +13,7 @@ class GridView extends View
     /**
      * The objects to base this view on
      *
-     * @var CameraLife\Controllers\Controller[]
+     * @var    CameraLife\Controllers\Controller[]
      * @access public
      */
     public $openGraphObjects;

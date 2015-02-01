@@ -68,7 +68,7 @@ class Search extends IndexedModel
      */
     function __construct($query = '')
     {
-//TODO this can actually just run from the parent class
+        //TODO this can actually just run from the parent class
         $this->query = $query;
     }
 

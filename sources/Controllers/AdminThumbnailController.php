@@ -44,7 +44,7 @@ class AdminThumbnailController extends HtmlController
         $this->htmlHeader($cookies);
 
 
-//TODO BREAKING MVC HERE BECAUSE OF INTREMENTAL RENDERING
+        //TODO BREAKING MVC HERE BECAUSE OF INTREMENTAL RENDERING
         echo '<h2>Caching thumbnails <small>To avoid a delay when viewing photos for the first time</small></h2>';
 
         $total = Models\Database::selectOne('photos', 'count(*)');

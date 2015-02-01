@@ -6,16 +6,16 @@ use CameraLife\Controllers as Controllers;
 /**
  * Shows a welcome page, the "index" for the website
  *
- * @author William Entriken <cameralife@phor.net>
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright 2001-2014 William Entriken
- * @access public
+ * @access    public
  */
 class MainPageView extends View
 {
     /**
      * Either: rand, popular, unpopular, newest, newest-folders
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $activeSection;
@@ -23,7 +23,7 @@ class MainPageView extends View
     /**
      * openGraphsForTop
      *
-     * @var OpenGraph[]
+     * @var    OpenGraph[]
      * @access public
      */
     public $openGraphsForTop;
@@ -31,7 +31,7 @@ class MainPageView extends View
     /**
      * folderAndPhotoOpenGraphs
      * 
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $folderAndPhotoOpenGraphs;
@@ -39,7 +39,7 @@ class MainPageView extends View
     /**
      * tag collections
      *
-     * @var TagCollection[]
+     * @var    TagCollection[]
      * @access public
      */
     public $tagCollections;
@@ -165,7 +165,7 @@ class MainPageView extends View
                         }
                         echo ", ...</div>\n";
                     }
-//todo fix url                    
+                    //todo fix url                    
                     echo "<tr><td><h3><a href=\"search.php&#63;albumhelp=1&amp;q=\">... create a featured tag</a></h3>";
 
                     ?>

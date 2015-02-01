@@ -38,7 +38,7 @@ class AdminPreferencesView extends View
             return;
         }
 
-///todo set url
+        ///todo set url
         echo "<form class=\"form-horizontal\" method=\"post\" action=\"controller_prefs.php\">\n";
         echo "<input type=\"hidden\" name=\"target\" value=\"" . $_SERVER['PHP_SELF'] . "\" />\n";
 

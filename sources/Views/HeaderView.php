@@ -15,7 +15,7 @@ class HeaderView extends View
     /**
      * openGraphObject
      *
-     * @var Models\OpenGraphObject
+     * @var    Models\OpenGraphObject
      * @access public
      */
     public $openGraphObject;
@@ -23,7 +23,7 @@ class HeaderView extends View
     /**
      * currentUser
      *
-     * @var Models\User
+     * @var    Models\User
      * @access public
      */
     public $currentUser;
@@ -90,9 +90,9 @@ class HeaderView extends View
                             <ul class="dropdown-menu">
                         <?php
                         if ($this->currentUser->authorizationLevel >= 5) {
-                          ?>
+                            ?>
                                 <li><a href="<?= htmlspecialchars($this->adminUrl) ?>">Administer</a></li>
-                          <?php
+                            <?php
                         }
                         ?>
 

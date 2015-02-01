@@ -14,7 +14,7 @@ class AdminSecurityView extends View
     /**
      * users
      *
-     * @var Models\User[]
+     * @var    Models\User[]
      * @access public
      */
     public $users;
@@ -24,7 +24,7 @@ class AdminSecurityView extends View
      *
      * array of arrays: [name, key, security level]
      *
-     * @var array
+     * @var    array
      * @access public
      */
     public $securityPolicies;
@@ -50,5 +50,5 @@ class AdminSecurityView extends View
 
         var_dump($this->securityPolicies);
 
-   }
+    }
 }

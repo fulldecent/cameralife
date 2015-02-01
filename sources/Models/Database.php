@@ -318,8 +318,8 @@ class Database
      * 
      * @access public
      * @static
-     * @param string $sql
-     * @param array $bind (default: array())
+     * @param  string $sql
+     * @param  array  $bind (default: array())
      * @return void
      */
     public static function run($sql, $bind = array())

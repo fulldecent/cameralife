@@ -13,7 +13,7 @@ class AdminView extends View
     /**
      * The version this system is running
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $cameraLifeRunningVersion;
@@ -21,7 +21,7 @@ class AdminView extends View
     /**
      * The latest released version
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $cameraLifeLatestVersion;
@@ -29,7 +29,7 @@ class AdminView extends View
     /**
      * Number of logged actions since last checkpoint
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $numLogsSinceCheckpoint;
@@ -37,7 +37,7 @@ class AdminView extends View
     /**
      * Number of logged comments since last checkpoint
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $numCommentsSinceCheckpoint;
@@ -45,7 +45,7 @@ class AdminView extends View
     /**
      * Number of new users that have not been approved
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $numNewUsers;
@@ -53,7 +53,7 @@ class AdminView extends View
     /**
      * Number of flagged photos
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $numFlagged;
@@ -61,7 +61,7 @@ class AdminView extends View
     /**
      * logsUrl
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $logsUrl;
@@ -69,7 +69,7 @@ class AdminView extends View
     /**
      * commentsUrl
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $commentsUrl;
@@ -77,7 +77,7 @@ class AdminView extends View
     /**
      * photosUrl
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $photosUrl;
@@ -85,7 +85,7 @@ class AdminView extends View
     /**
      * securityUrl
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $securityUrl;
@@ -93,7 +93,7 @@ class AdminView extends View
     /**
      * appearanceUrl
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $appearanceUrl;
@@ -101,7 +101,7 @@ class AdminView extends View
     /**
      * fileStoreUrl
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $fileStoreUrl;
@@ -109,7 +109,7 @@ class AdminView extends View
     /**
      * thumbnailUrl
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $thumbnailUrl;

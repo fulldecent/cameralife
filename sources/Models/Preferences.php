@@ -12,12 +12,12 @@ class Preferences
     private static $cachedPreferences;
 
     /**
-     * Returns the value string or NULL if none exists
+     * Returns the value string or null if none exists
      *
      * @access public
-     * @param string $class
-     * @param string $key
-     * @return mixed string | NULL
+     * @param  string $class
+     * @param  string $key
+     * @return mixed string | null
      */
     public static function valueForModuleWithKey($module, $key)
     {
@@ -31,7 +31,7 @@ class Preferences
         if (isset(self::$cachedPreferences[$module][$key])) {
             return self::$cachedPreferences[$module][$key];
         } else {
-            return NULL;
+            return null;
         }
     }
 

@@ -4,9 +4,9 @@ namespace CameraLife;
 /**
  * Sets up the environment and routes every request
  *
- * @author William Entriken <cameralife@phor.net>
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright 2001-2014 William Entriken
- * @access public
+ * @access    public
  */
  
 // Bail if autoload is not available!
@@ -25,7 +25,7 @@ require 'sources/autoload.php';
 
 // Load configuration
 if (file_exists(dirname(__FILE__) . '/config.php')) {
-    require dirname(__FILE__) . '/config.php';
+    include dirname(__FILE__) . '/config.php';
 }
 
 // Route the page request

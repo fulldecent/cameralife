@@ -34,7 +34,7 @@ class MediaController extends Controller
         $extension = $photo->extension;
 
         if ($photo->get('status') != 0) {
-//todo setup security
+            //todo setup security
             if (!$cameralife->security->authorize('admin_file')) {
                 $reason = null;
                 if ($photo->get('status') == 1) {
@@ -84,7 +84,7 @@ class MediaController extends Controller
 
         if (!$file) {
             $photo->generateThumbnail();
-//todo fix
+            //todo fix
             list($file, $temp, $mtime) = $cameralife->fileStore->getFile($bucket, $filepath);
         }
 

@@ -5,16 +5,16 @@ use CameraLife\Models as Models;
 /**
  * Shows a welcome page, the "index" for the website
  *
- * @author William Entriken <cameralife@phor.net>
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright 2001-2014 William Entriken
- * @access public
+ * @access    public
  */
 class StatisticsView extends View
 {
     /**
      * Statistics for the site
      *
-     * @var Models\Statistics
+     * @var    Models\Statistics
      * @access public
      */
     public $statistics;
@@ -43,7 +43,7 @@ class StatisticsView extends View
                 <table class="table table-condensed">
                     <?php
                     foreach ($popularPhotos as $photo) {
-// fix links                      
+                        // fix links                      
                         $percent = $photo->Get('hits') * 100 / $popularPhotos[0]->Get('hits');
                         echo "<tr><td>";
                         echo "<div style=\"width:50px; clear:left\" class=\"progress\"><div class=\"progress-bar progress-info\" style=\"width: $percent%\"></div></div>";
@@ -65,7 +65,7 @@ class StatisticsView extends View
             <div class="panel-body">
                 <table class="table table-condensed">
                     <?php
-///TODO: correct links
+                    ///TODO: correct links
                     foreach ($popularAlbums as $photo) {
                         $percent = $photo->get('hits') * 100 / $popularPhotos[0]->get('hits');
                         echo "<tr><td>";

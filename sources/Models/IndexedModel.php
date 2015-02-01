@@ -14,7 +14,7 @@ abstract class IndexedModel
     /**
      * An identifier that uniquely identifies this model
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $id;

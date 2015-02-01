@@ -36,7 +36,7 @@ class PhotoController extends HtmlController
 
     public function handleGet($get, $post, $files, $cookies)
     {
-// todo, get PREV and NEXT links from photo and use meta prev/next in HTML theme header
+        // todo, get PREV and NEXT links from photo and use meta prev/next in HTML theme header
 
         $view = new Views\PhotoView;
         $view->photo = $this->model;
@@ -52,7 +52,7 @@ class PhotoController extends HtmlController
         $this->htmlHeader($cookies);
 
         if ($this->model->get('status') != 0) {
-//todo check privs
+            //todo check privs
             throw new \Exception('This file has been flagged or marked private');
         }
         $this->model->set('hits', $this->model->get('hits') + 1);
@@ -68,12 +68,12 @@ class PhotoController extends HtmlController
         $currentUser = Models\User::currentUser($cookies);
 
         switch ($post['action']) {
-            case 'favorite':
-                $this->model->favoriteByUser($currentUser);
-                break;
-            case 'unfavorite':
-                $this->model->unfavoriteByUser($currentUser);
-                break;
+        case 'favorite':
+            $this->model->favoriteByUser($currentUser);
+            break;
+        case 'unfavorite':
+            $this->model->unfavoriteByUser($currentUser);
+            break;
         }
 
         parent::handlePost($get, $post, $files, $cookies);

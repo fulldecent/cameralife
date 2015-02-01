@@ -20,7 +20,7 @@ class SetupInstallController extends HtmlController
     }
 
     // cannot use parent because database is not accessible
-    public function __construct($id = NULL)
+    public function __construct($id = null)
     {
         $this->siteName = null;
         $this->title = $this->siteName;
@@ -33,8 +33,8 @@ class SetupInstallController extends HtmlController
     public function handleGet($get, $post, $files, $cookies)
     {
         try {
-            # Mewp told me specifically not to use SERVER_NAME.
-            # Change 'localhost' to your domain name.
+            // Mewp told me specifically not to use SERVER_NAME.
+            // Change 'localhost' to your domain name.
             $openid = new \LightOpenID($_SERVER['SERVER_NAME']);
             if (!$openid->mode) {
                 if (isset($post['openid_identifier'])) {
@@ -155,8 +155,8 @@ class SetupInstallController extends HtmlController
     public function handlePost($get, $post, $files, $cookies)
     {
         try {
-            # Mewp told me specifically not to use SERVER_NAME.
-            # Change 'localhost' to your domain name.
+            // Mewp told me specifically not to use SERVER_NAME.
+            // Change 'localhost' to your domain name.
             $openid = new \LightOpenID($_SERVER['SERVER_NAME']);
             if (!$openid->mode) {
                 if (isset($post['openid_identifier'])) {

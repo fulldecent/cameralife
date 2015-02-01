@@ -9,7 +9,7 @@ namespace CameraLife\Views;
  */
 class ExceptionView extends View
 {
-//todo, make this phone home
+    //todo, make this phone home
     public $exception;
 
     public $showDebuggingInformation = true;

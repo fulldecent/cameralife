@@ -27,7 +27,7 @@ class FolderController extends HtmlController
     public function handleGet($get, $post, $files, $cookies)
     {
         $start = isset($get['start']) ? $get['start'] : 0;
-        $section = isset($get['section']) ? $get['section'] : NULL;
+        $section = isset($get['section']) ? $get['section'] : null;
         $this->model->setPage($start);
         $photoCount = $this->model->getPhotoCount();
         $folderCount = $this->model->getFolderCount();

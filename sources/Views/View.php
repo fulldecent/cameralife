@@ -10,9 +10,9 @@ use CameraLife\Models as Models;
  * rendering will be contained in concrete subclass properties. Views must not
  * call header() or other side-channel output.
  *
- * @author William Entriken <cameralife@phor.net>
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright 2014 William Entriken
- * @access public
+ * @access    public
  */
 abstract class View
 {

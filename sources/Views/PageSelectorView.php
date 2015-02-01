@@ -4,8 +4,8 @@ namespace CameraLife\Views;
 /**
  * PageSelector view
  *
- * @author William Entriken<cameralife@phor.net>
- * @access public
+ * @author    William Entriken<cameralife@phor.net>
+ * @access    public
  * @copyright 2014 William Entriken
  */
 class PageSelectorView extends View
@@ -13,7 +13,7 @@ class PageSelectorView extends View
     /**
      * The first item number shown
      *
-     * @var int
+     * @var    int
      * @access public
      */
     public $start;
@@ -21,7 +21,7 @@ class PageSelectorView extends View
     /**
      * The total number of items
      *
-     * @var int
+     * @var    int
      * @access public
      */
     public $total;
@@ -31,7 +31,7 @@ class PageSelectorView extends View
      *
      * (default value: 20)
      *
-     * @var int
+     * @var    int
      * @access public
      */
     public $perPage = 20;
@@ -41,7 +41,7 @@ class PageSelectorView extends View
      *
      * (default value: null)
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
     public $url = null;

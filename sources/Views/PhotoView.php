@@ -5,16 +5,16 @@ use CameraLife\Models as Models;
 /**
  * Shows the photos page
  *
- * @author William Entriken <cameralife@phor.net>
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright 2001-2014 William Entriken
- * @access public
+ * @access    public
  */
 class PhotoView extends View
 {
     /**
      * photo
      *
-     * @var Models\Photo
+     * @var    Models\Photo
      * @access public
      */
     public $photo;
@@ -22,7 +22,7 @@ class PhotoView extends View
     /**
      * url of referring page, used to find other photos in context
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $referrer = null;
@@ -32,7 +32,7 @@ class PhotoView extends View
      *
      * (default value: null)
      *
-     * @var Models\User
+     * @var    Models\User
      * @access public
      */
     public $currentUser = null;
@@ -48,7 +48,7 @@ class PhotoView extends View
         $this->referrer = str_replace(constant('BASE_URL'), '', $this->referrer);
         $this->referrer = preg_replace('|^/|', '', $this->referrer);
 
-//todo, photo model needs to know referrer
+        //todo, photo model needs to know referrer
         $photoPrev = $this->photo->getPrevious();
         $photoNext = $this->photo->getNext();
 
@@ -169,7 +169,7 @@ if (isset($nextOpenGraph['og:url'])) {
 </div>
 
 <?php
-# Cache the next image the user is likely to look at
+// Cache the next image the user is likely to look at
 if ($photoNext) {
     echo '<img style="display:none" src="' . htmlspecialchars(
         $photoNext->getMediaURL('scaled')

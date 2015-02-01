@@ -58,7 +58,7 @@ class Photo extends IndexedModel
      */
     private $contextNext;
 
-//todo I hate this function
+    //todo I hate this function
     /**
      * Loads a photo with a given FILEPATH
      *
@@ -136,7 +136,7 @@ class Photo extends IndexedModel
      */
     public static function getPhotoWithID($id)
     {
-// TODO most calls to this function are better served by getPhotoWithRecord
+        // TODO most calls to this function are better served by getPhotoWithRecord
         global $cameralife;
         $bind = array('i'=>$id);
         $result = Database::select('photos', '*', "id=:i", null, null, $bind);
@@ -150,7 +150,7 @@ class Photo extends IndexedModel
      * __construct function.
      * 
      * @access protected
-     * @param mixed $original (default: null)
+     * @param  mixed $original (default: null)
      * @return void
      */
     protected function __construct($original = null)
@@ -170,7 +170,7 @@ class Photo extends IndexedModel
         return $numMatchingPhotos > 0;
     }
 
-    public function set($key, $value, User $user = NULL)
+    public function set($key, $value, User $user = null)
     {
         $receipt = null;
         $this->record[$key] = $value;
@@ -222,7 +222,8 @@ class Photo extends IndexedModel
     {
         $this->loadImage(); // sets $this->EXIF and $this-record
         if (Preferences::valueForModuleWithKey('CameraLife', 'autorotate')  == 'yes'
-            && (!$this->record['modified'] || $this->record['modified'] == '1')) {
+            && (!$this->record['modified'] || $this->record['modified'] == '1')
+        ) {
             $this->rotateEXIF();
         }
 
@@ -238,7 +239,7 @@ class Photo extends IndexedModel
             $filename = '/' . $this->record['id'] . '_mod.' . $this->extension;
             $store = FileStore::fileStoreWithName('other');
             $store->putFile($filename, $tempfile, $this->record['status'] != 0);
-//todo warning secure!            
+            //todo warning secure!            
         }
 
         $imagesize = $activeImage->getSize();
@@ -272,7 +273,7 @@ class Photo extends IndexedModel
 
     private function deleteThumbnails()
     {
-//todo update        
+        //todo update        
         $cameralife->fileStore->EraseFile('other', '/' . $this->record['id'] . '_mod.' . $this->extension);
         $cameralife->fileStore->EraseFile(
             'other',
@@ -566,7 +567,7 @@ class Photo extends IndexedModel
      */
     public function getRelated()
     {
-//todo pass in referrer
+        //todo pass in referrer
         global $_SERVER;
         $retval = array($this->getFolder());
         $this->context = $this->getFolder();
@@ -695,7 +696,7 @@ class Photo extends IndexedModel
 
     public function favoriteByUser(User $user)
     {
-//todo set RECEIPT in the user session
+        //todo set RECEIPT in the user session
         $condition = 'id = ' . $this->record['id'] . ' AND ';
         if ($user->isLoggedIn) {
             $condition .= 'username = "' . $user->name . '"';
@@ -708,7 +709,7 @@ class Photo extends IndexedModel
 
     public function unfavoriteByUser(User $user)
     {
-//todo set RECEIPT in the user session
+        //todo set RECEIPT in the user session
         $condition = 'id = ' . $this->record['id'] . ' AND ';
         if ($user->isLoggedIn) {
             $condition .= 'username = "' . $user->name . '"';

@@ -15,7 +15,7 @@ class AdminCommentsView extends View
      *
      * (default value: 0)
      *
-     * @var int
+     * @var    int
      * @access public
      */
     public $checkpointId = 0;
@@ -25,7 +25,7 @@ class AdminCommentsView extends View
      *
      * (default value: '1970-01-01')
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $checkpointDate = '1970-01-01';
@@ -35,7 +35,7 @@ class AdminCommentsView extends View
      *
      * (default value: true)
      *
-     * @var bool
+     * @var    bool
      * @access public
      */
     public $showFromMe = true;
@@ -45,7 +45,7 @@ class AdminCommentsView extends View
      *
      * (default value: true)
      *
-     * @var bool
+     * @var    bool
      * @access public
      */
     public $showFromRegistered = true;
@@ -55,7 +55,7 @@ class AdminCommentsView extends View
      *
      * (default value: true)
      *
-     * @var bool
+     * @var    bool
      * @access public
      */
     public $showFromUnregistered = true;
@@ -66,7 +66,7 @@ class AdminCommentsView extends View
      * (default value: array())
      * Array of:
      *
-     * @var Array[]
+     * @var    Array[]
      * @access public
      */
     public $commentRecords = array();
@@ -116,10 +116,10 @@ class AdminCommentsView extends View
             $object = new Models\Photo($commentRecord['id']);
             $openGraphObject = null;
             if (get_class($object) == 'CameraLife\Models\Photo') {
-///TODO BREAKING MVC HERE
-//              $openGraphObject = new \CameraLife\Controllers\PhotoController($object->get['id']);
-$openGraphObject = new \CameraLife\Controllers\SearchController('');
-$openGraphObject->image = "/cameralife-DEV/media/{$object->record['id']}.jpg?scale=thumbnail&ver=1237246020";
+                ///TODO BREAKING MVC HERE
+                //              $openGraphObject = new \CameraLife\Controllers\PhotoController($object->get['id']);
+                $openGraphObject = new \CameraLife\Controllers\SearchController('');
+                $openGraphObject->image = "/cameralife-DEV/media/{$object->record['id']}.jpg?scale=thumbnail&ver=1237246020";
             }
 
             echo "<div class=\"row\">";
@@ -142,6 +142,6 @@ $openGraphObject->image = "/cameralife-DEV/media/{$object->record['id']}.jpg?sca
 
             echo "</table>";
             echo "</div></div>";
-          }
+        }
     }
 }

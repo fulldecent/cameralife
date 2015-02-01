@@ -9,7 +9,7 @@ abstract class HtmlController extends Controller
      * htmlHeader function.
      *
      * @access protected
-     * @param array $cookies (default: array())
+     * @param  array $cookies (default: array())
      * @return void
      */
     protected function htmlHeader($cookies = array())
@@ -45,7 +45,7 @@ abstract class HtmlController extends Controller
      * Utility function to render the HTML meta tags for this open graph entity
      *
      * @access public
-     * @param string $prefix To print before each line (default: '')
+     * @param  string $prefix To print before each line (default: '')
      * @return void
      */
     public function htmlRenderMetaTags($prefix = '')

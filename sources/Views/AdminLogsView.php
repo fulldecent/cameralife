@@ -15,7 +15,7 @@ class AdminLogsView extends View
      *
      * (default value: 0)
      *
-     * @var int
+     * @var    int
      * @access public
      */
     public $checkpointId = 0;
@@ -25,7 +25,7 @@ class AdminLogsView extends View
      *
      * (default value: '1970-01-01')
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $checkpointDate = '1970-01-01';
@@ -35,7 +35,7 @@ class AdminLogsView extends View
      *
      * (default value: true)
      *
-     * @var bool
+     * @var    bool
      * @access public
      */
     public $showFromMe = true;
@@ -45,7 +45,7 @@ class AdminLogsView extends View
      *
      * (default value: true)
      *
-     * @var bool
+     * @var    bool
      * @access public
      */
     public $showFromRegistered = true;
@@ -55,7 +55,7 @@ class AdminLogsView extends View
      *
      * (default value: true)
      *
-     * @var bool
+     * @var    bool
      * @access public
      */
     public $showFromUnregistered = true;
@@ -65,7 +65,7 @@ class AdminLogsView extends View
      *
      * (default value: true)
      *
-     * @var bool
+     * @var    bool
      * @access public
      */
     public $showChangedPhotos = true;
@@ -75,7 +75,7 @@ class AdminLogsView extends View
      *
      * (default value: true)
      *
-     * @var bool
+     * @var    bool
      * @access public
      */
     public $showChangedTags = true;
@@ -85,7 +85,7 @@ class AdminLogsView extends View
      *
      * (default value: true)
      *
-     * @var bool
+     * @var    bool
      * @access public
      */
     public $showChangedUsers = true;
@@ -95,7 +95,7 @@ class AdminLogsView extends View
      *
      * (default value: true)
      *
-     * @var bool
+     * @var    bool
      * @access public
      */
     public $showChangedPreferences = true;
@@ -105,7 +105,7 @@ class AdminLogsView extends View
      *
      * (default value: array())
      *
-     * @var Models\AuditTrail[]
+     * @var    Models\AuditTrail[]
      * @access public
      */
     public $auditTrails = array();
@@ -165,10 +165,10 @@ class AdminLogsView extends View
             $object = $auditTrail->getObject();
             $openGraphObject = null;
             if (get_class($object) == 'CameraLife\Models\Photo') {
-///TODO BREAKING MVC HERE
-//              $openGraphObject = new \CameraLife\Controllers\PhotoController($object->get['id']);
-$openGraphObject = new \CameraLife\Controllers\SearchController('');
-$openGraphObject->image = "/cameralife-DEV/media/{$object->record['id']}.jpg?scale=thumbnail&ver=1237246020";
+                ///TODO BREAKING MVC HERE
+                //              $openGraphObject = new \CameraLife\Controllers\PhotoController($object->get['id']);
+                $openGraphObject = new \CameraLife\Controllers\SearchController('');
+                $openGraphObject->image = "/cameralife-DEV/media/{$object->record['id']}.jpg?scale=thumbnail&ver=1237246020";
             }
 
             echo "<div class=\"row\">";
@@ -191,6 +191,6 @@ $openGraphObject->image = "/cameralife-DEV/media/{$object->record['id']}.jpg?sca
 
             echo "</table>";
             echo "</div></div>";
-          }
+        }
     }
 }

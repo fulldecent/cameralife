@@ -29,7 +29,7 @@ class Tag extends Search
         parent::__construct($this->record['term']);
     }
 
-    public function set($key, $value, User $user = NULL)
+    public function set($key, $value, User $user = null)
     {
         $receipt = null;
         $this->record[$key] = $value;

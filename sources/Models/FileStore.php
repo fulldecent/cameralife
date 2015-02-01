@@ -19,7 +19,7 @@ class FileStore
     /**
      * baseDir
      *
-     * @var string
+     * @var    string
      * @access private
      */
     private $baseDir;
@@ -38,13 +38,13 @@ class FileStore
      * fileStoreWithName function.
      *
      * @access public
-     * @param string $name -- 'photo' or 'other'
+     * @param  string $name -- 'photo' or 'other'
      * @return void
      */
     public static function fileStoreWithName($name)
     {
         $retval = new FileStore;
-        $path = NULL;
+        $path = null;
 
         if ($name == 'photo') {
             $path = Preferences::valueForModuleWithKey('LocalFileStore', 'photo_dir');
@@ -129,7 +129,7 @@ class FileStore
         unlink($this->baseDir . $path);
     }
 
-//todo: should return file sizes
+    //todo: should return file sizes
     /**
      * Returns a list of all files in the fileStore
      *
@@ -142,7 +142,7 @@ class FileStore
     {
         $fullpath = $this->baseDir . $path;
 
-        #FEATURE // add " NOCL" to the end of a folder to exclude it
+        // FEATURE // add " NOCL" to the end of a folder to exclude it
         if (stripos($path, ' NOCL') !== false) {
             return array();
         }

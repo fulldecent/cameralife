@@ -16,7 +16,7 @@ class User extends IndexedModel
      *
      * (default value: false)
      *
-     * @var bool
+     * @var    bool
      * @access public
      */
     public $isLoggedIn = false;
@@ -24,29 +24,29 @@ class User extends IndexedModel
     /**
      * name
      *
-     * (default value: NULL)
+     * (default value: null)
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
-    public $name = NULL;
+    public $name = null;
 
     /**
      * email
      *
-     * (default value: NULL)
+     * (default value: null)
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
-    public $email = NULL;
+    public $email = null;
 
     /**
      * authorizationLevel
      *
      * (default value: 0)
      *
-     * @var int
+     * @var    int
      * @access public
      */
     public $authorizationLevel = 0;
@@ -54,24 +54,24 @@ class User extends IndexedModel
     /**
      * remoteAddr IP address
      *
-     * (default value: NULL)
+     * (default value: null)
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
-    public $remoteAddr = NULL;
+    public $remoteAddr = null;
 
     /**
      * lastOnline
      *
-     * (default value: NULL)
+     * (default value: null)
      *
-     * @var mixed
+     * @var    mixed
      * @access public
      */
-    public $lastOnline = NULL;
+    public $lastOnline = null;
 
-    public function __construct($id = NULL)
+    public function __construct($id = null)
     {
         if (is_numeric($id)) {
             $result = Database::select('users', '*', "id=$id");
@@ -110,7 +110,7 @@ class User extends IndexedModel
             return $retval;
         }
         
-//TODO: breaks MVC        
+        //TODO: breaks MVC        
         setcookie('cameralifeauth', $cookie, time() + 30000000, '/');
         $_COOKIE['cameralifeauth'] = $cookie;                
         $values['username'] = $email;

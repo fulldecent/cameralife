@@ -9,7 +9,7 @@ namespace CameraLife\Models;
  */
 class Favorites extends Search
 {
-///TODO: delete from ratings table where rating = 0 and simplify some queries here
+    ///TODO: delete from ratings table where rating = 0 and simplify some queries here
 
     private $whereRestriction = '';
 
@@ -20,7 +20,7 @@ class Favorites extends Search
 
         $retval->whereRestriction = 'ratings.user_ip = "' . $currentUser->remoteAddr . '"';
         if ($currentUser->isLoggedIn) {
-///TODO security: need to bind user name
+            ///TODO security: need to bind user name
             $retval->whereRestriction = 'ratings.username = "' . $currentUser->name . '"';
         }
         return $retval;
@@ -49,7 +49,7 @@ class Favorites extends Search
         );
         $photos = array();
         while ($row = $query->fetchAssoc()) {
-//TODO: make public and use Photo::getPhotoWithRecord to save a DB call
+            //TODO: make public and use Photo::getPhotoWithRecord to save a DB call
             $photos[] = Photo::getPhotoWithID($row['id']);
         }
 

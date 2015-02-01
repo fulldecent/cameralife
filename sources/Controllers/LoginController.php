@@ -23,8 +23,8 @@ class LoginController extends HtmlController
         $this->htmlHeader($cookies);
 
         try {
-            # Mewp told me specifically not to use SERVER_NAME.
-            # Change 'localhost' to your domain name.
+            // Mewp told me specifically not to use SERVER_NAME.
+            // Change 'localhost' to your domain name.
             $openid = new \LightOpenID($_SERVER['SERVER_NAME']);
             if (!$openid->mode) {
                 if (isset($post['openid_identifier'])) {
@@ -98,8 +98,8 @@ class LoginController extends HtmlController
     public function handlePost($get, $post, $files, $cookies)
     {
         try {
-            # Mewp told me specifically not to use SERVER_NAME.
-            # Change 'localhost' to your domain name.
+            // Mewp told me specifically not to use SERVER_NAME.
+            // Change 'localhost' to your domain name.
             $openid = new \LightOpenID($_SERVER['SERVER_NAME']);
             if (!$openid->mode) {
                 if (isset($post['openid_identifier'])) {

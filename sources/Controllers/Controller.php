@@ -7,14 +7,14 @@ use CameraLife\Views as Views;
  * Base class for all Controller objects, each controller corresponds to a
  * part of the site referenced by a URL of the format index.php?page=XXX
  *
- * @author William Entriken <cameralife@phor.net>
+ * @author    William Entriken <cameralife@phor.net>
  * @copyright 2001-2014 William Entriken
- * @access public
+ * @access    public
  */
 
 abstract class Controller
 {
-    private static $rewriteEnabled = NULL;
+    private static $rewriteEnabled = null;
 
     /*****************************************
      * OPEN GRAPH METADATA, see ogp.me
@@ -25,7 +25,7 @@ abstract class Controller
      * og:title
      * The title of your object as it should appear within the graph, e.g., "The Rock".
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $title;
@@ -37,7 +37,7 @@ abstract class Controller
      * other properties may also be required.
      * Will usually by "website"
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $type;
@@ -48,7 +48,7 @@ abstract class Controller
      * The canonical URL of your object that will be used as its permanent ID
      * in the graph, e.g., "http://www.imdb.com/title/tt0117500/".
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $url;
@@ -58,7 +58,7 @@ abstract class Controller
      * og:image
      * An image URL which should represent your object within the graph.
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $image;
@@ -68,7 +68,7 @@ abstract class Controller
      * og:description
      * A one to two sentence description of your object.
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $description;
@@ -80,7 +80,7 @@ abstract class Controller
      * (a, an, the, "", auto). If auto is chosen, the consumer of your data should
      * chose between "a" or "an". Default is "" (blank).
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $determiner;
@@ -91,7 +91,7 @@ abstract class Controller
      * If your object is part of a larger web site, the name which should
      * be displayed for the overall site. e.g., "IMDb".
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $siteName;
@@ -101,7 +101,7 @@ abstract class Controller
      * og:image:secure_url
      * An alternate url to use if the webpage requires HTTPS.
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $imageSecureUrl;
@@ -111,7 +111,7 @@ abstract class Controller
      * og:image:type
      * A MIME type for this image.
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $imageType;
@@ -121,7 +121,7 @@ abstract class Controller
      * og:image:width
      * The number of pixels wide.
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $imageWidth;
@@ -131,7 +131,7 @@ abstract class Controller
      * og:image:height
      * The number of pixels high.
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $imageHeight;
@@ -141,7 +141,7 @@ abstract class Controller
      * NOT AN OPENGRAPH standard
      * A font-awesome icon representing this view
      *
-     * @var string
+     * @var    string
      * @access public
      */
     public $icon;
@@ -152,7 +152,7 @@ abstract class Controller
      * @access public
      * @return void
      */
-    public function __construct($id = NULL)
+    public function __construct($id = null)
     {
         $preferences = new Models\Preferences;
         $this->siteName = $preferences->valueForModuleWithKey('CameraLife', 'sitename');
@@ -165,7 +165,7 @@ abstract class Controller
 
     public static function getUrl()
     {
-        return self::getUrlForIDWithParameters(NULL, array());
+        return self::getUrlForIDWithParameters(null, array());
     }
 
     public static function getUrlForID($object)
@@ -181,8 +181,8 @@ abstract class Controller
         $query = http_build_query($parameters);
         $id = ltrim($id, '/');
 
-// TODO, use this http://stackoverflow.com/a/14375686/300224
-        if (self::$rewriteEnabled === NULL) {
+        // TODO, use this http://stackoverflow.com/a/14375686/300224
+        if (self::$rewriteEnabled === null) {
             self::$rewriteEnabled = Models\Preferences::valueForModuleWithKey('CameraLife', 'rewrite') == 'yes';
         }
 
@@ -199,13 +199,12 @@ abstract class Controller
      *
      * But usually the user will see pretty URLs that rewrite to the above
      *
-     *
      * @access public
-     * @param array $get
-     * @param array $post
-     * @param array $files
-     * @param array $cookies
-     * @param array $server
+     * @param  array $get
+     * @param  array $post
+     * @param  array $files
+     * @param  array $cookies
+     * @param  array $server
      * @return void
      */
     public static function handleRequest($get, $post, $files, $cookies, $server)
@@ -246,9 +245,9 @@ abstract class Controller
      * output page content, HTML or otherwise
      *
      * @access public
-     * @param array $get
-     * @param array $post
-     * @param array $files
+     * @param  array $get
+     * @param  array $post
+     * @param  array $files
      * @return void
      */
     public abstract function handleGet($get, $post, $files, $cookies);
@@ -257,10 +256,10 @@ abstract class Controller
      * Default implementation redirects to same page for get
      *
      * @access public
-     * @param mixed $get
-     * @param mixed $post
-     * @param mixed $files
-     * @param mixed $cookies
+     * @param  mixed $get
+     * @param  mixed $post
+     * @param  mixed $files
+     * @param  mixed $cookies
      * @return void
      */
     public function handlePost($get, $post, $files, $cookies)

@@ -33,26 +33,26 @@ class MainPageController extends HtmlController
 
         $view->activeSection = isset($get['section']) ? $get['section'] : 'rand';
         switch($view->activeSection) {
-            case 'newest-folders':
-                $search->sort = 'newest';
-                foreach($search->getFolders() as $folder) {
-                    $view->openGraphsForTop[] = new FolderController($folder->id);
-                }
-                break;
-            case 'rand':
-            case 'popular':
-            case 'unpopular':
-            case 'newest':
-                $search->sort = $view->activeSection;
-                foreach($search->getPhotos() as $photo) {
-                    $view->openGraphsForTop[] = new PhotoController($photo->id);
-                }
-                break;
-            default:
-                $search->sort = 'rand';
-                foreach($search->getPhotos() as $photo) {
-                    $view->openGraphsForTop[] = new PhotoController($photo->id);
-                }
+        case 'newest-folders':
+            $search->sort = 'newest';
+            foreach($search->getFolders() as $folder) {
+                $view->openGraphsForTop[] = new FolderController($folder->id);
+            }
+            break;
+        case 'rand':
+        case 'popular':
+        case 'unpopular':
+        case 'newest':
+            $search->sort = $view->activeSection;
+            foreach($search->getPhotos() as $photo) {
+                $view->openGraphsForTop[] = new PhotoController($photo->id);
+            }
+            break;
+        default:
+            $search->sort = 'rand';
+            foreach($search->getPhotos() as $photo) {
+                $view->openGraphsForTop[] = new PhotoController($photo->id);
+            }
         }
 
         $root = Models\Folder::getRootFolder();
