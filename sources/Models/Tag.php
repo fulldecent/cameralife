@@ -23,9 +23,8 @@ class Tag extends Search
         $result = Database::select('albums', '*', "id=$id");
         $this->record = $result->fetchAssoc();
         if (!$this->record) {
-///TODO: throw exception?
             header("HTTP/1.0 404 Not Found");
-            $cameralife->error("Album #" . ($original + 0) . " not found.");
+            throw new \Exception("Album #" . ($original + 0) . " not found.");
         }
         parent::__construct($this->record['term']);
     }

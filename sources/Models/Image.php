@@ -90,8 +90,10 @@ class Image
         $baseHeight = $this->height * $baseSize / $this->size;
         $newWidth = $this->width * $newSize / $this->size;
         $newHeight = $this->height * $newSize / $this->size;
-        $newImage = imagecreatetruecolor($newWidth, $newHeight)
-        or throw new \Exception("Can't make new image");
+        $newImage = imagecreatetruecolor($newWidth, $newHeight);
+        if (empty($newImage)) {
+            throw new \Exception("Can't make new image");
+        }
 
         imagecopyresampled(
             $newImage,

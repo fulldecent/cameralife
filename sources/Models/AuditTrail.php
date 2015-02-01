@@ -52,8 +52,10 @@ class AuditTrail extends IndexedModel
     {
         $retval = new AuditTrail;
         $query = Database::select('logs', '*', 'id=' . $id);
-        $retval->record = $query->fetchAssoc()
-            or throw new \Exception('AT not found');
+        $retval->record = $query->fetchAssoc();
+        if (empty($retval->record)) {
+            throw new \Exception('AT not found');
+        }
         $retval->id = $retval->record['id'];
         if (!is_array($retval->record)) {
             $cameralife->error("Invalid receipt id #$id");
