@@ -261,7 +261,7 @@ class Photo extends IndexedModel
             $filename = '/' . $this->record['id'] . '_' . $cursize . '.' . $this->extension;
             $fileStore = FileStore::fileStoreWithName('other');
             $fileStore->putFile($filename, $tempfile, $this->record['status'] != 0);
-            @unlink($file);
+            unlink($file);
             if ($cursize == $thumbSize) {
                 $this->record['tn_width'] = $dims[0];
                 $this->record['tn_height'] = $dims[1];

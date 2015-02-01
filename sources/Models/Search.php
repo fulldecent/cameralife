@@ -177,9 +177,10 @@ class Search extends IndexedModel
         $sort = $this->photoSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
+        $i = 0;
         foreach (preg_split('/\s+/', $this->query) as $queryPart) {
-            $conditions[] = "(description LIKE :$i OR keywords LIKE :$i)";
-            $binds[] = '%' . $queryPart . '%';
+            $conditions[$i] = "(description LIKE :$i OR keywords LIKE :$i)";
+            $binds[$i++] = '%' . $queryPart . '%';
         }
         if (!$this->showPrivatePhotos) {
             $conditions[] = 'status = 0';
@@ -210,9 +211,10 @@ class Search extends IndexedModel
         $sort = $this->tagSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
+        $i = 0;
         foreach (preg_split('/\s+/', $this->query) as $queryPart) {
-            $conditions[] = "(name LIKE :$i)";
-            $binds[] = '%' . $queryPart . '%';
+            $conditions[$i] = "(name LIKE :$i)";
+            $binds[$i++] = '%' . $queryPart . '%';
         }
         $query = Database::select(
             'albums',
@@ -242,9 +244,10 @@ class Search extends IndexedModel
         $sort = $this->folderSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
+        $i = 0;
         foreach (preg_split('/\s+/', $this->query) as $queryPart) {
-            $conditions[] = "(path LIKE :$i)";
-            $binds[] = '%' . $queryPart . '%';
+            $conditions[$i] = "(path LIKE :$i)";
+            $binds[$i++] = '%' . $queryPart . '%';
         }
         if (!$this->showPrivatePhotos) {
             $conditions[] = 'status = 0';

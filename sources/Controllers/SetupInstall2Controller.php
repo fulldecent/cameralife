@@ -88,7 +88,7 @@ class SetupInstall2Controller extends HtmlController
 
         // Check GD support
         if (function_exists('gd_info')) {
-            $info = @gd_info();
+            $info = gd_info();
             if (isset($info['JPEG Support'])) {
                 $this->status[] = ['description'=>'PHP-GD is configured properly', 'class'=>'success'];
             } else {

@@ -27,7 +27,7 @@ class MediaController extends Controller
     {
         $photo = Models\Photo::getPhotoWithID($get['id']);
         $format = isset($get['scale']) ? $get['scale'] : (isset($get['size']) ? $get['size'] : 'NOSIZE');
-        if (!is_numeric($_GET['ver'])) {
+        if (!is_numeric($get['ver'])) {
             $cameralife->error('Required number ver missing! Query string: ' . htmlentities($_SERVER['QUERY_STRING']));
         }
 

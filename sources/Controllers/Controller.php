@@ -274,6 +274,5 @@ abstract class Controller
         $view->exception = $exception;
         $view->showDebuggingInformation = $showDebuggingInformation;
         $view->render();
-        exit(0);
     }
 }

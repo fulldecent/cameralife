@@ -31,9 +31,9 @@ class SearchController extends HtmlController
         ## Sometimes we're sure an album page is relevant - redirect there
         if (!$folderCount && $albumCount == 1) {
 /* TODO
-          $count_term = $cameralife->database->SelectOne('albums', 'COUNT(*)', "term LIKE '" . $_GET['q'] . "'");
+          $count_term = $cameralife->database->SelectOne('albums', 'COUNT(*)', "term LIKE '" . $get['q'] . "'");
           if ($count_term == 1) {
-              $albumid = $cameralife->database->SelectOne('albums', 'id', "term LIKE '" . $_GET['q'] . "'");
+              $albumid = $cameralife->database->SelectOne('albums', 'id', "term LIKE '" . $get['q'] . "'");
               header('Location: ' . $cameralife->baseURL . '/album.php?id=' . $albumid);
               echo 'redirecting... ' . $cameralife->baseURL . '/album.php?id=' . $albumid;
               exit(0);

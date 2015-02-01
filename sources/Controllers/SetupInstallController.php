@@ -37,8 +37,8 @@ class SetupInstallController extends HtmlController
             # Change 'localhost' to your domain name.
             $openid = new \LightOpenID($_SERVER['SERVER_NAME']);
             if (!$openid->mode) {
-                if (isset($_POST['openid_identifier'])) {
-                    $openid->identity = $_POST['openid_identifier'];
+                if (isset($post['openid_identifier'])) {
+                    $openid->identity = $post['openid_identifier'];
                     $openid->required = array('contact/email');
                     $openid->optional = array('namePerson', 'namePerson/friendly');
                     header('Location: ' . $openid->authUrl());
@@ -159,8 +159,8 @@ class SetupInstallController extends HtmlController
             # Change 'localhost' to your domain name.
             $openid = new \LightOpenID($_SERVER['SERVER_NAME']);
             if (!$openid->mode) {
-                if (isset($_POST['openid_identifier'])) {
-                    $openid->identity = $_POST['openid_identifier'];
+                if (isset($post['openid_identifier'])) {
+                    $openid->identity = $post['openid_identifier'];
                     $openid->required = array('contact/email');
                     $openid->optional = array('namePerson', 'namePerson/friendly');
                     header('Location: ' . $openid->authUrl());

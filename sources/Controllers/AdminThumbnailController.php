@@ -28,7 +28,7 @@ class AdminThumbnailController extends HtmlController
             throw new \Exception('You are not authorized to view this page');
         }
 
-        @ini_set('max_execution_time', 9000);
+        ini_set('max_execution_time', 9000);
         chdir(constant('BASE_DIR'));
         $lastdone = isset($get['lastdone']) ? (int)$get['lastdone'] : 0;
         $starttime = isset($get['starttime']) ? (int)$get['starttime'] : time();

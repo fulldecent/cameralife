@@ -27,11 +27,11 @@ class AdminController extends HtmlController
         $url = 'https://api.github.com/repos/fulldecent/cameralife/releases';
         $options  = array('http' => array('user_agent'=>'Camera Life'));
         $context  = stream_context_create($options);
-        $response = @file_get_contents($url, false, $context);
+        $response = file_get_contents($url, false, $context);
         if ($response === false) {
             return NULL;
         }
-        $json = @json_decode($response);
+        $json = json_decode($response);
         if (isset($json[0]->tag_name)) {
             return $json[0]->tag_name;
         }

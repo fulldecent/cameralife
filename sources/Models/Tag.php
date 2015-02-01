@@ -63,10 +63,10 @@ class Tag extends Search
             throw new \Exception("Failed to set poster for tags");
         }
 
-        $cameralife->database->SelectOne('photos', 'COUNT(*)', 'status=1 AND id=' . $_GET['poster_id'])
+        $cameralife->database->SelectOne('photos', 'COUNT(*)', 'status=1 AND id=' . $poster)
         or $cameralife->error('The selected poster photo does not exist');
 
-        $this->set('poster_id', $_GET['poster_id']);
+        $this->set('poster_id', $poster);
     }
 
     public function getTagCollection()

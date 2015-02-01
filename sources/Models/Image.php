@@ -109,13 +109,13 @@ class Image
         );
 
         if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') {
-            @imagejpeg($newImage, $filename, $quality)
+            imagejpeg($newImage, $filename, $quality)
                 or $cameralife->error("Could not write the file $filename is the directory writable?");
         } elseif ($this->extension == 'png') {
-            @imagepng($newImage, $filename, 9 - $quality / 11)
+            imagepng($newImage, $filename, 9 - $quality / 11)
                 or $cameralife->error("Could not write the file $filename is the directory writable?");
         } elseif ($this->extension == 'gif') {
-            @imagegif($newImage, $filename, 9 - $quality / 11)
+            imagegif($newImage, $filename, 9 - $quality / 11)
                 or $cameralife->error("Could not write the file $filename is the directory writable?");
         }
 
@@ -128,7 +128,7 @@ class Image
      */
     public function rotate($degrees)
     {
-        @ini_set('max_execution_time', 100);
+        ini_set('max_execution_time', 100);
 
         if (function_exists('imagerotate')) {
             $rotated = imagerotate($this->originalImage, -$degrees, 0);
@@ -149,10 +149,10 @@ class Image
     public function save($filename, $quality = 91)
     {
         if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') {
-            @imagejpeg($this->originalImage, $filename, $quality)
+            imagejpeg($this->originalImage, $filename, $quality)
                 or $cameralife->Error("Could not write the file $filename is the directory writable?");
         } elseif ($this->extension == 'png') {
-            @imagepng($this->originalImage, $filename, 9 - $quality / 11)
+            imagepng($this->originalImage, $filename, 9 - $quality / 11)
                 or $cameralife->Error("Could not write the file $filename is the directory writable?");
         }
     }
