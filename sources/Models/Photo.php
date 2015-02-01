@@ -136,6 +136,7 @@ class Photo extends IndexedModel
      */
     public static function getPhotoWithID($id)
     {
+// TODO most calls to this function are better served by getPhotoWithRecord
         global $cameralife;
         $bind = array('i'=>$id);
         $result = Database::select('photos', '*', "id=:i", null, null, $bind);
@@ -146,15 +147,14 @@ class Photo extends IndexedModel
     }
 
     /**
-     * To get an empty Photo pass nothing ie NULL
-     * To load a photo pass a photo ID
-     * To create a photo pass an array
-     * <b>Required fields <var>filename</var>, <var>path</var>, <var>username</var></b>
-     * Optional fields <var>status</var>, <var>description</var>, <var>fsize</var>, <var>created</var>
+     * __construct function.
+     * 
+     * @access protected
+     * @param mixed $original (default: null)
+     * @return void
      */
     protected function __construct($original = null)
     {
-        global $cameralife;
         $this->context = false;
         $this->contextPrev = false;
         $this->contextNext = false;

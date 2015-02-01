@@ -177,11 +177,9 @@ class Search extends IndexedModel
         $sort = $this->photoSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
-        $i = 0;
         foreach (preg_split('/\s+/', $this->query) as $queryPart) {
-            $conditions[$i] = "(description LIKE :$i OR keywords LIKE :$i)";
-            $binds[$i] = '%' . $queryPart . '%';
-            $i++;
+            $conditions[] = "(description LIKE :$i OR keywords LIKE :$i)";
+            $binds[] = '%' . $queryPart . '%';
         }
         if (!$this->showPrivatePhotos) {
             $conditions[] = 'status = 0';
@@ -196,10 +194,8 @@ class Search extends IndexedModel
         );
         $photos = array();
         while ($row = $query->fetchAssoc()) {
-//TODO: make public and use Photo::getPhotoWithRecord to save a DB call
             $photos[] = Photo::getPhotoWithID($row['id']);
         }
-
         return $photos;
     }
 
@@ -214,11 +210,9 @@ class Search extends IndexedModel
         $sort = $this->tagSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
-        $i = 0;
         foreach (preg_split('/\s+/', $this->query) as $queryPart) {
-            $conditions[$i] = "(name LIKE :$i)";
-            $binds[$i] = '%' . $queryPart . '%';
-            $i++;
+            $conditions[] = "(name LIKE :$i)";
+            $binds[] = '%' . $queryPart . '%';
         }
         $query = Database::select(
             'albums',
@@ -231,7 +225,6 @@ class Search extends IndexedModel
 
         $tags = array();
         while ($row = $query->fetchAssoc()) {
-// todo want a public tagWithRecord function to avoid extra DB call here            
             $tags[] = new Tag($row['id']);
         }
 
@@ -249,11 +242,9 @@ class Search extends IndexedModel
         $sort = $this->folderSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
-        $i = 0;
         foreach (preg_split('/\s+/', $this->query) as $queryPart) {
-            $conditions[$i] = "(path LIKE :$i)";
-            $binds[$i] = '%' . $queryPart . '%';
-            $i++;
+            $conditions[] = "(path LIKE :$i)";
+            $binds[] = '%' . $queryPart . '%';
         }
         if (!$this->showPrivatePhotos) {
             $conditions[] = 'status = 0';
@@ -266,12 +257,10 @@ class Search extends IndexedModel
             null,
             $binds
         );
-
         $folders = array();
         while ($row = $query->fetchAssoc()) {
             $folders[] = new Folder($row['path'], false, $row['date']);
         }
-
         return $folders;
     }
 
