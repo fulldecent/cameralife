@@ -2,3 +2,4 @@ config.php
 
 # https://stackoverflow.com/q/27726794
 /vendor/**/.git/
+composer.phar
