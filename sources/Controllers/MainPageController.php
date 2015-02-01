@@ -59,10 +59,21 @@ class MainPageController extends HtmlController
         $root->sort = 'newest';
         $root->setPage(0, 6);
         $rootFolders = array();
+        
+        $view->folderAndPhotoOpenGraphs = array();
         foreach ($root->getDescendants() as $descendant) {
-            $rootFolders[] = new FolderController($descendant->id);
+            $folderController = new FolderController($descendant->id);
+            $folderAndPhotoOpenGraph = array($folderController);
+            $photoOpenGraphs = array();
+            $descendant->sort = 'rand';
+            $descendant->setPage(0, 11);
+            foreach ($descendant->getPhotos() as $photo) {
+                $photoController = new PhotoController($photo->id);
+                $photoOpenGraphs[] = $photoController;
+            }
+            $folderAndPhotoOpenGraph[] = $photoOpenGraphs;
+            $view->folderAndPhotoOpenGraphs[] = $folderAndPhotoOpenGraph;
         }
-        $view->folders = $rootFolders;
         
         $view->rootOpenGraph = new FolderController('/');
 

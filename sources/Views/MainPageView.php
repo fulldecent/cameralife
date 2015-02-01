@@ -29,12 +29,12 @@ class MainPageView extends View
     public $openGraphsForTop;
 
     /**
-     * folders
-     *
-     * @var Folder[]
+     * folderAndPhotoOpenGraphs
+     * 
+     * @var mixed
      * @access public
      */
-    public $folders;
+    public $folderAndPhotoOpenGraphs;
 
     /**
      * tag collections
@@ -56,7 +56,6 @@ class MainPageView extends View
      */
     public function render()
     {
-//todo DONT USE  <code>/photos</code>, actually get the dir
         if (!count($this->openGraphsForTop)) {
         ?>
             </div>
@@ -67,7 +66,7 @@ class MainPageView extends View
                     class="fa fa-star"></i> Star us on GitHub</a> to get important security updates</p>
                     <hr>                    
                     <p>
-                        Add photos to your <code>/photos</code> directory or visit <a href="<?= htmlspecialchars($this->adminUrl) ?>">site administration</a> to point to your existing photo directory.
+                        Add photos to your <code>photos</code> directory or visit <a href="<?= htmlspecialchars($this->adminUrl) ?>">site administration</a> to point to your existing photo directory.
                     </p>
                 </div>
             </div>
@@ -111,36 +110,25 @@ class MainPageView extends View
             </div>
         </div>
 
-
         <div class="row">
             <div class="col-sm-7">
                 <h2>Folders</h2>
                 <table class="table">
                     <?php
-                    foreach ($this->folders as $folder) {
-//todo breaks mvc                        
-#                        $folderCtrl = new Controllers\FolderController($folder->id);
-                        $folderCtrl = $folder;
-                        echo "<tr><td><h3><a href=\"" . htmlspecialchars($folderCtrl->url) . "\"> ";
-                        echo htmlentities($folderCtrl->title) . "</a></h3>\n";
-
-//todo huge hack
-                        $folder = new Models\Folder($folderCtrl->title);
-                        $folder->sort = 'rand';
-                        $folder->setPage(0, 11);
-                        $photos = $folder->getPhotos();
+                    foreach ($this->folderAndPhotoOpenGraphs as $folderAndPhotoOpenGraph) {
+                        list($folderOpenGraph, $photoOpenGraphs) = $folderAndPhotoOpenGraph;
+                        echo "<tr><td><h3><a href=\"" . htmlspecialchars($folderOpenGraph->url) . "\"> ";
+                        echo htmlentities($folderOpenGraph->title) . "</a></h3>\n";
                         echo '<div style="height:80px" class="clipbox">';
-                        foreach ($photos as $openGraph) {
-//todo breaks mvc
-                            $photoCtrl = new Controllers\PhotoController($openGraph->id);
+                        foreach ($photoOpenGraphs as $photoOpenGraph) {
                             echo '<div class="l1" style="-moz-transform:rotate(' . rand(
                                 -10,
                                 10
                             ) . 'deg); -webkit-transform:rotate(' . rand(-10, 10) . 'deg);">';
-                            echo '<a class="minipolaroid" href="' . htmlspecialchars($photoCtrl->url) . '">';
-                            echo '<img width="' . intval($photoCtrl->imageWidth / 2) . '" src="' . htmlspecialchars(
-                                $photoCtrl->image
-                            ) . '" alt="' . htmlentities($photoCtrl->title) . '" />';
+                            echo '<a class="minipolaroid" href="' . htmlspecialchars($photoOpenGraph->url) . '">';
+                            echo '<img width="' . intval($photoOpenGraph->imageWidth / 2) . '" src="' . htmlspecialchars(
+                                $photoOpenGraph->image
+                            ) . '" alt="' . htmlentities($photoOpenGraph->title) . '" />';
                             echo '</a>';
                             echo '</div>';
                         }

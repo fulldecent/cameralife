@@ -14,6 +14,7 @@ class AuditTrail extends IndexedModel
     /**
      * Logs information about a user and a change to the database, so this can be undone later
      *
+     * @param  User   $user        The user making the change
      * @param  string $record_type one of ('photo','album','preference','user')
      * @param  int    $record_id   id of the record being changed
      * @param  string $value_field field being changed
@@ -21,9 +22,8 @@ class AuditTrail extends IndexedModel
      * @param  string $value_new   new field value
      * @return Audit trail of the action performed
      */
-    public static function createAuditTrailForChange($record_type, $record_id, $value_field, $value_old, $value_new)
+    public static function createAuditTrailForChange(User $user, $record_type, $record_id, $value_field, $value_old, $value_new)
     {
-        global $_SERVER, $cameralife;
         if ($value_old == $value_new) {
             return null;
         }
@@ -32,10 +32,10 @@ class AuditTrail extends IndexedModel
         $retval->record['record_id'] = $record_id;
         $retval->record['value_field'] = $value_field;
         $retval->record['value_new'] = $value_new;
-        $retval->record['user_name'] = $cameralife->security->getName();
-        $retval->record['user_ip'] = $_SERVER['REMOTE_ADDR'];
+        $retval->record['user_name'] = $user->name;
+        $retval->record['user_ip'] = $user->remoteAddr;
         $retval->record['user_date'] = date('Y-m-d');
-        $retval->record['id']  = $cameralife->database->Insert('logs', $retval->record);
+        $retval->record['id'] = Database::insert('logs', $retval->record);
         $retval->id = $retval->record['id'];
         return $retval;
     }

@@ -29,15 +29,14 @@ class Tag extends Search
         parent::__construct($this->record['term']);
     }
 
-    public function set($key, $value)
+    public function set($key, $value, User $user = NULL)
     {
         $receipt = null;
-        if ($key != 'hits') {
-            $receipt = AuditTrail::createAuditTrailForChange('album', $this->record['id'], $key, $this->record[$key], $value);
-        }
         $this->record[$key] = $value;
         Database::update('albums', array($key => $value), 'id=' . $this->record['id']);
-
+        if (isset($user)) {
+            $receipt = AuditTrail::createAuditTrailForChange($user, 'album', $this->record['id'], $key, $this->record[$key], $value);
+        }
         return $receipt;
     }
 

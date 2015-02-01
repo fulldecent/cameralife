@@ -170,25 +170,14 @@ class Photo extends IndexedModel
         return $numMatchingPhotos > 0;
     }
 
-    public function set($key, $value)
+    public function set($key, $value, User $user = NULL)
     {
-        global $cameralife;
-
         $receipt = null;
-        if ($key != 'hits' && $key != 'filename' && $key != 'path') {
-            $receipt = AuditTrail::createAuditTrailForChange('photo', $this->record['id'], $key, $this->record[$key], $value);
-        }
-        /*
-        ///TODO: if status is changed, update permissions in file store
-        ///TODO: also update _mod and _thumbnails
-        if ($key == 'status') {
-            $fullpath = rtrim('/' . ltrim($this->record['path'], '/'), '/') . '/' . $this->record['filename'];
-            $cameralife->fileStore->setPermissions('photo', $fullpath, $value!=0);
-        }
-        */
         $this->record[$key] = $value;
         Database::update('photos', array($key => $value), 'id=' . $this->record['id']);
-
+        if (isset($user)) {
+            $receipt = AuditTrail::createAuditTrailForChange($user, 'photo', $this->record['id'], $key, $this->record[$key], $value);
+        }
         return $receipt;
     }
 
