@@ -40,4 +40,4 @@ spl_autoload_register(
             include $file;
         }
     }
-);--- sources/Controllers/AdminAppearanceController.php
+);
