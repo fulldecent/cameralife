@@ -711,7 +711,7 @@ class Photo extends IndexedModel
         if ($user->isLoggedIn) {
             $condition .= 'username = "' . $user->name . '"';
         } else {
-            $condition .= 'user_ip = "' . $user->name . '"';
+            $condition .= 'user_ip = "' . $user->remoteAddr . '"';
         }
         Database::delete('ratings', $condition);
         Database::insert('ratings', ['id'=>$this->record['id'], 'username'=>$user->name, 'user_ip'=>$user->remoteAddr, 'date'=>date('Y-M-D H:i:s'), 'rating'=>5]);
@@ -724,7 +724,7 @@ class Photo extends IndexedModel
         if ($user->isLoggedIn) {
             $condition .= 'username = "' . $user->name . '"';
         } else {
-            $condition .= 'user_ip = "' . $user->name . '"';
+            $condition .= 'user_ip = "' . $user->remoteAddr . '"';
         }
         Database::delete('ratings', $condition);
     }

@@ -28,7 +28,10 @@ class FavoritesController extends HtmlController
         $start = isset($get['start']) ? $get['start'] : 0;
         $this->model->setPage($start);
         $photoCount = $this->model->getPhotoCount();
-        $gridObjects = $this->model->getPhotos();
+        
+        foreach($this->model->getPhotos() as $photo) {
+            $gridObjects[] = new PhotoController($photo->id);
+        }
 
         /* Set up common page parts */
         $this->htmlHeader($cookies);
