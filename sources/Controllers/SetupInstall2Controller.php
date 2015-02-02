@@ -37,7 +37,7 @@ class SetupInstall2Controller extends HtmlController
     }
 
     // cannot use parent because database is not accessible
-    public function __construct($id = null)
+    public function __construct($modelId = null)
     {
         $this->siteName = null;
         $this->title = $this->siteName;
@@ -162,7 +162,7 @@ Database::$dsn = 'mysql:host=<b class="val-host">localhost</b>;dbname=<b class="
 Database::$username = '<b class="val-user">user</b>';
 Database::$password = '<b class="val-pass">password</b>';
 Database::$prefix = '<b class="val-prefix"></b>';
-Database::$installedSchemaVersion = 5;
+Database::$schemaVersion = 5;
 EOF;
         $this->remedies['cPanel'][] = 'Open CPanel and Filemanager and create a new file <code>config.php</code> in the project folder and add these contents to the file:';
         $this->remedies['cPanel'][] = "<pre>$configFileHtml</pre>";
@@ -252,9 +252,9 @@ EOF;
                               <!-- Nav tabs -->
                               <ul class="nav nav-tabs">
                                 <?php
-                                $x = 0;
+                                $idx = 0;
                                 foreach ($this->remedies as $system => $systemRemedies) {
-                                    echo '<li class="'.($x++?'':'active').'"><a href="#'.$system.'" data-toggle="tab">'.$system.'</a></li>';
+                                    echo '<li class="'.($idx++?'':'active').'"><a href="#'.$system.'" data-toggle="tab">'.$system.'</a></li>';
                                 }
                                 ?>
                               </ul>
@@ -262,9 +262,9 @@ EOF;
                               <!-- Tab panes -->
                               <div class="tab-content">
                                 <?php
-                                $x = 0;
+                                $idx = 0;
                                 foreach ($this->remedies as $system => $systemRemedies) {
-                                    echo '<div class="tab-pane '.($x++?'':'active').'" id="'.$system.'">';
+                                    echo '<div class="tab-pane '.($idx++?'':'active').'" id="'.$system.'">';
                                     foreach ($systemRemedies as $remedy) {
                                         echo "<p>$remedy</p>";
                                     }

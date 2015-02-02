@@ -18,7 +18,7 @@ class Database
     
     public static $prefix;
     
-    public static $installedSchemaVersion;
+    public static $schemaVersion;
     
     private static $pdoConnection;
     
@@ -43,7 +43,7 @@ class Database
     
     public static function installedSchemaIsCorrectVersion()
     {
-        return self::$installedSchemaVersion == self::REQUIRED_SCHEMA_VERSION;
+        return self::$schemaVersion == self::REQUIRED_SCHEMA_VERSION;
     }
 
     public static function connectionParametersAreSet()
@@ -268,9 +268,8 @@ class Database
         $setstring = substr($setstring, 0, -2); // chop off last ', '
         $sql = "UPDATE " . self::$prefix . "$table SET $setstring WHERE $condition $extra";
         $stmt = self::$pdoConnection->prepare($sql);
-        $i = 1;
-        foreach ($values as $val) {
-            $stmt->bindValue($i++, $val);
+        foreach ($values as $idx => $val) {
+            $stmt->bindValue($idx + 1, $val);
         }
         $stmt->execute();
         return $stmt->rowCount();

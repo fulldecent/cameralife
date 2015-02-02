@@ -47,12 +47,12 @@ class AdminController extends HtmlController
 
         /* Set up the page view */
         $view = new Views\AdminView;
-        $view->cameraLifeRunningVersion = constant('CAMERALIFE_VERSION');
-        $view->cameraLifeLatestVersion = $this->latestAvailableVersion();
+        $view->runningVersion = constant('CAMERALIFE_VERSION');
+        $view->latestVersion = $this->latestAvailableVersion();
         $checkpointLogs = intval(Models\Preferences::valueForModuleWithKey('CameraLife', 'checkpointlogs'));
-        $view->numLogsSinceCheckpoint = Models\Database::selectOne('logs', 'COUNT(*)', 'id>' . $checkpointLogs);
+        $view->numNewLogs = Models\Database::selectOne('logs', 'COUNT(*)', 'id>' . $checkpointLogs);
         $checkpointComments = intval(Models\Preferences::valueForModuleWithKey('CameraLife', 'checkpointcomments'));
-        $view->numCommentsSinceCheckpoint = Models\Database::selectOne('comments', 'COUNT(*)', 'id>' . $checkpointComments);
+        $view->numNewComments = Models\Database::selectOne('comments', 'COUNT(*)', 'id>' . $checkpointComments);
         $view->numNewUsers = Models\Database::selectOne('users', 'COUNT(*)', 'auth=1');
         $view->numFlagged = Models\Database::selectOne('photos', 'COUNT(*)', 'status=1');
 

@@ -17,7 +17,7 @@ class AdminView extends View
      * @var    mixed
      * @access public
      */
-    public $cameraLifeRunningVersion;
+    public $runningVersion;
 
     /**
      * The latest released version
@@ -25,7 +25,7 @@ class AdminView extends View
      * @var    mixed
      * @access public
      */
-    public $cameraLifeLatestVersion;
+    public $latestVersion;
 
     /**
      * Number of logged actions since last checkpoint
@@ -33,7 +33,7 @@ class AdminView extends View
      * @var    mixed
      * @access public
      */
-    public $numLogsSinceCheckpoint;
+    public $numNewLogs;
 
     /**
      * Number of logged comments since last checkpoint
@@ -41,7 +41,7 @@ class AdminView extends View
      * @var    mixed
      * @access public
      */
-    public $numCommentsSinceCheckpoint;
+    public $numNewComments;
 
     /**
      * Number of new users that have not been approved
@@ -134,23 +134,23 @@ class AdminView extends View
     </script>
 EOL;
 
-        if ($this->cameraLifeLatestVersion == $this->cameraLifeRunningVersion) {
-            echo "<p class=\"alert alert-success\">You are running Camera Life {$this->cameraLifeRunningVersion}, the latest version</p>\n";
+        if ($this->latestVersion == $this->runningVersion) {
+            echo "<p class=\"alert alert-success\">You are running Camera Life {$this->runningVersion}, the latest version</p>\n";
         } else {
-            echo "<p class=\"alert alert-danger\">You are running Camera Life {$this->cameraLifeRunningVersion}, a newer version, {$this->cameraLifeLatestVersion}, is available. Please run <code>git pull</code> or visit the <a href=\"http://fulldecent.github.io/cameralife/\">Camera Life homepage</a>.</p>\n";
+            echo "<p class=\"alert alert-danger\">You are running Camera Life {$this->runningVersion}, a newer version, {$this->latestVersion}, is available. Please run <code>git pull</code> or visit the <a href=\"http://fulldecent.github.io/cameralife/\">Camera Life homepage</a>.</p>\n";
         }
 
         echo "<h1>Administration</h1>";
         echo "<div class=\"row\">";
 
         // Logs
-        $class = $this->numLogsSinceCheckpoint ? 'warning' : 'default';
+        $class = $this->numNewLogs ? 'warning' : 'default';
         echo "<div class=\"col-sm-4\">";
         echo "<div class=\"panel panel-$class\">";
         echo "<div class=\"panel-heading\"><h3 class=\"panel-title\">Logs</h3></div>";
         echo "<div class=\"panel-body\">";
-        if ($this->numLogsSinceCheckpoint) {
-            echo "<p>There are $this->numLogsSinceCheckpoint logged actions since the last checkpoint</p>";
+        if ($this->numNewLogs) {
+            echo "<p>There are $this->numNewLogs logged actions since the last checkpoint</p>";
         } else {
             echo "<p>No changes have been made since the last checkpoint</p>";
         }
@@ -159,13 +159,13 @@ EOL;
         echo "</div></div></div>";
 
         // Comments
-        $class = $this->numCommentsSinceCheckpoint ? 'warning' : 'default';
+        $class = $this->numNewComments ? 'warning' : 'default';
         echo "<div class=\"col-sm-4\">";
         echo "<div class=\"panel panel-$class\">";
         echo "<div class=\"panel-heading\"><h3 class=\"panel-title\">Comments</h3></div>";
         echo "<div class=\"panel-body\">";
-        if ($this->numCommentsSinceCheckpoint) {
-            echo "<p>There are $this->numCommentsSinceCheckpoint logged comments since the last checkpoint</p>";
+        if ($this->numNewComments) {
+            echo "<p>There are $this->numNewComments logged comments since the last checkpoint</p>";
         } else {
             echo "<p>No comments have been made since the last checkpoint</p>";
         }

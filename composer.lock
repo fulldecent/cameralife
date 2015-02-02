@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "278055eb05ece77321134fcec58a3a7a",
+    "hash": "b272abd849d9d8a17747b924696217fc",
     "packages": [
         {
             "name": "lightopenid/lightopenid",
@@ -34,11 +34,12 @@
             "time": "2013-10-27 16:25:49"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": null,
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "lightopenid/lightopenid": 20
+        "lightopenid/lightopenid": 20,
+        "phpmd/phpmd": 0
     },
     "prefer-stable": false,
     "prefer-lowest": false,

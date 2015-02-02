@@ -21,7 +21,7 @@ class SetupInstallController extends HtmlController
     }
 
     // cannot use parent because database is not accessible
-    public function __construct($id = null)
+    public function __construct($modelId = null)
     {
         $this->siteName = null;
         $this->title = $this->siteName;
@@ -47,10 +47,10 @@ class SetupInstallController extends HtmlController
             } elseif ($openid->mode == 'cancel') {
                 echo 'User has canceled authentication!';
             } else {
-                $id = "";
+                $identity = "";
                 $email = "";
                 if ($openid->validate()) {
-                    $id = $openid->identity;
+                    $identity = $openid->identity;
                     $attr = $openid->getAttributes();
                     $email = $attr['contact/email'];
                     if (strlen($email)) {
@@ -169,10 +169,10 @@ class SetupInstallController extends HtmlController
             } elseif ($openid->mode == 'cancel') {
                 echo 'User has canceled authentication!';
             } else {
-                $id = "";
+                $identity = "";
                 $email = "";
                 if ($openid->validate()) {
-                    $id = $openid->identity;
+                    $identity = $openid->identity;
                     $attr = $openid->getAttributes();
                     $email = $attr['contact/email'];
                     if (strlen($email)) {

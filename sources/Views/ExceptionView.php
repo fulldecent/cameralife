@@ -12,7 +12,7 @@ class ExceptionView extends View
     //todo, make this phone home
     public $exception;
 
-    public $showDebuggingInformation = true;
+    public $showDebugging = true;
 
     public function render()
     {
@@ -27,7 +27,7 @@ class ExceptionView extends View
         echo "<footer>" . get_class($this->exception) . "</footer>";
         echo "</blockquote>\n";
 
-        if (!$this->showDebuggingInformation) {
+        if (!$this->showDebugging) {
             echo "</div>\n";
             return;
         }

@@ -48,10 +48,10 @@ class AuditTrail extends IndexedModel
      * @param  mixed $id
      * @return void
      */
-    public static function getAuditTrailWithID($id)
+    public static function getAuditTrailWithID($modelId)
     {
         $retval = new AuditTrail;
-        $query = Database::select('logs', '*', 'id=' . $id);
+        $query = Database::select('logs', '*', 'id=' . $modelId);
         $retval->record = $query->fetchAssoc();
         if (empty($retval->record)) {
             throw new \Exception('AT not found');
@@ -99,7 +99,7 @@ class AuditTrail extends IndexedModel
         $condition = 'record_id=' . $this->record['record_id'];
         $condition .= " AND record_type='" . $this->record['record_type'] . "'";
         $condition .= " AND value_field='" . $this->record['value_field'] . "'";
-        $condition .= " AND id >= " . $id;
+        $condition .= " AND id >= " . $this->record['id'];
         Database::delete('logs', $condition);
     }
 

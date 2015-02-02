@@ -1,6 +1,5 @@
 <?php
 namespace CameraLife\Views;
-
 use CameraLife\Models as Models;
 
 /**
@@ -92,14 +91,14 @@ class AdminLogsView extends View
     public $showChangedUsers = true;
 
     /**
-     * showChangedPreferences
+     * showChangedPrefs
      *
      * (default value: true)
      *
      * @var    bool
      * @access public
      */
-    public $showChangedPreferences = true;
+    public $showChangedPrefs = true;
 
     /**
      * auditTrails
@@ -120,8 +119,7 @@ class AdminLogsView extends View
         } else {
             echo "Checkpoint is set to $this->checkpointDate, showing changes since then.";
         }
-        echo " <a target=\"_blank\" href=\"https://github.com/fulldecent/cameralife/wiki/Checkpoints\">";
-        echo "<i class=\"fa fa-info\"></i> Learn about checkpoints</a>";
+        echo " <a target=\"_blank\" href=\"https://github.com/fulldecent/cameralife/wiki/Checkpoints\"><i class=\"fa fa-info\"></i> Learn about checkpoints</a>";
         echo "</p>";
 
         echo "<h3>View settings</h3>";
@@ -141,7 +139,7 @@ class AdminLogsView extends View
         echo "<label class=\"checkbox inline\"><input type=\"checkbox\" name=\"changedPhotos\" ".($this->showChangedPhotos?'checked':'')."><i class=\"fa fa-photo\"></i> Photos</label>";
         echo "<label class=\"checkbox inline\"><input type=\"checkbox\" name=\"changedTags\" ".($this->showChangedTags?'checked':'')."><i class=\"fa fa-tag\"></i> Tags</label>";
         echo "<label class=\"checkbox inline\"><input type=\"checkbox\" name=\"changedUsers\" ".($this->showChangedUsers?'checked':'')."><i class=\"fa fa-user\"></i> Users</label>";
-        echo "<label class=\"checkbox inline\"><input type=\"checkbox\" name=\"changedPreferences\" ".($this->showChangedPreferences?'checked':'')."><i class=\"fa fa-gears\"></i> Preferences</label>";
+        echo "<label class=\"checkbox inline\"><input type=\"checkbox\" name=\"changedPreferences\" ".($this->showChangedPrefs?'checked':'')."><i class=\"fa fa-gears\"></i> Preferences</label>";
         echo "</div>";
         echo "</div>";
 

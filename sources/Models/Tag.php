@@ -18,13 +18,13 @@ class Tag extends Search
      * @param  int $id
      * @return void
      */
-    public function __construct($id)
+    public function __construct($modelId)
     {
-        $result = Database::select('albums', '*', "id=$id");
+        $result = Database::select('albums', '*', "id=$modelId");
         $this->record = $result->fetchAssoc();
         if (!$this->record) {
             header("HTTP/1.0 404 Not Found");
-            throw new \Exception("Album #" . ($original + 0) . " not found.");
+            throw new \Exception("Album #" . intval($modelId) . " not found.");
         }
         parent::__construct($this->record['term']);
     }

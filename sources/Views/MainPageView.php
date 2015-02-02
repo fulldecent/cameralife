@@ -30,12 +30,12 @@ class MainPageView extends View
     public $openGraphsForTop;
 
     /**
-     * folderAndPhotoOpenGraphs
+     * folderAndPhotoOGs
      *
      * @var    mixed
      * @access public
      */
-    public $folderAndPhotoOpenGraphs;
+    public $folderAndPhotoOGs;
 
     /**
      * tag collections
@@ -116,8 +116,8 @@ class MainPageView extends View
                 <h2>Folders</h2>
                 <table class="table">
                     <?php
-                    foreach ($this->folderAndPhotoOpenGraphs as $folderAndPhotoOpenGraph) {
-                        list($folderOpenGraph, $photoOpenGraphs) = $folderAndPhotoOpenGraph;
+                    foreach ($this->folderAndPhotoOGs as $folderAndPhotoOG) {
+                        list($folderOpenGraph, $photoOpenGraphs) = $folderAndPhotoOG;
                         echo "<tr><td><h3><a href=\"" . htmlspecialchars($folderOpenGraph->url) . "\"> ";
                         echo htmlentities($folderOpenGraph->title) . "</a></h3>\n";
                         echo '<div style="height:80px" class="clipbox">';

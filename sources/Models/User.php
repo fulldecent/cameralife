@@ -71,10 +71,10 @@ class User extends IndexedModel
      */
     public $lastOnline = null;
 
-    public function __construct($id = null)
+    public function __construct($modelId = null)
     {
-        if (is_numeric($id)) {
-            $result = Database::select('users', '*', "id=$id");
+        if (is_numeric($modelId)) {
+            $result = Database::select('users', '*', "id=$modelId");
             $row = $result->fetchAssoc();
             if ($row) {
                 $this->id = $row['id'];
@@ -120,10 +120,10 @@ class User extends IndexedModel
         $values['last_online'] = date('Y-m-d H:i:s');
         $values['last_ip'] = $_SERVER["REMOTE_ADDR"];
         $values['email'] = $email;
-        $id = Database::insert('users', $values);
+        $insertId = Database::insert('users', $values);
         
         $retval = new User;
-        $retval->id = $id;
+        $retval->id = $insertId;
         $retval->isLoggedIn = true;
         $retval->name = $email;
         $retval->remoteAddr = $_SERVER["REMOTE_ADDR"];

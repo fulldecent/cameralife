@@ -14,13 +14,13 @@ class SearchController extends HtmlController
 {
     private $model;
 
-    public function __construct($id)
+    public function __construct($modelId)
     {
         parent::__construct();
-        $this->model = new Models\Search($id);
+        $this->model = new Models\Search($modelId);
         $this->title = $this->model->query;
         $this->icon = 'search';
-        $this->url = self::getUrlForID($id);
+        $this->url = self::getUrlForID($modelId);
     }
 
     public function handleGet($get, $post, $files, $cookies)

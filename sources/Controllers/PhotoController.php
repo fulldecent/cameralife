@@ -14,16 +14,16 @@ class PhotoController extends HtmlController
 {
     private $model;
 
-    public function __construct($id)
+    public function __construct($modelId)
     {
         parent::__construct();
 
-        if (!Models\Photo::photoExists(intval($id))) {
+        if (!Models\Photo::photoExists(intval($modelId))) {
             header("HTTP/1.0 404 Not Found");
-            throw new \Exception('Photo #' . intval($id) . ' not found.');
+            throw new \Exception('Photo #' . intval($modelId) . ' not found.');
         }
 
-        $this->model = Models\Photo::getPhotoWithID($id);
+        $this->model = Models\Photo::getPhotoWithID($modelId);
         $this->title = $this->model->get('description');
         $this->icon = 'photo';
         $this->url = self::getUrlForID($this->model->id); //todo: done by parent?

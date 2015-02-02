@@ -17,6 +17,9 @@
         "ext-xml": "*",
         "lightopenid/lightopenid": "dev-master"
     },
+    "require-dev": {
+        "phpmd/phpmd" : "@stable"
+    },
     "recommend": {
         "ext-zip": "*",
         "ext-gd2": "*"

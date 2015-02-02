@@ -12,7 +12,7 @@ use CameraLife\Models as Models;
  */
 class LoginController extends HtmlController
 {
-    public function __construct($id)
+    public function __construct($modelId)
     {
         parent::__construct();
         $this->title = 'Login';
@@ -38,10 +38,10 @@ class LoginController extends HtmlController
             } elseif ($openid->mode == 'cancel') {
                 echo 'User has canceled authentication!';
             } else {
-                $id = "";
+                $identity = "";
                 $email = "";
                 if ($openid->validate()) {
-                    $id = $openid->identity;
+                    $identity = $openid->identity;
                     $attr = $openid->getAttributes();
                     $email = $attr['contact/email'];
                     if (strlen($email)) {
@@ -112,10 +112,10 @@ class LoginController extends HtmlController
             } elseif ($openid->mode == 'cancel') {
                 echo 'User has canceled authentication!';
             } else {
-                $id = "";
+                $identity = "";
                 $email = "";
                 if ($openid->validate()) {
-                    $id = $openid->identity;
+                    $identity = $openid->identity;
                     $attr = $openid->getAttributes();
                     $email = $attr['contact/email'];
                     if (strlen($email)) {

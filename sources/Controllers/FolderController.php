@@ -14,10 +14,10 @@ class FolderController extends HtmlController
 {
     private $model;
 
-    public function __construct($id = '/')
+    public function __construct($path = '/')
     {
         parent::__construct();
-        $this->model = new Models\Folder($id);
+        $this->model = new Models\Folder($path);
         $this->title = basename($this->model->path);
         $this->icon = 'folder';
         $this->url = self::getUrlForID($this->model->path);

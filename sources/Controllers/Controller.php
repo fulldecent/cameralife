@@ -151,9 +151,10 @@ abstract class Controller
      * __construct function.
      *
      * @access public
+     * @param mixed $modelId (default: null)
      * @return void
      */
-    public function __construct($id = null)
+    public function __construct($modelId = null)
     {
         $preferences = new Models\Preferences;
         $this->siteName = $preferences->valueForModuleWithKey('CameraLife', 'sitename');
@@ -161,7 +162,7 @@ abstract class Controller
         $this->type = 'website';
         $this->image = constant('BASE_URL') . '/assets/main.png';
         $this->imageType = 'image/png';
-        $this->url = self::getUrlForID($id);
+        $this->url = self::getUrlForID($modelId);
     }
 
     public static function getUrl()
@@ -174,13 +175,13 @@ abstract class Controller
         return self::getUrlForIDWithParameters($object, array());
     }
 
-    public static function getUrlForIDWithParameters($id, $parameters)
+    public static function getUrlForIDWithParameters($modelId, $parameters)
     {
         $reflection = new \ReflectionClass(get_called_class());
         $shortName = $reflection->getShortName();
         $page = lcfirst(basename($shortName, 'Controller'));
         $query = http_build_query($parameters);
-        $id = ltrim($id, '/');
+        $modelId = ltrim($modelId, '/');
 
         // TODO, use this http://stackoverflow.com/a/14375686/300224
         if (self::$rewriteEnabled === null) {
@@ -188,9 +189,9 @@ abstract class Controller
         }
 
         if (!self::$rewriteEnabled) {
-            return constant('BASE_URL') . '/index.php?page=' . $page . '&id=' . $id . ($query ? '&' . $query : '');
+            return constant('BASE_URL') . '/index.php?page=' . $page . '&id=' . $modelId . ($query ? '&' . $query : '');
         }
-        return constant('BASE_URL') . '/' . $page . '/' . $id . ($query ? '?' . $query : '');
+        return constant('BASE_URL') . '/' . $page . '/' . $modelId . ($query ? '?' . $query : '');
     }
 
     /**
@@ -268,11 +269,11 @@ abstract class Controller
         header('Location: ' . $this->getUrlForID($get['id']));
     }
 
-    public static function handleException(\Exception $exception, $showDebuggingInformation = true)
+    public static function handleException(\Exception $exception, $showDebugging = true)
     {
         $view = new Views\ExceptionView;
         $view->exception = $exception;
-        $view->showDebuggingInformation = $showDebuggingInformation;
+        $view->showDebugging = $showDebugging;
         $view->render();
     }
 }

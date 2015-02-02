@@ -15,10 +15,10 @@ class TagCollectionController extends HtmlController
 {
     private $model;
 
-    public function __construct($id)
+    public function __construct($modelId)
     {
-        parent::__construct($id);
-        $this->model = new Models\TagCollection($id);
+        parent::__construct($modelId);
+        $this->model = new Models\TagCollection($modelId);
         $this->title = $this->model->query;
         $this->icon = 'tags';
     }

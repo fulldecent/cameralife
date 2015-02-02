@@ -243,15 +243,15 @@ class Folder extends Search
         $retval = array();
         
         $fileStore = FileStore::fileStoreWithName('photo');
-        $fileStorePhotosUnmatched = $fileStore->listFiles(); // path->basename format
-        if (!count($fileStorePhotosUnmatched)) {
+        $fileStoreNewPhotos = $fileStore->listFiles(); // path->basename format
+        if (!count($fileStoreNewPhotos)) {
             $cameralife->error('No files were found in file store');
         }
-        foreach ($fileStorePhotosUnmatched as $unmatchedFilePath => $unmatchedFileBase) {
+        foreach ($fileStoreNewPhotos as $unmatchedFilePath => $unmatchedFileBase) {
             //            $unmatchedFilePath = utf8_decode($unmatchedFilePath);
             $normalized = strtolower(preg_replace('/[^a-z0-9]/i', '', $unmatchedFilePath));
-            //            $normalizedFileStorePaths[utf8_encode($unmatchedFilePath)] = $normalized;
-            $normalizedFileStorePaths[$unmatchedFilePath] = $normalized;
+            //            $normFileStorePaths[utf8_encode($unmatchedFilePath)] = $normalized;
+            $normFileStorePaths[$unmatchedFilePath] = $normalized;
         }
         $result = Database::select('photos', 'id,filename,path,fsize', 'status!=9', 'ORDER BY path,filename');
 
@@ -260,7 +260,7 @@ class Folder extends Search
             $dbFilename = $dbPhoto['filename'];
             $dbFilePath = rtrim('/' . ltrim($dbPhoto['path'], '/'), '/') . '/' . $dbFilename;
             // DB photo is on disk where expected
-            if (isset($fileStorePhotosUnmatched[$dbFilePath])) {
+            if (isset($fileStoreNewPhotos[$dbFilePath])) {
                 /*
                     todo: use filestore with file size data
                 # Bonus code, if this is local, we can do more verification
@@ -271,28 +271,28 @@ class Folder extends Search
                     }
                 }
                 */
-                unset ($fileStorePhotosUnmatched[$dbFilePath]);
+                unset ($fileStoreNewPhotos[$dbFilePath]);
                 continue;
             }
 
             // Look for a photo in the same place, but with the filename capitalization changed
             $normalizedDBFilePath = strtolower(preg_replace('/[^a-z0-9]/i', '', $dbFilePath));
-            $candidates = array_keys($normalizedFileStorePaths, $normalizedDBFilePath);
+            $candidates = array_keys($normFileStorePaths, $normalizedDBFilePath);
             if (count($candidates) == 1) {
                 //                $candidates[0] = utf8_decode($candidates[0]);
                 $retval[$dbFilePath] = array('moved', $candidates[0]);
-                unset ($fileStorePhotosUnmatched[$candidates[0]]);
+                unset ($fileStoreNewPhotos[$candidates[0]]);
                 continue;
             }
             $retval[$dbFilePath] = 'deleted';
         }
 
         /**
-         * $fileStorePhotosUnmatched now contains a list of existing paths that are not in the database
+         * $fileStoreNewPhotos now contains a list of existing paths that are not in the database
          * Maximum effort will be made to match these to other missing files
          */
 
-        foreach ($fileStorePhotosUnmatched as $newFilePath => $newFileBase) {
+        foreach ($fileStoreNewPhotos as $newFilePath => $newFileBase) {
             //            $newFilePath = utf8_decode($newFilePath);
             if (preg_match("/^picasa.ini|digikam3.db$/i", $newFileBase)) {
                 $retval[$newFileBase] = 'ignored';

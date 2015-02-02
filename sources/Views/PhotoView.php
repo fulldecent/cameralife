@@ -71,7 +71,7 @@ class PhotoView extends View
         if ($this->photo->get('status') > 0) {
             $subview = new ErrorView;
             $subview->exception = new Exception('This photo is not public');
-            $subview->showDebuggingInformation = false;
+            $subview->showDebugging = false;
             $subview->render();
             return;
         }

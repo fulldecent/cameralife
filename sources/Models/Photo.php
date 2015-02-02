@@ -136,15 +136,15 @@ class Photo extends IndexedModel
      * @param  integer
      * @return Photo
      */
-    public static function getPhotoWithID($id)
+    public static function getPhotoWithID($photoId)
     {
         // TODO most calls to this function are better served by getPhotoWithRecord
         global $cameralife;
-        $bind = array('i'=>$id);
+        $bind = array('i'=>$photoId);
         $result = Database::select('photos', '*', "id=:i", null, null, $bind);
-        $result->id = $id;
+        $result->id = $photoId;
         $record = $result->fetchAssoc()
-        or $cameralife->error("Photo #$id not found");
+        or $cameralife->error("Photo #$photoId not found");
         return Photo::getPhotoWithRecord($record);
     }
 
@@ -166,9 +166,9 @@ class Photo extends IndexedModel
 
     //////////////////////////////////////////////////////////
 
-    public static function photoExists($id)
+    public static function photoExists($photoId)
     {
-        $numMatchingPhotos = Database::selectOne('photos', 'COUNT(*)', 'id=:id', null, null, ['id'=>$id]);
+        $numMatchingPhotos = Database::selectOne('photos', 'COUNT(*)', 'id=:id', null, null, ['id'=>$photoId]);
         return $numMatchingPhotos > 0;
     }
 

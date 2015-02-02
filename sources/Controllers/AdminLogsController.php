@@ -39,7 +39,7 @@ class AdminLogsController extends HtmlController
         $view->showChangedPhotos = isset($get['changedPhotos']) && $get['changedPhotos'];
         $view->showChangedTags = isset($get['changedTags']) && $get['changedTags'];
         $view->showChangedUsers = isset($get['changedUsers']) && $get['changedUsers'];
-        $view->showChangedPreferences = isset($get['changedPreferences']) && $get['changedPreferences'];
+        $view->showChangedPrefs = isset($get['changedPreferences']) && $get['changedPreferences'];
 
         if (!$view->showFromMe && !$view->showFromRegistered && !$view->showFromUnregistered) {
             $view->showFromMe = true;
@@ -47,11 +47,11 @@ class AdminLogsController extends HtmlController
             $view->showFromUnregistered = true;
         }
 
-        if (!$view->showChangedPhotos && !$view->showChangedTags && !$view->showChangedUsers && !$view->showChangedPreferences) {
+        if (!$view->showChangedPhotos && !$view->showChangedTags && !$view->showChangedUsers && !$view->showChangedPrefs) {
             $view->showChangedPhotos = true;
             $view->showChangedTags = true;
             $view->showChangedUsers = true;
-            $view->showChangedPreferences = true;
+            $view->showChangedPrefs = true;
         }
 
         /* Query the audit logs */
@@ -61,7 +61,7 @@ class AdminLogsController extends HtmlController
         $condition .= $view->showChangedPhotos ? "OR record_type = 'photo' " : '';
         $condition .= $view->showChangedTags ? "OR record_type = 'album' " : '';
         $condition .= $view->showChangedUsers ? "OR record_type = 'user' " : '';
-        $condition .= $view->showChangedPreferences ? "OR record_type = 'preference' " : '';
+        $condition .= $view->showChangedPrefs ? "OR record_type = 'preference' " : '';
 
         $condition .= ") AND (0 ";
         $condition .= $view->showFromMe ? "OR user_name = '" . $currentUser->name . "' " : '';

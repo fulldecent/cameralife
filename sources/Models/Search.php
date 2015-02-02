@@ -177,10 +177,9 @@ class Search extends IndexedModel
         $sort = $this->photoSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
-        $i = 0;
-        foreach (preg_split('/\s+/', $this->query) as $queryPart) {
+        foreach (preg_split('/\s+/', $this->query) as $i => $queryPart) {
             $conditions[$i] = "(description LIKE :$i OR keywords LIKE :$i)";
-            $binds[$i++] = '%' . $queryPart . '%';
+            $binds[$i] = '%' . $queryPart . '%';
         }
         if (!$this->showPrivatePhotos) {
             $conditions[] = 'status = 0';
@@ -211,10 +210,9 @@ class Search extends IndexedModel
         $sort = $this->tagSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
-        $i = 0;
-        foreach (preg_split('/\s+/', $this->query) as $queryPart) {
+        foreach (preg_split('/\s+/', $this->query) as $i => $queryPart) {
             $conditions[$i] = "(name LIKE :$i)";
-            $binds[$i++] = '%' . $queryPart . '%';
+            $binds[$i] = '%' . $queryPart . '%';
         }
         $query = Database::select(
             'albums',
@@ -244,10 +242,9 @@ class Search extends IndexedModel
         $sort = $this->folderSortSqlForOption($this->sort);
         $conditions = array();
         $binds = array();
-        $i = 0;
-        foreach (preg_split('/\s+/', $this->query) as $queryPart) {
+        foreach (preg_split('/\s+/', $this->query) as $i => $queryPart) {
             $conditions[$i] = "(path LIKE :$i)";
-            $binds[$i++] = '%' . $queryPart . '%';
+            $binds[$i] = '%' . $queryPart . '%';
         }
         if (!$this->showPrivatePhotos) {
             $conditions[] = 'status = 0';
@@ -277,11 +274,9 @@ class Search extends IndexedModel
     {
         $conditions = array();
         $binds = array();
-        $i = 0;
-        foreach (preg_split('/\s+/', $this->query) as $queryPart) {
+        foreach (preg_split('/\s+/', $this->query) as $i => $queryPart) {
             $conditions[$i] = "(description LIKE :$i OR keywords LIKE :$i)";
             $binds[$i] = '%' . $queryPart . '%';
-            $i++;
         }
         if (!$this->showPrivatePhotos) {
             $conditions[] = 'status = 0';
@@ -307,11 +302,9 @@ class Search extends IndexedModel
     {
         $conditions = array();
         $binds = array();
-        $i = 0;
-        foreach (preg_split('/\s+/', $this->query) as $queryPart) {
+        foreach (preg_split('/\s+/', $this->query) as $i => $queryPart) {
             $conditions[$i] = "(name LIKE :$i)";
             $binds[$i] = '%' . $queryPart . '%';
-            $i++;
         }
 
         return Database::selectOne(
@@ -334,11 +327,9 @@ class Search extends IndexedModel
     {
         $conditions = array();
         $binds = array();
-        $i = 0;
-        foreach (preg_split('/\s+/', $this->query) as $queryPart) {
+        foreach (preg_split('/\s+/', $this->query) as $i => $queryPart) {
             $conditions[$i] = "(path LIKE :$i)";
             $binds[$i] = '%' . $queryPart . '%';
-            $i++;
         }
         if (!$this->showPrivatePhotos) {
             $conditions[] = 'status = 0';
