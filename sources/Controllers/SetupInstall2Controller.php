@@ -183,7 +183,7 @@ EOF;
             throw new \Exception("Camera Life already appears to be set up, because modules/config.inc exists.");
         }
 
-        $prerequesitesAreMet = $this->checkPrerequesites();
+        $this->checkPrerequesites();
         ksort($this->remedies);
 ?>
 

@@ -29,7 +29,7 @@ class MediaController extends Controller
         $photo = Models\Photo::getPhotoWithID($get['id']);
         $format = isset($get['scale']) ? $get['scale'] : (isset($get['size']) ? $get['size'] : 'NOSIZE');
         if (!is_numeric($get['ver'])) {
-            $cameralife->error('Required number ver missing! Query string: ' . htmlentities($_SERVER['QUERY_STRING']));
+            throw new \Exception('Required number ver missing! Query string: ' . htmlentities($_SERVER['QUERY_STRING']));
         }
 
         $extension = $photo->extension;
@@ -85,8 +85,7 @@ class MediaController extends Controller
 
         if (!$file) {
             $photo->generateThumbnail();
-            //todo fix
-            list($file, $temp, $mtime) = $cameralife->fileStore->getFile($bucket, $filepath);
+            list($file, $temp, $mtime) = $fileStore->getFile($path);
         }
 
         if ($extension == 'jpg' || $extension == 'jpeg') {

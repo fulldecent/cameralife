@@ -71,7 +71,6 @@ class Photo extends IndexedModel
      */
     private static function getPhotoWithRecord($record)
     {
-        global $cameralife;
         $retval = new Photo();
         $retval->record = $record;
         if (isset($retval->record['filename'])) {
@@ -94,7 +93,6 @@ class Photo extends IndexedModel
      */
     public static function createPhotoWithRecord($record)
     {
-        global $cameralife;
         $defaults['description'] = 'unnamed';
         $defaults['status'] = '0';
         $defaults['created'] = date('Y-m-d');
@@ -102,7 +100,7 @@ class Photo extends IndexedModel
         $defaults['mtime'] = '0';
         $finalRecord = array_merge($defaults, $record);
         $finalRecord['id'] = Database::insert('photos', $finalRecord);
-        $retval = Photo::getPhotoWithRecord($finalRecord);
+        $retval = self::getPhotoWithRecord($finalRecord);
         return $retval;
     }
 
@@ -116,7 +114,6 @@ class Photo extends IndexedModel
      */
     public static function getPhotoWithFilePath($filePath)
     {
-        global $cameralife;
         $filename = basename($filePath);
         $path = '/' . trim(substr($filePath, 0, -strlen($filename)), '/');
         $bind = array('f'=>$filename, 'p'=>$path);
@@ -139,23 +136,23 @@ class Photo extends IndexedModel
     public static function getPhotoWithID($photoId)
     {
         // TODO most calls to this function are better served by getPhotoWithRecord
-        global $cameralife;
         $bind = array('i'=>$photoId);
         $result = Database::select('photos', '*', "id=:i", null, null, $bind);
         $result->id = $photoId;
-        $record = $result->fetchAssoc()
-        or $cameralife->error("Photo #$photoId not found");
+        $record = $result->fetchAssoc();
+        if (!$record) {
+            throw new \Exception("Photo #$photoId not found");
+        }
         return Photo::getPhotoWithRecord($record);
     }
 
     /**
      * __construct function.
-     *
+     * 
      * @access protected
-     * @param  mixed $original (default: null)
      * @return void
      */
-    protected function __construct($original = null)
+    protected function __construct()
     {
         $this->context = false;
         $this->contextPrev = false;
@@ -196,7 +193,6 @@ class Photo extends IndexedModel
     /// Loads the original image, not the modified
     public function loadImage()
     {
-        global $cameralife;
         if (isset($this->image)) {
             return;
         }
@@ -207,12 +203,13 @@ class Photo extends IndexedModel
         $this->record['created'] = date('Y-m-d', $this->record['mtime']);
         $this->loadEXIF($file);
 
-        $this->image = new Image($file)
-        or $cameralife->error("Bad photo load: $file");
-        if (!$this->image->check()) {
-            $cameralife->error("Bad photo processing: $file");
+        $this->image = new Image($file);
+        if (!$this->image) {
+            throw new \Exception("Bad photo load: $file");
         }
-
+        if (!$this->image->check()) {
+            throw new \Exception("Bad photo processing: $file");
+        }
         if ($temp) {
             unlink($file);
         }
@@ -256,7 +253,6 @@ class Photo extends IndexedModel
         preg_match_all('/[0-9]+/', $optionSizes, $matches);
         $sizes = array_merge($sizes, $matches[0]);
         rsort($sizes);
-        $files = array();
 
         foreach ($sizes as $cursize) {
             $tempfile = tempnam(sys_get_temp_dir(), 'cameralife_' . $cursize);
@@ -264,7 +260,7 @@ class Photo extends IndexedModel
             $filename = '/' . $this->record['id'] . '_' . $cursize . '.' . $this->extension;
             $fileStore = FileStore::fileStoreWithName('other');
             $fileStore->putFile($filename, $tempfile, $this->record['status'] != 0);
-            unlink($file);
+            unlink($tempfile);
             if ($cursize == $thumbSize) {
                 $this->record['tn_width'] = $dims[0];
                 $this->record['tn_height'] = $dims[1];
@@ -290,18 +286,16 @@ class Photo extends IndexedModel
     // Remove all modifications from the photo
     public function revert()
     {
-        global $cameralife;
         if (!$this->record['modified']) {
             return;
         }
         $this->record['modified'] = null;
-        $cameralife->database->Update('photos', $this->record, 'id=' . $this->record['id']);
+        Database::update('photos', $this->record, 'id=' . $this->record['id']);
         $this->deleteThumbnails();
     }
 
     public function rotate($angle)
     {
-        global $cameralife;
         $modifications = json_decode($this->record['modified'], true);
         if (!is_array($modifications)) {
             $modifications = array();
@@ -310,13 +304,12 @@ class Photo extends IndexedModel
         $rotation = ($rotation + $angle) % 360;
         $modifications['rotate'] = $rotation;
         $this->record['modified'] = json_encode($modifications);
-        $cameralife->database->Update('photos', $this->record, 'id=' . $this->record['id']);
+        Database::update('photos', $this->record, 'id=' . $this->record['id']);
         $this->deleteThumbnails();
     }
 
     public function rotateEXIF()
     {
-        global $cameralife;
         $this->loadImage(); // sets $this->EXIF and $this-record
         if (!isset($this->EXIF['Orientation'])) {
             return;
@@ -332,7 +325,6 @@ class Photo extends IndexedModel
 
     public function erase()
     {
-        //global $cameralife;
         $this->set('status', 9);
         /*
         ///TODO
@@ -437,8 +429,6 @@ class Photo extends IndexedModel
 
     public function getEXIF()
     {
-        global $cameralife;
-
         $this->EXIF = array();
         $query = Database::select('exif', '*', "photoid=" . $this->record['id']);
 
@@ -495,7 +485,7 @@ class Photo extends IndexedModel
             }
             $fov = round(2 * rad2deg(atan($ccd / 2 / $focallength)), 2);
             //@link http://www.rags-int-inc.com/PhotoTechStuff/Lens101/
-            $this->EXIF["Field of view"] = "${fov}&deg; horizontal";
+            $this->EXIF["Field of view"] = $fov . "&deg; horizontal";
         }
         if ($focallength && $exposuretime) {
             $iso = isset($this->EXIF["ISO"]) ? $this->EXIF["ISO"] : 100;
@@ -641,7 +631,6 @@ class Photo extends IndexedModel
 
     public function getLikeCount()
     {
-        global $cameralife;
         $ratings = Database::selectOne(
             'ratings',
             'COUNT(rating)',

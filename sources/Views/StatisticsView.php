@@ -28,7 +28,7 @@ class StatisticsView extends View
      */
     public function render()
     {
-        $counts = $this->statistics->getCounts();
+        //$counts = $this->statistics->getCounts();
         $popularPhotos = $this->statistics->getPopularPhotos();
         $popularAlbums = $this->statistics->getPopularTags();
         $funfacts = $this->statistics->getFunFacts();

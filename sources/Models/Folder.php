@@ -42,7 +42,6 @@ class Folder extends Search
 
     public function getPrevious()
     {
-        global $cameralife;
         if (!$this->offset) {
             return null;
         }
@@ -238,14 +237,12 @@ class Folder extends Search
      */
     public static function findChangesOnDisk()
     {
-        //TODO: should not use global CAMERALIFE!
-        global $cameralife;
         $retval = array();
         
         $fileStore = FileStore::fileStoreWithName('photo');
         $fileStoreNewPhotos = $fileStore->listFiles(); // path->basename format
         if (!count($fileStoreNewPhotos)) {
-            $cameralife->error('No files were found in file store');
+            throw new \Exception('No files were found in file store');
         }
         foreach ($fileStoreNewPhotos as $unmatchedFilePath => $unmatchedFileBase) {
             //            $unmatchedFilePath = utf8_decode($unmatchedFilePath);
@@ -384,46 +381,34 @@ class Folder extends Search
      */
     public function fsck()
     {
-        //todo update, and is this used?
-        global $cameralife;
-        $files = $cameralife->fileStore->ListFiles('photo', $this->path, false);
-        if (!is_array($files)) {
+        $fileStore = FileStore::fileStoreWithName('photo');
+        $fileStoreNewPhotos = $fileStore->listFiles(); // path->basename format
+        if (!count($fileStoreNewPhotos)) {
+            throw new \Exception('No files were found in file store');
+        }
+        $result = Database::select('photos', 'id,filename,path,fsize', 'status!=9', 'ORDER BY path,filename');
+
+        // Verify each photo in the DB
+        while ($dbPhoto = $result->fetchAssoc()) {
+            $dbFilename = $dbPhoto['filename'];
+            $dbFilePath = rtrim('/' . ltrim($dbPhoto['path'], '/'), '/') . '/' . $dbFilename;
+            // DB photo is on disk where expected
+            if (isset($fileStoreNewPhotos[$dbFilePath])) {
+                /*
+                    todo: use filestore with file size data
+                # Bonus code, if this is local, we can do more verification
+                if ($cameralife->getPref('fileStore') == 'local' && $dbPhoto['fsize']) {
+                    $dbFileStorePath = $cameralife->fileStore->photoDir . $dbFilePath;
+                    if ($dbPhoto['fsize'] != filesize($dbFileStorePath)) {
+                        $retval[$photopath] = 'modified';
+                    }
+                }
+                */
+                unset ($fileStoreNewPhotos[$dbFilePath]);
+                continue;
+            }
             return false;
         }
-
-        $fsphotos = $fsdirs = array();
-        foreach ($files as $file) {
-            if (preg_match("/.jpg$|.jpeg$|.png$|.gif$/i", $file)) {
-                $fsphotos[] = $file;
-            } else {
-                $fsdirs[] = $file;
-            }
-        }
-
-        $selection = "filename";
-        $condition = "path = '" . addslashes($this->path) . "'";
-        $result = Database::select('photos', $selection, $condition);
-        while ($row = $result->fetchAssoc()) {
-            $key = array_search($row['filename'], $fsphotos);
-            if ($key === false) {
-                return false;
-            } else {
-                unset ($fsphotos[$key]);
-            }
-        }
-
-        $selection = "DISTINCT SUBSTRING_INDEX(SUBSTR(path," . (strlen($this->path) + 1) . "),'/',1) AS basename";
-        $condition = "path LIKE '" . addslashes($this->path) . "%/' AND status=0";
-        $result = Database::select('photos', $selection, $condition);
-        while ($row = $result->fetchAssoc()) {
-            $key = array_search($row['basename'], $fsdirs);
-            if ($key === false) {
-                return false;
-            } else {
-                unset ($fsdirs[$key]);
-            }
-        }
-
-        return (count($fsphotos) + count($fsdirs) == 0);
+        return count($fileStoreNewPhotos) == 0;
     }
 }

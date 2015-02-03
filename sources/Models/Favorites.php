@@ -49,7 +49,6 @@ class Favorites extends Search
         );
         $photos = array();
         while ($row = $query->fetchAssoc()) {
-            //TODO: make public and use Photo::getPhotoWithRecord to save a DB call
             $photos[] = Photo::getPhotoWithID($row['id']);
         }
 

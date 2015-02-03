@@ -135,9 +135,8 @@ if (isset($nextOpenGraph['og:url'])) {
             ) . "</em><br>" . htmlentities($comment['comment']) . "<hr>";
         }
         ?>
-        <form action="<?= $cameralife->baseURL ?>/photo_controller.php" method=POST name="form">
+        <form action="" method=POST name="form">
             <input type="hidden" name="id" value="<?= $this->photo->get('id') ?>">
-            <input type="hidden" name="target" value="<?= htmlspecialchars($openGraph['og:url']) ?>">
             <input type="hidden" name="action" value="comment">
             <input name="param1" class="form-control">
             <input type="submit" value="Post comment" class="btn">

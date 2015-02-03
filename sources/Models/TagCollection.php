@@ -50,8 +50,6 @@ class TagCollection extends Search
      */
     public function getAlbumCount()
     {
-        //TODO: should not use global CAMERALIFE!
-        global $cameralife;
         return Database::selectOne(
             'albums',
             'COUNT(*)',
@@ -65,7 +63,6 @@ class TagCollection extends Search
 
     public static function getCollections()
     {
-        global $cameralife;
         $retval = array();
         $result = Database::select('albums', 'DISTINCT topic');
         while ($row = $result->fetchAssoc()) {

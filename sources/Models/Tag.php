@@ -76,8 +76,6 @@ class Tag extends Search
 
     public function erase()
     {
-        global $cameralife;
-
         $cameralife->database->Delete('albums', 'id=' . $this->record['id']);
         $cameralife->database->Delete('logs', "record_type='album' AND record_id=" . $this->record['id']);
     }

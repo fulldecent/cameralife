@@ -58,7 +58,7 @@ class AuditTrail extends IndexedModel
         }
         $retval->id = $retval->record['id'];
         if (!is_array($retval->record)) {
-            $cameralife->error("Invalid receipt id #$id");
+            throw new \Exception("Invalid receipt id #$modelId");
         }
         return $retval;
     }
@@ -80,7 +80,7 @@ class AuditTrail extends IndexedModel
         if (is_array($prior) && isset($prior['value_new'])) {
             $old = $prior['value_new'];
         } else {
-            $old = AuditTrail::getDefaultForRecordTypeAndValueField($this->record['record_type'], $this->record['value_field']);
+            $old = self::getDefaultForRecordTypeAndValueField($this->record['record_type'], $this->record['value_field']);
         }
         return $old;
     }
@@ -94,7 +94,7 @@ class AuditTrail extends IndexedModel
     public function revertChange()
     {
         $previousValue = $this->previousValue();
-        $mod = array($this->record['value_field'] => $old);
+        $mod = array($this->record['value_field'] => $previousValue);
         Database::update($this->record['record_type'] . 's', $mod, 'id=' . $this->record['record_id']);
         $condition = 'record_id=' . $this->record['record_id'];
         $condition .= " AND record_type='" . $this->record['record_type'] . "'";
@@ -225,7 +225,7 @@ class AuditTrail extends IndexedModel
                 if ($result) {
                     $oldvalue = $result['id'];
                 } else {
-                    $cameralife->error("Cannot find a poster for the album #" . $record['record_id']);
+                    throw new \Exception("Cannot find a poster for the album #" . $record['record_id']);
                 }
                 break;
             default:

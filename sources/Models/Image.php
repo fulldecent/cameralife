@@ -20,9 +20,8 @@ class Image
 
     public function __construct($filename)
     {
-        global $cameralife;
         if (!file_exists($filename)) {
-            $cameralife->error('Trying to process non-existant image: ' . $filename);
+            throw new \Exception('Trying to process non-existant image: ' . $filename);
         }
         $pathParts = pathinfo($filename);
         $this->extension = strtolower($pathParts['extension']);
@@ -34,7 +33,7 @@ class Image
         } elseif ($this->extension == 'gif') {
             $this->originalImage = imagecreatefromgif($filename);
         } else {
-            $cameralife->error('Trying to process image of unknown file format: ' . $filename);
+            throw new \Exception('Trying to process image of unknown file format: ' . $filename);
         }
         $this->width = imagesx($this->originalImage);
         $this->height = imagesy($this->originalImage);
@@ -73,8 +72,6 @@ class Image
      */
     public function resize($filename, $newSize, $quality = 91)
     {
-        global $cameralife;
-
         $baseImage = $this->originalImage;
         $baseSize = $this->size;
 
@@ -109,14 +106,20 @@ class Image
         );
 
         if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') {
-            imagejpeg($newImage, $filename, $quality)
-                or $cameralife->error("Could not write the file $filename is the directory writable?");
+            $result = imagejpeg($newImage, $filename, $quality);
+            if (!$result) {
+                throw new \Exception("Could not write the file $filename is the directory writable?");
+            }
         } elseif ($this->extension == 'png') {
-            imagepng($newImage, $filename, 9 - $quality / 11)
-                or $cameralife->error("Could not write the file $filename is the directory writable?");
+            $result = imagepng($newImage, $filename, 9 - $quality / 11);
+            if (!$result) {
+                throw new \Exception("Could not write the file $filename is the directory writable?");
+            }
         } elseif ($this->extension == 'gif') {
-            imagegif($newImage, $filename, 9 - $quality / 11)
-                or $cameralife->error("Could not write the file $filename is the directory writable?");
+            $result = imagegif($newImage, $filename, 9 - $quality / 11);
+            if (!$result) {
+                throw new \Exception("Could not write the file $filename is the directory writable?");
+            }
         }
 
         $this->scaled_image[$newSize] = $newImage;

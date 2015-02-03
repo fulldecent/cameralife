@@ -59,7 +59,6 @@ class MainPageController extends HtmlController
         $root = Models\Folder::getRootFolder();
         $root->sort = 'newest';
         $root->setPage(0, 6);
-        $rootFolders = array();
         
         $view->folderAndPhotoOGs = array();
         foreach ($root->getDescendants() as $descendant) {
