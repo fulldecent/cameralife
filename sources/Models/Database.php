@@ -268,7 +268,7 @@ class Database
         $setstring = substr($setstring, 0, -2); // chop off last ', '
         $sql = "UPDATE " . self::$prefix . "$table SET $setstring WHERE $condition $extra";
         $stmt = self::$pdoConnection->prepare($sql);
-        foreach ($values as $idx => $val) {
+        foreach (array_values($values) as $idx => $val) {
             $stmt->bindValue($idx + 1, $val);
         }
         $stmt->execute();

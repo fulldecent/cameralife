@@ -250,7 +250,7 @@ class Folder extends Search
             //            $normFileStorePaths[utf8_encode($unmatchedFilePath)] = $normalized;
             $normFileStorePaths[$unmatchedFilePath] = $normalized;
         }
-        $result = Database::select('photos', 'id,filename,path,fsize', 'status!=9', 'ORDER BY path,filename');
+        $result = Database::select('photos', 'id,filename,path,fsize,status', '', 'ORDER BY path,filename');
 
         // Verify each photo in the DB
         while ($dbPhoto = $result->fetchAssoc()) {
@@ -258,16 +258,7 @@ class Folder extends Search
             $dbFilePath = rtrim('/' . ltrim($dbPhoto['path'], '/'), '/') . '/' . $dbFilename;
             // DB photo is on disk where expected
             if (isset($fileStoreNewPhotos[$dbFilePath])) {
-                /*
-                    todo: use filestore with file size data
-                # Bonus code, if this is local, we can do more verification
-                if ($cameralife->getPref('fileStore') == 'local' && $dbPhoto['fsize']) {
-                    $dbFileStorePath = $cameralife->fileStore->photoDir . $dbFilePath;
-                    if ($dbPhoto['fsize'] != filesize($dbFileStorePath)) {
-                        $retval[$photopath] = 'modified';
-                    }
-                }
-                */
+                // todo: update filestore API to get fsize, then check fsize here
                 unset ($fileStoreNewPhotos[$dbFilePath]);
                 continue;
             }
@@ -302,12 +293,7 @@ class Folder extends Search
 
             $condition = "filename LIKE :fn";
             $binds['fn'] = $newFileBase;
-            /* todo: update filestore API to return file sizes
-            if ($cameralife->getPref('fileStore') == 'local') {
-                $fileStorePath = $cameralife->fileStore->photoDir . $newFilePath;
-                $condition .= ' AND fsize=' . filesize($fileStorePath);
-            }
-            */
+            // todo: update filestore API to get fsize, then check fsize here
             $result = Database::select('photos', 'id, filename, path', $condition, null, null, $binds);
 
             // Is anything in the fileStore similar?
