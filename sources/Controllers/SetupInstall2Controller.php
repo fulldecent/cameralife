@@ -197,19 +197,14 @@ EOF;
             <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
             <script src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
             <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-            <script type="text/javascript">
-                var _gaq = _gaq || [];
-                _gaq.push(['_setAccount', 'UA-52764-13']);
-                _gaq.push(['_trackPageview']);
-
-                (function () {
-                    var ga = document.createElement('script');
-                    ga.type = 'text/javascript';
-                    ga.async = true;
-                    ga.src = 'https://ssl.google-analytics.com/ga.js';
-                    var s = document.getElementsByTagName('script')[0];
-                    s.parentNode.insertBefore(ga, s);
-                })();
+            <script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+              ga('create', 'UA-52764-13', 'auto');
+              ga('send', 'pageview');
+              ga('send', 'event', 'install', 'step', 'step 2');            
             </script>
         </head>
 
@@ -239,6 +234,7 @@ EOF;
                 foreach ($this->status as $status) {
                     $iconHtml = "<i class='fa fa-{$icons[$status['class']]}'></i>";
                     echo "<p class=\"lead text-{$status['class']}\">$iconHtml {$status['description']}</p>\n";
+                    echo "<script>ga('send', 'event', 'install', 'prerequisite', '{$status['description']}');</script>";
                 }
                 ?>
                 <form method="post">
