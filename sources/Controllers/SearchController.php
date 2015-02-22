@@ -69,23 +69,43 @@ class SearchController extends HtmlController
             $tabs->render();
         }
 
-        /* Set up grid */
-        $start = isset($get['start']) ? $get['start'] : 0;
-        $objects = array();
-        foreach ($this->model->getPhotos() as $photo) {
-            $objects[] = new PhotoController($photo->id);
+        if ($photoCount) {
+            /* Set up grid */
+            $start = isset($get['start']) ? $get['start'] : 0;
+            $objects = array();
+            foreach ($this->model->getPhotos() as $photo) {
+                $objects[] = new PhotoController($photo->id);
+            }
+    
+            /* Set up grid */
+            $grid = new Views\GridView;
+            $grid->openGraphObjects = $objects;
+            $grid->render();
+    
+            /* Set up page selector */
+            $pageSelector = new Views\PageSelectorView;
+            $pageSelector->start = $start;
+            $pageSelector->total = $this->model->getPhotoCount();
+            $pageSelector->render();
+        } else {
+            /* Set up grid */
+            $start = isset($get['start']) ? $get['start'] : 0;
+            $objects = array();
+            foreach ($this->model->getFolders() as $folder) {
+                $objects[] = new FolderController($folder->id);
+            }
+    
+            /* Set up grid */
+            $grid = new Views\GridView;
+            $grid->openGraphObjects = $objects;
+            $grid->render();
+    
+            /* Set up page selector */
+            $pageSelector = new Views\PageSelectorView;
+            $pageSelector->start = $start;
+            $pageSelector->total = $this->model->getFolderCount();
+            $pageSelector->render();
         }
-
-        /* Set up grid */
-        $grid = new Views\GridView;
-        $grid->openGraphObjects = $objects;
-        $grid->render();
-
-        /* Set up page selector */
-        $pageSelector = new Views\PageSelectorView;
-        $pageSelector->start = $start;
-        $pageSelector->total = $this->model->getPhotoCount();
-        $pageSelector->render();
 
         /* Render footer */
         $this->htmlFooter();

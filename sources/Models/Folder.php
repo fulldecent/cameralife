@@ -328,6 +328,8 @@ class Folder extends Search
      */
     public static function update()
     {
+        //TODO: NEED TEST CASES FOR THIS AND ACTUAL TESTING!!!!!!!
+        // move files / delete files / readd files (undelete) / UTF filenames
         $retval = array();
 
         foreach (Folder::findChangesOnDisk() as $filePath => $change) {
