@@ -19,7 +19,7 @@ class AdminThumbnailController extends HtmlController
     {
         parent::__construct();
         $this->model = new Models\Statistics;
-        $this->title = 'Comments viewer';
+        $this->title = 'Caching thumbnails';
         $this->icon = 'list';
     }
 

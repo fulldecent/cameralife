@@ -34,7 +34,7 @@ class PageSelectorView extends View
      * @var    int
      * @access public
      */
-    public $perPage = 20;
+    public $perPage = 40;
 
     /**
      * The base URL of all links

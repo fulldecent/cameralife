@@ -115,6 +115,14 @@ class AdminView extends View
      */
     public $thumbnailUrl;
 
+    /**
+     * rescanUrl
+     * 
+     * @var mixed
+     * @access public
+     */
+    public $rescanUrl;
+
     public function render()
     {
         echo <<<EOL
@@ -186,6 +194,7 @@ EOL;
         }
         echo "<p><a class=\"btn btn-$class\" href=\"$this->photosUrl\"><i class=\"fa fa-folder-open\"></i> Review photos</a></p>";
         echo "<p><a class=\"btn btn-default\" href=\"$this->thumbnailUrl\"><i class=\"fa fa-folder-open\"></i> Update thumbnails</a></p>";
+        echo "<p><a class=\"btn btn-default\" href=\"$this->rescanUrl\"><i class=\"fa fa-folder-open\"></i> Rescan for photos</a></p>";
         echo "</div></div></div>";
 
 

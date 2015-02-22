@@ -100,7 +100,7 @@ class FileStore
     }
 
     /**
-     * Save a file to the fileStore
+     * Save a file to the fileStore, will move or delete the FILE file
      *
      * @param $bucket - one of ('photo', 'other')
      * @param $path - the location of the stored file

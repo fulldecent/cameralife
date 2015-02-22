@@ -26,7 +26,7 @@ class Image
         $pathParts = pathinfo($filename);
         $this->extension = strtolower($pathParts['extension']);
 
-        if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') {
+        if ($this->extension == 'jpeg' || $this->extension == 'jpg') {
             $this->originalImage = imagecreatefromjpeg($filename);
         } elseif ($this->extension == 'png') {
             $this->originalImage = imagecreatefrompng($filename);
@@ -105,7 +105,7 @@ class Image
             $baseHeight
         );
 
-        if ($this->extension == 'jpeg' || $this->extension == 'jpg' || $this->extension == '') {
+        if ($this->extension == 'jpeg' || $this->extension == 'jpg') {
             $result = imagejpeg($newImage, $filename, $quality);
             if (!$result) {
                 throw new \Exception("Could not write the file $filename is the directory writable?");

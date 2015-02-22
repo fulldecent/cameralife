@@ -52,12 +52,12 @@ class Search extends IndexedModel
     /**
      * The maximum number of results to return
      *
-     * (default value: 20)
+     * (default value: 40)
      *
      * @var    int
      * @access protected
      */
-    protected $pageSize = 20;
+    protected $pageSize = 40;
 
     /**
      * __construct function.
@@ -157,10 +157,10 @@ class Search extends IndexedModel
      *
      * @access public
      * @param  mixed $start
-     * @param  int   $pagesize (default: 20)
+     * @param  int   $pagesize (default: 40)
      * @return void
      */
-    public function setPage($start, $pageSize = 20)
+    public function setPage($start, $pageSize = 40)
     {
         $this->offset = $start;
         $this->pageSize = $pageSize;

@@ -272,7 +272,11 @@ class Folder extends Search
                 unset ($fileStoreNewPhotos[$candidates[0]]);
                 continue;
             }
-            $retval[$dbFilePath] = 'deleted';
+            if ($dbPhoto['status'] == 9) {
+                continue;
+            } else {
+                $retval[$dbFilePath] = 'deleted';
+            }
         }
 
         /**
