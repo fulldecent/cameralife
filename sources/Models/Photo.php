@@ -349,7 +349,7 @@ class Photo extends IndexedModel
         $bucket = 'other';
         $path = '';
         if ($scale == 'photo') {
-            if ($photo->get('modified')) {
+            if ($this->get('modified')) {
                 $path = "/{$this->record['id']}_mod.{$this->extension}";
             } else {
                 $path = "/{$this->record['path']}{$this->record['filename']}";
