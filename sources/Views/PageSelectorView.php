@@ -70,9 +70,6 @@ class PageSelectorView extends View
             $first = max($start - 3 * $perPage, 0);
             $last = min($first + 6 * $perPage, intval(($total - 1) / $perPage) * $perPage);
             $first = max($last - 6 * $perPage, 0);
-            if ($last == 0) {
-                $last = 1;
-            }
 
             if ($first != $start) {
                 parse_str(parse_url($url, PHP_URL_QUERY), $query);

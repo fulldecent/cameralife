@@ -344,42 +344,40 @@ class Photo extends IndexedModel
         }
     }
 
-    public function getMediaURL($format = 'thumbnail')
+    public function getMediaURL($scale = 'thumbnail')
     {
-        if ($format == 'photo' || $format == '') {
-            if ($this->get('modified')) {
+        $bucket = 'other';
+        $path = '';
+        if ($scale == 'photo') {
+            if ($photo->get('modified')) {
                 $path = "/{$this->record['id']}_mod.{$this->extension}";
-                $store = 'other';
             } else {
                 $path = "/{$this->record['path']}{$this->record['filename']}";
-                $store = 'photos';
+                $bucket = 'photo';
             }
-        } elseif ($format == 'scaled') {
+        } elseif ($scale == 'scaled') {
             $thumbSize = Preferences::valueForModuleWithKey('CameraLife', 'scaledsize');
             $path = "/{$this->record['id']}_{$thumbSize}.{$this->extension}";
-            $store = 'other';
-        } elseif ($format == 'thumbnail') {
+        } elseif ($scale == 'thumbnail') {
             $thumbSize = Preferences::valueForModuleWithKey('CameraLife', 'thumbsize');
             $path = "/{$this->record['id']}_{$thumbSize}.{$this->extension}";
-            $store = 'other';
-        } elseif (is_numeric($format)) {
+        } elseif (is_numeric($scale)) {
             $valid = preg_split('/[, ]+/', Preferences::valueForModuleWithKey('CameraLife', 'optionsizes'));
-            if (!in_array($format, $valid)) {
+            if (!in_array($scale, $valid)) {
                 throw new \Exception('This image size has not been allowed');
             }
             $path = "/{$this->record['id']}_{$format}.{$this->extension}";
-            $store = 'other';
         } else {
-            throw new \Exception('Bad format parameter');
+            throw new \Exception('Missing or bad size parameter');
         }
-        $fileStore = FileStore::fileStoreWithName($store);
+        $fileStore = FileStore::fileStoreWithName($bucket);
         $url = $fileStore->getUrl($path);
         if ($url) {
             return $url;
         }
-        $url = constant('BASE_URL') . "/media/{$this->record['id']}.{$this->extension}?scale={$format}&ver={$this->record['mtime']}";
+        $url = constant('BASE_URL') . "/media/{$this->record['id']}.{$this->extension}?scale={$scale}&ver={$this->record['mtime']}";
         if (Preferences::valueForModuleWithKey('CameraLife', 'rewrite') == 'no') {
-            $url = constant('BASE_URL') . "/index.php?page=Media&id={$this->record['id']}&scale={$format}&ver={$this->record['mtime']}";
+            $url = constant('BASE_URL') . "/index.php?page=Media&id={$this->record['id']}&scale={$scale}&ver={$this->record['mtime']}";
         }
         return $url;
     }

@@ -24,60 +24,41 @@ use CameraLife\Models as Models;
 
 class MediaController extends Controller
 {
-    public function handleGet($get, $post, $files, $cookies)
+    /**
+     * getFileForPhotoWithScale function.
+     * 
+     * @access private
+     * @param Models\Photo $photo
+     * @param mixed $scale
+     * @return [$file, $temp, $mtime]
+     */
+    private static function getFileForPhotoWithScale(Models\Photo $photo, $scale)
     {
-        $photo = Models\Photo::getPhotoWithID($get['id']);
-        $format = isset($get['scale']) ? $get['scale'] : (isset($get['size']) ? $get['size'] : 'NOSIZE');
-        if (!is_numeric($get['ver'])) {
-            throw new \Exception('Required number ver missing! Query string: ' . htmlentities($_SERVER['QUERY_STRING']));
-        }
-
         $extension = $photo->extension;
-
-        if ($photo->get('status') != 0) {
-            //todo setup security
-            if (!$cameralife->security->authorize('admin_file')) {
-                $reason = null;
-                if ($photo->get('status') == 1) {
-                    $reason = "deleted";
-                } elseif ($photo->get('status') == 2) {
-                    $reason = "marked as private";
-                } elseif ($photo->get('status') == 3) {
-                    $reason = "uploaded but not revied";
-                } elseif ($photo->get('status') == !0) {
-                    $reason = "marked non-public";
-                }
-                if ($reason) {
-                    $cameralife->error("Photo access denied: $reason");
-                }
-            }
-        }
-
         $bucket = 'other';
         $path = '';
 
-        if ($format == 'photo' || $format == '') {
+        if ($scale == 'photo') {
             if ($photo->get('modified')) {
                 $path = '/' . $photo->get('id') . '_mod.' . $extension;
             } else {
                 $bucket = 'photo';
                 $path = rtrim('/' . ltrim($photo->get('path'), '/'), '/') . '/' . $photo->get('filename');
             }
-        } elseif ($format == 'scaled') {
+        } elseif ($scale == 'scaled') {
             $thumbSize = Models\Preferences::valueForModuleWithKey('CameraLife', 'scaledsize');
             $path = "/{$photo->get('id')}_{$thumbSize}.{$extension}";
-        } elseif ($format == 'thumbnail') {
+        } elseif ($scale == 'thumbnail') {
             $thumbSize = Models\Preferences::valueForModuleWithKey('CameraLife', 'thumbsize');
             $path = "/{$photo->get('id')}_{$thumbSize}.{$extension}";
-        } elseif (is_numeric($format)) {
+        } elseif (is_numeric($scale)) {
             $valid = preg_split('/[, ]+/', Models\Preferences::valueForModuleWithKey('CameraLife', 'optionsizes'));
-            if (in_array($format, $valid)) {
-                $path = "/{$photo->get('id')}_{$format}.{$extension}";
-            } else {
-                $cameralife->error('This image size has not been allowed');
+            if (!in_array($scale, $valid)) {
+                throw new \Exception('This image size has not been allowed');
             }
+            $path = "/{$photo->get('id')}_{$scale}.{$extension}";
         } else {
-            $cameralife->error('Bad size parameter. Query string: ' . htmlentities($_SERVER['QUERY_STRING']));
+            throw new \Exception('Missing or bad size parameter');
         }
 
         $fileStore = Models\FileStore::fileStoreWithName($bucket);
@@ -87,6 +68,24 @@ class MediaController extends Controller
             $photo->generateThumbnail();
             list($file, $temp, $mtime) = $fileStore->getFile($path);
         }
+        return [$file, $temp, $mtime];
+    }
+  
+    public function handleGet($get, $post, $files, $cookies)
+    {
+        $photo = Models\Photo::getPhotoWithID($get['id']);
+        $scale = isset($get['scale']) ? $get['scale'] : null;
+        $extension = $photo->extension;
+        if (!is_numeric($get['ver'])) {
+            throw new \Exception('Required number ver missing! Query string: ' . htmlentities($_SERVER['QUERY_STRING']));
+        }
+        if ($photo->get('status') != 0) {
+            //todo setup security
+            //STATUS = $photo->get('status')
+            //SWITCH STATUS ...
+            throw new \Exception('Photo access denied');
+        }
+        list($file, $temp, $mtime) = self::getFileForPhotoWithScale($photo, $scale);
 
         if ($extension == 'jpg' || $extension == 'jpeg') {
             header('Content-type: image/jpeg');
@@ -95,7 +94,7 @@ class MediaController extends Controller
         } elseif ($extension == 'gif') {
             header('Content-type: image/gif');
         } else {
-            $cameralife->error('Unknown file type');
+            throw new \Exception('Unknown photo type');
         }
 
         header('Content-Disposition: inline; filename="' . htmlentities($photo->get('description')) . '.' . $extension . '";');

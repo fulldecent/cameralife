@@ -166,9 +166,7 @@ class AdminLogsView extends View
             $openGraphObject = null;
             if (get_class($object) == 'CameraLife\Models\Photo') {
                 ///TODO BREAKING MVC HERE
-                //              $openGraphObject = new \CameraLife\Controllers\PhotoController($object->get['id']);
-                $openGraphObject = new \CameraLife\Controllers\SearchController('');
-                $openGraphObject->image = "/cameralife-DEV/media/{$object->record['id']}.jpg?scale=thumbnail&ver=1237246020";
+                $openGraphObject = new \CameraLife\Controllers\PhotoController($object->get('id'));
             }
 
             echo "<div class=\"row\">";

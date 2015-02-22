@@ -78,13 +78,13 @@ class Statistics
 
         $funfacts[] = 'If these photos were taken with a film camera, they would have used <strong>' .
             (round($this->counts['photos'] / 24, 0)) . '</strong> rolls of film.';
-        $funfacts[] = 'If the photos were layed on a football field, they would go up to the ' .
+        $funfacts[] = 'If the photos were laid on a football field, they would go up to the ' .
             '<strong>' . (round($this->counts['pixels'] / 358318080, 2)) . '</strong> yard line.';
         // 358318080 = 160ft * 1 yd * 3ft/yd * 144 in^2/ft^2 * 5184 px^2/in^2
-        $funfacts[] = 'If the photo pixels were layed 1-wide, they would circle ' .
+        $funfacts[] = 'If the photo pixels were laid 1-wide, they would circle ' .
             '<strong>' . (round($this->counts['pixels'] / 1135990288, 2)) . '%</strong> of the world.';
-        // 1135990288 = 3963.21mi * 2pi * 1760 yd/mi * 36 in/yd * 72 px/in / 100%
-        $funfacts[] = 'If I had a nickel for every time someone looked at a picture here, I would have ' .
+        // 1135963699 = 24901mi * 63360in/mi * 72px/in / 100%
+        $funfacts[] = 'If I had a nickel every time someone looked at a picture here, I would have ' .
             '<strong>$' . (floor($this->counts['photohits'] / 20)) . '</strong>.';
         $funfacts[] = 'There have been an average of ' .
             '<strong>' . (round(
@@ -106,7 +106,7 @@ class Statistics
             '<strong>' . (round($this->counts['photos'] / 64, 0)) . ' refrigerators</strong>.';
         // Model General Electric GTS18FBSWW
         $funfacts[] = 'Postage for mailing a photo here to each of your friends (like you have that many) will cost ' .
-            '<strong>$' . (round($this->counts['photos'] * 0.44, 2)) . '</strong>.';
+            '<strong>$' . (round($this->counts['photos'] * 0.49, 2)) . '</strong>.';
         // http://www.usps.com/prices/welcome.htm
 
         return $funfacts;
