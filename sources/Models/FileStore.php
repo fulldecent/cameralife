@@ -152,7 +152,7 @@ class FileStore
         }
 
         $retval = array();
-        if ($dir = opendir($fullpath)) {
+        if (is_dir($fullpath) && ($dir = opendir($fullpath))) {
             $children = array();
             while (false !== ($file = readdir($dir))) {
                 if ($file[0] == '.') {

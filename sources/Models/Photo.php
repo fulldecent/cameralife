@@ -220,12 +220,16 @@ class Photo extends IndexedModel
     public function generateThumbnail()
     {
         $this->loadImage(); // sets $this->EXIF and $this-record
+        if ($this->record['modified'] == '1') {
+            $this->record['modified'] = null; // legacy before 2.7
+            Database::update('photos', $this->record, 'id=' . $this->record['id']);
+        }        
+        
         if (Preferences::valueForModuleWithKey('CameraLife', 'autorotate')  == 'yes'
             && (!$this->record['modified'] || $this->record['modified'] == '1')
         ) {
             $this->rotateEXIF();
         }
-
         $activeImage = $this->image;
 
         // Apply all modifications
@@ -302,7 +306,10 @@ class Photo extends IndexedModel
         $rotation = isset($modifications['rotate']) ? $modifications['rotate'] : 0;
         $rotation = ($rotation + $angle) % 360;
         $modifications['rotate'] = $rotation;
-        $this->record['modified'] = json_encode($modifications);
+        if ($modifications['rotate'] == 0) {
+            unset($modifications['rotate']);
+        }
+        $this->record['modified'] = count($modifications) ? json_encode($modifications) : null;
         Database::update('photos', $this->record, 'id=' . $this->record['id']);
         $this->deleteThumbnails();
     }
@@ -391,8 +398,7 @@ class Photo extends IndexedModel
     public function isCacheMissing()
     {
         if ($this->record['modified'] == '1') {
-            return true;
-            //legacy before 2.7
+            return true; //legacy before 2.7
         }
         $cacheBucket = FileStore::fileStoreWithName('other');
         if ($this->record['modified']) {
@@ -475,7 +481,7 @@ class Photo extends IndexedModel
             }
             $this->EXIF["Focal distance"] = "${focallength}mm";
         }
-        if (isset($exif['EXIF']['FocalLength'])) {
+        if (!empty($focallength)) {
             $ccd = 35;
             if (isset($exif['COMPUTED']['CCDWidth'])) {
                 $ccd = str_replace('mm', '', $exif['COMPUTED']['CCDWidth']);
