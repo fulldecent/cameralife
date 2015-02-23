@@ -295,6 +295,7 @@ class Folder extends Search
                 continue;
             }
 
+            /*
             $condition = "filename LIKE :fn";
             $binds['fn'] = $newFileBase;
             // todo: update filestore API to get fsize, then check fsize here
@@ -312,6 +313,7 @@ class Folder extends Search
                     continue;
                 }
             }
+            */
             $retval[$newFilePath] = 'new';
         }
 

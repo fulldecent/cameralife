@@ -274,16 +274,10 @@ class Photo extends IndexedModel
 
     private function deleteThumbnails()
     {
-        //todo update
-        $cameralife->fileStore->EraseFile('other', '/' . $this->record['id'] . '_mod.' . $this->extension);
-        $cameralife->fileStore->EraseFile(
-            'other',
-            '/' . $this->record['id'] . '_' . $cameralife->getPref('scaledsize') . '.' . $this->extension
-        );
-        $cameralife->fileStore->EraseFile(
-            'other',
-            '/' . $this->record['id'] . '_' . $cameralife->getPref('thumbsize') . '.' . $this->extension
-        );
+        // TODO
+        // $cameralife->fileStore->EraseFile('/' . $this->record['id'] . '_mod.' . $this->extension);...
+        // $cameralife->fileStore->EraseFile('/' . $this->record['id'] . '_' . $cameralife->getPref('scaledsize') ...
+        // $cameralife->fileStore->EraseFile('/' . $this->record['id'] . '_' . $cameralife->getPref('thumbsize') ...
     }
 
     // Remove all modifications from the photo
