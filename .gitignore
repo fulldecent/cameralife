@@ -1,4 +1,5 @@
 config.php
+caches
 
 # https://stackoverflow.com/q/27726794
 /vendor/**/.git/
