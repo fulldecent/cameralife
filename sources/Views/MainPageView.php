@@ -85,44 +85,9 @@ class MainPageView extends View
         }
         ?>
 
-        <div class="well">
-            <ul class="nav nav-pills">
-                <li <?= $this->activeSection == 'rand' ? 'class="active"' : '' ?>><a href="?section=rand">Random photos</a></li>
-                <li <?= $this->activeSection == 'newest' ? 'class="active"' : '' ?>><a href="?section=newest">Newest photos</a></li>
-                <li <?= $this->activeSection == 'newest-folders' ? 'class="active"' : '' ?>><a href="?section=newest-folders">Newest folders</a></li>
-                <li <?= $this->activeSection == 'unpopular' ? 'class="active"' : '' ?>><a href="?section=unpopular">Unpopular</a></li>
-            </ul>
-            <div style="height: 170px" class="clipbox">
-                <?php
-                foreach ($this->openGraphsForTop as $resultOpenGraph) {
-                    $htmlTitle = '';
-                    if ($resultOpenGraph->title != 'unnamed') {
-                        $htmlTitle = htmlentities($resultOpenGraph->title);
-                    }
-
-                    echo '<div class="l1" style="-moz-transform:rotate(' . rand(
-                        -10,
-                        10
-                    ) . 'deg); -webkit-transform:rotate(' . rand(-10, 10) . 'deg)">';
-                    echo '<a href="' . htmlspecialchars($resultOpenGraph->url) . '" class="l2">';
-                    echo '<img alt="' . htmlspecialchars($resultOpenGraph->title) . '" src="' . htmlspecialchars(
-                        $resultOpenGraph->image
-                    ) . '" class="l3">';
-                    if (isset($resultOpenGraph->imageWidth) && isset($resultOpenGraph->imageHeight)) {
-                        echo '<div class="l4" style="width:' . ($resultOpenGraph->imageWidth) . 'px">' . $htmlTitle . '</div>';
-                    } else {
-                        echo '<div class="l4">' . $htmlTitle . '</div>';
-                    }
-                    echo '</a>';
-                    echo '</div>';
-                }
-                ?>
-            </div>
-        </div>
-
         <div class="row">
             <div class="col-sm-7">
-                <h2>Folders</h2>
+                <h2>New Folders <a class="btn btn-default"><i class="fa fa-rss"></i></a></h2>
                 <table class="table">
                     <?php
                     foreach ($this->folderAndPhotoOGs as $folderAndPhotoOG) {
@@ -151,35 +116,41 @@ class MainPageView extends View
                 </table>
             </div>
             <div class="col-sm-5">
-                <h2>Tag collections</h2>
-                <table class="table">
+
+                <h2>Photos</h2>
+                              
+                <ul class="nav nav-pills">
+                    <li <?= $this->activeSection == 'rand' ? 'class="active"' : '' ?>><a href="?section=rand">Random photos</a></li>
+                    <li <?= $this->activeSection == 'newest' ? 'class="active"' : '' ?>><a href="?section=newest">Newest photos</a></li>
+                    <li <?= $this->activeSection == 'unpopular' ? 'class="active"' : '' ?>><a href="?section=unpopular">Unpopular</a></li>
+                </ul>
+                <div style="height: 170px" class="clipbox">
                     <?php
-
-                    foreach ($this->tagCollections as $tagCollection) {
-                        $tCC = new Controllers\TagCollectionController($tagCollection->query);
-
-                        echo "<tr><td><h3><a href=\"" . htmlentities($tCC->url) . "\"><i class=\"fa fa-tags\"></i> ";
-                        echo htmlentities($tCC->title) . "</a></h3>\n";
-                        $tagCollection->sort = 'rand';
-                        $tagCollection->SetPage(0, 4);
-
-                        echo '<div style=" overflow: hidden; white-space: nowrap; text-overflow: ellipsis; ">';
-                        $count = 0;
-                        foreach ($tagCollection->getTags() as $tag) {
-                            $tC = new Controllers\TagController($tag->record['id']);
-                            if ($count++) {
-                                echo ", \n";
-                            }
-                            echo "<a href=\"" . htmlentities($tC->url) . "\"><i class=\"fa fa-tag\"></i> ";
-                            echo htmlentities($tC->title) . "</a>";
+                    foreach ($this->openGraphsForTop as $resultOpenGraph) {
+                        $htmlTitle = '';
+                        if ($resultOpenGraph->title != 'unnamed') {
+                            $htmlTitle = htmlentities($resultOpenGraph->title);
                         }
-                        echo ", ...</div>\n";
+    
+                        echo '<div class="l1" style="-moz-transform:rotate(' . rand(
+                            -10,
+                            10
+                        ) . 'deg); -webkit-transform:rotate(' . rand(-10, 10) . 'deg)">';
+                        echo '<a href="' . htmlspecialchars($resultOpenGraph->url) . '" class="l2">';
+                        echo '<img alt="' . htmlspecialchars($resultOpenGraph->title) . '" src="' . htmlspecialchars(
+                            $resultOpenGraph->image
+                        ) . '" class="l3">';
+                        if (isset($resultOpenGraph->imageWidth) && isset($resultOpenGraph->imageHeight)) {
+                            echo '<div class="l4" style="width:' . ($resultOpenGraph->imageWidth) . 'px">' . $htmlTitle . '</div>';
+                        } else {
+                            echo '<div class="l4">' . $htmlTitle . '</div>';
+                        }
+                        echo '</a>';
+                        echo '</div>';
                     }
-                    //todo fix url
-                    echo "<tr><td><h3><a href=\"search.php&#63;albumhelp=1&amp;q=\">... create a featured tag</a></h3>";
-
                     ?>
-                </table>
+                </div>
+    
             </div>
         </div>
         <?php
