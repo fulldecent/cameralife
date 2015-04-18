@@ -42,4 +42,35 @@ class AdminFileStoreController extends HtmlController
         $view->render();
         $this->htmlFooter();
     }
+    
+    public function handlePost($get, $post, $files, $cookies)
+    {
+        if (Models\User::currentUser($cookies)->authorizationLevel < 5) {
+            throw new \Exception('You are not authorized to view this page');
+        }
+      
+        $prefs = array();
+      
+        foreach ($post as $key => $val) {
+            if ($key == 'target') {
+                continue;
+            } else {
+                $array = explode('|', $key);
+                if (count($array) != 2) {
+                    $cameralife->error('Invalid module / key');
+                }
+                $prefs[] = array('module' => $array[0], 'param' => $array[1], 'value' => $val);
+            }
+        }
+        
+        foreach ($prefs as $pref) {
+            if (isset($pref['module']) && isset($pref['param']) && isset($pref['value'])) {
+                Models\Preferences::setValueForModuleWithKey($pref['value'], $pref['module'], $pref['param']);
+            } else {
+                var_dump($prefs);
+                die ('passed wrong');
+            }
+        }
+        echo "UPDATE DONE";
+    }    
 }

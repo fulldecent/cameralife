@@ -329,6 +329,7 @@ class Database
             $bindWithColons[':' . $name] = $val;
         }
         $stmt = self::$pdoConnection->prepare($sql);
-        return $stmt->execute($bindWithColons);
+        $stmt->execute($bindWithColons);
+        return new DatabaseIterator($stmt);        
     }
 }
