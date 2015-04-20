@@ -238,28 +238,25 @@ class Folder extends Search
     public static function findChangesOnDisk()
     {
         $retval = array();
-        
+                
         $fileStore = FileStore::fileStoreWithName('photo');
         $fileStoreNewPhotos = $fileStore->listFiles(); // path->basename format
         if (!count($fileStoreNewPhotos)) {
             throw new \Exception('No files were found in file store');
         }
         foreach ($fileStoreNewPhotos as $unmatchedFilePath => $unmatchedFileBase) {
-            //            $unmatchedFilePath = utf8_decode($unmatchedFilePath);
             $normalized = strtolower(preg_replace('/[^a-z0-9]/i', '', $unmatchedFilePath));
-            //            $normFileStorePaths[utf8_encode($unmatchedFilePath)] = $normalized;
             $normFileStorePaths[$unmatchedFilePath] = $normalized;
         }
         $result = Database::select('photos', 'id,filename,path,fsize,status', '', 'ORDER BY path,filename');
 
         // Verify each photo in the DB
         while ($dbPhoto = $result->fetchAssoc()) {
-            $dbFilename = $dbPhoto['filename'];
-            $dbFilePath = rtrim('/' . ltrim($dbPhoto['path'], '/'), '/') . '/' . $dbFilename;
+            $dbFilePath = rtrim('/' . ltrim($dbPhoto['path'], '/'), '/') . '/' . $dbPhoto['filename'];
             // DB photo is on disk where expected
             if (isset($fileStoreNewPhotos[$dbFilePath])) {
-                // todo: update filestore API to get fsize, then check fsize here
                 unset ($fileStoreNewPhotos[$dbFilePath]);
+                unset ($normFileStorePaths[$dbFilePath]);
                 continue;
             }
 
@@ -267,9 +264,9 @@ class Folder extends Search
             $normalizedDBFilePath = strtolower(preg_replace('/[^a-z0-9]/i', '', $dbFilePath));
             $candidates = array_keys($normFileStorePaths, $normalizedDBFilePath);
             if (count($candidates) == 1) {
-                //                $candidates[0] = utf8_decode($candidates[0]);
                 $retval[$dbFilePath] = array('moved', $candidates[0]);
                 unset ($fileStoreNewPhotos[$candidates[0]]);
+                unset ($normFileStorePaths[$candidates[0]]);
                 continue;
             }
             if ($dbPhoto['status'] == 9) {
@@ -294,26 +291,6 @@ class Folder extends Search
                 $retval[$newFileBase] = 'ignored';
                 continue;
             }
-
-            /*
-            $condition = "filename LIKE :fn";
-            $binds['fn'] = $newFileBase;
-            // todo: update filestore API to get fsize, then check fsize here
-            $result = Database::select('photos', 'id, filename, path', $condition, null, null, $binds);
-
-            // Is anything in the fileStore similar?
-            if ($dbPhoto = $result->fetchAssoc()) {
-                $dbFilePath = rtrim('/' . ltrim($dbPhoto['path'], '/'), '/') . '/' . $dbPhoto['filename'];
-
-                if (isset($retval[$dbFilePath]) && $retval[$dbFilePath] != 'deleted') {
-                    $retval[$dbFilePath] = array('went one of two places', $newFilePath, $retval[$dbFilePath]);
-                    continue;
-                } else {
-                    $retval[$dbFilePath] = array('moved', $newFilePath);
-                    continue;
-                }
-            }
-            */
             $retval[$newFilePath] = 'new';
         }
 
@@ -333,7 +310,6 @@ class Folder extends Search
         //TODO: NEED TEST CASES FOR THIS AND ACTUAL TESTING!!!!!!!
         // move files / delete files / readd files (undelete) / UTF filenames
         $retval = array();
-
         foreach (Folder::findChangesOnDisk() as $filePath => $change) {
             if ($change == 'new') {
                 $retval[] = "Added $filePath\n";
@@ -356,9 +332,9 @@ class Folder extends Search
                 // mb_basename = end(explode('/',$file)) // http://php.net/manual/en/function.basename.php
                 // pathinfo is better than basename with unicode utf8
                 $photoObj = Photo::getPhotoWithFilePath($filePath);
-                $filename = basename($change[1]);
-                //                $filename = end(explode('/', $change[1]));
-                $path = '/' . trim(substr($change[1], 0, -strlen($filename)), '/');
+                // $filename = basename($change[1]); DOES NOT WORK WITH CJK AND UTF-8
+                $filename = end(explode('/', $change[1]));
+                $path = '/' . trim(mb_substr($change[1], 0, -mb_strlen($filename)), '/');
                 $photoObj->set('path', $path);
                 $photoObj->set('filename', $filename);
             } else {
@@ -384,20 +360,8 @@ class Folder extends Search
 
         // Verify each photo in the DB
         while ($dbPhoto = $result->fetchAssoc()) {
-            $dbFilename = $dbPhoto['filename'];
-            $dbFilePath = rtrim('/' . ltrim($dbPhoto['path'], '/'), '/') . '/' . $dbFilename;
-            // DB photo is on disk where expected
+            $dbFilePath = rtrim('/' . ltrim($dbPhoto['path'], '/'), '/') . '/' . $dbPhoto['filename'];
             if (isset($fileStoreNewPhotos[$dbFilePath])) {
-                /*
-                    todo: use filestore with file size data
-                # Bonus code, if this is local, we can do more verification
-                if ($cameralife->getPref('fileStore') == 'local' && $dbPhoto['fsize']) {
-                    $dbFileStorePath = $cameralife->fileStore->photoDir . $dbFilePath;
-                    if ($dbPhoto['fsize'] != filesize($dbFileStorePath)) {
-                        $retval[$photopath] = 'modified';
-                    }
-                }
-                */
                 unset ($fileStoreNewPhotos[$dbFilePath]);
                 continue;
             }
