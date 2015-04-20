@@ -48,6 +48,8 @@ class MainPageView extends View
     public $adminUrl;
 
     public $rootOpenGraph;
+    
+    public $mainPageOpenGraph;
 
     /**
      * Render the view to standard output
@@ -87,7 +89,7 @@ class MainPageView extends View
 
         <div class="row">
             <div class="col-sm-7">
-                <h2>New Folders <a class="btn btn-default"><i class="fa fa-rss"></i></a></h2>
+                <h2>New Folders <a class="btn btn-default" href="http://visualping.io/?url=<?= htmlspecialchars($this->mainPageOpenGraph->url) ?>"><i class="fa fa-rss"></i></a></h2>
                 <table class="table">
                     <?php
                     foreach ($this->folderAndPhotoOGs as $folderAndPhotoOG) {

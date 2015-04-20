@@ -16,7 +16,7 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 
 // Set up environment
 define('CAMERALIFE_VERSION', '2.7.0a6');
-define('BASE_URL', rtrim(dirname($_SERVER['PHP_SELF']), '/'));
+define('BASE_URL', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/'));
 define('BASE_DIR', dirname(__FILE__));
 require 'vendor/autoload.php';
 require 'sources/autoload.php';

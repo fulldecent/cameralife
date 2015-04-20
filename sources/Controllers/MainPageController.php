@@ -13,7 +13,7 @@ use CameraLife\Models as Models;
 
 class MainPageController extends HtmlController
 {
-    public static function getUrl()
+    public static function getUrlForIDWithParameters($modelId, $parameters)
     {
         return constant('BASE_URL') . '/';
     }
@@ -76,6 +76,7 @@ class MainPageController extends HtmlController
         }
         
         $view->rootOpenGraph = new FolderController('/');
+        $view->mainPageOpenGraph = $this;
 
         $view->tagCollections = Models\TagCollection::getCollections();
         $view->render();
