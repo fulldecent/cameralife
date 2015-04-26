@@ -63,6 +63,7 @@ class AdminController extends HtmlController
         $view->securityUrl = AdminSecurityController::getUrl();
         $view->thumbnailUrl = AdminThumbnailController::getUrl();
         $view->rescanUrl = AdminRescanController::getUrl();
+        $view->photosUrl = AdminPhotosController::getUrl();
 
         $preferences = array();
         $preferences[] = ['module' => 'CameraLife', 'key' => 'sitename', 'type' => 'string', 'name' => 'Site name'];

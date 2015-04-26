@@ -53,8 +53,9 @@ class PhotoController extends HtmlController
         $this->htmlHeader($cookies);
 
         if ($this->model->get('status') != 0) {
-            //todo check privs
-            throw new \Exception('This file has been flagged or marked private');
+            if (Models\User::currentUser($cookies)->authorizationLevel < 5) {
+                throw new \Exception('This file has been flagged or marked private');
+            }
         }
         $this->model->set('hits', $this->model->get('hits') + 1);
 

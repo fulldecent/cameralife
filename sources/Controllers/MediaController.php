@@ -80,10 +80,9 @@ class MediaController extends Controller
             throw new \Exception('Required number ver missing! Query string: ' . htmlentities($_SERVER['QUERY_STRING']));
         }
         if ($photo->get('status') != 0) {
-            //todo setup security
-            //STATUS = $photo->get('status')
-            //SWITCH STATUS ...
-            throw new \Exception('Photo access denied');
+            if (Models\User::currentUser($cookies)->authorizationLevel < 5) {
+                throw new \Exception('Photo access denied');
+            }
         }
         list($file, $temp, $mtime) = self::getFileForPhotoWithScale($photo, $scale);
 

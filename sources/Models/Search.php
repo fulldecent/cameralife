@@ -108,6 +108,8 @@ class Search extends IndexedModel
             return 'hits, photos.id';
         } elseif ($option == 'rand') {
             return 'rand()';
+        } elseif ($option == 'id') { // semi hidden
+           return 'id';
         }
         return 'photos.id desc';
     }

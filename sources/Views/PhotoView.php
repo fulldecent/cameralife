@@ -67,14 +67,6 @@ class PhotoView extends View
                 'id=' . $this->photo->get('id') . " AND user_ip='" . $this->currentUser->remoteAddr . "'"
             );
         }
-
-        if ($this->photo->get('status') > 0) {
-            $subview = new ErrorView;
-            $subview->exception = new Exception('This photo is not public');
-            $subview->showDebugging = false;
-            $subview->render();
-            return;
-        }
         ?>
 
 <div class="row">
