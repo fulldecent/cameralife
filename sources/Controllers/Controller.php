@@ -252,7 +252,10 @@ abstract class Controller
      * @param  array $files
      * @return void
      */
-    abstract public function handleGet($get, $post, $files, $cookies);
+    public function handleGet($get, $post, $files, $cookies)
+    {
+        header("HTTP/1.0 204 No Response");
+    }
 
     /**
      * Default implementation redirects to same page for get
@@ -265,7 +268,7 @@ abstract class Controller
      * @return void
      */
     public function handlePost($get, $post, $files, $cookies)
-    {
+    {      
         header('Location: ' . $this->getUrlForID($get['id']));
     }
 

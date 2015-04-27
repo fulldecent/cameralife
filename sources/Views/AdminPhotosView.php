@@ -17,7 +17,21 @@ class AdminPhotosView extends View
      * @var mixed
      * @access public
      */
+    public $reviewsDone;  
+    
+    /**
+     * Number of items which have not yet been reviewed (including the ones shown)
+     * 
+     * @var mixed
+     * @access public
+     */
     public $reviewsRemaining;  
+    
+    public $isUsingHttps;
+    
+    public $myUrl;
+  
+    public $lastReviewItem;
   
     /**
      * checkpointId
@@ -29,96 +43,6 @@ class AdminPhotosView extends View
      */
     public $checkpointId = 0;
 
-    /**
-     * checkpointDate
-     *
-     * (default value: '1970-01-01')
-     *
-     * @var    string
-     * @access public
-     */
-    public $checkpointDate = '1970-01-01';
-
-    /**
-     * showFromMe
-     *
-     * (default value: true)
-     *
-     * @var    bool
-     * @access public
-     */
-    public $showFromMe = true;
-
-    /**
-     * showFromRegistered
-     *
-     * (default value: true)
-     *
-     * @var    bool
-     * @access public
-     */
-    public $showFromRegistered = true;
-
-    /**
-     * showFromUnregistered
-     *
-     * (default value: true)
-     *
-     * @var    bool
-     * @access public
-     */
-    public $showFromUnregistered = true;
-
-    /**
-     * showChangedPhotos
-     *
-     * (default value: true)
-     *
-     * @var    bool
-     * @access public
-     */
-    public $showChangedPhotos = true;
-
-    /**
-     * showChangedTags
-     *
-     * (default value: true)
-     *
-     * @var    bool
-     * @access public
-     */
-    public $showChangedTags = true;
-
-    /**
-     * showChangedUsers
-     *
-     * (default value: true)
-     *
-     * @var    bool
-     * @access public
-     */
-    public $showChangedUsers = true;
-
-    /**
-     * showChangedPrefs
-     *
-     * (default value: true)
-     *
-     * @var    bool
-     * @access public
-     */
-    public $showChangedPrefs = true;
-
-    /**
-     * auditTrails
-     *
-     * (default value: array())
-     *
-     * @var    Models\AuditTrail[]
-     * @access public
-     */
-    public $auditTrails = array();
-    
     /**
      * The list of photos to show
      * 
@@ -132,7 +56,23 @@ class AdminPhotosView extends View
 
     public function render()
     {
-        echo "<h2>New photos</h2>";
+        echo "<h2>Review New photos</h2>";
+        
+        $percentDone = 0;
+        $percentDoing = 0;
+        if ($this->reviewsDone + $this->reviewsRemaining) {
+            $percentDone = $this->reviewsDone * 100 / ($this->reviewsDone + $this->reviewsRemaining);
+            $percentDoing = count($this->photos) * 100 / ($this->reviewsDone + $this->reviewsRemaining);
+        }
+        echo '<div class="progress">';
+        echo '<div class="progress-bar progress-bar-success" style="width: ' . $percentDone . '%;"></div>';
+        echo '<div class="progress-bar progress-bar-info" style="width: ' . $percentDoing . '%;"></div>';
+        echo '</div>';
+        
+        if (!$this->isUsingHttps) {
+            echo "<p class=\"lead alert alert-danger\"><strong>Warning:</strong> You are viewing this page, which includes private photos, without HTTPS</p>";
+        }  
+        
         if (count($this->photos) < $this->reviewsRemaining) {
             echo "<p class=\"lead\">There are " . number_format($this->reviewsRemaining) . " new photos since your last review, the first " . number_format(count($this->photos)) . " are shown below.</p>";
         } else {
@@ -141,7 +81,6 @@ class AdminPhotosView extends View
         }
 
         echo "<div class=\"row\">";
-        
         $height = Models\Preferences::valueForModuleWithKey('CameraLife', 'thumbsize');
         foreach ($this->photos as $photo) {
             $url = Controllers\PhotoController::getUrlForID($photo->id);
@@ -156,7 +95,15 @@ class AdminPhotosView extends View
             echo '</a>';
             echo '</div>';
         }
-        
         echo '</div>';
+        
+        $action = Controllers\AdminPreferenceChangeController::getUrl();
+
+        echo '<form method="post" action="' . $action. '">';
+        echo '<input type="hidden" name="target" value="' . htmlspecialchars($this->myUrl) . '">';
+        echo '<input type="hidden" name="CameraLife|checkpointphotos" value="' . htmlspecialchars($this->lastReviewItem) . '">';
+        echo '<button class="btn btn-primary btn-lg">Mark these items as reviewed</button>';        
+        
+        echo '</form>';
     }
 }

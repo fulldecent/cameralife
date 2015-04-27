@@ -46,6 +46,10 @@ class PhotoView extends View
      */
     public function render()
     {
+        if ($this->photo->get('status') != 0) {
+            echo '<p class="alert alert-danger lead"><strong>Notice:</strong> This photo is not publicly viewable</p>';
+        }      
+      
         $this->referrer = str_replace(constant('BASE_URL'), '', $this->referrer);
         $this->referrer = preg_replace('|^/|', '', $this->referrer);
 

@@ -159,7 +159,7 @@ class User extends IndexedModel
     public function gravitarUrl()
     {
         $md5 = md5($this->email);
-        return "http://www.gravatar.com/avatar/$md5?s=16&d=identicon";
+        return "//www.gravatar.com/avatar/$md5?s=16&d=identicon";
     }
 
     public function isAuthorizedForAction($action)

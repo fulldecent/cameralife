@@ -19,7 +19,7 @@ class AdminThumbnailController extends HtmlController
     {
         parent::__construct();
         $this->model = new Models\Statistics;
-        $this->title = 'Caching thumbnails';
+        $this->title = 'Thumbnails';
         $this->icon = 'list';
     }
 
@@ -46,7 +46,7 @@ class AdminThumbnailController extends HtmlController
 
 
         //TODO BREAKING MVC HERE BECAUSE OF INTREMENTAL RENDERING
-        echo '<h2>Caching thumbnails <small>To avoid a delay when viewing photos for the first time</small></h2>';
+        echo '<h2>Rendering thumbnails <small>To avoid a delay when viewing photos for the first time</small></h2>';
 
         $total = Models\Database::selectOne('photos', 'count(*)');
         $done = Models\Database::selectOne('photos', 'count(*)', "id <= $lastdone");
@@ -60,7 +60,7 @@ class AdminThumbnailController extends HtmlController
         echo '<div class="progress-bar" style="width: ' . ($done / $total * 100) . '%;"></div>';
         echo '</div>';
 
-        $next1000 = Models\Database::select('photos', 'id', "id > $lastdone AND status != 9", 'ORDER BY id LIMIT 1000');
+        $next1000 = Models\Database::select('photos', 'id', "id > $lastdone AND status != 9", 'ORDER BY id LIMIT 500');
         $fixed = 0;
         flush();
         while (($next = $next1000->fetchAssoc()) && ($fixed < 10)) {
@@ -79,7 +79,7 @@ class AdminThumbnailController extends HtmlController
 
         $numdone += $fixed;
         if ($todo > 0) {
-            echo "<script language='javascript'>window.setTimeout('window.location=\"" . htmlspecialchars($phpself) . "?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\"',600)</script>\n";
+            echo "<script language='javascript'>window.setTimeout('window.location=\"" . htmlspecialchars($phpself) . "?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\"',400)</script>\n";
             echo "<p><a href=\"?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\">Click here to continue</a> if the Javascript redirect doesn't work.</p>\n";
         }
 

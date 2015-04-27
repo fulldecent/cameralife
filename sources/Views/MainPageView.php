@@ -124,7 +124,7 @@ class MainPageView extends View
                 <ul class="nav nav-pills">
                     <li <?= $this->activeSection == 'rand' ? 'class="active"' : '' ?>><a href="?section=rand">Random photos</a></li>
                     <li <?= $this->activeSection == 'newest' ? 'class="active"' : '' ?>><a href="?section=newest">Newest photos</a></li>
-                    <li <?= $this->activeSection == 'unpopular' ? 'class="active"' : '' ?>><a href="?section=unpopular">Unpopular</a></li>
+                    <li <?= $this->activeSection == 'unpopular' ? 'class="active"' : '' ?>><a href="?section=unpopular">Rarest</a></li>
                 </ul>
                 <div style="height: 170px" class="clipbox">
                     <?php

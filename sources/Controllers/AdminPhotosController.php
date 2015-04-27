@@ -13,13 +13,10 @@ use CameraLife\Models as Models;
 
 class AdminPhotosController extends HtmlController
 {
-    public $model;
-
     public function __construct()
     {
         parent::__construct();
-        $this->model = new Models\Statistics;
-        $this->title = 'Log viewer';
+        $this->title = 'Review New photos';
         $this->icon = 'list';
     }
 
@@ -33,47 +30,20 @@ class AdminPhotosController extends HtmlController
         $checkpointId = intval(Models\Preferences::valueForModuleWithKey('CameraLife', 'checkpointphotos'));
         
         $view = new Views\AdminPhotosView;
+        $view->isUsingHttps = isset($_SERVER['HTTPS']);
+        $view->myUrl = $_SERVER['REQUEST_URI'];
         
         $query = Models\Database::select('photos', 'id', 'id>:0 AND status!=9', 'ORDER BY id LIMIT 200', null, array($checkpointId));
         $view->photos = array();
         while ($row = $query->fetchAssoc()) {
             $view->photos[] = Models\Photo::getPhotoWithID($row['id']);
+            $view->lastReviewItem = $row['id'];
         }
 
+        $done = Models\Database::selectOne('photos', 'count(id)', 'id<=:0 AND status!=9', null, null, array($checkpointId));
+        $view->reviewsDone = $done;
         $remaining = Models\Database::selectOne('photos', 'count(id)', 'id>:0 AND status!=9', null, null, array($checkpointId));
         $view->reviewsRemaining = $remaining;
-
-
-        /* Query the audit logs */
-        $currentUser = Models\User::currentUser($cookies);
-
-        $condition = "(0 ";
-        $condition .= $view->showChangedPhotos ? "OR record_type = 'photo' " : '';
-        $condition .= $view->showChangedTags ? "OR record_type = 'album' " : '';
-        $condition .= $view->showChangedUsers ? "OR record_type = 'user' " : '';
-        $condition .= $view->showChangedPrefs ? "OR record_type = 'preference' " : '';
-
-        $condition .= ") AND (0 ";
-        $condition .= $view->showFromMe ? "OR user_name = '" . $currentUser->name . "' " : '';
-        $condition .= $view->showFromRegistered ? "OR (user_name LIKE '_%' AND user_name != '" . $currentUser->name . "')" : '';
-        $condition .= $view->showFromUnregistered ? "OR user_name = '' " : '';
-        $condition .= ") ";
-
-        $condition .= " AND logs.id > " . ($view->checkpointId);
-        $extra = "GROUP BY record_id, record_type, value_field ORDER BY logs.id DESC";
-
-        $query = Models\Database::select(
-            'logs',
-            'record_type, record_id, value_field, MAX(logs.id) as maxid',
-            $condition,
-            $extra
-        );
-        $auditTrails = array();
-        while ($record = $query->fetchAssoc()) {
-            $auditTrails[] = Models\AuditTrail::getAuditTrailWithID($record['maxid']);
-        }
-        $view->auditTrails = $auditTrails;
-
 
         $this->htmlHeader($cookies);
         $view->render();
