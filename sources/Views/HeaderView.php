@@ -63,7 +63,7 @@ class HeaderView extends View
             <meta name="generator" content="Camera Life version <?= constant('CAMERALIFE_VERSION') ?>">
             <meta name="author" content="<?= htmlspecialchars($this->ownerEmail) ?>">
             <!-- Le styles -->
-            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+            <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
             <link rel="search" href="<?= htmlspecialchars($this->openSearchUrl) ?>" type="application/opensearchdescription+xml"
                   title="Content Search"/>
             <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
