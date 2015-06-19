@@ -7,7 +7,7 @@ namespace CameraLife\Models;
  * @author    William Entriken <cameralife@phor.net>
  * @access    public
  * @version
- * @copyright 2001-2009 William Entriken
+ * @copyright 2001-2015 William Entriken
  */
 class Image
 {
@@ -23,18 +23,15 @@ class Image
         if (!file_exists($filename)) {
             throw new \Exception('Trying to process non-existant image: ' . $filename);
         }
+        if (!is_readable($filename)) {
+            throw new \Exception('Image not readable: ' . $filename);
+        }
+        
         $pathParts = pathinfo($filename);
         $this->extension = strtolower($pathParts['extension']);
-
-        if ($this->extension == 'jpeg' || $this->extension == 'jpg') {
-            $this->originalImage = imagecreatefromjpeg($filename);
-        } elseif ($this->extension == 'png') {
-            $this->originalImage = imagecreatefrompng($filename);
-        } elseif ($this->extension == 'gif') {
-            $this->originalImage = imagecreatefromgif($filename);
-        } else {
-            throw new \Exception('Trying to process image of unknown file format: ' . $filename);
-        }
+        
+        $imageData = file_get_contents($filename);
+        $this->originalImage = imagecreatefromstring($imageData);
         $this->width = imagesx($this->originalImage);
         $this->height = imagesy($this->originalImage);
         $this->size = sqrt($this->width * $this->width + $this->height * $this->height);
