@@ -185,7 +185,8 @@ abstract class Controller
 
         // TODO, use this http://stackoverflow.com/a/14375686/300224
         if (self::$rewriteEnabled === null) {
-            self::$rewriteEnabled = Models\Preferences::valueForModuleWithKey('CameraLife', 'rewrite') == 'yes';
+            self::$rewriteEnabled = Models\Preferences::valueForModuleWithKey('CameraLife', 'rewrite') == 'yes' ||
+                                    Models\Preferences::valueForModuleWithKey('CameraLife', 'rewrite') == 1;
         }
 
         if (!self::$rewriteEnabled) {
