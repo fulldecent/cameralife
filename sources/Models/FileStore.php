@@ -151,29 +151,39 @@ class FileStore
             return array($fullpath => basename($fullpath));
         }
 
-        $retval = array();
-        if (is_dir($fullpath) && ($dir = opendir($fullpath))) {
-            $children = array();
-            while (false !== ($file = readdir($dir))) {
-                if ($file[0] == '.') {
-                    continue;
-                }
-                if (is_file($fullpath . $file)) {
-                    $retval[$path . $file] = $file;
-                } else {
-                    if ($recursive && is_dir($fullpath . $file)) {
-                        $children[] = $path . $file . '/';
+        if (is_dir($fullpath)) {
+            if (($dir = opendir($fullpath))) {
+                $retval = array();
+                $children = array();
+                while (false !== ($file = readdir($dir))) {
+                    if ($file[0] == '.') {
+                        continue;
+                    }
+                    if (is_file($fullpath . $file)) {
+                        $retval[$path . $file] = $file;
+                    } else {
+                        if ($recursive && is_dir($fullpath . $file)) {
+                            $children[] = $path . $file . '/';
+                        }
                     }
                 }
+                closedir($dir);
+                sort($children);
+                foreach ($children as $child) {
+                    $childFiles = $this->listFiles($child, true);
+                    if (!is_array($retval) || !is_array($childFiles)) {
+                      echo "DIE";
+                      var_dump($retval, $childFiles);
+                      die ();
+                    }
+                    $retval = $retval + $childFiles;
+                }
+                return $retval;
             }
-            closedir($dir);
-            sort($children);
-            foreach ($children as $child) {
-                $retval += $this->listFiles($child, true);
-            }
-        } else {
+            throw new \Exception('Cannot open directory: ' . $fullpath);
             return null;
         }
-        return $retval;
+        
+        return array();
     }
 }
