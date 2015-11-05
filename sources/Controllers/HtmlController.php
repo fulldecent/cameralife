@@ -20,6 +20,7 @@ abstract class HtmlController extends Controller
         $view->currentUser = Models\User::currentUser($cookies);
         $view->searchUrl = SearchController::getUrl();
         $view->adminUrl = AdminController::getUrl();
+        $view->logoutUrl = LogoutController::getUrl();
         $view->favoritesUrl = FavoritesController::getUrl();
         $view->loginUrl = LoginController::getUrl();
         $view->numFavorites = Models\Favorites::favoritesForCurrentUser($cookies)->getPhotoCount();

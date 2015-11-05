@@ -133,6 +133,12 @@ class User extends IndexedModel
         return $retval;
     }
 
+    public static function logoutCurrentUser()
+    {
+        //TODO: breaks MVC
+        setcookie('cameralifeauth', null, -1);
+    }
+
     public static function currentUser($cookies)
     {
         global $_SERVER;
