@@ -174,6 +174,26 @@ class Folder extends Search
         );
     }
 
+    protected function folderSortSqlForOption($option)
+    {
+        if ($option == 'newest') {
+            return 'date desc';
+        } elseif ($option == 'oldest') {
+            return 'date';
+        } elseif ($option == 'az') {
+            return 'path';
+        } elseif ($option == 'za') {
+            return 'path desc';
+        } elseif ($option == 'popular') {
+            return 'hits desc';
+        } elseif ($option == 'unpopular') {
+            return 'hits';
+        } elseif ($option == 'rand') {
+            return 'rand()';
+        }
+        return 'id desc';
+    }
+
     /**
      * An array of parent, grandparent... top level folder
      *

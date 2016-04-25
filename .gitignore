@@ -3,4 +3,5 @@ caches
 
 # https://stackoverflow.com/q/27726794
 /vendor/**/.git/
+/vendor/bin/
 composer.phar

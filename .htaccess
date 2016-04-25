@@ -1,10 +1,6 @@
 DirectoryIndex index.php
 Options -Indexes +MultiViews +FollowSymLinks
 
-php_value post_max_size 20971520
-php_value upload_max_filesize 20971520
-php_value memory_limit 128M
-
 RedirectMatch 403 /caches
 
 <IfModule mod_rewrite.c>
