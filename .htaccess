@@ -11,6 +11,7 @@ RedirectMatch 403 /caches
     
     # Do not rewrite assets/ directory
     RewriteRule assets/ - [L]
+    RewriteRule favicon.ico - [L]
     RewriteRule ^$ - [L]
     RewriteRule ^index.php - [L]
     
