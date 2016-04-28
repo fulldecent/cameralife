@@ -3,11 +3,12 @@ Project Goals
 
 1.  Release often
 
-2.  Integrate with Content Management Systems
+2.  Improve the storytelling experience
 
-3.  Integrate with other great services
+3.  Have fun
 
-Feedback, hints and a couple patches are always coming, which is great. Code is highly modular, and patches are always coming from people integrating into their own site.
+Feedback, hints and a couple patches are always coming, which is great. Code is highly modular, and is maybe even a model for people learning MVC, CMS, authentication, auditable systems.
+
 
 How does this code work?
 ========================
@@ -22,7 +23,7 @@ This project follows the Model-View-Controller philosophy as well as PSR-1, -2, 
 
 4.  The `Controller` base class instantiates and delegates the request to `PhotoController` based on the URL
 
-5.  `PhotoController` accessess the `Photo` model and other models to collect needed information
+5.  `PhotoController` accesses the `Photo` model and other models to collect needed information
 
 6.  `PhotoController` instantiates and calls `render()` on `PhotoView`, passing in the models
 
@@ -30,47 +31,9 @@ This project follows the Model-View-Controller philosophy as well as PSR-1, -2, 
 
 Complete API documentation is at <http://camera.phor.net/docs/>
 
+
 Release Process
 ===============
-
-Regression testing (move all this to Continuous Integration)
-------------------------------------------------------------
-
--   Validate OpenSearch: <http://feedvalidator.org/check.cgi?url=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Fopensearch.xml.php>
-
--   Validate OpenGraph: https://developers.facebook.com/tools/debug/og/object?q=camera.phor.net
-
--   Validate RSS: http://validator.w3.org/feed/check.cgi?url=camera.phor.net/cameralife/rss.php%3Fq%3Dwill
-
--   Try to upload a non-image
-
--   `git grep -i Deprecated` # create issues for these
-
--   `git grep -i TODO` # create issues for these and remove from code?
-
--   static code analysis in PHPStorm
-
--   http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2F
-
--   http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Fphotos%2F15608
-
--   http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Ftopics%2FPeople
-
--   http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Falbums%2F168
-
--   http://html5.validator.nu/?doc=http%3A%2F%2Fcamera.phor.net%2Fcameralife%2Ffolders%2F2012%2F2012-06%2520Pool%2520party%2F
-
--   `git grep GET` and remove these
-
--   `git grep PHP_SELF` and remove these
-
--   `git grep Database -- sources/Controllers`
-
--   `git grep Database -- sources/Views`
-
--   Validate OpenID login
-
--   XSSme SQLinjectme wapiti zaproxy
 
 When Changing the Database Schema
 ---------------------------------
