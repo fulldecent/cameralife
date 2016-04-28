@@ -13,6 +13,14 @@ use CameraLife\Models as Models;
 class PhotoView extends View
 {
     /**
+     * openGraphObject
+     *
+     * @var    Models\OpenGraphObject
+     * @access public
+     */
+    public $openGraphObject;
+
+    /**
      * photo
      *
      * @var    Models\Photo
@@ -27,6 +35,14 @@ class PhotoView extends View
      * @access public
      */
     public $referrer = null;
+
+    /**
+     * url of referring page, used to find other photos in context
+     *
+     * @var    string
+     * @access public
+     */
+    public $contextUrl = null;
 
     /**
      * currentUser
@@ -48,8 +64,8 @@ class PhotoView extends View
     {
         if ($this->photo->get('status') != 0) {
             echo '<p class="alert alert-danger lead"><strong>Notice:</strong> This photo is not publicly viewable</p>';
-        }      
-      
+        }
+
         $this->referrer = str_replace(constant('BASE_URL'), '', $this->referrer);
         $this->referrer = preg_replace('|^/|', '', $this->referrer);
 
@@ -73,73 +89,57 @@ class PhotoView extends View
         }
         ?>
 
-<div class="row">
-    <div class="col-md-8">
-<h1>
-    <form action="" method=POST name="form" class="pull-left">
-        <input type="hidden" name="action" value="<?= $rating ? 'unfavorite' : 'favorite' ?>">
-        <?php
-            $count = $this->photo->getLikeCount();
-            ?>
-        <button type="submit" class="btn btn-link">
-            <div class="stacked-icons">
-                <span class="fa-stack fa-lg">
-                    <i class="fa fa-star<?= $rating ? '' : '-o' ?> fa-stack-2x" style="color:gold"></i>
-                    <strong class="fa-stack-1x" style="font-size:0.7em;color:black"><?= $count ? $count : '' ?></strong>
-                </span>
-            </div>
-        </button>
-    </form>
+		<nav class="navbar navbar-light bg-faded navbar-fixed-bottom" style="background:rgba(255,255,255,0.4)">
+			<div class="container">
+				<form class="form-inline pull-xs-left" method=POST name="form" style="margin-right:10px">
+					<input type="hidden" name="action" value="<?= $rating ? 'unfavorite' : 'favorite' ?>">
+					<?php $count = $this->photo->getLikeCount(); ?>
+					<button class="btn btn-link" type="submit" style="padding:2px">
+				        <span class="fa-stack">
+				            <i class="fa fa-star<?= $rating ? '' : '-o' ?> fa-stack-2x" style="color:gold"></i>
+				            <strong class="fa-stack-1x" style="font-size:0.7em;color:black"><?= $count ? $count : '' ?></strong>
+				        </span>				
+					</button>
+				</form>
+			    <a href="<?= $this->photo->getMediaURL('photo') ?>"
+			        class="btn btn-link pull-xs-left"
+			        title="<?= $this->photo->get('width') ?> x <?= $this->photo->get('height') ?>px"
+					style="margin-right:10px"
+				>
+			        <i class="fa fa-arrows-alt"></i>
+			    </a>
+			    <a href="<?= $this->contextUrl ?>"
+			        class="btn btn-link pull-xs-left"
+			        title="Close"
+					style="margin-right:10px"
+				>
+			        <i class="fa fa-times"></i>
+			    </a>
+		        <span class="navbar-brand"><?= htmlspecialchars($this->openGraphObject->title) ?></span>
+			</div>
+		</nav>
 
-    <?= htmlentities($this->photo->get('description'), null, "UTF-8") ?>
-    <a href="<?= $this->photo->getMediaURL('photo') ?>"
-        id="showHideRenameForm"
-        class="btn btn-sm btn-default"
-        data-toggle="tooltip"
-        data-placement="top"
-        title="<?= $this->photo->get('width') ?> x <?= $this->photo->get('height') ?>px">
-        <i class="fa fa-arrows-alt"></i>
-    </a>
-</h1>
-<?php
+<div id="backgroundFuzz" style="z-index:-5;position:fixed;top:0;left:0;width:140%;height:140%;margin:-20%;background:url(<?= $this->photo->getMediaURL('thumbnail') ?>);background-size:cover;
+  -webkit-filter: blur(30px) grayscale(25%) opacity(25%); filter: blur(30px) grayscale(25%) opacity(25%)
+  "></div>
+ 
+<div
+	id="mainPic" 
+	style="position:fixed;top:0;left:0;width:100%;height:100%;background:url(<?= $this->photo->getMediaURL('scaled') ?>);background-size:contain;background-repeat:no-repeat;background-position:center"
+>
 
-$alt = htmlentities($this->photo->get('description'));
-echo "<img id=\"curphoto\" class=\"img-thumbnail\" style=\"margin: 0 auto\" src=\"" . htmlspecialchars(
-    $this->photo->getMediaURL(
-        'scaled'
-    )
-) . "\" alt=\"$alt\">\n\n";
-
-if (isset($nextOpenGraph['og:url'])) {
-    echo '<a href="'.htmlspecialchars($nextOpenGraph['og:url']).'"><i class="fa fa-caret-square-o-right fa-4x"></i></a>';
-}
-
-?>
-
-    </div>
+	<img
+		src="<?= $this->photo->getMediaURL('scaled') ?>"
+		alt="<?= htmlentities($this->photo->get('description')) ?>"
+		style="display:none"
+	>
 </div>
+  
+ 
+<!--
 <div class="row">
     <div class="col-md-4">
-        <h2>Comments</h2>
-        <?php
-
-        $result = Models\Database::select('comments', '*', 'photo_id=' . $this->photo->get('id'));
-        while ($comment = $result->fetchAssoc()) {
-            echo "<strong>" . $comment['username'] . "</strong> <em>" . date(
-                'Y-m-d',
-                strtotime($comment['date'])
-            ) . "</em><br>" . htmlentities($comment['comment']) . "<hr>";
-        }
-        ?>
-        <form action="" method=POST name="form">
-            <input type="hidden" name="id" value="<?= $this->photo->get('id') ?>">
-            <input type="hidden" name="action" value="comment">
-            <input name="param1" class="form-control">
-            <input type="submit" value="Post comment" class="btn">
-        </form>
-    </div>
-    <div class="col-md-4">
-        <h2>Information</h2>
+        <h3>Information</h3>
         <dl class="dl-horizontal">
             <?php
             if ($this->photo->get('username')) {
@@ -163,6 +163,7 @@ if (isset($nextOpenGraph['og:url'])) {
         </dl>
     </div>
 </div>
+-->
 
 <?php
 // Cache the next image the user is likely to look at

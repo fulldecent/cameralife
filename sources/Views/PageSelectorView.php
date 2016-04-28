@@ -62,7 +62,7 @@ class PageSelectorView extends View
         if ($total <= $perPage) {
             return; // Refuse to only show one page
         }
-        echo '<ul class="pagination">';
+        echo '<nav><ul class="pagination pagination-lg">';
         if ($start == -1) {
             echo "<span class='current'>Randomly showing <b>$perPage</b> of <b>$total</b></span> ";
             echo "<a class='nextprev' href=\"$url\">More &#187;</a>";
@@ -75,9 +75,9 @@ class PageSelectorView extends View
                 parse_str(parse_url($url, PHP_URL_QUERY), $query);
                 $query['start'] = $start - $perPage;
                 $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
-                echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">&laquo;</a></li>";
+                echo "<li class=\"page-item\"><a class=\"page-link\" href=\"" . htmlspecialchars($newURL) . "\">&laquo;</a></li>";
             } else {
-                echo "<li class=\"disabled\"><span>&laquo;</span></li>";
+                echo "<li class=\"page-item disabled\"><span class=\"page-link\">&laquo;</span></li>";
             }
 
             for ($i = $first; $i <= $last; $i += $perPage) {
@@ -85,11 +85,11 @@ class PageSelectorView extends View
                 $query['start'] = $i;
                 $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
                 if ($i == $start) {
-                    echo "<li class=\"active\"><a href=\"" . htmlspecialchars(
+                    echo "<li class=\"page-item active\"><a class=\"page-link\" href=\"" . htmlspecialchars(
                         $newURL
                     ) . "\">" . ($i / $perPage + 1) . "</a></li>";
                 } else {
-                    echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">" . ($i / $perPage + 1) . "</a></li>";
+                    echo "<li class=\"page-item\"><a class=\"page-link\" href=\"" . htmlspecialchars($newURL) . "\">" . ($i / $perPage + 1) . "</a></li>";
                 }
             }
 
@@ -98,11 +98,11 @@ class PageSelectorView extends View
                 $query['start'] = $start + $perPage;
                 $newURL = preg_replace('/\?.*/', '', $url) . '?' . http_build_query($query);
 
-                echo "<li><a href=\"" . htmlspecialchars($newURL) . "\">&raquo;</a></li>";
+                echo "<li class=\"page-item\"><a class=\"page-link\" href=\"" . htmlspecialchars($newURL) . "\">&raquo;</a></li>";
             } else {
-                echo "<li class=\"disabled\"><span>&raquo;</span></li>";
+                echo "<li class=\"page-item disabled\"><span class=\"page-link\">&raquo;</span></li>";
             }
         }
-        echo "</ul>\n";
+        echo "</ul></nav>\n";   
     }
 }

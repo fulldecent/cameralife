@@ -6,6 +6,8 @@ use CameraLife\Models as Models;
 
 abstract class HtmlController extends Controller
 {
+    public $footerJavascript;
+
     /**
      * htmlHeader function.
      *
@@ -28,6 +30,42 @@ abstract class HtmlController extends Controller
         $view->render();
     }
 
+	//TODO: should probably pass a user
+	protected function renderNavbar($cookies = array())
+	{
+        $navbarView = new Views\NavbarView;
+        $navbarView->openGraphObject = $this;
+        $navbarView->currentUser = Models\User::currentUser($cookies);
+        $navbarView->searchUrl = SearchController::getUrl();
+        $navbarView->adminUrl = AdminController::getUrl();
+        $navbarView->logoutUrl = LogoutController::getUrl();
+        $navbarView->favoritesUrl = FavoritesController::getUrl();
+        $navbarView->loginUrl = LoginController::getUrl();
+        $navbarView->numFavorites = Models\Favorites::favoritesForCurrentUser($cookies)->getPhotoCount();
+        $navbarView->ownerEmail = Models\Preferences::valueForModuleWithKey('CameraLife', 'owner_email');
+        $navbarView->render();		
+	}
+	
+	protected function renderBottomNavbar()
+	{
+        $view = new Views\BottomNavView;
+        $view->statsUrl = StatisticsController::getUrl();
+        $view->analyticsId = Models\Preferences::valueForModuleWithKey('BootstrapTheme', 'analytics');
+        $view->ownerEmail = Models\Preferences::valueForModuleWithKey('CameraLife', 'owner_email');
+        $view->mainPageOpenGraph = $this;
+        $view->render();        
+	}
+	
+	protected function renderOpenContainer()
+	{
+		        echo '        <div class="container">';
+	}
+
+	protected function renderCloseContainer()
+	{
+		        echo '        </div>';
+	}
+
     /**
      * htmlFooter function.
      *
@@ -40,6 +78,8 @@ abstract class HtmlController extends Controller
         $view->statsUrl = StatisticsController::getUrl();
         $view->analyticsId = Models\Preferences::valueForModuleWithKey('BootstrapTheme', 'analytics');
         $view->ownerEmail = Models\Preferences::valueForModuleWithKey('CameraLife', 'owner_email');
+        $view->extraJavascript = $this->footerJavascript;
+        $view->mainPageOpenGraph = $this;
         $view->render();
     }
 

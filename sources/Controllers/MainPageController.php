@@ -21,6 +21,8 @@ class MainPageController extends HtmlController
     public function handleGet($get, $post, $files, $cookies)
     {
         $this->htmlHeader($cookies);
+		$this->renderNavbar($cookies);
+		$this->renderOpenContainer();
 
         /* Set up the page view */
         $view = new Views\MainPageView;
@@ -81,6 +83,8 @@ class MainPageController extends HtmlController
         $view->tagCollections = Models\TagCollection::getCollections();
         $view->render();
 
+		$this->renderBottomNavbar();
+		$this->renderCloseContainer();
         $this->htmlFooter();
     }
 }

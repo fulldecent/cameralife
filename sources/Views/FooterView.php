@@ -15,31 +15,30 @@ class FooterView extends View
     public $ownerEmail;
     public $statsUrl;
     public $analyticsId;
+    public $extraJavascript;
+    public $mainPageOpenGraph;
 
     public function render()
     {
         ?>
-        <hr>
-
-        <footer>
-            <p>
-                <a href="mailto:<?= htmlspecialchars($this->ownerEmail) ?>"><i class="fa fa-envelope"></i> Contact site
-                    owner</a>
-                &nbsp;
-                <a href="<?= htmlspecialchars($this->statsUrl) ?>"><i class="fa fa-signal"></i> Site stats</a>
-                &nbsp;
-                <a href="http://fulldecent.github.io/cameralife"><i class="fa fa-globe"></i> Built with Camera Life</a>
-            </p>
-        </footer>
-
-        </div>
-
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+<!--
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
+		<script src="//code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+-->		
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
+        <script src="//cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap.js" crossorigin="anonymous"></script>
         <?php
+        if (!empty($this->extraJavascript)) {
+        ?>
+        <script type="text/javascript">
+<?= $this->extraJavascript ?>
+        </script>
+        <?php
+        }
+
         if (!empty($this->analyticsId)) {
             ?>
             <!--TRACKING CODE-->

@@ -42,6 +42,7 @@ class PhotoController extends HtmlController
         $view = new Views\PhotoView;
         $view->photo = $this->model;
         $view->currentUser = Models\User::currentUser($cookies);
+        $view->openGraphObject = $this;
 
         if (isset($get['referrer'])) {
             $view->referrer = $get['referrer'];
@@ -59,9 +60,91 @@ class PhotoController extends HtmlController
         }
         $this->model->set('hits', $this->model->get('hits') + 1);
 
+		$context = $this->model->getFolder();
+		$view->contextUrl = FolderController::getUrlForID($context->id);
         $view->render();
 
+
+		$photoNext = $this->model->getNext();
+		$photoPrev = $this->model->getPrevious();
+		$context = $this->model->getFolder();
+		
+		
         /* Render footer */
+        $this->footerJavascript = "
+outUrl = '".(FolderController::getUrlForID($context->id))."'
+function goOut() {
+	$('#mainPic').animate({
+      opacity: 'hide'
+    }, 'medium', 'easeOutQuad', function() {
+      $('#mainPic').remove();
+      window.location.href = outUrl
+    });
+}			
+
+$(document).keyup(function(e) {
+	if (e.which == 27) goOut();
+});
+
+var hammertime = new Hammer($('#mainPic')[0]);
+$.easing.easeInQuad = function (x, t, b, c, d) {
+        return c*(t/=d)*t + b;
+    };
+$.easing.easeOutQuad = function (x, t, b, c, d) {
+        return -c *(t/=d)*(t-2) + b;
+};
+		
+nextUrl = '".($photoNext ? self::getUrlForID($photoNext->id) : '')."'
+function goNext() {
+	if (nextUrl) {		
+		$('#mainPic').animate({
+	      opacity: 'hide',
+	      left: '-200px'
+	    }, 'medium', 'easeOutQuad', function() {
+	      $('#mainPic').remove();
+	      window.location.href = nextUrl
+	    });
+	} else {
+		$('#mainPic').animate({
+	      left: '-200px'
+	    }, 'fast', 'easeOutQuad', function() {
+			$('#mainPic').animate({
+		      left: '0'
+		    }, 'fast', 'easeInQuad');
+	    });		
+	}
+}			
+hammertime.on('swipeleft', goNext);
+$(document).keyup(function(e) {
+	if (e.which == 39) goNext();
+});
+		
+prevUrl = '".($photoPrev ? self::getUrlForID($photoPrev->id) : '')."'
+function goPrev() {
+	if (prevUrl) {		
+		$('#mainPic').animate({
+	      opacity: 'hide',
+	      left: '200px'
+	    }, 'medium', 'easeOutQuad', function() {
+	      $('#mainPic').remove();
+	      window.location.href = prevUrl
+	    });
+	} else {
+		$('#mainPic').animate({
+	      left: '200px'
+	    }, 'fast', 'easeOutQuad', function() {
+			$('#mainPic').animate({
+		      left: '0'
+		    }, 'fast', 'easeInQuad');
+	    });		
+	}
+}			
+hammertime.on('swiperight', goPrev);
+$(document).keyup(function(e) {
+	if (e.which == 37) goPrev();
+});
+	    ";
+
         $this->htmlFooter();
     }
 

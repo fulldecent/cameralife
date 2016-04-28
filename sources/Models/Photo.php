@@ -148,7 +148,7 @@ class Photo extends IndexedModel
 
     /**
      * __construct function.
-     * 
+     *
      * @access protected
      * @return void
      */
@@ -223,8 +223,8 @@ class Photo extends IndexedModel
         if ($this->record['modified'] == '1') {
             $this->record['modified'] = null; // legacy before 2.7
             Database::update('photos', $this->record, 'id=' . $this->record['id']);
-        }        
-        
+        }
+
         if (Preferences::valueForModuleWithKey('CameraLife', 'autorotate')  == 'yes'
             && (!$this->record['modified'] || $this->record['modified'] == '1')
         ) {
@@ -248,7 +248,7 @@ class Photo extends IndexedModel
         $imagesize = $activeImage->getSize();
         $this->record['width'] = $imagesize[0];
         $this->record['height'] = $imagesize[1];
-        
+
         $thumbSize = Preferences::valueForModuleWithKey('CameraLife', 'thumbsize');
         $scaledSize = Preferences::valueForModuleWithKey('CameraLife', 'scaledsize');
         $optionSizes = Preferences::valueForModuleWithKey('CameraLife', 'optionsizes');
@@ -641,7 +641,6 @@ class Photo extends IndexedModel
         if (!$this->context) {
             $this->getRelated();
         }
-
         if (!count($this->contextPhotos)) {
             $this->context->SetPage(0, 99);
             $this->contextPhotos = $this->context->getPhotos(); /* Using the base class, how hot is that? */
@@ -655,9 +654,7 @@ class Photo extends IndexedModel
                 }
                 $last = $cur;
             }
-
         }
-
         return $this->contextPhotos;
     }
 
@@ -692,7 +689,7 @@ class Photo extends IndexedModel
             $condition .= 'user_ip = "' . $user->remoteAddr . '"';
         }
         Database::delete('ratings', $condition);
-        Database::insert('ratings', ['id'=>$this->record['id'], 'username'=>$user->name, 'user_ip'=>$user->remoteAddr, 'date'=>date('Y-M-D H:i:s'), 'rating'=>5]);
+        Database::insert('ratings', ['id'=>$this->record['id'], 'username'=>$user->name, 'user_ip'=>$user->remoteAddr, 'date'=>date('Y-m-d H:i:s'), 'rating'=>5]);
     }
 
     public function unfavoriteByUser(User $user)

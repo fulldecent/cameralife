@@ -26,17 +26,17 @@ class BreadcrumbView extends View
      */
     public function render()
     {
-        echo '<ul class="breadcrumb">';
+        echo "\n<ol class=\"breadcrumb\">\n";
         foreach ($this->openGraphObjects as $i => $openGraphObject) {
             $icon = '<i class="fa fa-' . $openGraphObject->icon . '"></i> ';
             $htmlTitle = htmlspecialchars($openGraphObject->title);
             $htmlHref = htmlspecialchars($openGraphObject->url);
             if ($i == count($this->openGraphObjects) - 1) {
-                echo "<li class=\"active\">$icon$htmlTitle</li>";
+                echo "<li class=\"active\">$icon$htmlTitle</li>\n";
             } else {
-                echo "<li><a href=\"$htmlHref\">$icon$htmlTitle</a></li>";
+                echo "<li><a href=\"$htmlHref\">$icon$htmlTitle</a></li>\n";
             }
         }
-        echo '</ul>';
+        echo "</ol>\n";
     }
 }

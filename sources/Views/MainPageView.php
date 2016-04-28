@@ -88,14 +88,14 @@ class MainPageView extends View
         ?>
 
         <div class="row">
-            <div class="col-sm-7">
-                <h2>New Folders <a class="btn btn-default" href="http://visualping.io/?url=<?= htmlspecialchars($this->mainPageOpenGraph->url) ?>"><i class="fa fa-rss"></i></a></h2>
+            <div class="col-sm-8">
+                <h2>New Folders</h2>
                 <table class="table">
                     <?php
                     foreach ($this->folderAndPhotoOGs as $folderAndPhotoOG) {
                         list($folderOpenGraph, $photoOpenGraphs) = $folderAndPhotoOG;
-                        echo "<tr><td><h3><a href=\"" . htmlspecialchars($folderOpenGraph->url) . "\"> ";
-                        echo htmlentities($folderOpenGraph->title) . "</a></h3>\n";
+                        echo "<tr><td><p class=\"lead\"><a href=\"" . htmlspecialchars($folderOpenGraph->url) . "\"> ";
+                        echo htmlentities($folderOpenGraph->title) . "</a></p>\n";
                         echo '<div style="height:80px" class="clipbox">';
                         foreach ($photoOpenGraphs as $photoOpenGraph) {
                             echo '<div class="l1" style="-moz-transform:rotate(' . rand(
@@ -117,16 +117,10 @@ class MainPageView extends View
                     ?>
                 </table>
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-4">
 
-                <h2>Photos</h2>
-                              
-                <ul class="nav nav-pills">
-                    <li <?= $this->activeSection == 'rand' ? 'class="active"' : '' ?>><a href="?section=rand">Random photos</a></li>
-                    <li <?= $this->activeSection == 'newest' ? 'class="active"' : '' ?>><a href="?section=newest">Newest photos</a></li>
-                    <li <?= $this->activeSection == 'unpopular' ? 'class="active"' : '' ?>><a href="?section=unpopular">Rarest</a></li>
-                </ul>
-                <div style="height: 170px" class="clipbox">
+                <h2><i class="fa fa-random"></i> Random</h2>
+                <div style="height: 400px" class="clipbox">
                     <?php
                     foreach ($this->openGraphsForTop as $resultOpenGraph) {
                         $htmlTitle = '';
