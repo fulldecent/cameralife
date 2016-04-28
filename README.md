@@ -8,7 +8,7 @@ Camera Life
 
 Share your photo memories. Camera Life is an open source software package 
 you install and run on your own server running PHP and MySQL. This creates 
-a beatiful experience for your visitors to experience your collection.
+a beautiful experience for your visitors.
 
 ![Screenshot 1](https://fulldecent.github.io/cameralife/splashAssets/screenshot1.png)
 ![Screenshot 2](https://fulldecent.github.io/cameralife/splashAssets/screenshot2.png)
