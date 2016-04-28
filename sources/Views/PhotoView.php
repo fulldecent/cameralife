@@ -118,14 +118,10 @@ class PhotoView extends View
 		        <span class="navbar-brand"><?= htmlspecialchars($this->openGraphObject->title) ?></span>
 			</div>
 		</nav>
-
-<div id="backgroundFuzz" style="z-index:-5;position:fixed;top:0;left:0;width:140%;height:140%;margin:-20%;background:url(<?= $this->photo->getMediaURL('thumbnail') ?>);background-size:cover;
-  -webkit-filter: blur(30px) grayscale(25%) opacity(25%); filter: blur(30px) grayscale(25%) opacity(25%)
-  "></div>
  
 <div
 	id="mainPic" 
-	style="position:fixed;top:0;left:0;width:100%;height:100%;background:url(<?= $this->photo->getMediaURL('scaled') ?>);background-size:contain;background-repeat:no-repeat;background-position:center"
+	style="position:absolute;top:0;left:0;width:100%;height:100%;background:url(<?= $this->photo->getMediaURL('scaled') ?>);background-size:contain;background-repeat:no-repeat;background-position:center"
 >
 
 	<img
@@ -134,11 +130,8 @@ class PhotoView extends View
 		style="display:none"
 	>
 </div>
-  
- 
-<!--
-<div class="row">
-    <div class="col-md-4">
+
+<div class="container" style="position:absolute;top:100%;height:100%;">
         <h3>Information</h3>
         <dl class="dl-horizontal">
             <?php
@@ -161,10 +154,8 @@ class PhotoView extends View
             }
             ?>
         </dl>
-    </div>
 </div>
--->
-
+ 
 <?php
 // Cache the next image the user is likely to look at
 if ($photoNext) {

@@ -25,17 +25,23 @@ class FavoritesController extends HtmlController
     public function handleGet($get, $post, $files, $cookies)
     {
         $this->model = Models\Favorites::favoritesForCurrentUser($cookies);
-
         $start = isset($get['start']) ? $get['start'] : 0;
         $this->model->setPage($start);
+
+        /* Set up common page parts */
+        $this->htmlHeader($cookies);
+
+		if (count($this->model->getPhotos())) {
+	        $view = new Views\BackgroundBlurView;
+	        $view->imageURL = $this->model->getPhotos()[0]->getMediaURL('thumbnail');
+	        $view->render();
+		}
+
         $photoCount = $this->model->getPhotoCount();
         
         foreach ($this->model->getPhotos() as $photo) {
             $gridObjects[] = new PhotoController($photo->id);
         }
-
-        /* Set up common page parts */
-        $this->htmlHeader($cookies);
 
         //TODO: breaks MVC
         echo '<h2>My favorite photos</h2>';

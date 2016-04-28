@@ -13,13 +13,10 @@ use CameraLife\Models as Models;
 
 class AdminFileStoreController extends HtmlController
 {
-    public $model;
-
     public function __construct()
     {
         parent::__construct();
-        $this->model = new Models\Statistics;
-        $this->title = 'Site stats';
+        $this->title = 'Admin File Store';
         $this->icon = 'bar-chart';
     }
 

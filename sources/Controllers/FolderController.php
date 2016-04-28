@@ -50,15 +50,12 @@ class FolderController extends HtmlController
 
         /* Set up common page parts */
         $this->htmlHeader($cookies);
-		$this->renderNavbar($cookies);
-		$this->renderOpenContainer();
 
 		if ($firstPhoto) {
-			echo '<div id="backgroundFuzz" style="z-index:-1;position:fixed;top:0;left:0;width:140%;height:140%;margin:-20%;background:url(';
-			echo $firstPhoto->getMediaURL('thumbnail');
-			echo ');background-size:cover;-webkit-filter: blur(30px) grayscale(25%) opacity(25%); filter: blur(30px) grayscale(25%) opacity(25%)"></div>';			
+	        $view = new Views\BackgroundBlurView;
+	        $view->imageURL = $firstPhoto->getMediaURL('thumbnail');
+	        $view->render();
 		}
-
 
         /* Set up breadcrumbs */
         $breadcrumbs = new Views\BreadcrumbView;
@@ -95,7 +92,6 @@ class FolderController extends HtmlController
         $pageSelector->render();
 
         /* Render footer */
-		$this->renderCloseContainer();
         $this->htmlFooter();
     }
 }

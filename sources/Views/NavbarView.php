@@ -51,7 +51,7 @@ class NavbarView extends View
     {
           $gravitarHTML = htmlentities($this->currentUser->gravitarUrl());
         ?>   
-		<nav class="navbar navbar-light bg-faded navbar-static-top" style="margin-bottom:20px">
+		<nav class="navbar navbar-light bg-faded navbar-static-top" style="margin-bottom:20px;background:rgba(253,253,255,0.97)">
 			<div class="container">
 			    <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#exCollapsingNavbar2">
 			    &#9776;

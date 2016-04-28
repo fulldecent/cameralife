@@ -13,13 +13,10 @@ use CameraLife\Models as Models;
 
 class AdminThumbnailController extends HtmlController
 {
-    public $model;
-
     public function __construct()
     {
         parent::__construct();
-        $this->model = new Models\Statistics;
-        $this->title = 'Thumbnails';
+        $this->title = 'Admin Thumbnails';
         $this->icon = 'list';
     }
 

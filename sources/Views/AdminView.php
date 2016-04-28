@@ -154,48 +154,40 @@ EOL;
         // Logs
         $class = $this->numNewLogs ? 'warning' : 'default';
         echo "<div class=\"col-sm-4\">";
-        echo "<div class=\"panel panel-$class\">";
-        echo "<div class=\"panel-heading\"><h3 class=\"panel-title\">Logs</h3></div>";
-        echo "<div class=\"panel-body\">";
+        echo "<div class=\"card card-block card-$class\">";
+        echo "<h3 class=\"card-title\">Logs</h3>";
         if ($this->numNewLogs) {
-            echo "<p>There are $this->numNewLogs logged actions since the last checkpoint</p>";
+            echo "<p class=\"card-text\">There are $this->numNewLogs logged actions since the last checkpoint</p>";
         } else {
-            echo "<p>No changes have been made since the last checkpoint</p>";
+            echo "<p class=\"card-text\">No changes have been made since the last checkpoint</p>";
         }
-        echo "<p><a class=\"btn btn-$class\" href=\"$this->logsUrl\"><i class=\"fa fa-backward\"></i> View and
-                                rollback site actions</a></p>";
-        echo "</div></div></div>";
-
-        // Comments
-        $class = $this->numNewComments ? 'warning' : 'default';
-        echo "<div class=\"col-sm-4\">";
-        echo "<div class=\"panel panel-$class\">";
-        echo "<div class=\"panel-heading\"><h3 class=\"panel-title\">Comments</h3></div>";
-        echo "<div class=\"panel-body\">";
-        if ($this->numNewComments) {
-            echo "<p>There are $this->numNewComments logged comments since the last checkpoint</p>";
-        } else {
-            echo "<p>No comments have been made since the last checkpoint</p>";
-        }
-        echo "<p><a class=\"btn btn-$class\" href=\"$this->commentsUrl\"><i class=\"fa fa-user\"></i> View and censor site
-                                comments</a></p>";
-        echo "</div></div></div>";
+        echo "<a class=\"card-link\" href=\"$this->logsUrl\"><i class=\"fa fa-backward\"></i> View and
+                                rollback site actions</a>";
+        echo "</div></div>";
 
         // Files
         $class = $this->numFlagged ? 'danger' : 'default';
         echo "<div class=\"col-sm-4\">";
-        echo "<div class=\"panel panel-$class\">";
-        echo "<div class=\"panel-heading\"><h3 class=\"panel-title\">Flagged and private photos</h3></div>";
-        echo "<div class=\"panel-body\">";
+        echo "<div class=\"card card-block card-$class\">";
+        echo "<h3 class=\"card-title\">Flagged and private photos</h3>";
         if ($this->numFlagged) {
-            echo "<p>$this->numFlagged photos have been flagged by visitors</p>";
+            echo "<p class=\"card-text\">$this->numFlagged photos have been flagged by visitors</p>";
         } else {
-            echo "<p>No photos have been flagged by visitors</p>";
+            echo "<p class=\"card-text\">No photos have been flagged by visitors</p>";
         }
-        echo "<p><a class=\"btn btn-$class\" href=\"$this->photosUrl\"><i class=\"fa fa-folder-open\"></i> Review photos</a></p>";
-        echo "<p><a class=\"btn btn-default\" href=\"$this->thumbnailUrl\"><i class=\"fa fa-folder-open\"></i> Update thumbnails</a></p>";
-        echo "<p><a class=\"btn btn-default\" href=\"$this->rescanUrl\"><i class=\"fa fa-folder-open\"></i> Rescan for photos</a></p>";
-        echo "</div></div></div>";
+        echo "<a class=\"card-link\" href=\"$this->photosUrl\"><i class=\"fa fa-folder-open\"></i> Review photos</a>";
+        echo "<a class=\"card-link\" href=\"$this->thumbnailUrl\"><i class=\"fa fa-folder-open\"></i> Update thumbnails</a>";
+        echo "<a class=\"card-link\" href=\"$this->rescanUrl\"><i class=\"fa fa-folder-open\"></i> Rescan for photos</a>";
+        echo "</div></div>";
+
+        // Feedback
+        echo "<div class=\"col-sm-4\">";
+        echo "<div class=\"card card-block\">";
+        echo "<h3 class=\"card-title\">Feedback</h3>";
+        echo "<p>How do you like Camera Life? Let us know.</p>";
+        echo "<a class=\"card-link\" href=\"https://github.com/fulldecent/cameralife/issues\"><i class=\"fa fa-flag\"></i> Report an issue</a>";
+        echo "<a class=\"card-link\" href=\"https://github.com/fulldecent/cameralife\"><i class=\"fa fa-github\"></i> Get project updates</a>";
+        echo "</div></div>";
 
 
         echo "</div>";
@@ -204,48 +196,32 @@ EOL;
 
         // Users
         $class = $this->numNewUsers ? 'warning' : 'default';
-        echo "<div class=\"col-sm-3\">";
-        echo "<div class=\"panel panel-$class\">";
-        echo "<div class=\"panel-heading\"><h3 class=\"panel-title\">Users and security</h3></div>";
-        echo "<div class=\"panel-body\">";
+        echo "<div class=\"col-sm-4\">";
+        echo "<div class=\"card card-block card-$class\">";
+        echo "<h3 class=\"card-title\">Users and security</h3>";
         if ($this->numNewUsers) {
-            echo "<p>$this->numNewUsers new users have registered</p>";
+            echo "<p class=\"card-text\">$this->numNewUsers new users have registered</p>";
         } else {
-            echo "<p>No new unverified users</p>";
+            echo "<p class=\"card-text\">No new unverified users</p>";
         }
-        echo "<p><a class=\"btn btn-$class\" href=\"$this->securityUrl\"><i class=\"fa fa-lock\"></i> Manage users &amp; security</a></p>";
-        echo "</div></div></div>";
-
+        echo "<a class=\"card-link\" href=\"$this->securityUrl\"><i class=\"fa fa-lock\"></i> Manage users &amp; security</a>";
+        echo "</div></div>";
 
         // Appearance
-        echo "<div class=\"col-sm-3\">";
-        echo "<div class=\"panel panel-default\">";
-        echo "<div class=\"panel-heading\"><h3 class=\"panel-title\">Appearance</h3></div>";
-        echo "<div class=\"panel-body\">";
-        echo "<p><a class=\"btn btn-default\" href=\"$this->appearanceUrl\"><i class=\"fa fa-star\"></i> Set theme preferences</a></p>";
-        echo "</div></div></div>";
+        echo "<div class=\"col-sm-4\">";
+        echo "<div class=\"card card-block\">";
+        echo "<h3 class=\"card-title\">Appearance</h3>";
+        echo "<a class=\"card-link\" href=\"$this->appearanceUrl\"><i class=\"fa fa-star\"></i> Set theme preferences</a>";
+        echo "</div></div>";
 
         // FileStore
-        echo "<div class=\"col-sm-3\">";
-        echo "<div class=\"panel panel-default\">";
-        echo "<div class=\"panel-heading\"><h3 class=\"panel-title\">File storage</h3></div>";
+        echo "<div class=\"col-sm-4\">";
+        echo "<div class=\"card card-block\">";
+        echo "<h3 class=\"card-title\">File storage</h3>";
         echo "<div class=\"panel-body\">";
-        echo "<p>Photos can be stored on your web server, a remote server, Amazon S3, etc.</p>";
-        echo "<p><a class=\"btn btn-default\" href=\"$this->fileStoreUrl\"><i class=\"fa fa-folder-open\"></i> Configure FileStore</a></p>";
+        echo "<p class=\"card-text\">Photos can be stored on your web server, a remote server, Amazon S3, etc.</p>";
+        echo "<a class=\"card-link\" href=\"$this->fileStoreUrl\"><i class=\"fa fa-folder-open\"></i> Configure FileStore</a></p>";
         echo "</div></div></div>";
-
-        // Feedback
-        echo "<div class=\"col-sm-3\">";
-        echo "<div class=\"panel panel-default\">";
-        echo "<div class=\"panel-heading\"><h3 class=\"panel-title\">Feedback</h3></div>";
-        echo "<div class=\"panel-body\">";
-        echo "<p>How do you like Camera Life? Let us know.</p>";
-        echo "<p>";
-        echo "<a class=\"btn btn-default\" href=\"https://github.com/fulldecent/cameralife/issues\"><i class=\"fa fa-flag\"></i> Report an issue</a>";
-        echo "<a class=\"btn btn-default\" href=\"https://github.com/fulldecent/cameralife\"><i class=\"fa fa-github\"></i> Get project updates</a>";
-        echo "</p>";
-        echo "</div></div></div>";
-
 
         echo "</div>";
 

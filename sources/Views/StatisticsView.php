@@ -35,7 +35,7 @@ class StatisticsView extends View
 ?>
 <h1>Site stats</h1>
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Most viewed photos</h3>
@@ -47,7 +47,7 @@ class StatisticsView extends View
                         // fix links
                         $percent = $photo->Get('hits') * 100 / $popularPhotos[0]->Get('hits');
                         echo "<tr><td>";
-                        echo "<div style=\"width:50px; clear:left\" class=\"progress\"><div class=\"progress-bar progress-info\" style=\"width: $percent%\"></div></div>";
+                        echo "<progress class=\"progress\" value=\"$percent\" max=\"100\" style=\"width:70px\">$percent</progress>";
                         echo "<td>" . number_format($photo->Get('hits'));
                         echo "<td><a href=\"photo.php&#63;id=" . $photo->Get('id') . '">' . $photo->Get(
                             'description'
@@ -58,7 +58,7 @@ class StatisticsView extends View
             </div>
         </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Most viewed tags</h3>
@@ -70,7 +70,7 @@ class StatisticsView extends View
                     foreach ($popularAlbums as $photo) {
                         $percent = $photo->get('hits') * 100 / $popularPhotos[0]->get('hits');
                         echo "<tr><td>";
-                        echo "<div style=\"width:50px; clear:left\" class=\"progress\"><div class=\"progress-bar progress-bar-success\" style=\"width: $percent%\"></div></div>";
+                        echo "<progress class=\"progress\" value=\"$percent\" max=\"100\" style=\"width:70px\">$percent</progress>";
                         echo "<td>" . number_format($photo->Get('hits'));
                         echo "<td><a href=\"album.php&#63;id=" . $photo->Get('id') . '">' . $photo->Get(
                             'name'
@@ -81,7 +81,7 @@ class StatisticsView extends View
             </div>
         </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Fun facts</h3>

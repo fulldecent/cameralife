@@ -17,6 +17,13 @@ abstract class HtmlController extends Controller
      */
     protected function htmlHeader($cookies = array())
     {
+        $this->htmlBareHeader($cookies);
+		$this->renderNavbar($cookies);
+		$this->renderOpenContainer();
+    }
+
+    protected function htmlBareHeader($cookies = array())
+    {
         $view = new Views\HeaderView;
         $view->openGraphObject = $this;
         $view->currentUser = Models\User::currentUser($cookies);
@@ -73,6 +80,12 @@ abstract class HtmlController extends Controller
      * @return void
      */
     protected function htmlFooter()
+    {
+		$this->renderCloseContainer();
+        $this->htmlBareFooter();
+    }
+
+    protected function htmlBareFooter()
     {
         $view = new Views\FooterView;
         $view->statsUrl = StatisticsController::getUrl();

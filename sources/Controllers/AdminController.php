@@ -13,12 +13,9 @@ use CameraLife\Models as Models;
 
 class AdminController extends HtmlController
 {
-    public $model;
-
     public function __construct()
     {
         parent::__construct();
-        $this->model = new Models\Statistics;
         $this->title = 'Site administration';
         $this->icon = 'bar-chart';
     }

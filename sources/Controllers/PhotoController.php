@@ -39,19 +39,22 @@ class PhotoController extends HtmlController
     {
         // todo, get PREV and NEXT links from photo and use meta prev/next in HTML theme header
 
+        $this->htmlBareHeader($cookies);
+        
+        $view = new Views\BackgroundBlurView;
+        $view->imageURL = $this->model->getMediaURL('thumbnail');
+        $view->render();
+
+        
         $view = new Views\PhotoView;
         $view->photo = $this->model;
         $view->currentUser = Models\User::currentUser($cookies);
         $view->openGraphObject = $this;
-
         if (isset($get['referrer'])) {
             $view->referrer = $get['referrer'];
         } elseif (isset($_SERVER['HTTP_REFERER'])) {
             $view->referrer = $_SERVER['HTTP_REFERER'];
         }
-
-        /* Set up common page parts */
-        $this->htmlHeader($cookies);
 
         if ($this->model->get('status') != 0) {
             if (Models\User::currentUser($cookies)->authorizationLevel < 5) {
@@ -145,7 +148,7 @@ $(document).keyup(function(e) {
 });
 	    ";
 
-        $this->htmlFooter();
+        $this->htmlBareFooter();
     }
 
     public function handlePost($get, $post, $files, $cookies)

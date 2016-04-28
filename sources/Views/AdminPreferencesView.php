@@ -29,7 +29,6 @@ class AdminPreferencesView extends View
 
     public function render()
     {
-
         echo "<h2>Settings for " . $this->moduleName . "</h2>\n";
         if (isset($module->about)) {
             echo "<p class=\"lead\">" . $module->about . "</p>\n";
@@ -39,18 +38,16 @@ class AdminPreferencesView extends View
             return;
         }
 
-        ///todo set url
         echo "<form class=\"form-horizontal\" method=\"post\">\n";
         echo "<input type=\"hidden\" name=\"target\" value=\"" . $_SERVER['PHP_SELF'] . "\" />\n";
 
         foreach ($this->preferences as $pref) {
             $tag = $pref['module'] . '|' . $pref['key'];
-
-            echo '<div class="form-group">';
-            echo '  <label class="col-md-2 control-label" for="' . $tag . '">' . $pref['name'] . '</label>';
-            echo '  <div class="col-md-10 form-inline">' . PHP_EOL;
             $value = Models\Preferences::valueForModuleWithKey($pref['module'], $pref['key']);
 
+            echo '<div class="form-group row">';
+            echo '  <label class="col-md-2 form-control-label" for="' . $tag . '">' . $pref['name'] . '</label>';
+            echo '  <div class="col-md-10">' . PHP_EOL;
             if ($pref['type'] == 'number') {
                 echo "      <input class=\"form-control\" type=\"number\" name=\"$tag\" value=\"$value\" />\n";
             } elseif ($pref['type'] == 'string') {
@@ -66,7 +63,7 @@ class AdminPreferencesView extends View
                     constant('BASE_DIR') . "/$value"
                 )
                 ) {
-                    echo '<p class="text-error">This directory is not writable</p>';
+                    echo '<p class="form-control-static text-error">This directory is not writable</p>';
                 }
             } elseif (is_array($pref['type'])) {
                 // enumeration
@@ -88,7 +85,7 @@ class AdminPreferencesView extends View
                 echo "      </select />\n";
             }
             if (isset($pref['desc'])) {
-                echo '    <span class="text-muted">' . $pref['desc'] . '</span>';
+                echo '    <small class="text-muted">' . $pref['desc'] . '</small>';
             }
             echo '  </div>';
             echo '</div>' . PHP_EOL;

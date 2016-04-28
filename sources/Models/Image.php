@@ -31,7 +31,7 @@ class Image
         $this->extension = strtolower($pathParts['extension']);
         
         $imageData = file_get_contents($filename);
-        $this->originalImage = imagecreatefromstring($imageData);
+        $this->originalImage = \imagecreatefromstring($imageData);
         $this->width = imagesx($this->originalImage);
         $this->height = imagesy($this->originalImage);
         $this->size = sqrt($this->width * $this->width + $this->height * $this->height);

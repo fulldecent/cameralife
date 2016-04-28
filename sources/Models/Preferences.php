@@ -57,7 +57,7 @@ class Preferences
         self::setValueForModuleWithKey(date('Y-m-d H:i:s'), 'CameraLife', 'sitedate');
         self::setValueForModuleWithKey('My Photos', 'CameraLife', 'sitename');
         self::setValueForModuleWithKey('yes', 'CameraLife', 'autorotate');
-        self::setValueForModuleWithKey('120', 'CameraLife', 'thumbsize');
+        self::setValueForModuleWithKey('180', 'CameraLife', 'thumbsize');
         self::setValueForModuleWithKey('800', 'CameraLife', 'scaledsize');
         self::setValueForModuleWithKey('', 'CameraLife', 'optionsizes');
         self::setValueForModuleWithKey('photos', 'LocalFileStore', 'photo_dir');
