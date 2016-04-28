@@ -6,42 +6,39 @@
 Camera Life
 ===========
 
-Run your own photo website. Camera Life is a system for cataloging your photo
-collection. It gives users the ability to search or browse your archive in 
-intuitive ways, with an attention to powerful administrative functions.
+Share your photo memories. Camera Life is an open source software package 
+you install and run on your own server running PHP and MySQL. This creates 
+a beatiful experience for your visitors to experience your collection.
 
-![Screenshot 1](http://fulldecent.github.com/cameralife/splashAssets/screenshot1.png?20140707)
-![Screenshot 2](http://fulldecent.github.com/cameralife/splashAssets/screenshot2.png?20140707)
-![Screenshot 3](http://fulldecent.github.com/cameralife/splashAssets/screenshot3.png?20140707)
+![Screenshot 1](https://fulldecent.github.io/cameralife/splashAssets/screenshot1.png)
+![Screenshot 2](https://fulldecent.github.io/cameralife/splashAssets/screenshot2.png)
+![Screenshot 3](https://fulldecent.github.io/cameralife/splashAssets/screenshot3.png)
 
 Features
 --------
-1. Great photo organization
+1. Great storytelling
 
-   Photos are searchable, and browsable with folders and tags
+   Browse photos by folders or tags.
 
-2. Full audit trail
+2. Undo anything
 
-   Any change to the site can be undone, individually or in bulk
+   Every change has a full audit trail and can be reversed, individually or in bulk.
 
-3. Installs in one step
+3. Easy installation
 
-   Yup
+   Install in one step.
 
-4. Easy to get photos in
+4. Easy to add photos
 
-   Upload photos using an iOS or Android app, or direct from your SLR camera
+   Upload photos with an iOS or Android app, or direct from your SLR camera.
 
 5. Responsive
 
-   Supports RSS, OpenGraph, OpenSearch and devices from Netscape 1.0 to iOS 8
+   Supports RSS, OpenGraph, OpenSearch and any browser.
 
-6. Integrates well with your site
+6. Beautiful code
 
-   Uses OpenID for login/registration and integrates easily with existing login
-   and can serve images off of Amazon S3, Dropbox, remote HTTP, and other CDNs
-
-7. Supports PHP 5.4+ and MySQL
+   World class MVC design and lightweight user authentication.
 
 
 Installation
@@ -49,15 +46,15 @@ Installation
 
     git clone https://github.com/fulldecent/cameralife.git
     
-Then open your browser for one-step install. Also see our 50-second install
-flyover video at https://fulldecent.github.io/cameralife/
+Then open your browser for one-step install. Also see the one minute flyover
+video at https://fulldecent.github.io/cameralife/
 
 
 Maintenance
 -----------
 
-Login as administrator to see comments, flagged photos and other changes since
-your last review. Anything that needs your attention is in red.
+Login as administrator to see changes since your last review. 
+Anything that needs your attention is in red.
 
 
 Support
@@ -67,9 +64,9 @@ Please file issues at https://github.com/fulldecent/cameralife/issues
 
 Lead developer is available to consult on custom integration of Camera Life.
 
-Thank you for choosing Camera Life for your photo displaying needs!
+Thank you for choosing Camera Life for your photo sharing needs!
 
 Version 2.7
-Copyright (C) 2001-2014 William Entriken
+Copyright (C) 2001-2016 William Entriken
 https://github.com/fulldecent/cameralife
 cameralife@phor.net
