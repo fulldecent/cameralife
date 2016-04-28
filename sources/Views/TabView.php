@@ -37,11 +37,11 @@ class TabView extends View
         echo '<ul class="nav nav-tabs">' . PHP_EOL;
         foreach ($this->openGraphObjects as $i => $openGraphObject) {
             if ($i == $this->selected) {
-                echo "<li class=\"active\">";
+                echo "<li class=\"nav-item active\">";
             } else {
-                echo "<li>";
+                echo "<li class=\"nav-item\">";
             }
-            echo "<a href=\"".htmlspecialchars($openGraphObject->url)."\">";
+            echo "<a class=\"nav-link\" href=\"".htmlspecialchars($openGraphObject->url)."\">";
             echo htmlspecialchars($openGraphObject->title);
             echo "</a>";
             echo "</li>";

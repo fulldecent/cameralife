@@ -200,7 +200,9 @@ abstract class Controller
      *
      *   index.php?page=Photo&id=1243&...
      *
-     * But usually the user will see pretty URLs that rewrite to the above
+     * But usually the user will see pretty URLs that rewrite to the above such as
+     *
+     *   photo/1243?...
      *
      * @access public
      * @param  array $get

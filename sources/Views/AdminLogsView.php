@@ -124,8 +124,8 @@ class AdminLogsView extends View
 
         echo "<h3>View settings</h3>";
         echo "<form class=\"form-horizontal\" role=\"form\">";
-        echo "<div class=\"form-group\">";
-        echo "<label for=\"showBy\" class=\"col-sm-2 control-label\">Show changes by</label>";
+        echo "<div class=\"form-group row\">";
+        echo "<label for=\"showBy\" class=\"col-sm-2 form-control-label\">Show changes by</label>";
         echo "<div class=\"col-sm-10\">";
         echo "<label class=\"checkbox inline\"><input type=\"checkbox\" name=\"fromMe\" ".($this->showFromMe?'checked':'')."><i class=\"fa fa-user\"></i> Me</label>";
         echo "<label class=\"checkbox inline\"><input type=\"checkbox\" name=\"fromRegistered\" ".($this->showFromRegistered?'checked':'')."><i class=\"fa fa-user\"></i> Registered users</label>";
@@ -133,8 +133,8 @@ class AdminLogsView extends View
         echo "</div>";
         echo "</div>";
 
-        echo "<div class=\"form-group\">";
-        echo "<label for=\"showBy\" class=\"col-sm-2 control-label\">Show changes to</label>";
+        echo "<div class=\"form-group row\">";
+        echo "<label for=\"showBy\" class=\"col-sm-2 form-control-label\">Show changes to</label>";
         echo "<div class=\"col-sm-10\">";
         echo "<label class=\"checkbox inline\"><input type=\"checkbox\" name=\"changedPhotos\" ".($this->showChangedPhotos?'checked':'')."><i class=\"fa fa-photo\"></i> Photos</label>";
         echo "<label class=\"checkbox inline\"><input type=\"checkbox\" name=\"changedTags\" ".($this->showChangedTags?'checked':'')."><i class=\"fa fa-tag\"></i> Tags</label>";
@@ -143,20 +143,20 @@ class AdminLogsView extends View
         echo "</div>";
         echo "</div>";
 
-        echo "<div class=\"form-group\">";
-        echo "<label for=\"showBy\" class=\"col-sm-2 control-label\">Show changes since</label>";
+        echo "<div class=\"form-group row\">";
+        echo "<label for=\"showBy\" class=\"col-sm-2 form-control-label\">Show changes since</label>";
         echo "<div class=\"col-sm-10\">";
         echo "<p class=\"form-control-static\">Checkpoint is set to $this->checkpointDate, showing changes since then.</p>";
         echo "</div>";
         echo "</div>";
 
-        echo "<div class=\"form-group\">";
+        echo "<div class=\"form-group row\">";
         echo "<div class=\"col-sm-offset-2 col-sm-10\">";
-        echo "<button type=\"submit\" class=\"btn btn-default\">Update view</button>";
+        echo "<button type=\"submit\" class=\"btn btn-primary\">Update view</button>";
         echo "</div>";
         echo "</div>";
 
-        echo "</form>";
+        echo "</form><hr>";
 
 
         echo "<h3>Results</h3>";

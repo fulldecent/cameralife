@@ -67,7 +67,7 @@ class AdminLogsController extends HtmlController
         $condition .= ") ";
 
         $condition .= " AND logs.id > " . ($view->checkpointId);
-        $extra = "GROUP BY record_id, record_type, value_field ORDER BY logs.id DESC";
+        $extra = "GROUP BY record_id, record_type, value_field ORDER BY maxid DESC";
 
         $query = Models\Database::select(
             'logs',

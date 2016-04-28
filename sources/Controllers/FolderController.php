@@ -89,6 +89,7 @@ class FolderController extends HtmlController
         $pageSelector = new Views\PageSelectorView;
         $pageSelector->start = $start;
         $pageSelector->total = $photoCount;
+        $pageSelector->url = $this->url;
         $pageSelector->render();
 
         /* Render footer */

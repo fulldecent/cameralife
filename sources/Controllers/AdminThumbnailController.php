@@ -53,9 +53,8 @@ class AdminThumbnailController extends HtmlController
         echo "<p>Progress: " . number_format($done) . ' of ' . number_format($total) . " done";
         echo " (about $timeleft minutes left)";
         echo "</p>\n";
-        echo '<div class="progress">';
-        echo '<div class="progress-bar" style="width: ' . ($done / $total * 100) . '%;"></div>';
-        echo '</div>';
+        $percentage = ($done / $total * 100);
+        echo "<progress class=\"progress\" value=\"$percentage\" max=\"100\">{$percentage}%</progress>";
 
         $next1000 = Models\Database::select('photos', 'id', "id > $lastdone AND status != 9", 'ORDER BY id LIMIT 500');
         $fixed = 0;
@@ -79,8 +78,6 @@ class AdminThumbnailController extends HtmlController
             echo "<script language='javascript'>window.setTimeout('window.location=\"" . htmlspecialchars($phpself) . "?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\"',400)</script>\n";
             echo "<p><a href=\"?lastdone=$lastdone&starttime=$starttime&numdone=$numdone\">Click here to continue</a> if the Javascript redirect doesn't work.</p>\n";
         }
-
-
 
         $this->htmlFooter();
     }

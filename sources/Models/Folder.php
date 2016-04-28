@@ -107,7 +107,7 @@ class Folder extends Search
         }
         $query = Database::select(
             'photos',
-            'DISTINCT substring_index(substr(path,'.(strlen($lpath)+2)."), '/', 1) as basename",
+            'DISTINCT substring_index(substr(path,'.(strlen($lpath)+2)."), '/', 1) as basename, MAX(created) as date",
             implode(' AND ', $conditions),
             'GROUP BY path ORDER BY ' . $sort . ' ' . 'LIMIT ' . $this->offset . ',' . $this->pageSize,
             null,
