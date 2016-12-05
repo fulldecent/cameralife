@@ -2,6 +2,7 @@ config.php
 caches
 
 # https://stackoverflow.com/q/27726794
+# https://stackoverflow.com/q/40984979
 /vendor/**/.git/
 /vendor/bin/
 composer.phar
