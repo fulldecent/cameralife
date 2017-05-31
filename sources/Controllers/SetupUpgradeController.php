@@ -140,7 +140,7 @@ class SetupUpgradeController extends HtmlController
                         session_start();
                         $_SESSION['openid_identity'] = $openid->identity;
                         $_SESSION['openid_email'] = $attr['contact/email'];
-                        header('Location: http://indexn2.php');
+                        header('Location: index.php');
                     } else {
                         throw new \Exception('Enough detail (email address) was not provided to process your login.');
                     }
