@@ -95,7 +95,7 @@ class LoginController extends HtmlController
         /* Render footer */
         $this->htmlFooter();
     }
-    
+
     public function handlePost($get, $post, $files, $cookies)
     {
         try {

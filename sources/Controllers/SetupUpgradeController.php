@@ -36,7 +36,7 @@ class SetupUpgradeController extends HtmlController
         $nextInstaller = null;
         if (Models\Database::$schemaVersion != Models\Database::REQUIRED_SCHEMA_VERSION) {
             $nextInstaller = "CameraLife\Models\SchemaUpdater" . (Models\Database::$schemaVersion + 1);
-        }      
+        }
         ?>
 
         <!DOCTYPE html>
@@ -47,14 +47,13 @@ class SetupUpgradeController extends HtmlController
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
             <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+            <!-- CAMERALIFE PHONE HOME Global site tag (gtag.js) - Google Analytics -->
             <script>
-              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-              })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-              ga('create', 'UA-52764-13', 'auto');
-              ga('send', 'pageview');
-              ga('send', 'event', 'install', 'step', 'step 1');            
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('event', 'sign_up', {'checkout_step', 3});
+              gtag('config', 'UA-52764-13');
             </script>
         </head>
 
@@ -100,8 +99,8 @@ class SetupUpgradeController extends HtmlController
                     echo '<p class="lead text-danger">Automatic upgrade not possible.</p>';
                     echo '<blockquote class="lead">' . $canUpgrade . '</blockquote>';
                 }
-                
-                
+
+
             } else {
                 echo "<h1>No upgrade needed</h1>";
             }

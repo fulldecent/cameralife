@@ -87,7 +87,7 @@ class User extends IndexedModel
             }
         }
     }
-    
+
     public static function userWithOpenId($identity, $email)
     {
         global $_SERVER;
@@ -103,13 +103,13 @@ class User extends IndexedModel
             $retval->authorizationLevel = $row['auth'];
             $retval->email = $row['email'];
             $retval->lastOnline = $row['last_online'];
-            
+
             Database::update('users', ['cookie'=>$cookie], 'id=' . $retval->id);
             setcookie('cameralifeauth', $cookie, time() + 30000000, '/');
             $_COOKIE['cameralifeauth'] = $cookie;
             return $retval;
         }
-        
+
         //TODO: breaks MVC
         setcookie('cameralifeauth', $cookie, time() + 30000000, '/');
         $_COOKIE['cameralifeauth'] = $cookie;
@@ -121,7 +121,7 @@ class User extends IndexedModel
         $values['last_ip'] = $_SERVER["REMOTE_ADDR"];
         $values['email'] = $email;
         $insertId = Database::insert('users', $values);
-        
+
         $retval = new User;
         $retval->id = $insertId;
         $retval->isLoggedIn = true;

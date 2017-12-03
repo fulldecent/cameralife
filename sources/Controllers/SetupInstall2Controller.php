@@ -197,14 +197,13 @@ EOF;
             <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
             <script src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
             <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+            <!-- CAMERALIFE PHONE HOME Global site tag (gtag.js) - Google Analytics -->
             <script>
-              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-              })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-              ga('create', 'UA-52764-13', 'auto');
-              ga('send', 'pageview');
-              ga('send', 'event', 'install', 'step', 'step 2');            
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('event', 'sign_up', {'checkout_step', 2});
+              gtag('config', 'UA-52764-13');
             </script>
         </head>
 
@@ -351,7 +350,7 @@ EOF;
         Models\Database::$prefix = $post['prefix'];
         Models\Database::setupTables();
         Models\Preferences::setFactoryDefaults();
-        
+
         Models\User::userWithOpenId($_SESSION['openid_identity'], $_SESSION['openid_email']);
         Models\Database::update('users', ['auth'=>5], 'email="'.$_SESSION['openid_email'].'"'); //todo security
         header('Location: ' . MainPageController::getUrl());

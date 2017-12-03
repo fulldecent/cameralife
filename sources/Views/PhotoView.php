@@ -89,7 +89,7 @@ class PhotoView extends View
         }
         ?>
 
-		<nav class="navbar navbar-light bg-faded navbar-fixed-bottom" style="background:rgba(255,255,255,0.4)">
+		<nav class="navbar navbar-light bg-faded fixed-bottom" style="background:rgba(255,255,255,0.4)">
 			<div class="container">
 				<form class="form-inline pull-xs-left" method=POST name="form" style="margin-right:10px">
 					<input type="hidden" name="action" value="<?= $rating ? 'unfavorite' : 'favorite' ?>">
@@ -98,7 +98,7 @@ class PhotoView extends View
 				        <span class="fa-stack">
 				            <i class="fa fa-star<?= $rating ? '' : '-o' ?> fa-stack-2x" style="color:gold"></i>
 				            <strong class="fa-stack-1x" style="font-size:0.7em;color:black"><?= $count ? $count : '' ?></strong>
-				        </span>				
+				        </span>
 					</button>
 				</form>
 			    <a href="<?= $this->photo->getMediaURL('photo') ?>"
@@ -118,9 +118,9 @@ class PhotoView extends View
 		        <span class="navbar-brand"><?= htmlspecialchars($this->openGraphObject->title) ?></span>
 			</div>
 		</nav>
- 
+
 <div
-	id="mainPic" 
+	id="mainPic"
 	style="position:absolute;top:0;left:0;width:100%;height:100%;background:url(<?= $this->photo->getMediaURL('scaled') ?>);background-size:contain;background-repeat:no-repeat;background-position:center"
 >
 
@@ -155,7 +155,7 @@ class PhotoView extends View
             ?>
         </dl>
 </div>
- 
+
 <?php
 // Cache the next image the user is likely to look at
 if ($photoNext) {
