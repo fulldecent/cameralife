@@ -122,13 +122,13 @@ class SetupInstall2Controller extends HtmlController
         }
 
         // Check directories
-        if (is_writable(constant('BASE_DIR') . '/caches')) {
-            $this->status[] = ['description'=>'Directory <code>caches/</code> is writable', 'class'=>'success'];
+        if (is_writable(constant('BASE_DIR') . '/config/caches')) {
+            $this->status[] = ['description'=>'Directory <code>config/caches/</code> is writable', 'class'=>'success'];
         } else {
-            $this->status[] = ['description'=>'Directory <code>caches/</code> needs to be writable', 'class'=>'danger'];
-            $this->remedies['cPanel'][] = 'Make <code>' . realpath(constant('BASE_DIR') . '/caches') . '</code> writable';
-            $this->remedies['MAMP'][] = '<pre>sudo chmod 777 "' . realpath(constant('BASE_DIR') . '/caches') . '"</pre>';
-            $this->remedies['Ubuntu'][] = '<pre>sudo chmod 777 "' . realpath(constant('BASE_DIR') . '/caches') . '"</pre>';
+            $this->status[] = ['description'=>'Directory <code>config/caches/</code> needs to be writable', 'class'=>'danger'];
+            $this->remedies['cPanel'][] = 'Make <code>' . realpath(constant('BASE_DIR') . '/config/caches') . '</code> writable';
+            $this->remedies['MAMP'][] = '<pre>sudo chmod 777 "' . realpath(constant('BASE_DIR') . '/config/caches') . '"</pre>';
+            $this->remedies['Ubuntu'][] = '<pre>sudo chmod 777 "' . realpath(constant('BASE_DIR') . '/config/caches') . '"</pre>';
         }
 
         // Database remedies
@@ -164,12 +164,12 @@ Database::$password = '<b class="val-pass">password</b>';
 Database::$prefix = '<b class="val-prefix"></b>';
 Database::$schemaVersion = 5;
 EOF;
-        $this->remedies['cPanel'][] = 'Open CPanel and Filemanager and create a new file <code>config.php</code> in the project folder and add these contents to the file:';
+        $this->remedies['cPanel'][] = 'Open CPanel and Filemanager and create a new file <code>config/config.php</code> in the project folder and add these contents to the file:';
         $this->remedies['cPanel'][] = "<pre>$configFileHtml</pre>";
-        $this->remedies['MAMP'][] = '<pre>cat &gt; ' . realpath(constant('BASE_DIR')) .'/config.php &lt;&lt;\'EOL\'</pre>';
+        $this->remedies['MAMP'][] = '<pre>cat &gt; ' . realpath(constant('BASE_DIR')) .'/config/config.php &lt;&lt;\'EOL\'</pre>';
         $this->remedies['MAMP'][] = "<pre>$configFileHtml</pre>";
         $this->remedies['MAMP'][] = "<pre>EOL</pre>";
-        $this->remedies['Ubuntu'][] = '<pre>cat &gt; ' . realpath(constant('BASE_DIR')) .'/config.php &lt;&lt;\'EOL\'</pre>';
+        $this->remedies['Ubuntu'][] = '<pre>cat &gt; ' . realpath(constant('BASE_DIR')) .'/config/config.php &lt;&lt;\'EOL\'</pre>';
         $this->remedies['Ubuntu'][] = "<pre>$configFileHtml</pre>";
         $this->remedies['Ubuntu'][] = "<pre>EOL</pre>";
 
@@ -179,7 +179,7 @@ EOF;
 
     public function handleGet($get, $post, $files, $cookies)
     {
-        if (file_exists('../../config.php')) {
+        if (file_exists('../../config/config.php')) {
             throw new \Exception("Camera Life already appears to be set up, because modules/config.inc exists.");
         }
 
@@ -202,7 +202,7 @@ EOF;
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('event', 'sign_up', {'checkout_step', 2});
+              gtag('event', 'sign_up', {'checkout_step': 2});
               gtag('config', 'UA-52764-13');
             </script>
         </head>
@@ -214,7 +214,7 @@ EOF;
                         <i class="fa fa-camera-retro"></i>
                         You are installing Camera Life version <?= constant('CAMERALIFE_VERSION') ?>
                     </h2>
-                    <p>To upgrade instead, copy in your old <var>config.php</var> file</p>
+                    <p>To upgrade instead, copy in your old <var>config/config.php</var> file</p>
                     <p>
                         <a target="_blank" href="http://fulldecent.github.io/cameralife">
                             <i class="glyphicon glyphicon-home"></i>

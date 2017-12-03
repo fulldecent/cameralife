@@ -11,17 +11,19 @@ namespace CameraLife\Models;
 class Database
 {
     public static $dsn;
-    
+
     public static $username;
-    
+
     public static $password;
-    
+
     public static $prefix;
-    
+
     public static $schemaVersion;
-    
+
+    public static $adminAccessCodeHash;
+
     private static $pdoConnection;
-    
+
     const REQUIRED_SCHEMA_VERSION = 5;
 
     /**
@@ -40,10 +42,22 @@ class Database
         self::$pdoConnection = new \PDO(self::$dsn, self::$username, self::$password);
         self::$pdoConnection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
-    
+
     public static function installedSchemaIsCorrectVersion()
     {
-        return self::$schemaVersion == self::REQUIRED_SCHEMA_VERSION;
+        if (!self::connectionParametersAreSet()) {
+            return false;
+        }
+        if (isset(self::$schemaVersion)) {
+            return self::$schemaVersion == self::REQUIRED_SCHEMA_VERSION;
+        }
+        self::connect();
+        if (self::$pdoConnection->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'sqlite') {
+            $result = self::$pdoConnection->query('PRAGMA user_version');
+            $value = $result->fetchColumn();
+            return self::$schemaVersion == $value;
+        }
+        return false;
     }
 
     public static function connectionParametersAreSet()
@@ -62,7 +76,7 @@ class Database
         if ($stmt->rowCount()) {
             throw new \Exception('The database already has tables in it, refusing to install again!');
         }
-        
+
         $sql = "
               CREATE TABLE `{$prefix}albums` (
                 `id` int(11) NOT NULL auto_increment,
@@ -104,7 +118,7 @@ class Database
         if (!$stmt->execute()) {
             throw new \Exception('Create photos table failed');
         }
-        
+
         $sql = "
               CREATE TABLE `{$prefix}ratings` (
                 `id` int(11) NOT NULL,
@@ -121,7 +135,7 @@ class Database
         if (!$stmt->execute()) {
             throw new \Exception('Create ratings table failed');
         }
-        
+
         $sql = "
               CREATE TABLE `{$prefix}comments` (
                 `id` int(11) NOT NULL auto_increment,
@@ -137,7 +151,7 @@ class Database
         if (!$stmt->execute()) {
             throw new \Exception('Create comments table failed');
         }
-        
+
         $sql = "
               CREATE TABLE `{$prefix}preferences` (
                 `prefmodule` varchar(64) NOT NULL default 'core',
@@ -150,7 +164,7 @@ class Database
         if (!$stmt->execute()) {
             throw new \Exception('Create preferences table failed');
         }
-        
+
         $sql = "
               CREATE TABLE `{$prefix}users` (
                 `id` int(10) NOT NULL auto_increment,
@@ -169,7 +183,7 @@ class Database
         if (!$stmt->execute()) {
             throw new \Exception('Create users table failed');
         }
-        
+
         $sql = "
               CREATE TABLE `{$prefix}exif` (
                 `photoid` int(11) NOT NULL,
@@ -182,7 +196,7 @@ class Database
         if (!$stmt->execute()) {
             throw new \Exception('Create exif table failed');
         }
-        
+
         $sql = "
               CREATE TABLE `{$prefix}logs` (
                 `id` int(11) NOT NULL auto_increment,
@@ -330,6 +344,6 @@ class Database
         }
         $stmt = self::$pdoConnection->prepare($sql);
         $stmt->execute($bindWithColons);
-        return new DatabaseIterator($stmt);        
+        return new DatabaseIterator($stmt);
     }
 }

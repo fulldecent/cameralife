@@ -62,7 +62,7 @@ class LoginController extends HtmlController
             echo $e->getMessage();
         }
 
-        if (file_exists('../../config.php')) {
+        if (file_exists('../../config/config.php')) {
             throw new \Exception("Camera Life already appears to be set up, because modules/config.inc exists.");
         }
 

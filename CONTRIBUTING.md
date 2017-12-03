@@ -19,7 +19,7 @@ This project follows the Model-View-Controller philosophy as well as PSR-1, -2, 
 
 2.  ModRewrite in `.htaccess` translates to <http://camera.phor.net/cameralife/index.php?page=photo&id=20739>
 
-3.  `index.php` loads the site configuration `config.php` and calls `Controller::handleRequest()`
+3.  `index.php` loads the site configuration `config/config.php` and calls `Controller::handleRequest()`
 
 4.  The `Controller` base class instantiates and delegates the request to `PhotoController` based on the URL
 

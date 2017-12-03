@@ -52,7 +52,7 @@ class SetupUpgradeController extends HtmlController
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('event', 'sign_up', {'checkout_step', 3});
+              gtag('event', 'sign_up', {'checkout_step': 3});
               gtag('config', 'UA-52764-13');
             </script>
         </head>

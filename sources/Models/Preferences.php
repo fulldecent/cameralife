@@ -51,7 +51,7 @@ class Preferences
             $database->insert('preferences', $values);
         }
     }
-    
+
     public static function setFactoryDefaults()
     {
         self::setValueForModuleWithKey(date('Y-m-d H:i:s'), 'CameraLife', 'sitedate');
@@ -61,6 +61,6 @@ class Preferences
         self::setValueForModuleWithKey('800', 'CameraLife', 'scaledsize');
         self::setValueForModuleWithKey('', 'CameraLife', 'optionsizes');
         self::setValueForModuleWithKey('photos', 'LocalFileStore', 'photo_dir');
-        self::setValueForModuleWithKey('caches', 'LocalFileStore', 'cache_dir');
+        self::setValueForModuleWithKey('config/caches', 'LocalFileStore', 'cache_dir');
     }
 }

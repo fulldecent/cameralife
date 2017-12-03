@@ -8,7 +8,7 @@ namespace CameraLife;
  * @copyright 2001-2014 William Entriken
  * @access    public
  */
- 
+
 // Bail if autoload is not available!
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     throw new Exception('Camera Life requires PHP version 5.4 or higher.');
@@ -22,8 +22,8 @@ require 'vendor/autoload.php';
 require 'sources/autoload.php';
 
 // Load configuration
-if (file_exists(dirname(__FILE__) . '/config.php')) {
-    include dirname(__FILE__) . '/config.php';
+if (file_exists(dirname(__FILE__) . '/config/config.php')) {
+    include dirname(__FILE__) . '/config/config.php';
 }
 
 // Route the page request
