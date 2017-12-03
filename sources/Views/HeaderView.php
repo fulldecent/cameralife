@@ -52,30 +52,21 @@ class HeaderView extends View
     {
           $gravitarHTML = htmlentities($this->currentUser->gravitarUrl());
         ?>
-        <!DOCTYPE html>
+        <!doctype html>
         <html lang="en">
-        <head>
+          <head>
             <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
             <title><?= htmlspecialchars($this->openGraphObject->title) ?></title>
             <?php
                 $this->openGraphObject->htmlRenderMetaTags();
             ?>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta name="generator" content="Camera Life version <?= constant('CAMERALIFE_VERSION') ?>">
             <meta name="author" content="<?= htmlspecialchars($this->ownerEmail) ?>">
-            <!-- Le styles -->
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css" integrity="sha384-MIwDKRSSImVFAZCVLtU0LMDdON6KVCrZHyVQQj6e8wIEJkW4tvwqXrbMIya1vriY" crossorigin="anonymous">
-            <link rel="search" href="<?= htmlspecialchars($this->openSearchUrl) ?>" type="application/opensearchdescription+xml"
-                  title="Content Search"/>
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+            <link rel="search" href="<?= htmlspecialchars($this->openSearchUrl) ?>" type="application/opensearchdescription+xml" title="Content Search"/>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
             <link rel="stylesheet" href="<?= constant('BASE_URL') ?>/assets/main.css">
-
-            <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-            <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-            <!--[if lt IE 9]>
-              <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-              <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-            <![endif]-->
         </head>
     <?php
     }
