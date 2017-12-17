@@ -13,9 +13,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "ext-xml": "*",
-        "lightopenid/lightopenid": "dev-master"
+        "php": ">=7.0.0"
     },
     "require-dev": {
         "phpmd/phpmd" : "@stable"

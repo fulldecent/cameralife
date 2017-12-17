@@ -6,8 +6,4 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'BasicProvider' => $vendorDir . '/lightopenid/lightopenid/provider/example.php',
-    'LightOpenID' => $vendorDir . '/lightopenid/lightopenid/openid.php',
-    'LightOpenIDProvider' => $vendorDir . '/lightopenid/lightopenid/provider/provider.php',
-    'MysqlProvider' => $vendorDir . '/lightopenid/lightopenid/provider/example-mysql.php',
 );
