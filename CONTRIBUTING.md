@@ -51,7 +51,7 @@ Release process
 
 -   Make a new flyover install video
 
--   edit composer.json
+-   edit composer.json / run `php composer.phar update --no-dev`
 
 -   Update screenshots in README.md
 
