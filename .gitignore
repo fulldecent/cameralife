@@ -1,6 +1,6 @@
-config/caches
-config/config.php
-config/cameralife.db
+/config/caches
+/config/config.php
+/config/cameralife.db
 
 # https://stackoverflow.com/q/27726794
 # https://stackoverflow.com/q/40984979
