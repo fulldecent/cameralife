@@ -177,18 +177,20 @@ abstract class Controller
 
     public static function getUrlForIDWithParameters($modelId, $parameters)
     {
+        global $_SERVER;
+        //todo breaks mvc
+
         $reflection = new \ReflectionClass(get_called_class());
         $shortName = $reflection->getShortName();
         $page = lcfirst(basename($shortName, 'Controller'));
         $query = http_build_query($parameters);
         $modelId = ltrim($modelId, '/');
 
-        // TODO, use this http://stackoverflow.com/a/14375686/300224
         if (self::$rewriteEnabled === null) {
-            self::$rewriteEnabled = Models\Preferences::valueForModuleWithKey('CameraLife', 'rewrite') == 'yes' ||
-                                    Models\Preferences::valueForModuleWithKey('CameraLife', 'rewrite') == 1;
+            if (array_key_exists('HTTP_MOD_REWRITE', $_SERVER)) {
+                return constant('BASE_URL') . '/' . $page . '/' . $modelId . ($query ? '?' . $query : '');
+            }
         }
-
         if (!self::$rewriteEnabled) {
             return constant('BASE_URL') . '/index.php?page=' . $page . '&id=' . $modelId . ($query ? '&' . $query : '');
         }
@@ -271,7 +273,7 @@ abstract class Controller
      * @return void
      */
     public function handlePost($get, $post, $files, $cookies)
-    {      
+    {
         header('Location: ' . $this->getUrlForID($get['id']));
     }
 

@@ -189,7 +189,8 @@ class Folder extends Search
         } elseif ($option == 'unpopular') {
             return 'hits';
         } elseif ($option == 'rand') {
-            return 'rand()';
+            return 'random()';
+            // check for mysql
         }
         return 'id desc';
     }
@@ -258,7 +259,7 @@ class Folder extends Search
     public static function findChangesOnDisk()
     {
         $retval = array();
-                
+
         $fileStore = FileStore::fileStoreWithName('photo');
         $fileStoreNewPhotos = $fileStore->listFiles(); // path->basename format
         if (!count($fileStoreNewPhotos)) {
@@ -330,6 +331,7 @@ class Folder extends Search
         //TODO: NEED TEST CASES FOR THIS AND ACTUAL TESTING!!!!!!!
         // move files / delete files / readd files (undelete) / UTF filenames
         $retval = array();
+        Database::beginTransaction();
         foreach (Folder::findChangesOnDisk() as $filePath => $change) {
             if ($change == 'new') {
                 $retval[] = "Added $filePath\n";
@@ -353,7 +355,8 @@ class Folder extends Search
                 // pathinfo is better than basename with unicode utf8
                 $photoObj = Photo::getPhotoWithFilePath($filePath);
                 // $filename = basename($change[1]); DOES NOT WORK WITH CJK AND UTF-8
-                $filename = end(explode('/', $change[1]));
+                $parts = explode('/', $change[1]);
+                $filename = end($parts);
                 $path = '/' . trim(mb_substr($change[1], 0, -mb_strlen($filename)), '/');
                 $photoObj->set('path', $path);
                 $photoObj->set('filename', $filename);
@@ -361,6 +364,7 @@ class Folder extends Search
                 $retval[] = "Something happened with $filePath / " . print_r($change, true);
             }
         }
+        Database::commit();
         return $retval;
     }
 

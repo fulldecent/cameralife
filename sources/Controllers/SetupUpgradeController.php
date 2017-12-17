@@ -34,8 +34,10 @@ class SetupUpgradeController extends HtmlController
     public function handleGet($get, $post, $files, $cookies)
     {
         $nextInstaller = null;
-        if (Models\Database::$schemaVersion != Models\Database::REQUIRED_SCHEMA_VERSION) {
-            $nextInstaller = "CameraLife\Models\SchemaUpdater" . (Models\Database::$schemaVersion + 1);
+        if (!Models\Database::installedSchemaIsCorrectVersion()) {
+            $driver = Models\Database::driverName();
+            $class = 'SchemaUpdater' . ucwords($driver) . Models\Database::installedSchemaVersion();
+            $nextInstaller = 'CameraLife\\Models\\' . $class;
         }
         ?>
 
@@ -77,8 +79,9 @@ class SetupUpgradeController extends HtmlController
             </div>
 
         <div class="container">
-            <h1>Installed database version: <?= Models\Database::$schemaVersion ?></h1>
-            <h1>Latest database version: <?= Models\Database::REQUIRED_SCHEMA_VERSION ?></h1>
+            <h1>Installed database: <?= Models\Database::driverName() ?></h1>
+            <h1>Installed schema version: <?= Models\Database::installedSchemaVersion() ?></h1>
+            <h1>Needed schema version: <?= Models\Database::requiredSchemaVersion() ?></h1>
         <?php
             if ($nextInstaller) {
                 echo "<h1>Next updater: ".$nextInstaller."</h1><hr>";
@@ -86,11 +89,13 @@ class SetupUpgradeController extends HtmlController
                 echo '<blockquote class="lead">' . $upgrader->scriptInfo . '</blockquote>';
                 $canUpgrade = $upgrader->canUpgrade();
                 if ($canUpgrade === true) {
-                    $result = $upgrader->doUpgrade($db_host, $db_name, $db_user, $db_pass, $db_prefix);
+                    $result = $upgrader->doUpgrade();
                     if (true === $result) {
                         echo '<p class="lead text-success">Upgrade complete ';
-                        echo 'Please update your <code>modules/config.inc</code> and add ';
-                        echo '<code>$db_schema_version = ' . (Models\Database::$schemaVersion + 1) . ';</code> ';
+                        if (Models\Database::driverName() == 'mysql') {
+                          echo 'Please update your <code>modules/config.inc</code> and add ';
+                          echo '<code>$db_schema_version = ' . (Models\Database::$schemaVersion + 1) . ';</code> ';
+                        }
                         echo '<a href="../../" class="btn btn-primary btn-large">Continue</a><p>';
                     } else {
                         echo '<p class="text-success">Upgrade failed</p>';
@@ -113,42 +118,4 @@ class SetupUpgradeController extends HtmlController
 <?php
     }
 
-    public function handlePost($get, $post, $files, $cookies)
-    {
-        try {
-            // Mewp told me specifically not to use SERVER_NAME.
-            // Change 'localhost' to your domain name.
-            $openid = new \LightOpenID($_SERVER['SERVER_NAME']);
-            if (!$openid->mode) {
-                if (isset($post['openid_identifier'])) {
-                    $openid->identity = $post['openid_identifier'];
-                    $openid->required = array('contact/email');
-                    $openid->optional = array('namePerson', 'namePerson/friendly');
-                    header('Location: ' . $openid->authUrl());
-                }
-            } elseif ($openid->mode == 'cancel') {
-                echo 'User has canceled authentication!';
-            } else {
-                $identity = "";
-                $email = "";
-                if ($openid->validate()) {
-                    $identity = $openid->identity;
-                    $attr = $openid->getAttributes();
-                    $email = $attr['contact/email'];
-                    if (strlen($email)) {
-                        session_start();
-                        $_SESSION['openid_identity'] = $openid->identity;
-                        $_SESSION['openid_email'] = $attr['contact/email'];
-                        header('Location: index.php');
-                    } else {
-                        throw new \Exception('Enough detail (email address) was not provided to process your login.');
-                    }
-                } else {
-                    throw new \Exception('Provider did not validate your login');
-                }
-            }
-        } catch (\ErrorException $e) {
-            echo $e->getMessage();
-        }
-    }
 }

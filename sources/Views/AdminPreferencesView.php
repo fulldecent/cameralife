@@ -59,6 +59,9 @@ class AdminPreferencesView extends View
                 echo "      <input class=\"form-control\" type=\"text\" name=\"$tag\" value=\"$value\" />\n";
                 if (!is_dir($value) && !is_dir(constant('BASE_DIR') . "/$value")) {
                     echo '<p class="text-error">This is not a directory</p>';
+#                    echo '<code>stat():<br>';
+#                    echo json_encode(@stat(constant('BASE_DIR') . "/$value"));
+#                    echo '</code>';
                 } elseif ($pref['type'] == 'directoryrw' && !is_writable($value) && !is_writable(
                     constant('BASE_DIR') . "/$value"
                 )

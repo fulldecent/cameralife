@@ -104,7 +104,7 @@ class AdminCommentsView extends View
 
         echo "<div class=\"form-group\">";
         echo "<div class=\"col-sm-offset-2 col-sm-10\">";
-        echo "<button type=\"submit\" class=\"btn btn-default\">Update view</button>";
+        echo "<button type=\"submit\" class=\"btn btn-info\">Update view</button>";
         echo "</div>";
         echo "</div>";
 

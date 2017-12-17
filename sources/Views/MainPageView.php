@@ -44,11 +44,11 @@ class MainPageView extends View
      * @access public
      */
     public $tagCollections;
-    
+
     public $adminUrl;
 
     public $rootOpenGraph;
-    
+
     public $mainPageOpenGraph;
 
     /**
@@ -65,9 +65,9 @@ class MainPageView extends View
             <div class="jumbotron">
                 <div class="container">
                     <h2 class="text-success"><i class="fa fa-check"></i> Camera Life <?= constant('CAMERALIFE_VERSION') ?> is installed!</h2>
-                    <p><a class="btn btn-default btn-large" target="_blank" href="https://github.com/fulldecent/cameralife"><i
+                    <p><a class="btn btn-primary btn-large" target="_blank" href="https://github.com/fulldecent/cameralife"><i
                     class="fa fa-star"></i> Star us on GitHub</a> to get important security updates</p>
-                    <hr>                    
+                    <hr>
                     <p>
                         Add photos to your <code>photos</code> directory or visit <a href="<?= htmlspecialchars($this->adminUrl) ?>">site administration</a> to point to your existing photo directory.
                     </p>
@@ -78,8 +78,8 @@ class MainPageView extends View
                       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
                       ga('create', 'UA-52764-13', 'auto');
                       ga('send', 'pageview');
-                      ga('send', 'event', 'install', 'install done', 'no photos error');            
-                    </script>                    
+                      ga('send', 'event', 'install', 'install done', 'no photos error');
+                    </script>
                 </div>
             </div>
             <div class="container">
@@ -127,7 +127,7 @@ class MainPageView extends View
                         if ($resultOpenGraph->title != 'unnamed') {
                             $htmlTitle = htmlentities($resultOpenGraph->title);
                         }
-    
+
                         echo '<div class="l1" style="-moz-transform:rotate(' . rand(
                             -10,
                             10
@@ -146,7 +146,7 @@ class MainPageView extends View
                     }
                     ?>
                 </div>
-    
+
             </div>
         </div>
         <?php

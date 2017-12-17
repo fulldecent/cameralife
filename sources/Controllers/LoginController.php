@@ -22,74 +22,17 @@ class LoginController extends HtmlController
     {
         /* Set up common page parts */
         $this->htmlHeader($cookies);
-
-        try {
-            // Mewp told me specifically not to use SERVER_NAME.
-            // Change 'localhost' to your domain name.
-            $openid = new \LightOpenID($_SERVER['SERVER_NAME']);
-            if (!$openid->mode) {
-                if (isset($post['openid_identifier'])) {
-                    $openid->identity = $post['openid_identifier'];
-                    $openid->required = array('contact/email');
-                    $openid->optional = array('namePerson', 'namePerson/friendly');
-                    header('Location: ' . $openid->authUrl());
-                    return;
-                }
-            } elseif ($openid->mode == 'cancel') {
-                echo 'User has canceled authentication!';
-            } else {
-                $identity = "";
-                $email = "";
-                if ($openid->validate()) {
-                    $identity = $openid->identity;
-                    $attr = $openid->getAttributes();
-                    $email = $attr['contact/email'];
-                    if (strlen($email)) {
-                        session_start();
-                        $_SESSION['openid_identity'] = $openid->identity;
-                        $_SESSION['openid_email'] = $attr['contact/email'];
-                        Models\User::userWithOpenId($_SESSION['openid_identity'], $_SESSION['openid_email']);
-                        header('Location: ' . MainPageController::getUrl());
-                        return;
-                    } else {
-                        throw new \Exception('Enough detail (email address) was not provided to process your login.');
-                    }
-                } else {
-                    throw new \Exception('Provider did not validate your login');
-                }
-            }
-        } catch (\ErrorException $e) {
-            echo $e->getMessage();
-        }
-
-        if (file_exists('../../config/config.php')) {
-            throw new \Exception("Camera Life already appears to be set up, because modules/config.inc exists.");
-        }
-
         ?>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Login</h3>
-                </div>
-                <div class="panel-body">
-                        <p class="lead">Choose an OpenID provider to login:</p>
-
-                        <form class="form-inline" method="post">
-                            <input type="hidden" name="action" value="verify"/>
-                            <button class="btn btn-primary"  name="openid_identifier" value="https://www.google.com/accounts/o8/id"><i class="fa fa-google"></i> Google</button>
-                            <button class="btn btn-primary"  name="openid_identifier" value="http://me.yahoo.com/"><i class="fa fa-yahoo"></i> Yahoo</button>
-                        </form>
-
-                        <hr>
-
-                        <form class="form-inline" method="post">
-                            <input type="hidden" name="action" value="verify"/>
-                            Other OpenID
-                            <input name="openid_identifier" class="form-control" value="http://"/>
-                            <input class="btn btn-primary" type="submit" value="Login"/>
-                        </form>
-                </div>
+        <h3 class="panel-title">Login</h3>
+        <form method="post">
+          <div class="form-group row">
+            <label for="accesscode" class="col-sm-2 col-form-label col-form-label-lg">Access code</label>
+            <div class="col-sm-10">
+              <input type="password" class="form-control form-control-lg" id="accesscode" name="accesscode">
             </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg">Sign in</button>
+        </form>
 <?php
 
         /* Render footer */
@@ -98,40 +41,8 @@ class LoginController extends HtmlController
 
     public function handlePost($get, $post, $files, $cookies)
     {
-        try {
-            // Mewp told me specifically not to use SERVER_NAME.
-            // Change 'localhost' to your domain name.
-            $openid = new \LightOpenID($_SERVER['SERVER_NAME']);
-            if (!$openid->mode) {
-                if (isset($post['openid_identifier'])) {
-                    $openid->identity = $post['openid_identifier'];
-                    $openid->required = array('contact/email');
-                    $openid->optional = array('namePerson', 'namePerson/friendly');
-                    header('Location: ' . $openid->authUrl());
-                }
-            } elseif ($openid->mode == 'cancel') {
-                echo 'User has canceled authentication!';
-            } else {
-                $identity = "";
-                $email = "";
-                if ($openid->validate()) {
-                    $identity = $openid->identity;
-                    $attr = $openid->getAttributes();
-                    $email = $attr['contact/email'];
-                    if (strlen($email)) {
-                        session_start();
-                        $_SESSION['openid_identity'] = $openid->identity;
-                        $_SESSION['openid_email'] = $attr['contact/email'];
-                        header('Location: http://indexn2.php');
-                    } else {
-                        throw new \Exception('Enough detail (email address) was not provided to process your login.');
-                    }
-                } else {
-                    throw new \Exception('Provider did not validate your login');
-                }
-            }
-        } catch (\ErrorException $e) {
-            echo $e->getMessage();
-        }
+        \CameraLife\Models\User::loginWithAccessCode($post['accesscode']);
+        header('Location: ' . MainPageController::getUrl());
+        return;
     }
 }

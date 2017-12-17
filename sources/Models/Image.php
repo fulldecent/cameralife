@@ -26,10 +26,10 @@ class Image
         if (!is_readable($filename)) {
             throw new \Exception('Image not readable: ' . $filename);
         }
-        
+
         $pathParts = pathinfo($filename);
         $this->extension = strtolower($pathParts['extension']);
-        
+
         $imageData = file_get_contents($filename);
         $this->originalImage = \imagecreatefromstring($imageData);
         $this->width = imagesx($this->originalImage);

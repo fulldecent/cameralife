@@ -88,11 +88,14 @@ class User extends IndexedModel
         }
     }
 
-    public static function userWithOpenId($identity, $email)
+    public static function loginWithAccessCode($code)
     {
+        // todo: breaks mvc
         global $_SERVER;
-        $cookie = mt_rand(0, 1000000000000);
-        $result = Database::select('users', '*', "email=:email AND password=:password", null, null, ['email'=>$email,'password'=>$identity]);
+        $cookie = bin2hex(random_bytes(16));
+        $accessCodeHashed = hash('sha256', $code);
+
+        $result = Database::select('users', '*', "password=:password", null, null, ['password'=>$accessCodeHashed]);
         $row = $result->fetchAssoc();
         if ($row) {
             $retval = new User;
@@ -113,22 +116,19 @@ class User extends IndexedModel
         //TODO: breaks MVC
         setcookie('cameralifeauth', $cookie, time() + 30000000, '/');
         $_COOKIE['cameralifeauth'] = $cookie;
-        $values['username'] = $email;
-        $values['password'] = $identity;
+        $values['username'] = rand();
+        $values['password'] = $accessCodeHashed;
         $values['auth'] = 1;
         $values['cookie'] = $cookie;
         $values['last_online'] = date('Y-m-d H:i:s');
         $values['last_ip'] = $_SERVER["REMOTE_ADDR"];
-        $values['email'] = $email;
         $insertId = Database::insert('users', $values);
 
         $retval = new User;
         $retval->id = $insertId;
         $retval->isLoggedIn = true;
-        $retval->name = $email;
         $retval->remoteAddr = $_SERVER["REMOTE_ADDR"];
         $retval->authorizationLevel = 1;
-        $retval->email = $email;
         $retval->lastOnline = date('Y-m-d H:i:s');
         return $retval;
     }

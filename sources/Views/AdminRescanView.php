@@ -27,9 +27,9 @@ class AdminRescanView extends View
 
         echo "<ul>";
         foreach ($this->scanResults as $result) {
-            echo "<li>$result</li>";
+            echo "<li>" . htmlspecialchars($result) . "</li>";
         }
         echo "</ul>";
-        echo "<p><a class=\"btn btn-default\" href=\"$this->thumbnailUrl\"><i class=\"fa fa-folder-open\"></i> Update thumbnails</a></p>";
+        echo "<p><a class=\"btn btn-info\" href=\"$this->thumbnailUrl\"><i class=\"fa fa-folder-open\"></i> Update thumbnails</a></p>";
     }
 }

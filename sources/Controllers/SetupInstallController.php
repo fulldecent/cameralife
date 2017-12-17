@@ -165,42 +165,6 @@ EOF;
 
     public function handleGet($get, $post, $files, $cookies)
     {
-        try {
-            // Mewp told me specifically not to use SERVER_NAME.
-            // Change 'localhost' to your domain name.
-            $openid = new \LightOpenID($_SERVER['SERVER_NAME']);
-            if (!$openid->mode) {
-                if (isset($post['openid_identifier'])) {
-                    $openid->identity = $post['openid_identifier'];
-                    $openid->required = array('contact/email');
-                    $openid->optional = array('namePerson', 'namePerson/friendly');
-                    header('Location: ' . $openid->authUrl());
-                }
-            } elseif ($openid->mode == 'cancel') {
-                echo 'User has canceled authentication!';
-            } else {
-                $identity = "";
-                $email = "";
-                if ($openid->validate()) {
-                    $identity = $openid->identity;
-                    $attr = $openid->getAttributes();
-                    $email = $attr['contact/email'];
-                    if (strlen($email)) {
-                        session_start();
-                        $_SESSION['openid_identity'] = $openid->identity;
-                        $_SESSION['openid_email'] = $attr['contact/email'];
-                        header('Location: ' . SetupInstall2Controller::getUrl());
-                    } else {
-                        throw new \Exception('Enough detail (email address) was not provided to process your login.');
-                    }
-                } else {
-                    throw new \Exception('Provider did not validate your login');
-                }
-            }
-        } catch (\ErrorException $e) {
-            echo $e->getMessage();
-        }
-
         if (file_exists('../../config.php')) {
             throw new \Exception("Camera Life already appears to be set up, because modules/config.inc exists.");
         }

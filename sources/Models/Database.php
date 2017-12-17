@@ -18,13 +18,15 @@ class Database
 
     public static $prefix;
 
-    public static $schemaVersion;
+    public static $schemaVersion = null;
 
     public static $adminAccessCodeHash;
 
     private static $pdoConnection;
 
-    const REQUIRED_SCHEMA_VERSION = 5;
+    private const REQUIRED_SCHEMA_VERSION_SQLITE = 1;
+
+    private const REQUIRED_SCHEMA_VERSION_MYSQL = 5;
 
     /**
      * Creates static database connection using configuration from CONSTANTS
@@ -43,21 +45,45 @@ class Database
         self::$pdoConnection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
+    public static function driverName()
+    {
+      empty(self::$pdoConnection) && self::connect();
+      return self::$pdoConnection->getAttribute(\PDO::ATTR_DRIVER_NAME);
+    }
+
+    /// null if no database connection, or schema version if we have a connection
+    public static function installedSchemaVersion()
+    {
+      if (!self::connectionParametersAreSet()) {
+          return null;
+      }
+      if (isset(self::$schemaVersion)) {
+          return self::$schemaVersion;
+      }
+      self::connect();
+      if (self::$pdoConnection->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'sqlite') {
+          $result = self::$pdoConnection->query('PRAGMA user_version');
+          return $result->fetchColumn();
+      }
+      return null;
+    }
+
+    public static function requiredSchemaVersion()
+    {
+      $driverName = self::driverName();
+      switch ($driverName) {
+          case 'sqlite':
+              return self::REQUIRED_SCHEMA_VERSION_SQLITE;
+          case 'mysql':
+              return self::REQUIRED_SCHEMA_VERSION_SQLITE;
+          default:
+              throw new \Exception('Unrecognized database driver');
+      }
+    }
+
     public static function installedSchemaIsCorrectVersion()
     {
-        if (!self::connectionParametersAreSet()) {
-            return false;
-        }
-        if (isset(self::$schemaVersion)) {
-            return self::$schemaVersion == self::REQUIRED_SCHEMA_VERSION;
-        }
-        self::connect();
-        if (self::$pdoConnection->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'sqlite') {
-            $result = self::$pdoConnection->query('PRAGMA user_version');
-            $value = $result->fetchColumn();
-            return self::$schemaVersion == $value;
-        }
-        return false;
+        return self::installedSchemaVersion() == self::requiredSchemaVersion();
     }
 
     public static function connectionParametersAreSet()
@@ -345,5 +371,17 @@ class Database
         $stmt = self::$pdoConnection->prepare($sql);
         $stmt->execute($bindWithColons);
         return new DatabaseIterator($stmt);
+    }
+
+    public static function beginTransaction()
+    {
+        empty(self::$pdoConnection) && self::connect();
+        self::$pdoConnection->beginTransaction();
+    }
+
+    public static function commit()
+    {
+      empty(self::$pdoConnection) && self::connect();
+      self::$pdoConnection->commit();
     }
 }

@@ -441,7 +441,7 @@ class Photo extends IndexedModel
 
     private function loadEXIF($file)
     {
-        $exif = exif_read_data($file, 'IFD0', true);
+        $exif = @exif_read_data($file, 'IFD0', true);
         if ($exif === false) {
             return;
         }
@@ -585,7 +585,8 @@ class Photo extends IndexedModel
         $result = Database::select(
             'albums',
             'id,name',
-            "'" . addslashes($this->get('description')) . "' LIKE CONCAT('%',term,'%')"
+            "'" . addslashes($this->get('description')) . "' LIKE '%' || term || '%'"
+            // for mysql: "'" . addslashes($this->get('description')) . "' LIKE CONCAT('%',term,'%')"
         );
         while ($albumrecord = $result->fetchAssoc()) {
             if (($this->context instanceof Album) && $this->context->get('id') == $albumrecord['id']) {

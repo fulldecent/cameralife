@@ -9,6 +9,9 @@ namespace CameraLife;
  * @access    public
  */
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Bail if autoload is not available!
 if (version_compare(PHP_VERSION, '5.4.0', '<')) {
     throw new Exception('Camera Life requires PHP version 5.4 or higher.');
@@ -18,6 +21,7 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 define('CAMERALIFE_VERSION', '2.7.0a6');
 define('BASE_URL', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['PHP_SELF']), '/'));
 define('BASE_DIR', dirname(__FILE__));
+#locale_set_default('C.UTF-8'); // omfg extensions
 require 'vendor/autoload.php';
 require 'sources/autoload.php';
 

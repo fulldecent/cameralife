@@ -107,7 +107,8 @@ class Search extends IndexedModel
         } elseif ($option == 'unpopular') {
             return 'hits, photos.id';
         } elseif ($option == 'rand') {
-            return 'rand()';
+            return 'random()';
+            // check for mysql
         } elseif ($option == 'id') { // semi hidden
            return 'id';
         }
@@ -129,11 +130,12 @@ class Search extends IndexedModel
         } elseif ($option == 'unpopular') {
             return 'albums.hits';
         } elseif ($option == 'rand') {
-            return 'rand()';
+            return 'random()';
+            // check for mysql
         }
         return 'albums.id desc';
     }
-    
+
     protected function folderSortSqlForOption($option)
     {
         if ($option == 'newest') {
@@ -149,7 +151,8 @@ class Search extends IndexedModel
         } elseif ($option == 'unpopular') {
             return 'hits';
         } elseif ($option == 'rand') {
-            return 'rand()';
+            return 'random()';
+            // check for mysql
         }
         return 'id desc';
     }
