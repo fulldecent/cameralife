@@ -18,7 +18,7 @@ Features
 --------
 1. Great storytelling
 
-   Browse photos by folders or tags.
+   Browse photos by folders and tags.
 
 2. Undo anything
 
@@ -32,7 +32,7 @@ Features
 
    Upload photos with an iOS or Android app, or direct from your SLR camera.
 
-5. Responsive
+5. Responsive app
 
    Supports RSS, OpenGraph, OpenSearch and any browser.
 
@@ -47,7 +47,7 @@ Installation
     git clone https://github.com/fulldecent/cameralife.git
     
 Then open your browser for one-step install. Also see the one minute flyover
-video at https://fulldecent.github.io/cameralife/
+Full video at https://fulldecent.github.io/cameralife/
 
 
 Maintenance
